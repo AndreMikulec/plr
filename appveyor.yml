@@ -11,14 +11,18 @@ environment:
     PlatformToolset: v141
     configuration: Debug
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    msvc_diff_file: msvc.pg.13.diff
   - pg: 9.6.13-1
     PlatformToolset: v120
+    msvc_diff_file: msvc.diff
   - pg: 11.9-1
     PlatformToolset: v140
+    msvc_diff_file: msvc.diff
   - pg: 12.4-1
     PlatformToolset: v141
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-  
+    msvc_diff_file: msvc.diff
+
 matrix:
   allow_failures:
     - pg: master
@@ -29,6 +33,7 @@ init: # Make %x64% available for caching
 - setx /m exe %exe%
 
 install:
+- move %msvc_diff_file% msvc.diff
 - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
 - R-%rversion%-win.exe /VERYSILENT
 # We could have used RTools many R users have, but let's use msys64 existing on Appveyor intead
