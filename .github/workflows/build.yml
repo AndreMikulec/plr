@@ -121,7 +121,7 @@ jobs:
           #
           # postgres Is Not in the Path
           #
-          
+
           #
           # Where Is postgres
           #
@@ -148,15 +148,17 @@ jobs:
           # and run make NO_PGXS=1 from there.
           #
           # METHOD 2
-          # Unless you have a good reason to do this, 
-          # I'd recommend that you run plain make and make sure that pg_config is on the PATH.
-          #
-          # Untar PL/R whereever you prefer. 
+          # Unless you have a good reason to do this,
+          # I'd recommend that you run plain make
+          # and
+          # make sure that pg_config is on the PATH.
+          # . . .
+          # Untar PL/R wherever you prefer. (and make sure that "pg_config" is in the PATH)
           # cd plr
           # USE_PGXS=1 make
           # USE_PGXS=1 make install
-          # https://www.joeconway.com/plr/doc/plr-install.html
           #
+          # https://www.joeconway.com/plr/doc/plr-install.html
 
           # /usr/share/pgsql/contrib
           # https://serverfault.com/questions/427109/contrib-directory-in-postgresql-9-1
@@ -166,14 +168,14 @@ jobs:
           # find / -name '*contrib' -print 2>/dev/null
           # /usr/share/postgresql/13/contrib
 
-          echo What Is In contrib
-          ls -alrt /usr/share/postgresql/${PG}/contrib
+          # What Is In contrib
+          # ls -alrt /usr/share/postgresql/${PG}/contrib
           # almost empty
 
-          echo What Is In bin
-          ls -alrt /usr/lib/postgresql/${PG}/bin
+          # What Is In bin
+          # ls -alrt /usr/lib/postgresql/${PG}/bin
           # very full
-          
+
           #
           # Running R in batch mode on Linux
           # 2014
@@ -182,15 +184,17 @@ jobs:
           # echo Where Is R for Ubuntu
           # which R
           # /usr/bin/R
-          
+
           # R_HOME setting on Linux
           # file.path(R.home("share"),"texmf")
           # 2014
           # https://r.789695.n4.nabble.com/R-HOME-setting-on-Linux-td4694413.html
           #
-          echo Where is the R Home directory
+          # Where is the R Home directory
           # R -e writeLines(R.home())
-          R --help
+          # R --help
+          # RHOME			Print path to R home directory and exit
+          R RHOME
 
           # NOT REQUIRED!!
           #
@@ -206,15 +210,43 @@ jobs:
           cd                                             /usr/share/postgresql/${PG}/contrib/plr
 
           #
-          # make sure that pg_config is on the PATH
+          # make sure that "pg_config" is on the PATH
           # Not In The Path - Unless I Put it There
           export PATH=/usr/lib/postgresql/${PG}/bin:$PATH
-          echo $PATH
-          which pg_config
-          echo What Is It About PostgreSQL
+          # echo $PATH
+          # /usr/lib/postgresql/13/bin: . .  /usr/bin
+
+          # which pg_config
+          # /usr/lib/postgresql/13/bin/pg_config
+
+          # What Is It About PostgreSQL
           pg_config
+          # BINDIR = /usr/lib/postgresql/13/bin
+          # DOCDIR = /usr/share/doc/postgresql-doc-13
+          # HTMLDIR = /usr/share/doc/postgresql-doc-13
+          # INCLUDEDIR = /usr/include/postgresql
+          # PKGINCLUDEDIR = /usr/include/postgresql
+          # INCLUDEDIR-SERVER = /usr/include/postgresql/13/server
+          # LIBDIR = /usr/lib/x86_64-linux-gnu
+          # PKGLIBDIR = /usr/lib/postgresql/13/lib
+          # LOCALEDIR = /usr/share/locale
+          # MANDIR = /usr/share/postgresql/13/man
+          # SHAREDIR = /usr/share/postgresql/13
+          # SYSCONFDIR = /etc/postgresql-common
+          # PGXS = /usr/lib/postgresql/13/lib/pgxs/src/makefiles/pgxs.mk
+          # CONFIGURE =  '--build=x86_64-linux-gnu' '--prefix=/usr' '--includedir=${prefix}/include'
+          # '--mandir=${prefix}/share/man' '--infodir=${prefix}/share/info' '--sysconfdir=/etc'
+          # '--localstatedir=/var' '--disable-silent-rules' '--libdir=${prefix}/lib/x86_64-linux-gnu'
+          # '--runstatedir=/run' '--disable-maintainer-mode' '--disable-dependency-tracking'
+          # '--with-icu' '--with-tcl' '--with-perl' '--with-python' '--with-pam' '--with-openssl'
+          # '--with-libxml' '--with-libxslt' 'PYTHON=/usr/bin/python3'
+          # '--mandir=/usr/share/postgresql/13/man' '--docdir=/usr/share/doc/postgresql-doc-13'
+          # '--sysconfdir=/etc/postgresql-common' '--datarootdir=/usr/share/'
+          # '--datadir=/usr/share/postgresql/13' '--bindir=/usr/lib/postgresql/13/bin'
+          # '--libdir=/usr/lib/x86_64-linux-gnu/' '--libexecdir=/usr/lib/postgresql/'
+
           # echo What OS Environment Variables - Is R_HOME Here
-          export
+          # export
           # no R_HOME found
 
           echo BEGIN SCRIPT
