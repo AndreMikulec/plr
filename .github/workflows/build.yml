@@ -32,6 +32,9 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PG: ${{ matrix.pg }}
+
     # https://docs.github.com/en/actions/learn-github-actions/managing-complex-workflows
     #
     # Expressions in job.continue-on-error
@@ -65,8 +68,6 @@ jobs:
 
     steps:
       - name: Echo site details
-        env:
-          PG: ${{ matrix.pg }}
         run: echo PG $PG
 
       # https://docs.github.com/en/actions/quickstart
@@ -262,8 +263,6 @@ jobs:
           echo BEGIN SCRIPT
 
       - name: script
-        env:
-          PG: ${{ matrix.pg }}
         run: |
           sudo pg_lsclusters
           export USE_PGXS=1
