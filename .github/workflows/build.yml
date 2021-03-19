@@ -29,6 +29,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     # https://docs.github.com/en/actions/learn-github-actions/managing-complex-workflows
+    #
+    # Expressions in job.continue-on-error
+    # https://github.blog/changelog/2020-04-15-github-actions-new-workflow-features/
     strategy:
       matrix:
         #
@@ -55,6 +58,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: before_script
+        env:
+          PG: ${{ matrix.pg }}
         run: |
           #
           # https://wiki.ubuntu.com/Releases
@@ -81,6 +86,8 @@ jobs:
           sudo pg_ctlcluster $PG main reload
 
       - name: script
+        env:
+          PG: ${{ matrix.pg }}
         run: |
           sudo pg_lsclusters
           export USE_PGXS=1
