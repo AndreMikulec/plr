@@ -42,21 +42,6 @@ jobs:
         # http://apt.postgresql.org/pub/repos/apt/dists/focal-pgdg/main/binary-amd64/
         #
         pg: [13, 12, 11, 10, 9.6, 9.5]
-        include:
-          # simple working example
-          # https://github.com/facelessuser/soupsieve/blob/ec7a491d11e69de18dd733e145efe10e3444ede8/.github/workflows/build.yml
-          - pg: 13
-            continue-on-error: true
-          - pg: 12
-            continue-on-error: true
-          - pg: 11
-            continue-on-error: true
-          - pg: 10
-            continue-on-error: true
-          - pg: 9.6
-            continue-on-error: true
-          - pg: 9.5
-            continue-on-error: true
 
     steps:
       - name: Echo site details
