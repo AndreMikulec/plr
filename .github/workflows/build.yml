@@ -163,8 +163,17 @@ jobs:
           # 2014
           # http://www.cureffi.org/2014/01/15/running-r-batch-mode-linux/
           #
-          echo Where Is R for Ubuntu
-          which R
+          # echo Where Is R for Ubuntu
+          # which R
+          # /usr/bin/R
+          
+          # R_HOME setting on Linux
+          # file.path(R.home("share"),"texmf")
+          # 2014
+          # https://r.789695.n4.nabble.com/R-HOME-setting-on-Linux-td4694413.html
+          #
+          echo Where it the R Home directory
+          R --arch x64 --no-echo --silent -e writeLines(R.home())
 
           #
           # copy it to contrib/
