@@ -213,7 +213,11 @@ jobs:
           #
           # make sure that "pg_config" is on the PATH
           # Not In The Path - Unless I Put it There
-          export PATH=/usr/lib/postgresql/${PG}/bin:$PATH
+          #
+          ###
+          ### export PATH=/usr/lib/postgresql/${PG}/bin:$PATH
+          ###
+          #
           # echo $PATH
           # /usr/lib/postgresql/13/bin: . .  /usr/bin
 
