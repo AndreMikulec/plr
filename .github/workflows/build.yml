@@ -114,7 +114,7 @@ jobs:
           echo What Contents I Have
           ls -alrt
           echo Where Is postres
-          which postres
+          find / -name '*postres' -print 2>/dev/null
           echo BEGIN PLR BUILD
           sudo pg_lsclusters
           export USE_PGXS=1
