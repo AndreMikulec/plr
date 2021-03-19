@@ -78,8 +78,6 @@ jobs:
           PG: ${{ matrix.pg }}
         run: |
           echo PG: $PG
-          echo Who is postgres
-          finger postgres
           #
           # https://wiki.ubuntu.com/Releases
           # e.g. Focal Fossa
