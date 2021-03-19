@@ -147,6 +147,7 @@ jobs:
           #
           # copy it to contrib/
           #
+          sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/lib/postgresql/${PG}
           sudo mkdir -p                                  /usr/lib/postgresql/${PG}/contrib/plr
           sudo chown runner:docker                       /usr/lib/postgresql/${PG}/contrib/plr
           sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/lib/postgresql/${PG}/contrib/plr
