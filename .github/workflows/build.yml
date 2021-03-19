@@ -142,6 +142,13 @@ jobs:
           # I'd recommend that you run plain make and make sure that pg_config is on the PATH
           #
 
+          # /usr/share/pgsql/contrib
+          # https://serverfault.com/questions/427109/contrib-directory-in-postgresql-9-1
+          #
+          # Where Is contrib
+          #
+          find / -name '*contrib' -print 2>/dev/null
+
           #
           # copy it to contrib/
           #
@@ -158,6 +165,10 @@ jobs:
           # make sure that pg_config is on the PATH
           #
           export PATH=/usr/lib/postgresql/${PG}/bin:$PATH
+          echo $PATH
+          which pg_config
+          echo What OS Environment Variables - Is R_HOME Here
+          export
 
           echo BEGIN SCRIPT
 
