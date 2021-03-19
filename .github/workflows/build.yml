@@ -1,0 +1,105 @@
+
+# May 18, 2020
+# Migrate From Travis CI to GitHub Actions
+# avatar-bdemers.jpg
+# Brian Demers
+# First Steps to GitHub Actions
+# https://developer.okta.com/blog/2020/05/18/travis-ci-to-github-actions
+
+#
+# Migrating from Travis CI to GitHub Actions
+# https://docs.github.com/en/actions/learn-github-actions/migrating-from-travis-ci-to-github-actions
+#
+
+#
+# Github Actions Cheat Sheet
+# https://github.github.io/actions-cheat-sheet/actions-cheat-sheet.pdf
+#
+
+# Appveyor has a special YAML validator, but Github Actions does not
+# YAML Lint
+# http://www.yamllint.com/
+
+#
+# https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+#
+name: plr CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # https://docs.github.com/en/actions/learn-github-actions/managing-complex-workflows
+    strategy:
+      matrix:
+        #
+        # https://wiki.ubuntu.com/Releases
+        # e.g. Focal Fossa
+        # March 2021
+        # file "Package"
+        # http://apt.postgresql.org/pub/repos/apt/dists/focal-pgdg/main/binary-amd64/
+        #
+        pg: [13, 12, 11, 10, 9.6, 9.5]
+
+    steps:
+      - name: Echo site details
+        env:
+          PG: ${{ matrix.pg }}
+        run: echo PG $PG
+
+      # https://docs.github.com/en/actions/quickstart
+      # https://github.com/actions/checkout
+      #
+      # Checks out a copy of your repository on the ubuntu-latest machine
+      #
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: before_script
+        run: |
+          #
+          # https://wiki.ubuntu.com/Releases
+          # e.g. Focal Fossa
+          # March 2021
+          # file "Package"
+          # http://apt.postgresql.org/pub/repos/apt/dists/focal-pgdg/main/binary-amd64/
+          #
+          # Consider instead?
+          # image: postgres
+          # https://docs.github.com/en/actions/learn-github-actions/managing-complex-workflows
+          #
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          sudo apt-get update -qq
+          sudo apt-get install -qq r-base-dev acl
+          sudo /etc/init.d/postgresql stop
+          sudo apt-get remove --purge postgresql\*
+          sudo rm -rf /etc/postgresql /var/lib/postgresql
+          sudo apt-get install postgresql-$PG
+          sudo apt-get install postgresql-server-dev-$PG
+          echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/$PG/main/pg_hba.conf > /dev/null
+          setfacl -Rm u:postgres:rwx,d:u:travis:rwx $HOME
+          sudo pg_ctlcluster $PG main reload
+
+      - name: script
+        run: |
+          sudo pg_lsclusters
+          export USE_PGXS=1
+          SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
+          sudo  make install
+          /usr/lib/postgresql/$PG/bin/pg_config
+          psql --version
+          make installcheck PGUSER=postgres || (cat regression.diffs && false)
+
+      - name: after_success
+        #
+        # Consider instead?
+        # https://www.cyberciti.biz/faq/bash-get-exit-code-of-command/
+        #
+        # Job status check functions
+        # Returns true when none of the previous steps have failed or been canceled.
+        # https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#job-status-check-functions
+        #
+        if: ${{ success() }}
+        # Uploads code coverage to codecov.io
+        run: bash <(curl -s https://codecov.io/bash)
+
