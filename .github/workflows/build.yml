@@ -92,6 +92,10 @@ jobs:
           echo Name of Ubuntu version: $(lsb_release -a)
           echo Who I Am
           id
+          echo Where I Am
+          pwd
+          echo What Contents I Have
+          ls -alrt
           #
           sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
           wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
@@ -109,6 +113,8 @@ jobs:
           pwd
           echo What Contents I Have
           ls -alrt
+          echo Where Is postres
+          which postres
           echo BEGIN PLR BUILD
           sudo pg_lsclusters
           export USE_PGXS=1
