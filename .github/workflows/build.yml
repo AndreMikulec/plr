@@ -197,23 +197,24 @@ jobs:
           # R RHOME
           # /usr/lib/R
 
-          # NOT REQUIRED!!
+          # Not Required
           #
-          # copy it to contrib/
+          # copy it to contrib/ - Required only when building from the Source Tree
           #
-          sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/share/postgresql/${PG}/contrib
-          sudo mkdir -p                                  /usr/share/postgresql/${PG}/contrib/plr
-          sudo chown runner:docker                       /usr/share/postgresql/${PG}/contrib/plr
-          sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/share/postgresql/${PG}/contrib/plr
-          cp -r -p *                                     /usr/share/postgresql/${PG}/contrib/plr
-          sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/share/postgresql/${PG}/contrib/plr
-          #
-          cd                                             /usr/share/postgresql/${PG}/contrib/plr
+          ### sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/share/postgresql/${PG}/contrib
+          ### sudo mkdir -p                                  /usr/share/postgresql/${PG}/contrib/plr
+          ### sudo chown runner:docker                       /usr/share/postgresql/${PG}/contrib/plr
+          ### sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/share/postgresql/${PG}/contrib/plr
+          ### cp -r -p *                                     /usr/share/postgresql/${PG}/contrib/plr
+          ### sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/share/postgresql/${PG}/contrib/plr
+          ### #
+          ### cd                                             /usr/share/postgresql/${PG}/contrib/plr
 
           #
           # make sure that "pg_config" is on the PATH
           # Not In The Path - Unless I Put it There
           #
+          ### Seems, in this case, not required
           ###
           ### export PATH=/usr/lib/postgresql/${PG}/bin:$PATH
           ###
