@@ -152,9 +152,19 @@ jobs:
 
           echo What Is In contrib
           ls -alrt /usr/share/postgresql/${PG}/contrib
+          # almost empty
 
           echo What Is In bin
           ls -alrt /usr/lib/postgresql/${PG}/bin
+          # very full
+          
+          #
+          # Running R in batch mode on Linux
+          # 2014
+          # http://www.cureffi.org/2014/01/15/running-r-batch-mode-linux/
+          #
+          echo Where Is R for Ubuntu
+          which R
 
           #
           # copy it to contrib/
