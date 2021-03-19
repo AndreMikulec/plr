@@ -87,7 +87,7 @@ jobs:
           # image: postgres
           # https://docs.github.com/en/actions/learn-github-actions/managing-complex-workflows
           #
-          echo PG" $PG
+          echo PG: $PG
           echo HOME: $HOME
           echo Name of Ubuntu version: $(lsb_release -a)
           echo Who I Am
