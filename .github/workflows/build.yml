@@ -78,6 +78,8 @@ jobs:
           PG: ${{ matrix.pg }}
         run: |
           echo PG: $PG
+          echo Who is postgres
+          finger postgres
           #
           # https://wiki.ubuntu.com/Releases
           # e.g. Focal Fossa
@@ -145,7 +147,9 @@ jobs:
           #
           # copy it to contrib/
           #
-          mkdir -p                                       /usr/lib/postgresql/${PG}/contrib/plr
+          sudo mkdir -p                                  /usr/lib/postgresql/${PG}/contrib/plr
+          sudo chown runner:docker                       /usr/lib/postgresql/${PG}/contrib/plr
+          sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/lib/postgresql/${PG}/contrib/plr
           cp -r -p *                                     /usr/lib/postgresql/${PG}/contrib/plr
           sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/lib/postgresql/${PG}/contrib/plr
           #
@@ -157,7 +161,7 @@ jobs:
           export PATH=/usr/lib/postgresql/${PG}/bin:$PATH
 
           echo BEGIN SCRIPT
-          
+
           sudo pg_lsclusters
           export USE_PGXS=1
           SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
