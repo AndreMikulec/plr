@@ -77,7 +77,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: before_script
+      - name: Before Script
         env:
           PG: ${{ matrix.pg }}
         run: |
@@ -261,7 +261,7 @@ jobs:
 
           echo BEGIN SCRIPT
 
-      - name: script
+      - name: Script
         run: |
           sudo pg_lsclusters
           export USE_PGXS=1
@@ -271,7 +271,7 @@ jobs:
           psql --version
           make installcheck PGUSER=postgres || (cat regression.diffs && false)
 
-      - name: after_success
+      - name: After Success
         #
         # Consider instead?
         # https://www.cyberciti.biz/faq/bash-get-exit-code-of-command/
