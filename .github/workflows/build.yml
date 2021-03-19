@@ -1,10 +1,12 @@
 
+#
 # May 18, 2020
 # Migrate From Travis CI to GitHub Actions
 # avatar-bdemers.jpg
 # Brian Demers
 # First Steps to GitHub Actions
 # https://developer.okta.com/blog/2020/05/18/travis-ci-to-github-actions
+#
 
 #
 # Migrating from Travis CI to GitHub Actions
@@ -16,9 +18,11 @@
 # https://github.github.io/actions-cheat-sheet/actions-cheat-sheet.pdf
 #
 
+#
 # Appveyor has a special YAML validator, but Github Actions does not
 # YAML Lint
 # http://www.yamllint.com/
+#
 
 #
 # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
@@ -73,7 +77,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: before_script_and_script
+      - name: before_script
         env:
           PG: ${{ matrix.pg }}
         run: |
@@ -257,6 +261,10 @@ jobs:
 
           echo BEGIN SCRIPT
 
+      - name: script
+        env:
+          PG: ${{ matrix.pg }}
+        run: |
           sudo pg_lsclusters
           export USE_PGXS=1
           SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
