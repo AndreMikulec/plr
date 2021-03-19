@@ -72,7 +72,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: before_script
+      - name: before_script_and_script
         env:
           PG: ${{ matrix.pg }}
         run: |
@@ -105,11 +105,11 @@ jobs:
           echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/$PG/main/pg_hba.conf > /dev/null
           sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner 
           sudo pg_ctlcluster $PG main reload
-
-      - name: script
-        env:
-          PG: ${{ matrix.pg }}
-        run: |
+          echo Where I Am
+          pwd
+          echo What Contents I Have
+          ls -alrt
+          echo BEGIN PLR BUILD
           sudo pg_lsclusters
           export USE_PGXS=1
           SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
