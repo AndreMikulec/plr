@@ -176,6 +176,8 @@ jobs:
           R --arch x64 --no-echo --silent -e writeLines(R.home())
 
           #
+          # NOT REQUIRED!!
+          #
           # copy it to contrib/
           #
           sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/share/postgresql/${PG}/contrib
@@ -193,6 +195,8 @@ jobs:
           export PATH=/usr/lib/postgresql/${PG}/bin:$PATH
           echo $PATH
           which pg_config
+          echo What Is It About PostgreSQL
+          pg_config
           echo What OS Environment Variables - Is R_HOME Here
           export
 
