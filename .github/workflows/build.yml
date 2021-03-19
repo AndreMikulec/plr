@@ -147,19 +147,26 @@ jobs:
           #
           # Where Is contrib
           #
-          find / -name '*contrib' -print 2>/dev/null
+          # find / -name '*contrib' -print 2>/dev/null
+          # /usr/share/postgresql/13/contrib
+
+          echo What Is In contrib
+          ls -alrt /usr/share/postgresql/${PG}/contrib
+
+          echo What Is In bin
+          ls -alrt /usr/lib/postgresql/${PG}/bin
 
           #
           # copy it to contrib/
           #
-          sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/lib/postgresql/${PG}
-          sudo mkdir -p                                  /usr/lib/postgresql/${PG}/contrib/plr
-          sudo chown runner:docker                       /usr/lib/postgresql/${PG}/contrib/plr
-          sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/lib/postgresql/${PG}/contrib/plr
-          cp -r -p *                                     /usr/lib/postgresql/${PG}/contrib/plr
-          sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/lib/postgresql/${PG}/contrib/plr
+          sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/share/postgresql/${PG}/contrib
+          sudo mkdir -p                                  /usr/share/postgresql/${PG}/contrib/plr
+          sudo chown runner:docker                       /usr/share/postgresql/${PG}/contrib/plr
+          sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/share/postgresql/${PG}/contrib/plr
+          cp -r -p *                                     /usr/share/postgresql/${PG}/contrib/plr
+          sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /usr/share/postgresql/${PG}/contrib/plr
           #
-          cd                                             /usr/lib/postgresql/${PG}/contrib/plr
+          cd                                             /usr/share/postgresql/${PG}/contrib/plr
 
           #
           # make sure that pg_config is on the PATH
