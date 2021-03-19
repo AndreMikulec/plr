@@ -194,7 +194,8 @@ jobs:
           # R -e writeLines(R.home())
           # R --help
           # RHOME			Print path to R home directory and exit
-          R RHOME
+          # R RHOME
+          # /usr/lib/R
 
           # NOT REQUIRED!!
           #
@@ -220,7 +221,7 @@ jobs:
           # /usr/lib/postgresql/13/bin/pg_config
 
           # What Is It About PostgreSQL
-          pg_config
+          # pg_config
           # BINDIR = /usr/lib/postgresql/13/bin
           # DOCDIR = /usr/share/doc/postgresql-doc-13
           # HTMLDIR = /usr/share/doc/postgresql-doc-13
