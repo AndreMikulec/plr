@@ -103,7 +103,7 @@ jobs:
           sudo apt-get install postgresql-$PG
           sudo apt-get install postgresql-server-dev-$PG
           echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/$PG/main/pg_hba.conf > /dev/null
-          setfacl -Rm u:postgres:rwx,d:u:runner:rwx $HOME 2>/dev/null
+          sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner 
           sudo pg_ctlcluster $PG main reload
 
       - name: script
