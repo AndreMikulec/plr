@@ -119,6 +119,10 @@ jobs:
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           sudo apt-get install postgresql-$PG
           #
+          # postgres Is Not in the Path
+          #
+          
+          #
           # Where Is postgres
           #
           # find / -name '*postgres' -print 2>/dev/null
@@ -186,7 +190,7 @@ jobs:
           #
           echo Where is the R Home directory
           # R -e writeLines(R.home())
-          # R --help
+          R --help
 
           # NOT REQUIRED!!
           #
@@ -210,7 +214,7 @@ jobs:
           echo What Is It About PostgreSQL
           pg_config
           # echo What OS Environment Variables - Is R_HOME Here
-          # export
+          export
           # no R_HOME found
 
           echo BEGIN SCRIPT
