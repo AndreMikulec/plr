@@ -42,9 +42,9 @@ jobs:
         # http://apt.postgresql.org/pub/repos/apt/dists/focal-pgdg/main/binary-amd64/
         #
         pg: [13, 12, 11, 10, 9.6, 9.5]
-      include:
-        pg: [13, 12, 11, 10, 9.6, 9.5]
-        continue-on-error: true
+        include:
+          pg: [13, 12, 11, 10, 9.6, 9.5]
+          continue-on-error: true
     continue-on-error: ${{ matrix.continue-on-error }}
     steps:
       - name: Echo site details
