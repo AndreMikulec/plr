@@ -11,19 +11,12 @@ jobs:
         pg: [13, 12, 11, 10, 9.6, 9.5]
         include:
           - pg: MISSING
-            continue-on-error: true
           - pg: 13
-            continue-on-error: true
           - pg: 12
-            continue-on-error: true
           - pg: 11
-            continue-on-error: true
           - pg: 10
-            continue-on-error: true
           - pg: 9.6
-            continue-on-error: true
           - pg: 9.5
-            continue-on-error: true
 
     steps:
       - name: Echo site details
