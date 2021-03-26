@@ -33,36 +33,11 @@ environment:
   # COMMENTS leads to . . .
   # https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B#Internal_version_numbering
 
-  - pg: master
-    #### APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Debug
-    rversion: 3.6.0
-    msvc_diff_file: msvc.pg.13.diff
-    USER_BUILD: MSVC
 
-  - pg: 12.4-1
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 3.6.0
-    msvc_diff_file: msvc.diff
-    USER_BUILD: MSVC
-
-  - pg: 11.9-1
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 3.6.0
-    msvc_diff_file: msvc.diff
-    USER_BUILD: MSVC
 
   - pg: 9.6.13-1
-    # APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
+    # APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    PlatformToolset: v141
     platform: x64
     configuration: Release
     rversion: 3.6.0
