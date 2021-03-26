@@ -267,7 +267,7 @@ for:
   - ps: |
       Set-PSDebug -Trace 2
       if (("master", "13.0.0-0", "12.0.0-0").Contains("$env:pg")) {
-        # Visual Studio 2015 # I MAY WANT TO FIX THAT
+        # Visual Studio 2015 and 64 bit # I MAY WANT TO FIX THAT
         # https://en.wikipedia.org/wiki/Microsoft_Visual_Studio
         $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
         #
@@ -291,11 +291,11 @@ for:
         #
         ### perl -c ### syntax and check if can compile ##
         echo BEGIN Mkvcbuild.pm
-        diff -u      c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm.before c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm
+        C:\msys64\usr\bin\diff -u      c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm.before c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm
         echo END Mkvcbuild.pm
         type         c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm
         ### perl -c 
-        diff -u      c:\projects\postgresql\src\tools\msvc\vcregress.pl.before c:\projects\postgresql\src\tools\msvc\vcregress.pl
+        C:\msys64\usr\bin\diff -u      c:\projects\postgresql\src\tools\msvc\vcregress.pl.before c:\projects\postgresql\src\tools\msvc\vcregress.pl
         echo BEGIN vcregress.pl
         type         c:\projects\postgresql\src\tools\msvc\vcregress.pl
         echo END   vcregress.pl
