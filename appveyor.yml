@@ -33,9 +33,45 @@ environment:
 
   matrix:
 
+
+  # compiling
+
+  - pg: 12.0.0-0
+    # APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    # PlatformToolset: v142
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    # does not work in 12.0.0-0
+    msvc_diff_file: msvc.diff
+    USER_BUILD: MSVC
+
   # https://stackoverflow.com/questions/27517662/what-is-platform-toolset-setting-in-visual-studio-project
   # COMMENTS leads to . . .
   # https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B#Internal_version_numbering
+
+
+  - pg: 13.0.0-0
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    msvc_diff_file: msvc.pg.13._try2.diff
+    USER_BUILD: MSVC
+
+#  # C:\projects\postgresql\pgsql.sln : Solution file error MSB5004: The solution file has two projects named "plr".
+#  #
+#  # MSBuild Error: The solution file has two projects named
+#  # https://stackoverflow.com/questions/30760890/msbuild-error-the-solution-file-has-two-projects-named
+#  - pg: 13.0.0-0
+#    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#    PlatformToolset: v142
+#    platform: x64
+#    configuration: Release
+#    rversion: 4.0.3
+#    msvc_diff_file: msvc.pg.13.diff
+#    USER_BUILD: MSVC
 
   - pg: 13.0.0-0
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
@@ -66,7 +102,7 @@ environment:
     msvc_diff_file: msvc.pg.13.diff
     USER_BUILD: MSVC
 
-  # compiliing
+  # compiling
 
   - pg: 12.0.0-0
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
