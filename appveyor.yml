@@ -29,9 +29,13 @@ environment:
 
   matrix:
 
+  # https://stackoverflow.com/questions/27517662/what-is-platform-toolset-setting-in-visual-studio-project
+  # COMMENTS leads to . . .
+  # https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B#Internal_version_numbering
+
   - pg: master
     #### APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v141
+    PlatformToolset: v142
     platform: x64
     configuration: Debug
     rversion: 3.6.0
@@ -40,7 +44,7 @@ environment:
 
   - pg: 12.4-1
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v141
+    PlatformToolset: v142
     platform: x64
     configuration: Release
     rversion: 3.6.0
@@ -49,7 +53,7 @@ environment:
 
   - pg: 11.9-1
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v140
+    PlatformToolset: v142
     platform: x64
     configuration: Release
     rversion: 3.6.0
@@ -58,7 +62,7 @@ environment:
 
   - pg: 9.6.13-1
     # APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v120
+    PlatformToolset: v142
     platform: x64
     configuration: Release
     rversion: 3.6.0
