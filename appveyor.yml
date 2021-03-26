@@ -30,7 +30,7 @@ environment:
   matrix:
 
   - pg: master
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    #### APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     PlatformToolset: v141
     platform: x64
     configuration: Debug
@@ -57,6 +57,7 @@ environment:
     USER_BUILD: MSVC
 
   - pg: 9.6.13-1
+    # APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     PlatformToolset: v120
     platform: x64
     configuration: Release
