@@ -26,12 +26,72 @@ clone_depth: 1
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
 
+  # note: master, 13.0.0-0, 12.0.0-0 (exactly) will
+  #  1. attempt to compile from source code
+  #  AND
+  #  2. run the "patch" on msvc.*.diff
+
   matrix:
 
   # https://stackoverflow.com/questions/27517662/what-is-platform-toolset-setting-in-visual-studio-project
   # COMMENTS leads to . . .
   # https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B#Internal_version_numbering
 
+  #
+  # old postgres and current R
+  #
+
+  # not from pg source
+
+  - pg: 12.4-1
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    msvc_diff_file: msvc.diff
+    USER_BUILD: MSVC
+
+  # from pg source
+
+  - pg: 12.0.0-0
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    msvc_diff_file: msvc.diff
+    USER_BUILD: MSVC
+
+  #
+  # current postgres and current R
+  #
+
+  # not from pg source
+
+  - pg: 13.2-1
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    msvc_diff_file: msvc.pg.13.diff
+    USER_BUILD: MSVC
+
+  # from pg source
+
+  - pg: 13.0.0-0
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    msvc_diff_file: msvc.pg.13.diff
+    USER_BUILD: MSVC
+
+  #
+  # ERROR - two plr solutions are found
+  #
   - pg: master
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     PlatformToolset: v142
@@ -54,17 +114,7 @@ environment:
     USER_BUILD: MSVC
 
   #
-  # current postgres and current R
-  #
-  - pg: 13.2-1
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 4.0.3
-    msvc_diff_file: msvc.pg.13.diff
-    USER_BUILD: MSVC
-
+  # ERROR - could not find the plr.dll
   #
   # current postgres and current R (and Debug configuration)
   #
@@ -115,15 +165,6 @@ environment:
     msvc_diff_file: msvc.diff
     USER_BUILD: MSVC
 
-  - pg: 12.4-1
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 3.6.3
-    msvc_diff_file: msvc.diff
-    USER_BUILD: MSVC
-
   - pg: 11.9-1
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     PlatformToolset: v142
@@ -158,6 +199,7 @@ for:
   environment:
     PGUSER: postgres
     PGPASSWORD: Password12!
+    PGOPTIONS: -c log_error_verbosity=verbose -c log_min_messages=debug2 -c log_min_error_statement=debug2
 
   init: # Make %x64% available for caching
   - REM BEGIN init
@@ -186,19 +228,35 @@ for:
   - SET sed=C:\msys64\usr\bin\sed
   - ps: |
       Set-PSDebug -Trace 2
-      if ("$env:pg" -eq "master") {
+      if (("master", "13.0.0-0", "12.0.0-0").Contains("$env:pg")) {
+        # Visual Studio 2015 # I MAY WANT TO FIX THAT
+        # https://en.wikipedia.org/wiki/Microsoft_Visual_Studio
         $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
-        git clone -q --depth 1 https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+        #
+        if ("$env:pg" -eq "master") {
+          git clone --depth 1 --single-branch --branch=master https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+        }
+        if (("13.0.0-0", "12.0.0-0").Contains("$env:pg")) {
+          # tag will create a detached head, but the detached head is still is usefull
+          git clone --depth 1 --single-branch --branch=REL_${pg}_0 https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+        }
+        #
         gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:PLATFORM.def" 2> $null
         lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
         pushd c:\projects\postgresql
         cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
+        #
+        copy          .\src\tools\msvc\Mkvcbuild.pm .\src\tools\msvc\Mkvcbuild.pm.before
+        copy          .\src\tools\msvc\vcregress.pl .\src\tools\msvc\vcregress.pl.before
+        #
         patch --verbose -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
         #
-        type     .\src\tools\msvc\Mkvcbuild.pm
-        perl -c  .\src\tools\msvc\Mkvcbuild.pm
-        type     .\src\tools\msvc\vcregress.pl
-        perl -c  .\src\tools\msvc\vcregress.pl
+        ### perl -c  .\src\tools\msvc\Mkvcbuild.pm
+        diff         .\src\tools\msvc\Mkvcbuild.pm.before .\src\tools\msvc\Mkvcbuild.pm
+        type         .\src\tools\msvc\Mkvcbuild.pm
+        ### perl -c  .\src\tools\msvc\vcregress.pl
+        diff         .\src\tools\msvc\vcregress.pl.before .\src\tools\msvc\vcregress.pl
+        type         .\src\tools\msvc\vcregress.pl
         #
         perl contrib\plr\buildsetup.pl
         dir
@@ -226,7 +284,7 @@ for:
   - REM BEGIN build_script
   - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%CONFIGURATION% /p:platform=%PLATFORM%
             %PROJ%
-            /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+            /verbosity:diagnostic /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   - dir
   - REM END build_script
 
