@@ -195,8 +195,8 @@ for:
         cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
         patch --verbose -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
         #
-        type     .\src\tools\msvc\Mkvcbuild.pm b\src\tools\msvc\Mkvcbuild.pm
-        perl -c  .\src\tools\msvc\Mkvcbuild.pm b\src\tools\msvc\Mkvcbuild.pm
+        type     .\src\tools\msvc\Mkvcbuild.pm
+        perl -c  .\src\tools\msvc\Mkvcbuild.pm
         type     .\src\tools\msvc\vcregress.pl
         perl -c  .\src\tools\msvc\vcregress.pl
         #
