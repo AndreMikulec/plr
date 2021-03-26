@@ -2,6 +2,7 @@
 
 version: 1.0.{build}.{branch}
 
+image: Visual Studio 2015
 
 # Do not build on tags (GitHub and BitBucket)
 skip_tags: true
@@ -22,50 +23,64 @@ skip_commits:
 # set clone depth
 clone_depth: 1
 
+
+environment:
+  APPVEYOR_SAVE_CACHE_ON_ERROR: true
+
+  matrix:
+
+  - pg: master
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v141
+    platform: x64
+    configuration: Debug
+    rversion: 3.6.0
+    msvc_diff_file: msvc.pg.13.diff
+    USER_BUILD: MSVC
+
+  - pg: 12.4-1
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v141
+    platform: x64
+    configuration: Release
+    rversion: 3.6.0
+    msvc_diff_file: msvc.diff
+    USER_BUILD: MSVC
+
+  - pg: 11.9-1
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v140
+    platform: x64
+    configuration: Release
+    rversion: 3.6.0
+    msvc_diff_file: msvc.diff
+    USER_BUILD: MSVC
+
+  - pg: 9.6.13-1
+    PlatformToolset: v120
+    platform: x64
+    configuration: Release
+    rversion: 3.6.0
+    msvc_diff_file: msvc.diff
+    USER_BUILD: MSVC
+
+  - pg: master
+    USER_BUILD: MSYS2
+
+
+matrix:
+  allow_failures:
+    - pg: master
+
 for:
 -
+  matrix:
+    only:
+      - USER_BUILD: MSVC
 
   environment:
     PGUSER: postgres
     PGPASSWORD: Password12!
-
-    matrix:
-
-    - pg: master
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      PlatformToolset: v141
-      platform: x64
-      configuration: Debug
-      rversion: 3.6.0
-      msvc_diff_file: msvc.pg.13.diff
-
-    - pg: 12.4-1
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      PlatformToolset: v141
-      platform: x64
-      configuration: Release
-      rversion: 3.6.0
-      msvc_diff_file: msvc.diff
-
-    - pg: 11.9-1
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      PlatformToolset: v140
-      platform: x64
-      configuration: Release
-      rversion: 3.6.0
-      msvc_diff_file: msvc.diff
-
-    - pg: 9.6.13-1
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      PlatformToolset: v120
-      platform: x64
-      configuration: Release
-      rversion: 3.6.0
-      msvc_diff_file: msvc.diff
-
-  matrix:
-    allow_failures:
-      - pg: master
 
   init: # Make %x64% available for caching
   - if %PLATFORM%==x64 ( set pf=%ProgramFiles%&& set x64=-x64) else set pf=%ProgramFiles(x86)%
@@ -202,17 +217,16 @@ for:
       on_build_status_changed: false
 
 -
-  environment:
-    PGUSER: postgres
-    PGPASSWORD: Password12!
-
-    matrix:
-    - pg: master
-
   matrix:
-    allow_failures:
-      - pg: master
+    only:
+      - USER_BUILD: MSYS2
+
+  init:
+    - echo initializing something
+
+  install:
+    - echo installing something
 
   build_script:
-  - echo set
-  - echo 2nd build script
+    - echo building nothing
+
