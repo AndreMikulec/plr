@@ -209,6 +209,16 @@ for:
   # http://www.databasesoup.com/2016/05/changing-postgresql-version-numbering.html
   - for /f "tokens=1 delims=-" %%A in ("%pg%") do set pgversion=%%~nA
   - echo pgversion=%pgversion%
+  # https://stackoverflow.com/questions/32578014/how-to-extract-version-number-in-a-windows-batch-file/32578368
+  - |-
+    for /F "tokens=1,2,3 delims=." %%a in ("%ReleaseVersion%") do (
+      set Major=%%a
+      set Minor=%%b
+      set Revision=%%c
+    )
+  - echo Major=%Major%
+  - echo Minor=%Minor%
+  - echo Revision=%Revision%
   - set pgroot=%pf%\PostgreSQL\%pgversion%
   - echo %pgroot%
   - SET R_HOME=%ProgramFiles%\R\R-%rversion%
@@ -226,7 +236,7 @@ for:
         }
         if (("13.0.0-0", "12.0.0-0").Contains("$env:pg")) {
           # tag will create a detached head, but the detached head is still is usefull
-          git clone --depth 1 --single-branch --branch=REL_${env:pgversion}_0 https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+          git clone --depth 1 --single-branch --branch=REL_${env:Major}_0 https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
         }
         #
         gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:PLATFORM.def" 2> $null
