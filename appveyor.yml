@@ -37,15 +37,6 @@ environment:
   # COMMENTS leads to . . .
   # https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B#Internal_version_numbering
 
-  - pg: 12.0.0-0
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 4.0.3
-    msvc_diff_file: msvc.diff
-    USER_BUILD: MSVC
-
   - pg: 13.0.0-0
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     PlatformToolset: v142
@@ -73,6 +64,18 @@ environment:
     configuration: Release
     rversion: 4.0.3
     msvc_diff_file: msvc.pg.13.diff
+    USER_BUILD: MSVC
+
+  # compiliing
+
+  - pg: 12.0.0-0
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    # does not work in 12.0.0-0
+    msvc_diff_file: msvc.diff
     USER_BUILD: MSVC
 
   ######################################
