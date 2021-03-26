@@ -258,6 +258,7 @@ for:
   - echo Major=%Major%
   - echo Minor=%Minor%
   - echo Revision=%Revision%
+  # note environment variable pgversion is Major.Minor
   - set pgroot=%pf%\PostgreSQL\%pgversion%
   - echo %pgroot%
   - SET R_HOME=%ProgramFiles%\R\R-%rversion%
@@ -289,11 +290,15 @@ for:
         patch --verbose -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
         #
         ### perl -c ### syntax and check if can compile ##
-        diff         c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm.before c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm
+        echo BEGIN Mkvcbuild.pm
+        diff -u      c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm.before c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm
+        echo END Mkvcbuild.pm
         type         c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm
         ### perl -c 
-        diff         c:\projects\postgresql\src\tools\msvc\vcregress.pl.before c:\projects\postgresql\src\tools\msvc\vcregress.pl
+        diff -u      c:\projects\postgresql\src\tools\msvc\vcregress.pl.before c:\projects\postgresql\src\tools\msvc\vcregress.pl
+        echo BEGIN vcregress.pl
         type         c:\projects\postgresql\src\tools\msvc\vcregress.pl
+        echo END   vcregress.pl
         #
         perl contrib\plr\buildsetup.pl
         dir
@@ -319,9 +324,10 @@ for:
 
   build_script:
   - REM BEGIN build_script
+  - REM verbosity levels: q[uiet], m[inimal], n[ormal] (default), d[etailed], and diag[nostic]
   - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%CONFIGURATION% /p:platform=%PLATFORM%
             %PROJ%
-            /verbosity:diagnostic /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+            /verbosity:normal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   - dir
   - REM END build_script
 
