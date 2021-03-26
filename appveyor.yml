@@ -33,6 +33,20 @@ environment:
   # COMMENTS leads to . . .
   # https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B#Internal_version_numbering
 
+  # location matters - must be first, otherwise, receive the error . . .
+  # error: C:\projects\postgresql\pgsql.sln : 
+  # Solution file error MSB5004: The solution file has two projects 
+  # named "plr".
+  # Command exited with code 1
+
+  - pg: master
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v141
+    platform: x64
+    configuration: Debug
+    rversion: 3.6.0
+    msvc_diff_file: msvc.pg.13.diff
+    USER_BUILD: MSVC
 
   - pg: 12.4-1
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
@@ -63,16 +77,6 @@ environment:
     rversion: 3.6.0
     msvc_diff_file: msvc.diff
     USER_BUILD: MSVC
-
-  - pg: master
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v141
-    platform: x64
-    configuration: Debug
-    rversion: 3.6.0
-    msvc_diff_file: msvc.pg.13.diff
-    USER_BUILD: MSVC
-
 
   - pg: master
     USER_BUILD: MSYS2
@@ -133,6 +137,7 @@ for:
         if (-not (Test-Path "$env:pgroot\bin")) {
           if (-not (Test-Path "$env:exe")) {
             Start-FileDownload "http://get.enterprisedb.com/postgresql/$env:exe"
+            cmd dir
           }
           & ".\$env:exe" --unattendedmodeui none --mode unattended --superpassword "$env:PGPASSWORD" --servicepassword "$env:PGPASSWORD" | Out-Null
           Stop-Service "postgresql$env:x64-$env:pgversion"
