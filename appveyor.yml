@@ -211,7 +211,7 @@ for:
   - echo pgversion=%pgversion%
   # https://stackoverflow.com/questions/32578014/how-to-extract-version-number-in-a-windows-batch-file/32578368
   - |-
-    for /F "tokens=1,2,3 delims=." %%a in ("%ReleaseVersion%") do (
+    for /F "tokens=1,2,3 delims=." %%a in ("%pg%") do (
       set Major=%%a
       set Minor=%%b
       set Revision=%%c
