@@ -41,7 +41,7 @@ environment:
 
   - pg: master
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v141
+    PlatformToolset: v142
     platform: x64
     configuration: Debug
     rversion: 3.6.0
