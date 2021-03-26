@@ -37,11 +37,25 @@ environment:
   # COMMENTS leads to . . .
   # https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B#Internal_version_numbering
 
-  #
-  # old postgres and current R
-  #
+  - pg: 12.0.0-0
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    msvc_diff_file: msvc.diff
+    USER_BUILD: MSVC
 
-  # not from pg source
+  - pg: 13.0.0-0
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    msvc_diff_file: msvc.pg.13.diff
+    USER_BUILD: MSVC
+
+  # just simple binding
 
   - pg: 12.4-1
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
@@ -52,23 +66,6 @@ environment:
     msvc_diff_file: msvc.diff
     USER_BUILD: MSVC
 
-  # from pg source
-
-  - pg: 12.0.0-0
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 4.0.3
-    msvc_diff_file: msvc.diff
-    USER_BUILD: MSVC
-
-  #
-  # current postgres and current R
-  #
-
-  # not from pg source
-
   - pg: 13.2-1
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     PlatformToolset: v142
@@ -78,16 +75,7 @@ environment:
     msvc_diff_file: msvc.pg.13.diff
     USER_BUILD: MSVC
 
-  # from pg source
-
-  - pg: 13.0.0-0
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 4.0.3
-    msvc_diff_file: msvc.pg.13.diff
-    USER_BUILD: MSVC
+  ######################################
 
   #
   # ERROR - two plr solutions are found
@@ -238,7 +226,7 @@ for:
         }
         if (("13.0.0-0", "12.0.0-0").Contains("$env:pg")) {
           # tag will create a detached head, but the detached head is still is usefull
-          git clone --depth 1 --single-branch --branch=REL_${env:pg}_0 https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+          git clone --depth 1 --single-branch --branch=REL_${env:pgversion}_0 https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
         }
         #
         gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:PLATFORM.def" 2> $null
