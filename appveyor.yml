@@ -66,6 +66,18 @@ environment:
     USER_BUILD: MSVC
 
   #
+  # current postgres and current R (and Debug configuration)
+  #
+  - pg: 13.2-1
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x64
+    configuration: Debug
+    rversion: 4.0.3
+    msvc_diff_file: msvc.pg.13.diff
+    USER_BUILD: MSVC
+
+  #
   # current postgres and current R (older .diff)
   #
   - pg: 13.2-1
@@ -148,11 +160,14 @@ for:
     PGPASSWORD: Password12!
 
   init: # Make %x64% available for caching
+  - REM BEGIN init
   - if %PLATFORM%==x64 ( set pf=%ProgramFiles%&& set x64=-x64) else set pf=%ProgramFiles(x86)%
   - set exe=postgresql-%pg%-windows%x64%.exe
   - setx /m exe %exe%
+  - REM END init
 
   install:
+  - REM BEGIN install
   - set
   - move %msvc_diff_file% msvc.diff
   - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
@@ -170,6 +185,7 @@ for:
   - set RBIN=%PLATFORM:x86=i386%
   - SET sed=C:\msys64\usr\bin\sed
   - ps: |
+      Set-PSDebug -Trace 2
       if ("$env:pg" -eq "master") {
         $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
         git clone -q --depth 1 https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
@@ -177,8 +193,15 @@ for:
         lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
         pushd c:\projects\postgresql
         cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
-        patch -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
+        patch --verbose -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
+        #
+        type     .\src\tools\msvc\Mkvcbuild.pm b\src\tools\msvc\Mkvcbuild.pm
+        perl -c  .\src\tools\msvc\Mkvcbuild.pm b\src\tools\msvc\Mkvcbuild.pm
+        type     .\src\tools\msvc\vcregress.pl
+        perl -c  .\src\tools\msvc\vcregress.pl
+        #
         perl contrib\plr\buildsetup.pl
+        dir
         popd
         $env:PROJ="C:\projects\postgresql\pgsql.sln"
         $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
@@ -193,17 +216,22 @@ for:
           Stop-Service "postgresql$env:x64-$env:pgversion"
         }
       }
+  - REM END install
 
   cache:
   - '%exe%'
   - R-%rversion%-win.exe
 
   build_script:
+  - REM BEGIN build_script
   - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%CONFIGURATION% /p:platform=%PLATFORM%
             %PROJ%
             /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - dir
+  - REM END build_script
 
   after_build:
+  - REM BEGIN after_build
   - appveyor AddMessage Packing -Category Information
   - md tmp\share\extension
   - copy *.sql tmp\share\extension\
@@ -213,18 +241,23 @@ for:
   - md tmp\symbols
   - copy %dll% tmp\lib
   - copy %dll:.dll=.pdb% tmp\symbols
-  - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
+  - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%-%msvc_diff_file%.zip
   - 7z a -r %zip% .\tmp\* > nul
   - ps: |
+      Set-PSDebug -Trace 2
       if ("$env:pg" -eq "master") {
         pushd c:\projects\postgresql\src\tools\msvc
         perl install.pl "$env:pgroot"
         popd
       }
+  - dir
+  - REM END after_build
 
   test_script:
+  - REM BEGIN test_script
   - path %pgroot%\bin;%PATH%
   - ps: |
+      Set-PSDebug -Trace 2
       if ("$env:pg" -eq "master") {
         Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
         initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
@@ -238,6 +271,7 @@ for:
   - net start postgresql%x64%-%pgversion%
 
   - ps: |
+      Set-PSDebug -Trace 2
       Add-AppveyorTest Regression -Framework pg_regress -FileName sql\ -Outcome Running
       if (("9.3", "9.4").Contains("$env:pgversion")) {
         $env:psqlopt="--psqldir"
@@ -259,19 +293,35 @@ for:
         type regression.diffs
         $host.SetShouldExit($LastExitCode)
       }
+  - dir
+  - REM END test_script
 
   artifacts:
-  - path: '*.zip'
+  - path: 'plr-*.zip'
+    name: plr_zip
 
   deploy:
-     provider: GitHub
-     release: $(appveyor_repo_tag_name)_$(APPVEYOR_BUILD_VERSION)
-     draft: false
-     prerelease: false
-     auth_token:
+    - provider: GitHub
+      release: plr-$(APPVEYOR_BUILD_VERSION)
+      draft: false
+      prerelease: false
+      auth_token:
         secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
-     on:
-        appveyor_repo_tag: true
+      artifact: plr_zip
+  #   on:
+  #     appveyor_repo_tag: true
+
+    - provider: FTP
+      host: frs.sourceforge.net
+      protocol: sftp
+      username: andremikulec,andremikulec.u
+      password:
+        secure: 4gk4GyW4O5RooiOyGeRdoA==
+      artifact: plr_zip
+      folder: /home/frs/project/andremikulec
+      application:
+      active_mode: false
+
 
   # I run my jobs manually
   # I do not want my email filling up
