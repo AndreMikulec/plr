@@ -37,8 +37,70 @@ environment:
     PlatformToolset: v142
     platform: x64
     configuration: Debug
-    rversion: 3.6.0
+    rversion: 3.6.3
     msvc_diff_file: msvc.pg.13.diff
+    USER_BUILD: MSVC
+
+  #
+  # current postgres and old R
+  #
+  - pg: 13.2-1
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x64
+    configuration: Release
+    rversion: 3.6.3
+    msvc_diff_file: msvc.pg.13.diff
+    USER_BUILD: MSVC
+
+  #
+  # current postgres and current R
+  #
+  - pg: 13.2-1
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    msvc_diff_file: msvc.pg.13.diff
+    USER_BUILD: MSVC
+
+  #
+  # current postgres and current R (older .diff)
+  #
+  - pg: 13.2-1
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    msvc_diff_file: msvc.diff
+    USER_BUILD: MSVC
+
+  #
+  # Last 32 bit Windows PG available and old R
+  # https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+  #
+  - pg: 10.16-1
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x86
+    configuration: Release
+    rversion: 3.6.3
+    msvc_diff_file: msvc.diff
+    USER_BUILD: MSVC
+
+  #
+  # Last 32 bit Windows PG available and current R
+  # https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+  #
+  - pg: 10.16-1
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x86
+    configuration: Release
+    rversion: 3.6.3
+    msvc_diff_file: msvc.diff
     USER_BUILD: MSVC
 
   - pg: 12.4-1
@@ -46,7 +108,7 @@ environment:
     PlatformToolset: v142
     platform: x64
     configuration: Release
-    rversion: 3.6.0
+    rversion: 3.6.3
     msvc_diff_file: msvc.diff
     USER_BUILD: MSVC
 
@@ -55,7 +117,7 @@ environment:
     PlatformToolset: v142
     platform: x64
     configuration: Release
-    rversion: 3.6.0
+    rversion: 3.6.3
     msvc_diff_file: msvc.diff
     USER_BUILD: MSVC
 
@@ -64,7 +126,7 @@ environment:
     PlatformToolset: v120
     platform: x64
     configuration: Release
-    rversion: 3.6.0
+    rversion: 3.6.3
     msvc_diff_file: msvc.diff
     USER_BUILD: MSVC
 
