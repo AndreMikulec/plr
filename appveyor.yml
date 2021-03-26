@@ -75,7 +75,6 @@ environment:
   - pg: master
     USER_BUILD: MSYS2
 
-
 matrix:
   allow_failures:
     - pg: master
@@ -131,7 +130,7 @@ for:
         if (-not (Test-Path "$env:pgroot\bin")) {
           if (-not (Test-Path "$env:exe")) {
             Start-FileDownload "http://get.enterprisedb.com/postgresql/$env:exe"
-            cmd dir
+            Get-Location
           }
           & ".\$env:exe" --unattendedmodeui none --mode unattended --superpassword "$env:PGPASSWORD" --servicepassword "$env:PGPASSWORD" | Out-Null
           Stop-Service "postgresql$env:x64-$env:pgversion"
