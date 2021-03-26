@@ -210,8 +210,8 @@ for:
   - for /f "tokens=1 delims=-" %%A in ("%pg%") do set pgversion=%%~nA
   - echo pgversion=%pgversion%
   # https://stackoverflow.com/questions/32578014/how-to-extract-version-number-in-a-windows-batch-file/32578368
-  - |-
-    for /F "tokens=1,2,3 delims=." %%a in ("%pg%") do (
+  # https://stackoverflow.com/questions/37627248/how-to-split-a-command-over-multiple-lines-in-appveyor-yml
+  - for /F "tokens=1,2,3 delims=." %%a in ("%pg%") do (
       set Major=%%a
       set Minor=%%b
       set Revision=%%c
