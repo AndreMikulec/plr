@@ -33,20 +33,7 @@ environment:
   # COMMENTS leads to . . .
   # https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B#Internal_version_numbering
 
-  # location matters - must be first, otherwise, receive the error . . .
-  # error: C:\projects\postgresql\pgsql.sln : 
-  # Solution file error MSB5004: The solution file has two projects 
-  # named "plr".
-  # Command exited with code 1
 
-  - pg: master
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Debug
-    rversion: 3.6.0
-    msvc_diff_file: msvc.pg.13.diff
-    USER_BUILD: MSVC
 
   - pg: 12.4-1
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
@@ -69,13 +56,20 @@ environment:
   - pg: 9.6.13-1
     ### APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     ### PlatformToolset: v140
-    # hack job #
     # can not be HERE . . . must! be at the ROOT
     ### image: Visual Studio 2015
     platform: x64
     configuration: Release
     rversion: 3.6.0
     msvc_diff_file: msvc.diff
+    USER_BUILD: MSVC
+
+  - pg: master
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    platform: x64
+    configuration: Debug
+    rversion: 3.6.0
+    msvc_diff_file: msvc.pg.13.diff
     USER_BUILD: MSVC
 
   - pg: master
