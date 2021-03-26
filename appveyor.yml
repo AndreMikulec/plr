@@ -36,8 +36,8 @@ environment:
 
 
   - pg: 9.6.13-1
-    # APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    PlatformToolset: v141
+    # APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    PlatformToolset: v140
     platform: x64
     configuration: Release
     rversion: 3.6.0
