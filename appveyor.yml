@@ -213,10 +213,9 @@ for:
   # GREAT
   # https://stackoverflow.com/questions/37627248/how-to-split-a-command-over-multiple-lines-in-appveyor-yml
   - for /F "tokens=1,2,3 delims=." %%a in ("%pg%") do (
-      set Major=%%a &
-      set Minor=%%b &
-      set Revision=%%c
-    )
+      set Major=%%a&
+      set Minor=%%b&
+      set Revision=%%c)
   - echo Major=%Major%
   - echo Minor=%Minor%
   - echo Revision=%Revision%
