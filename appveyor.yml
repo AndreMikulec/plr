@@ -126,9 +126,6 @@ for:
         if (-not (Test-Path "$env:pgroot\bin")) {
           if (-not (Test-Path "$env:exe")) {
             Start-FileDownload "http://get.enterprisedb.com/postgresql/$env:exe"
-            Get-Location
-            $L =  Get-Location
-            Write-Output $L
           }
           & ".\$env:exe" --unattendedmodeui none --mode unattended --superpassword "$env:PGPASSWORD" --servicepassword "$env:PGPASSWORD" | Out-Null
           Stop-Service "postgresql$env:x64-$env:pgversion"
@@ -200,8 +197,6 @@ for:
         type regression.diffs
         $host.SetShouldExit($LastExitCode)
       }
-  - dir %CD%
-  - dir %APPVEYOR_BUILD_FOLDER%
 
   artifacts:
   - path: '*.zip'
