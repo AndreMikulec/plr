@@ -209,7 +209,7 @@ environment:
 
   # compiling
 
- - pg: 13.0.0-0
+  - pg: 13.0.0-0
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     PlatformToolset: v141
     platform: x64
