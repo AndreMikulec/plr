@@ -215,12 +215,8 @@ environment:
 
   # compiling
   
-  # msvc.pg.13._try3.diff
-  # my $plr = $solution->AddProject('plr','dll','plr');
-  
-  # msvc.pg.13._try2.diff (just like pgcrypto)
-  # my $plr = $solution->AddProject('plr','dll','plr','contrib/plr');
-  
+  # msvc.pg.13._try4.diff
+  # programming language in r
   
   - pg: 13.0.0-0
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
@@ -228,8 +224,23 @@ environment:
     platform: x64
     configuration: Release
     rversion: 4.0.3
-    msvc_diff_file: msvc.pg.13._try3.diff
+    msvc_diff_file: msvc.pg.13._try4.diff
     USER_BUILD: MSVC
+  
+#     # msvc.pg.13._try3.diff
+#     # my $plr = $solution->AddProject('plr','dll','plr');
+#     
+#     # msvc.pg.13._try2.diff (just like pgcrypto)
+#     # my $plr = $solution->AddProject('plr','dll','plr','contrib/plr');
+#     
+#     - pg: 13.0.0-0
+#       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#       PlatformToolset: v142
+#       platform: x64
+#       configuration: Release
+#       rversion: 4.0.3
+#       msvc_diff_file: msvc.pg.13._try3.diff
+#       USER_BUILD: MSVC
 
 
 #     # install (may be causing the problem)? - no
