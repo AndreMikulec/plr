@@ -631,8 +631,8 @@ for:
   #- Rtools35.exe /VERYSILENT
   - Set mingw=C:\msys64\mingw
   # http://www.databasesoup.com/2016/05/changing-postgresql-version-numbering.html
-  - for /f "tokens=1 delims=-" %%A in ("%pg%") do set pgversion=%%~nA
-  - echo pgversion=%pgversion%
+  ### - for /f "tokens=1 delims=-" %%A in ("%pg%") do set pgversion=%%~nA
+  ### - echo pgversion=%pgversion%
   # https://stackoverflow.com/questions/32578014/how-to-extract-version-number-in-a-windows-batch-file/32578368
   # GREAT
   # https://stackoverflow.com/questions/37627248/how-to-split-a-command-over-multiple-lines-in-appveyor-yml
@@ -647,13 +647,12 @@ for:
   - ps: |
       Set-PSDebug -Trace 2
       if([double]"${env:Major}.${env:Minor}"-lt 10.0) {
-        $env:pgrootsub = "${env:Major}.${env:Minor}"
+        $env:pgversion = "${env:Major}.${env:Minor}"
       } else {
-        $env:pgrootsub = "${env:Major}"
+        $env:pgversion = "${env:Major}"
       }    
-  - echo %pgrootsub%
-  # - set pgroot=%pf%\PostgreSQL\%pgversion%
-  - set pgroot=%pf%\PostgreSQL\%pgrootsub%
+  - echo %pgversion%
+  - set pgroot=%pf%\PostgreSQL\%pgversion%
   - echo %pgroot%
   - SET R_HOME=%ProgramFiles%\R\R-%rversion%
   - set RBIN=%PLATFORM:x86=i386%
@@ -770,7 +769,8 @@ for:
   - 7z a -r %zip% .\tmp\* > nul
   - ps: |
       Set-PSDebug -Trace 2
-      if ("$env:pg" -eq "master") {
+      # if ("$env:pg" -eq "master") {
+      if (("13.0.0-0", "12.0.0-0", "11.0.0-0").Contains("$env:pg")) {
         pushd c:\projects\postgresql\src\tools\msvc
         perl install.pl "$env:pgroot"
         popd
@@ -780,7 +780,7 @@ for:
 
   test_script:
   - REM BEGIN test_script
-  - set PATH=%pgroot%\bin;%PATH%
+  - path %pgroot%\bin;%PATH%
   - ps: |
       Set-PSDebug -Trace 2
       # if ("$env:pg" -eq "master") {
@@ -795,7 +795,6 @@ for:
   - appveyor AddMessage "Starting the database server." -Category Information
   - setx /M PATH "%R_HOME%\bin\%RBIN%;%PATH%"
   - net start postgresql%x64%-%pgversion%
-
   - ps: |
       Set-PSDebug -Trace 2
       Add-AppveyorTest Regression -Framework pg_regress -FileName sql\ -Outcome Running
