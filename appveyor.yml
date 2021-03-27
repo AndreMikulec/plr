@@ -215,9 +215,23 @@ environment:
 
   # compiling
   
-  # msvc.pg.13._try4.diff
-  # programming language in r
+  # msvc.pg.13._try5.diff
+  # ""
+
+  - pg: 13.0.0-0
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    msvc_diff_file: msvc.pg.13._try5.diff
+    USER_BUILD: MSVC
   
+  # msvc.pg.13._try4.diff
+  # "programming language in r"
+  # compaint about 2 projects or
+  # Process is terminated due to StackOverflowException.
+
   - pg: 13.0.0-0
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     PlatformToolset: v142
