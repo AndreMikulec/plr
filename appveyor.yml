@@ -622,6 +622,8 @@ for:
   install:
   - REM BEGIN install
   - echo no effect on the 2019 two plr project problem
+  - REM see current AppVeyor installed PostgreSQL
+  - dir "C:\Program Files\PostgreSQL"
   - set
   - move %msvc_diff_file% msvc.diff
   - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
