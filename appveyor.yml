@@ -534,8 +534,8 @@ for:
   install:
   - REM BEGIN install
   - set
-  - del plr.vcxproj.user
-  - del plr.vcxproj
+  - REM del plr.vcxproj.user
+  - REN del plr.vcxproj
   - move %msvc_diff_file% msvc.diff
   - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
   - R-%rversion%-win.exe /VERYSILENT
