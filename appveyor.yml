@@ -60,7 +60,8 @@ environment:
   #
   # /Upgrade (devenv.exe)
   # https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2015/ide/reference/upgrade-devenv-exe?view=vs-2015&redirectedfrom=MSDN
-
+  #
+  # C:\projects\postgresql\pgsql.sln
 
   #
   # BEGIN history
@@ -489,7 +490,7 @@ for:
         copy          c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm.before
         copy          c:\projects\postgresql\src\tools\msvc\vcregress.pl c:\projects\postgresql\src\tools\msvc\vcregress.pl.before
         #
-        patch --verbose --r msvc.diff.rej -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
+        C:\msys64\usr\bin\patch --verbose --r msvc.diff.rej -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
         dir
         #
         # This file changes too often, do not bother to track it.  Just let "master" builds fail.
