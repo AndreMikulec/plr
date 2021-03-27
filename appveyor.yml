@@ -27,29 +27,193 @@ environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
 
   # note: master, 13.0.0-0, 12.0.0-0 (exactly) will
-  #  1. attempt to compile from source code
+  #  1. attempt to compile from pg source code
   #  AND
   #  2. run the "patch" on msvc.*.diff
+  #  3. build
 
-  matrix:
+  # all, other numbered version will either
+  #  1. run upon appveyor pg
+  #  2. if on appveyor that version of PG is not available,
+  #     then, from enterprisedb, download the install binary, install
+  #  3. build partially
 
 
-  # compiling
+  # consider - msvc.diff . . . CREATION
+  #
+  # git diff HEAD~1:source.ext HEAD:target.ext
+  # or
+  # git diff HEAD~1:source.ext      source.ext
+  #
+  # see  msvc.diff
+  # see  compilingplr.md
+  #
+  # https://stackoverflow.com/questions/16683121/git-diff-between-two-different-files
+  # https://git-scm.com/docs/git-diff
+  # https://stackoverflow.com/questions/19224476/how-does-index-f2e4113-d4b9bfc-100644-in-git-diff-correspond-to-sha1-id-in-gi
 
-  - pg: 12.0.0-0
-    # APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    # PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 4.0.3
-    # does not work in 12.0.0-0
-    msvc_diff_file: msvc.diff
-    USER_BUILD: MSVC
+
+  # consider
+  #
+  # Use MSBuild to upgrade and build a sln
+  # https://stackoverflow.com/questions/8842952/use-msbuild-to-upgrade-and-build-a-sln
+  #
+  # /Upgrade (devenv.exe)
+  # https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2015/ide/reference/upgrade-devenv-exe?view=vs-2015&redirectedfrom=MSDN
+
+
+  #
+  # BEGIN history
+  #
+
+  # commit - seems pg 12 + "pg 13 in master in development"
+  # * matrix updated + add PG 12.4-1
+  #
+  #  - pg: master
+  #    PlatformToolset: v141
+  #    configuration: Debug
+  #    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  #  - pg: 9.5.23-1
+  #    PlatformToolset: v120
+  #  - pg: 9.6.19-1
+  #    PlatformToolset: v120
+  #  - pg: 10.14-1
+  #    PlatformToolset: v120
+  #  - pg: 11.9-1
+  #    PlatformToolset: v140
+  #  - pg: 12.4-1
+  #    PlatformToolset: v141
+  #
+  # Sep 8, 2020
+  # https://github.com/postgres-plr/plr/blame/aa781da032d8b1ad91a3d03cd6219eea9b8abbaa/appveyor.yml
+
+  # Release date: 2019-10-03
+  # https://www.postgresql.org/docs/release/12.0/
+
+  # commit - seems pg 11 + "pg 12 in master in development"
+  # just change in 1. matrix numbers 2.  R version updated
+  #
+  #  - pg: master
+  #    PlatformToolset: v141
+  #    configuration: Debug
+  #    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  #  - pg: 9.4.22-1
+  #    PlatformToolset: v120
+  #  - pg: 9.5.17-1
+  #    PlatformToolset: v120
+  #  - pg: 9.6.13-1
+  #    PlatformToolset: v120
+  #  - pg: 10.8-1
+  #    PlatformToolset: v120
+  #  - pg: 11.3-1
+  #    PlatformToolset: v140
+  #
+  # May 23, 2019
+  # https://github.com/postgres-plr/plr/blame/c82fe1984b51f53ce7a4ad6853815bc9554fa390/appveyor.yml
+  #
+  # May 23, 2019 + adds inline handler c code + matrix updated
+  #  - pg: master
+  #    PlatformToolset: v141
+  #    configuration: Debug
+  #    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  #  - pg: 9.3.25-1
+  #    PlatformToolset: Windows7.1SDK
+  #  - pg: 9.4.21-1
+  #    PlatformToolset: v120
+  #  - pg: 9.5.16-1
+  #    PlatformToolset: v120
+  #  - pg: 9.6.12-1
+  #    PlatformToolset: v120
+  #  - pg: 10.7-1
+  #    PlatformToolset: v120
+  #  - pg: 11.2-1
+  #    PlatformToolset: v140
+  #
+  # https://github.com/postgres-plr/plr/blame/786bd6a0edb0a8273b28b3b0ec03971404fdf157/appveyor.yml
+
+  # plr.vcxproj
+  # one commit ever
+  # Dec 11, 2018 - pg 11 just released - blob/blame - tree
+  #  <VCProjectVersion>15.0</VCProjectVersion>
+  # https://github.com/postgres-plr/plr/blob/c42eb9ce0b52a92a1d075e927db26a914100a860/plr.vcxproj
+  # https://github.com/postgres-plr/plr/blame/c42eb9ce0b52a92a1d075e927db26a914100a860/plr.vcxproj
+  # https://github.com/postgres-plr/plr/tree/c42eb9ce0b52a92a1d075e927db26a914100a860
+  #
+  # Dec 11, 2018
+  # https://github.com/postgres-plr/plr/blob/c42eb9ce0b52a92a1d075e927db26a914100a860/msvc.diff
+  # https://github.com/postgres-plr/plr/blame/c42eb9ce0b52a92a1d075e927db26a914100a860/msvc.diff
+
+  # Dec 11, 2018 - matrix stays the same as below + compiling becomes "better"
+  # #
+  # This PR allows to build, install, and debug PL/R with MS Visual Studio much faster provided
+  #   PG, R, and RTools are already installed
+  # https://github.com/postgres-plr/plr/pull/48
+  # #
+  # https://github.com/postgres-plr/plr/blame/1482fcd33860d1687139f847637cb58177f8bc58/appveyor.yml
+  #
+  # Dec 11, 2018 - massive overhaul - matrix first apprears - seems pg 11 + "pg 12 in master in development"
+  #  - pg: master
+  #    PlatformToolset: v141
+  #    configuration: Debug
+  #    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  #  - pg: 9.3.24-1
+  #    PlatformToolset: Windows7.1SDK
+  #  - pg: 9.4.19-1
+  #    PlatformToolset: v120
+  #  - pg: 9.5.15-1
+  #    PlatformToolset: v120
+  #  - pg: 9.6.11-1
+  #    PlatformToolset: v120
+  #  - pg: 10.6-1
+  #    PlatformToolset: v120
+  #  - pg: 11.1-1
+  #    PlatformToolset: v140
+  #
+  # 1. detect numbered versions of pg in appveyor, and if there, use that do partial build/packaging
+  # 2. if (.1) not found, then download from enterprisedb, and install, use that do partial build/packaging
+  # https://github.com/postgres-plr/plr/blame/1482fcd33860d1687139f847637cb58177f8bc58/appveyor.yml
+
+  # Release date: 2018-10-18
+  # https://www.postgresql.org/docs/release/11.0/
+
+  # Sep 30, 2018
+  # https://github.com/postgres-plr/plr/blob/060c6c120591fd160c45a1b7514fa5ea3c76e4d8/msvc.diff
+  # https://github.com/postgres-plr/plr/blame/060c6c120591fd160c45a1b7514fa5ea3c76e4d8/msvc.diff
+
+  # Sep 30, 2018 - same as below + add test for "create procedure"
+  # https://github.com/postgres-plr/plr/blame/e1eda05ffc71850cba6d1bf888394d46fd06dabf/appveyor.yml
+
+  # Jan 30, 2018 - builds master from source - like below + adds and uses some rtoonls binaries
+  # https://github.com/postgres-plr/plr/blame/e65319fd9a6d2648122e85ceff863c132ab6ce77/appveyor.yml
+
+  # Nov 9, 2017 - original commit
+  # https://github.com/postgres-plr/plr/blob/e65319fd9a6d2648122e85ceff863c132ab6ce77/msvc.diff
+  # https://github.com/postgres-plr/plr/blame/e65319fd9a6d2648122e85ceff863c132ab6ce77/msvc.diff
+
+  # Nov 9, 2017 - original commit - builds master from source
+  # https://github.com/postgres-plr/plr/blame/483510028a1a99e7895eb262944fda161ac4f994/appveyor.yml
+
+  # https://www.postgresql.org/docs/release/10.0/
+  # Release date: 2017-10-05
+
+  #
+  # END history
+  #
 
   # https://stackoverflow.com/questions/27517662/what-is-platform-toolset-setting-in-visual-studio-project
   # COMMENTS leads to . . .
   # https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B#Internal_version_numbering
 
+  matrix:
+
+  # compiling
+
+  - pg: 13.0.0-0
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    msvc_diff_file: msvc.pg.13._try2.diff
+    USER_BUILD: MSVC
 
   - pg: 13.0.0-0
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
@@ -60,10 +224,57 @@ environment:
     msvc_diff_file: msvc.pg.13._try2.diff
     USER_BUILD: MSVC
 
-#  # C:\projects\postgresql\pgsql.sln : Solution file error MSB5004: The solution file has two projects named "plr".
-#  #
-#  # MSBuild Error: The solution file has two projects named
-#  # https://stackoverflow.com/questions/30760890/msbuild-error-the-solution-file-has-two-projects-named
+  # non-"from pg source code" build does not use msvc.diff
+  - pg: 13.2-1
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    msvc_diff_file: msvc.diff
+    USER_BUILD: MSVC
+
+  # non-"from pg source code" build does not use msvc.diff
+  - pg: 13.2-1
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    msvc_diff_file: msvc.diff
+    USER_BUILD: MSVC
+
+
+#  - pg: 12.0.0-0
+#    # APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#    # PlatformToolset: v142
+#    platform: x64
+#    configuration: Release
+#    rversion: 4.0.3
+#    # does not work in 12.0.0-0
+#    msvc_diff_file: msvc.diff
+#    USER_BUILD: MSVC
+#
+#  - pg: 13.0.0-0
+#    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#    PlatformToolset: v142
+#    platform: x64
+#    configuration: Release
+#    rversion: 4.0.3
+#    msvc_diff_file: msvc.pg.13._try2.diff
+#    USER_BUILD: MSVC
+#
+##  # C:\projects\postgresql\pgsql.sln : Solution file error MSB5004: The solution file has two projects named "plr".
+##  #
+##  # MSBuild Error: The solution file has two projects named
+##  # https://stackoverflow.com/questions/30760890/msbuild-error-the-solution-file-has-two-projects-named
+##  - pg: 13.0.0-0
+##    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+##    PlatformToolset: v142
+##    platform: x64
+##    configuration: Release
+##    rversion: 4.0.3
+##    msvc_diff_file: msvc.pg.13.diff
+##    USER_BUILD: MSVC
+#
 #  - pg: 13.0.0-0
 #    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #    PlatformToolset: v142
@@ -72,143 +283,134 @@ environment:
 #    rversion: 4.0.3
 #    msvc_diff_file: msvc.pg.13.diff
 #    USER_BUILD: MSVC
-
-  - pg: 13.0.0-0
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 4.0.3
-    msvc_diff_file: msvc.pg.13.diff
-    USER_BUILD: MSVC
-
-  # just simple binding
-
-  - pg: 12.4-1
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 4.0.3
-    msvc_diff_file: msvc.diff
-    USER_BUILD: MSVC
-
-  - pg: 13.2-1
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 4.0.3
-    msvc_diff_file: msvc.pg.13.diff
-    USER_BUILD: MSVC
-
-  # compiling
-
-  - pg: 12.0.0-0
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 4.0.3
-    # does not work in 12.0.0-0
-    msvc_diff_file: msvc.diff
-    USER_BUILD: MSVC
-
-  ######################################
-
-  #
-  # ERROR - two plr solutions are found
-  #
-  - pg: master
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Debug
-    rversion: 3.6.3
-    msvc_diff_file: msvc.pg.13.diff
-    USER_BUILD: MSVC
-
-  #
-  # current postgres and old R
-  #
-  - pg: 13.2-1
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 3.6.3
-    msvc_diff_file: msvc.pg.13.diff
-    USER_BUILD: MSVC
-
-  #
-  # ERROR - could not find the plr.dll
-  #
-  # current postgres and current R (and Debug configuration)
-  #
-  - pg: 13.2-1
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Debug
-    rversion: 4.0.3
-    msvc_diff_file: msvc.pg.13.diff
-    USER_BUILD: MSVC
-
-  #
-  # current postgres and current R (older .diff)
-  #
-  - pg: 13.2-1
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 4.0.3
-    msvc_diff_file: msvc.diff
-    USER_BUILD: MSVC
-
-  #
-  # Last 32 bit Windows PG available and old R
-  # https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
-  #
-  - pg: 10.16-1
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x86
-    configuration: Release
-    rversion: 3.6.3
-    msvc_diff_file: msvc.diff
-    USER_BUILD: MSVC
-
-  #
-  # Last 32 bit Windows PG available and current R
-  # https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
-  #
-  - pg: 10.16-1
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x86
-    configuration: Release
-    rversion: 3.6.3
-    msvc_diff_file: msvc.diff
-    USER_BUILD: MSVC
-
-  - pg: 11.9-1
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 3.6.3
-    msvc_diff_file: msvc.diff
-    USER_BUILD: MSVC
-
-  - pg: 9.6.13-1
-    # image: Visual Studio 2015 # must! be at the ROOT
-    PlatformToolset: v120
-    platform: x64
-    configuration: Release
-    rversion: 3.6.3
-    msvc_diff_file: msvc.diff
-    USER_BUILD: MSVC
+#
+#  # just simple binding
+#
+#  - pg: 12.4-1
+#    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#    PlatformToolset: v142
+#    platform: x64
+#    configuration: Release
+#    rversion: 4.0.3
+#    msvc_diff_file: msvc.diff
+#    USER_BUILD: MSVC
+#
+#  - pg: 13.2-1
+#    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#    PlatformToolset: v142
+#    platform: x64
+#    configuration: Release
+#    rversion: 4.0.3
+#    msvc_diff_file: msvc.pg.13.diff
+#    USER_BUILD: MSVC
+#
+#  # compiling
+#
+#  - pg: 12.0.0-0
+#    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#    PlatformToolset: v142
+#    platform: x64
+#    configuration: Release
+#    rversion: 4.0.3
+#    # does not work in 12.0.0-0
+#    msvc_diff_file: msvc.diff
+#    USER_BUILD: MSVC
+#
+#  ######################################
+#
+#  #
+#  # ERROR - two plr solutions are found
+#  #
+#  - pg: master
+#    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#    PlatformToolset: v142
+#    platform: x64
+#    configuration: Debug
+#    rversion: 3.6.3
+#    msvc_diff_file: msvc.pg.13.diff
+#    USER_BUILD: MSVC
+#
+#  #
+#  # current postgres and old R
+#  #
+#  - pg: 13.2-1
+#    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#    PlatformToolset: v142
+#    platform: x64
+#    configuration: Release
+#    rversion: 3.6.3
+#    msvc_diff_file: msvc.pg.13.diff
+#    USER_BUILD: MSVC
+#
+#  #
+#  # ERROR - could not find the plr.dll
+#  #
+#  # current postgres and current R (and Debug configuration)
+#  #
+#  - pg: 13.2-1
+#    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#    PlatformToolset: v142
+#    platform: x64
+#    configuration: Debug
+#    rversion: 4.0.3
+#    msvc_diff_file: msvc.pg.13.diff
+#    USER_BUILD: MSVC
+#
+#  #
+#  # current postgres and current R (older .diff)
+#  #
+#  - pg: 13.2-1
+#    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#    PlatformToolset: v142
+#    platform: x64
+#    configuration: Release
+#    rversion: 4.0.3
+#    msvc_diff_file: msvc.diff
+#    USER_BUILD: MSVC
+#
+#  #
+#  # Last 32 bit Windows PG available and old R
+#  # https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+#  #
+#  - pg: 10.16-1
+#    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#    PlatformToolset: v142
+#    platform: x86
+#    configuration: Release
+#    rversion: 3.6.3
+#    msvc_diff_file: msvc.diff
+#    USER_BUILD: MSVC
+#
+#  #
+#  # Last 32 bit Windows PG available and current R
+#  # https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+#  #
+#  - pg: 10.16-1
+#    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#    PlatformToolset: v142
+#    platform: x86
+#    configuration: Release
+#    rversion: 3.6.3
+#    msvc_diff_file: msvc.diff
+#    USER_BUILD: MSVC
+#
+#  - pg: 11.9-1
+#    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#    PlatformToolset: v142
+#    platform: x64
+#    configuration: Release
+#    rversion: 3.6.3
+#    msvc_diff_file: msvc.diff
+#    USER_BUILD: MSVC
+#
+#  - pg: 9.6.13-1
+#    # image: Visual Studio 2015 # must! be at the ROOT
+#    PlatformToolset: v120
+#    platform: x64
+#    configuration: Release
+#    rversion: 3.6.3
+#    msvc_diff_file: msvc.diff
+#    USER_BUILD: MSVC
 
   - pg: master
     USER_BUILD: MSYS2
@@ -258,7 +460,7 @@ for:
   - echo Major=%Major%
   - echo Minor=%Minor%
   - echo Revision=%Revision%
-  # note environment variable pgversion is Major.Minor
+  # note - environment variable pgversion is Major.Minor
   - set pgroot=%pf%\PostgreSQL\%pgversion%
   - echo %pgroot%
   - SET R_HOME=%ProgramFiles%\R\R-%rversion%
@@ -266,7 +468,7 @@ for:
   - SET sed=C:\msys64\usr\bin\sed
   - ps: |
       Set-PSDebug -Trace 2
-      if (("master", "13.0.0-0", "12.0.0-0").Contains("$env:pg")) {
+      if (("master", "13.0.0-0", "12.0.0-0", "11.0.0-0").Contains("$env:pg")) {
         # Visual Studio 2015 and 64 bit # I MAY WANT TO FIX THAT
         # https://en.wikipedia.org/wiki/Microsoft_Visual_Studio
         $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
@@ -275,7 +477,7 @@ for:
           git clone --depth 1 --single-branch --branch=master https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
         }
         if (("13.0.0-0", "12.0.0-0").Contains("$env:pg")) {
-          # tag will create a detached head, but the detached head is still is usefull
+          # tag will create a "detached head", but the "detached head" is still is usefull
           git clone --depth 1 --single-branch --branch=REL_${env:Major}_0 https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
         }
         #
@@ -287,18 +489,35 @@ for:
         copy          c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm.before
         copy          c:\projects\postgresql\src\tools\msvc\vcregress.pl c:\projects\postgresql\src\tools\msvc\vcregress.pl.before
         #
-        patch --verbose -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
+        patch --verbose --r msvc.diff.rej -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
+        dir
         #
+        # This file changes too often, do not bother to track it.  Just let "master" builds fail.
+        # https://github.com/postgres/postgres/blame/master/src/tools/msvc/Mkvcbuild.pm
+
+        # This file changes maybe once/year
+        # https://github.com/postgres/postgres/blame/master/src/tools/msvc/vcregress.pl
+
         ### perl -c ### syntax and check if can compile ##
         echo BEGIN Mkvcbuild.pm
         C:\msys64\usr\bin\diff -u      c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm.before c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm
         echo END Mkvcbuild.pm
         type         c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm
-        ### perl -c 
+        ### perl -c
         C:\msys64\usr\bin\diff -u      c:\projects\postgresql\src\tools\msvc\vcregress.pl.before c:\projects\postgresql\src\tools\msvc\vcregress.pl
         echo BEGIN vcregress.pl
         type         c:\projects\postgresql\src\tools\msvc\vcregress.pl
         echo END   vcregress.pl
+        #
+        if (Test-Path Mkvcbuild.pm.rej){
+           Get-Content msvc.diff.rej
+           throw "Mkvcbuild.pm.rej patch is rejected"
+        }
+        # note perl calls functions in here . . .
+        #
+        # 1. detects - visualStudioVersion
+        # 2. given (1.) determins VC20##Project
+        # note - other file of perl - https://github.com/postgres/postgres/blob/master/src/tools/msvc/VSObjectFactory.pm
         #
         perl contrib\plr\buildsetup.pl
         dir
