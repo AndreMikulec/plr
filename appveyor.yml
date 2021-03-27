@@ -675,9 +675,10 @@ for:
         ### perl contrib\plr\buildsetup.pl
         pwd
         dir
+        type C:\projects\postgresql\pgsql.sln
         type plr.vcxproj
         type pgcrypto.vcxproj
-        type C:\projects\postgresql\pgsql.sln
+
         popd
         $env:PROJ="C:\projects\postgresql\pgsql.sln"
         $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
