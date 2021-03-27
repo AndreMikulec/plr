@@ -214,19 +214,36 @@ environment:
   matrix:
 
   # compiling
-
-  # install (may be causing the problem)?
-  # del plr.vcxproj.user
-  # del plr.vcxproj
-
+  
+  # msvc.pg.13._try3.diff
+  # my $plr = $solution->AddProject('plr','dll','plr');
+  
+  # msvc.pg.13._try2.diff (just like pgcrypto)
+  # my $plr = $solution->AddProject('plr','dll','plr','contrib/plr');
+  
+  
   - pg: 13.0.0-0
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     PlatformToolset: v142
     platform: x64
     configuration: Release
     rversion: 4.0.3
-    msvc_diff_file: msvc.pg.13._try2.diff
+    msvc_diff_file: msvc.pg.13._try3.diff
     USER_BUILD: MSVC
+
+
+#     # install (may be causing the problem)? - no
+#     # del plr.vcxproj.user
+#     # del plr.vcxproj
+#   
+#     - pg: 13.0.0-0
+#       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#       PlatformToolset: v142
+#       platform: x64
+#       configuration: Release
+#       rversion: 4.0.3
+#       msvc_diff_file: msvc.pg.13._try2.diff
+#       USER_BUILD: MSVC
 
   #
   # same as below - try Release mode
@@ -533,6 +550,7 @@ for:
 
   install:
   - REM BEGIN install
+  - echo no effect on the 2019 two plr project problem
   - move plr.vcxproj.user plr.vcxproj.user.hidden
   - move plr.vcxproj      plr.vcxproj.hidden
   - set
@@ -629,8 +647,9 @@ for:
         $env:PROJ="C:\projects\postgresql\pgsql.sln"
         $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
       } else {
-        move plr.vcxproj.user plr.vcxproj.user.hidden
-        move plr.vcxproj      plr.vcxproj.hidden
+        echo no effect on the 2019 two plr project problem
+        move plr.vcxproj.user.hidden plr.vcxproj.user
+        move plr.vcxproj.hidden      plr.vcxproj
         $env:PROJ="plr.vcxproj"
         $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
         if (-not (Test-Path "$env:pgroot\bin")) {
