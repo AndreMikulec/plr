@@ -209,39 +209,59 @@ environment:
 
   # compiling
 
+ - pg: 13.0.0-0
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    PlatformToolset: v141
+    platform: x64
+    configuration: Debug
+    rversion: 4.0.3
+    msvc_diff_file: msvc.pg.13._try2.diff
+    USER_BUILD: MSVC
+
   - pg: 13.0.0-0
+    PlatformToolset: v141
     platform: x64
     configuration: Release
     rversion: 4.0.3
     msvc_diff_file: msvc.pg.13._try2.diff
     USER_BUILD: MSVC
 
-  - pg: 13.0.0-0
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 4.0.3
-    msvc_diff_file: msvc.pg.13._try2.diff
-    USER_BUILD: MSVC
 
-  # non-"from pg source code" build does not use msvc.diff
-  - pg: 13.2-1
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
-    platform: x64
-    configuration: Release
-    rversion: 4.0.3
-    msvc_diff_file: msvc.diff
-    USER_BUILD: MSVC
+#####
 
-  # non-"from pg source code" build does not use msvc.diff
-  - pg: 13.2-1
-    platform: x64
-    configuration: Release
-    rversion: 4.0.3
-    msvc_diff_file: msvc.diff
-    USER_BUILD: MSVC
+#  - pg: 13.0.0-0
+#    platform: x64
+#    configuration: Release
+#    rversion: 4.0.3
+#    msvc_diff_file: msvc.pg.13._try2.diff
+#    USER_BUILD: MSVC
+#
+#  - pg: 13.0.0-0
+#    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#    PlatformToolset: v142
+#    platform: x64
+#    configuration: Release
+#    rversion: 4.0.3
+#    msvc_diff_file: msvc.pg.13._try2.diff
+#    USER_BUILD: MSVC
+#
+#  # non-"from pg source code" build does not use msvc.diff
+#  - pg: 13.2-1
+#    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#    PlatformToolset: v142
+#    platform: x64
+#    configuration: Release
+#    rversion: 4.0.3
+#    msvc_diff_file: msvc.diff
+#    USER_BUILD: MSVC
+#
+#  # non-"from pg source code" build does not use msvc.diff
+#  - pg: 13.2-1
+#    platform: x64
+#    configuration: Release
+#    rversion: 4.0.3
+#    msvc_diff_file: msvc.diff
+#    USER_BUILD: MSVC
 
 
 #  - pg: 12.0.0-0
@@ -522,7 +542,10 @@ for:
         # note - other file of perl - https://github.com/postgres/postgres/blob/master/src/tools/msvc/VSObjectFactory.pm
         #
         perl contrib\plr\buildsetup.pl
+        pwd
         dir
+        type plr.vcxproj 
+        type "C:\projects\postgresql\pgsql.sln
         popd
         $env:PROJ="C:\projects\postgresql\pgsql.sln"
         $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
