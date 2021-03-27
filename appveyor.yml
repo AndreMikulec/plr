@@ -203,6 +203,11 @@ environment:
   # https://www.postgresql.org/docs/release/10.0/
   # Release date: 2017-10-05
 
+  # 9.5, 9.6, 12.4
+  # https://sourceforge.net/projects/pgsqlportable/files/
+  # all hyphen-1 9.5 - 13
+  # https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+
   #
   # END history
   #
@@ -639,7 +644,16 @@ for:
   - echo Minor=%Minor%
   - echo Revision=%Revision%
   # note - environment variable pgversion is Major.Minor
-  - set pgroot=%pf%\PostgreSQL\%pgversion%
+  - ps: |
+      Set-PSDebug -Trace 2
+      if([double]"${env:Major}.${env:Minor}"-lt 10.0) {
+        $env:pgrootsub = "${env:Major}.${env:Minor}"
+      } else {
+        $env:pgrootsub = "${env:Major}"
+      }    
+  - echo %pgrootsub%
+  # - set pgroot=%pf%\PostgreSQL\%pgversion%
+  - set pgroot=%pf%\PostgreSQL\%pgrootsub%
   - echo %pgroot%
   - SET R_HOME=%ProgramFiles%\R\R-%rversion%
   - set RBIN=%PLATFORM:x86=i386%
@@ -649,7 +663,9 @@ for:
       if (("master", "13.0.0-0", "12.0.0-0", "11.0.0-0").Contains("$env:pg")) {
         dir "C:\Program Files (x86)"
         dir "C:\Program Files"
-        # Visual Studio 2015 and 64 bit # I MAY WANT TO FIX THAT
+        # Visual Studio 2015-2019+?
+        # # 14.0 -> 14.28 = VS 2015 -> 2019
+        # https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B
         # https://en.wikipedia.org/wiki/Microsoft_Visual_Studio
         $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
         #
@@ -764,7 +780,7 @@ for:
 
   test_script:
   - REM BEGIN test_script
-  - path %pgroot%\bin;%PATH%
+  - set PATH=%pgroot%\bin;%PATH%
   - ps: |
       Set-PSDebug -Trace 2
       # if ("$env:pg" -eq "master") {
