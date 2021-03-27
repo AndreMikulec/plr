@@ -26,7 +26,7 @@ clone_depth: 1
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
 
-  # note: master, 13.0.0-0, 12.0.0-0 (exactly) will
+  # note: master, 13.0.0-0, 12.0.0-0 , 11.0.0-0 (exactly) will
   #  1. attempt to compile from pg source code
   #  AND
   #  2. run the "patch" on msvc.*.diff
@@ -39,6 +39,12 @@ environment:
   #  3. build partially
 
 
+  # desire to make a look like b
+  # 
+  # $ diff -u a.txt b.txt > patchab.patch
+  # $ patch -b -r a.txt.rej a.txt -i patchab.patch
+  #patching file a.txt
+  #
   # consider - msvc.diff . . . CREATION
   #
   # git diff HEAD~1:source.ext HEAD:target.ext
@@ -209,8 +215,23 @@ environment:
 
   # compiling
 
+  # install (may be causing the problem)?
+  # del plr.vcxproj.user
+  # del plr.vcxproj
+  
+  - pg: 13.0.0-0
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    PlatformToolset: v142
+    platform: x64
+    configuration: Release
+    rversion: 4.0.3
+    msvc_diff_file: msvc.pg.13._try2.diff
+    USER_BUILD: MSVC
+
   #
   # same as below - try Release mode
+  # WORKS (STILL HAVE TO WORK AROUND MY HACK)
+  # https://ci.appveyor.com/project/AndreMikulec/plr/builds/38429937/job/307r0q68adm2pas4?fullLog=true
   #
   - pg: 13.0.0-0
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
@@ -221,6 +242,22 @@ environment:
     msvc_diff_file: msvc.pg.13._try2.diff
     USER_BUILD: MSVC
 
+
+#    # REMEMBER: MY VISUAL STUDIO 2019?? COMPLAINT ABOUT 2 "plr" PROJECTS - and then FAIL
+#    #
+#    # VISUAL STUDIO 2017 v141
+#    # https://ci.appveyor.com/project/AndreMikulec/plr/builds/38429844/job/42jhb9xt8nwd6rms?fullLog=true
+#    #
+#    Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pgcrypto", "pgcrypto.vcxproj", "{2E7DA664-372F-4534-85CE-0F153EAC10AF}"
+#    EndProject
+#    Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "crypto", "crypto", "{76F4B6F3-E283-4813-80ED-BD098AF26695}"
+#    EndProject
+#    
+#    Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plr", "plr.vcxproj", "{2BF6B23A-223F-45E2-A3CC-B5C539360B81}"
+#    EndProject
+#    Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plr", "plr", "{8D939891-27BA-47CB-A741-7239F3C92648}"
+#    EndProject
+#  #
 #  # WORKS but I have to work fix, around my hack
 #  #
 #  # SUCCESS: Specified value was saved.
@@ -239,6 +276,20 @@ environment:
 #
 #  #
 #  # NOT WORK
+   # C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.Cpp.Platform.targets(57,5): 
+   # error MSB8020: The build tools for v141 (Platform Toolset = 'v141') cannot be found. 
+   # To build using the v141 build tools, please install v141 build tools.  
+   # Alternatively, you may upgrade to the current Visual Studio tools by selecting the 
+   # Project menu or right-click the solution, and then selecting 
+   # "Retarget solution". [C:\projects\postgresql\pgevent.vcxproj]
+#  #
+#  # Visual Studio Platform 2015 Toolset ='v141' cannot be found
+#
+#  # Reason: When someone tries to open existing solution which created/build on latest 
+#  # VS version (VS2015 / 2017) and tried to open with backward / old version of VS instance. 
+#  # Then this error might occur.
+#
+#  # https://stackoverflow.com/questions/43312676/visual-studio-platform-2015-toolset-v141-cannot-be-found
 #  #
 #  - pg: 13.0.0-0
 #    PlatformToolset: v141
@@ -483,6 +534,8 @@ for:
   install:
   - REM BEGIN install
   - set
+  - del plr.vcxproj.user
+  - del plr.vcxproj
   - move %msvc_diff_file% msvc.diff
   - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
   - R-%rversion%-win.exe /VERYSILENT
@@ -512,6 +565,8 @@ for:
   - ps: |
       Set-PSDebug -Trace 2
       if (("master", "13.0.0-0", "12.0.0-0", "11.0.0-0").Contains("$env:pg")) {
+        dir "C:\Program Files (x86)"
+        dir "C:\Program Files"
         # Visual Studio 2015 and 64 bit # I MAY WANT TO FIX THAT
         # https://en.wikipedia.org/wiki/Microsoft_Visual_Studio
         $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
@@ -519,7 +574,7 @@ for:
         if ("$env:pg" -eq "master") {
           git clone --depth 1 --single-branch --branch=master https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
         }
-        if (("13.0.0-0", "12.0.0-0").Contains("$env:pg")) {
+        if (("13.0.0-0", "12.0.0-0", "11.0.0-0").Contains("$env:pg")) {
           # tag will create a "detached head", but the "detached head" is still is usefull
           git clone --depth 1 --single-branch --branch=REL_${env:Major}_0 https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
         }
@@ -567,6 +622,7 @@ for:
         pwd
         dir
         type plr.vcxproj
+        type pgcrypto.vcxproj
         type C:\projects\postgresql\pgsql.sln
         popd
         $env:PROJ="C:\projects\postgresql\pgsql.sln"
@@ -626,7 +682,8 @@ for:
   - path %pgroot%\bin;%PATH%
   - ps: |
       Set-PSDebug -Trace 2
-      if ("$env:pg" -eq "master") {
+      # if ("$env:pg" -eq "master") {
+      if (("master", "13.0.0-0", "12.0.0-0", "11.0.0-0").Contains("$env:pg")) {
         Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
         initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
         pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
