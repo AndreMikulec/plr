@@ -209,22 +209,44 @@ environment:
 
   # compiling
 
+  #
+  # same as below - try Release mode
+  #
   - pg: 13.0.0-0
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    PlatformToolset: v141
-    platform: x64
-    configuration: Debug
-    rversion: 4.0.3
-    msvc_diff_file: msvc.pg.13._try2.diff
-    USER_BUILD: MSVC
-
-  - pg: 13.0.0-0
     PlatformToolset: v141
     platform: x64
     configuration: Release
     rversion: 4.0.3
     msvc_diff_file: msvc.pg.13._try2.diff
     USER_BUILD: MSVC
+
+#  # WORKS but I have to work fix, around my hack
+#  #
+#  # SUCCESS: Specified value was saved.
+#  # net start postgresql%x64%-%pgversion%
+#  # The service name is invalid.
+#  # Command exited with code 2
+#  #
+#  - pg: 13.0.0-0
+#    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#    PlatformToolset: v141
+#    platform: x64
+#    configuration: Debug
+#    rversion: 4.0.3
+#    msvc_diff_file: msvc.pg.13._try2.diff
+#    USER_BUILD: MSVC
+#
+#  #
+#  # NOT WORK
+#  #
+#  - pg: 13.0.0-0
+#    PlatformToolset: v141
+#    platform: x64
+#    configuration: Release
+#    rversion: 4.0.3
+#    msvc_diff_file: msvc.pg.13._try2.diff
+#    USER_BUILD: MSVC
 
 
 #####
