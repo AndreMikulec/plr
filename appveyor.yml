@@ -40,7 +40,7 @@ environment:
 
 
   # desire to make a look like b
-  # 
+  #
   # $ diff -u a.txt b.txt > patchab.patch
   # $ patch -b -r a.txt.rej a.txt -i patchab.patch
   #patching file a.txt
@@ -218,7 +218,7 @@ environment:
   # install (may be causing the problem)?
   # del plr.vcxproj.user
   # del plr.vcxproj
-  
+
   - pg: 13.0.0-0
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     PlatformToolset: v142
@@ -233,14 +233,14 @@ environment:
   # WORKS (STILL HAVE TO WORK AROUND MY HACK)
   # https://ci.appveyor.com/project/AndreMikulec/plr/builds/38429937/job/307r0q68adm2pas4?fullLog=true
   #
-  - pg: 13.0.0-0
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    PlatformToolset: v141
-    platform: x64
-    configuration: Release
-    rversion: 4.0.3
-    msvc_diff_file: msvc.pg.13._try2.diff
-    USER_BUILD: MSVC
+#     - pg: 13.0.0-0
+#       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#       PlatformToolset: v141
+#       platform: x64
+#       configuration: Release
+#       rversion: 4.0.3
+#       msvc_diff_file: msvc.pg.13._try2.diff
+#       USER_BUILD: MSVC
 
 
 #    # REMEMBER: MY VISUAL STUDIO 2019?? COMPLAINT ABOUT 2 "plr" PROJECTS - and then FAIL
@@ -252,7 +252,7 @@ environment:
 #    EndProject
 #    Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "crypto", "crypto", "{76F4B6F3-E283-4813-80ED-BD098AF26695}"
 #    EndProject
-#    
+#
 #    Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plr", "plr.vcxproj", "{2BF6B23A-223F-45E2-A3CC-B5C539360B81}"
 #    EndProject
 #    Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plr", "plr", "{8D939891-27BA-47CB-A741-7239F3C92648}"
@@ -276,17 +276,17 @@ environment:
 #
 #  #
 #  # NOT WORK
-   # C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.Cpp.Platform.targets(57,5): 
-   # error MSB8020: The build tools for v141 (Platform Toolset = 'v141') cannot be found. 
-   # To build using the v141 build tools, please install v141 build tools.  
-   # Alternatively, you may upgrade to the current Visual Studio tools by selecting the 
-   # Project menu or right-click the solution, and then selecting 
+   # C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.Cpp.Platform.targets(57,5):
+   # error MSB8020: The build tools for v141 (Platform Toolset = 'v141') cannot be found.
+   # To build using the v141 build tools, please install v141 build tools.
+   # Alternatively, you may upgrade to the current Visual Studio tools by selecting the
+   # Project menu or right-click the solution, and then selecting
    # "Retarget solution". [C:\projects\postgresql\pgevent.vcxproj]
 #  #
 #  # Visual Studio Platform 2015 Toolset ='v141' cannot be found
 #
-#  # Reason: When someone tries to open existing solution which created/build on latest 
-#  # VS version (VS2015 / 2017) and tried to open with backward / old version of VS instance. 
+#  # Reason: When someone tries to open existing solution which created/build on latest
+#  # VS version (VS2015 / 2017) and tried to open with backward / old version of VS instance.
 #  # Then this error might occur.
 #
 #  # https://stackoverflow.com/questions/43312676/visual-studio-platform-2015-toolset-v141-cannot-be-found
