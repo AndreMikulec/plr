@@ -215,6 +215,8 @@ environment:
 
   # compiling
   
+  # msvc.pg.13._try6.diff
+  # my $plr = $solution->AddProject('plr','dll');
   
   - pg: 13.0.0-0
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
@@ -222,7 +224,7 @@ environment:
     platform: x64
     configuration: Release
     rversion: 4.0.3
-    msvc_diff_file: msvc.pg.13._try2.diff
+    msvc_diff_file: msvc.pg.13._try6.diff
     USER_BUILD: MSVC
   
   # msvc.pg.13._try5.diff
@@ -585,8 +587,6 @@ for:
   install:
   - REM BEGIN install
   - echo no effect on the 2019 two plr project problem
-  - move plr.vcxproj.user plr.vcxproj.user.hidden
-  - move plr.vcxproj      plr.vcxproj.hidden
   - set
   - move %msvc_diff_file% msvc.diff
   - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
@@ -671,21 +671,18 @@ for:
         # note - other file of perl - https://github.com/postgres/postgres/blob/master/src/tools/msvc/VSObjectFactory.pm
         #
         dir
-        ### VISUAL STUDIO 2019 - DO NOT CALL THIS
-        ### perl contrib\plr\buildsetup.pl
+        # creates both plr.vcxproj and pgsql.sln
+        perl contrib\plr\buildsetup.pl
         pwd
         dir
         type C:\projects\postgresql\pgsql.sln
         type plr.vcxproj
         type pgcrypto.vcxproj
-
         popd
         $env:PROJ="C:\projects\postgresql\pgsql.sln"
         $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
       } else {
         echo no effect on the 2019 two plr project problem
-        move plr.vcxproj.user.hidden plr.vcxproj.user
-        move plr.vcxproj.hidden      plr.vcxproj
         $env:PROJ="plr.vcxproj"
         $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
         if (-not (Test-Path "$env:pgroot\bin")) {
