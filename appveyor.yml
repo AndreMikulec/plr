@@ -533,9 +533,9 @@ for:
 
   install:
   - REM BEGIN install
+  - move plr.vcxproj.user plr.vcxproj.user.hidden
+  - move plr.vcxproj      plr.vcxproj.hidden
   - set
-  - REM del plr.vcxproj.user
-  - REM del plr.vcxproj
   - move %msvc_diff_file% msvc.diff
   - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
   - R-%rversion%-win.exe /VERYSILENT
@@ -618,6 +618,7 @@ for:
         # 2. given (1.) determins VC20##Project
         # note - other file of perl - https://github.com/postgres/postgres/blob/master/src/tools/msvc/VSObjectFactory.pm
         #
+        dir
         perl contrib\plr\buildsetup.pl
         pwd
         dir
@@ -628,6 +629,8 @@ for:
         $env:PROJ="C:\projects\postgresql\pgsql.sln"
         $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
       } else {
+        move plr.vcxproj.user plr.vcxproj.user.hidden
+        move plr.vcxproj      plr.vcxproj.hidden
         $env:PROJ="plr.vcxproj"
         $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
         if (-not (Test-Path "$env:pgroot\bin")) {
