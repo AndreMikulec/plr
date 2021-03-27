@@ -211,21 +211,51 @@ environment:
   # COMMENTS leads to . . .
   # https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B#Internal_version_numbering
 
+  # compilers from Visual Studio 2019 or those in the Windows SDK 10, which are both free downloads from Microsoft.
+  # https://www.postgresql.org/docs/13/install-windows-full.html 
+  # https://www.enterprisedb.com/edb-docs/d/postgresql/reference/manual/13.1/install-windows.html
+  #
+  # 14.14	1914 (Visual Studio 2017 version 15.7)
+  # https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B
+
+  # localhost:5432 postgres@postgres=# select version();
+  #                           version
+  # ------------------------------------------------------------
+  #  PostgreSQL 13.1, compiled by Visual C++ build 1914, 64-bit
+  # (1 row)
+  #
+  # SO THEY LIED
+
   matrix:
 
   # compiling
   
-  # msvc.pg.13._try6.diff
-  # my $plr = $solution->AddProject('plr','dll');
+  #    msvc.pg.13._try2.diff # much like pgcrypto
+  #    PlatformToolset: v141
+  #    configuration: Debug
+  #    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
   
   - pg: 13.0.0-0
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    PlatformToolset: v142
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    PlatformToolset: v141
     platform: x64
-    configuration: Release
+    configuration: Debug
     rversion: 4.0.3
-    msvc_diff_file: msvc.pg.13._try6.diff
+    msvc_diff_file: msvc.pg.13._try2.diff
     USER_BUILD: MSVC
+  
+#     # msvc.pg.13._try6.diff
+#     # my $plr = $solution->AddProject('plr','dll');
+#     # WORKS - SINGLE ENTRY - DOES NOT COMPILE ON 2019
+#     
+#     - pg: 13.0.0-0
+#       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#       PlatformToolset: v142
+#       platform: x64
+#       configuration: Release
+#       rversion: 4.0.3
+#       msvc_diff_file: msvc.pg.13._try6.diff
+#       USER_BUILD: MSVC
   
   # msvc.pg.13._try5.diff
   # ""
