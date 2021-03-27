@@ -490,7 +490,8 @@ for:
         copy          c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm.before
         copy          c:\projects\postgresql\src\tools\msvc\vcregress.pl c:\projects\postgresql\src\tools\msvc\vcregress.pl.before
         #
-        C:\msys64\usr\bin\patch --verbose --r msvc.diff.rej -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
+        which patch
+        patch --verbose -r msvc.diff.rej -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
         dir
         #
         # This file changes too often, do not bother to track it.  Just let "master" builds fail.
@@ -510,7 +511,7 @@ for:
         type         c:\projects\postgresql\src\tools\msvc\vcregress.pl
         echo END   vcregress.pl
         #
-        if (Test-Path Mkvcbuild.pm.rej){
+        if (Test-Path msvc.diff.rej){
            Get-Content msvc.diff.rej
            throw "Mkvcbuild.pm.rej patch is rejected"
         }
