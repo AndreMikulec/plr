@@ -13,7 +13,7 @@
 
 
 
-Mkvcbuild.pm.Lines <- readLines("C:/projects/postgres/src/tools/msvc/Mkvcbuild.pm")
+Mkvcbuild.pm.Lines <- readLines("C:/projects/postgresql/src/tools/msvc/Mkvcbuild.pm")
 
 insContribExcludesArray <- function(lines) {
 
@@ -127,11 +127,11 @@ Mkvcbuild.pm.Lines <- addGenerateContribSqlFilesCode(Mkvcbuild.pm.Lines)
 
 
 
-cat(file = "C:/projects/postgres/src/tools/msvc/Mkvcbuild.pm", Mkvcbuild.pm.Lines, sep = "\n")
+cat(file = "C:/projects/postgresql/src/tools/msvc/Mkvcbuild.pm", Mkvcbuild.pm.Lines, sep = "\n")
 
 
 
-vcregress.pl.Lines <- readLines("C:/projects/postgres/src/tools/msvc/vcregress.pl")
+vcregress.pl.Lines <- readLines("C:/projects/postgresql/src/tools/msvc/vcregress.pl")
 
 modifySubContribCheck <- function(lines) {
 
@@ -173,5 +173,5 @@ modifySubContribCheck <- function(lines) {
 vcregress.pl.Lines <- modifySubContribCheck(vcregress.pl.Lines)
 
 
-cat(file = "C:/projects/postgres/src/tools/msvc/vcregress.pl", vcregress.pl.Lines, sep = "\n")
+cat(file = "C:/projects/postgresql/src/tools/msvc/vcregress.pl", vcregress.pl.Lines, sep = "\n")
 

@@ -187,9 +187,30 @@ install:
       cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
       # patch -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
       # patch on-the-fly
-      Start-Process "$env:R_HOME\bin\$env:RBIN\Rscript.exe" -ArgumentList "--arch $env:RBIN --vanilla $env:APPVEYOR_BUILD_FOLDER\msvc.diff.R" -NoNewWindow -Wait
-      type c:\projects\postgres\src\tools\msvc\Mkvcbuild.pm
-      type c:\projects\postgres\src\tools\msvc\vcregress.pl 
+      # Start-Process "$env:R_HOME\bin\$env:RBIN\Rscript.exe" -ArgumentList "--arch $env:RBIN --vanilla $env:APPVEYOR_BUILD_FOLDER\msvc.diff.R" -PassThru -NoNewWindow -Wait
+      # https://stackoverflow.com/questions/8761888/capturing-standard-out-and-error-with-start-process
+      Function Execute-Command ($commandTitle, $commandPath, $commandArguments)
+      {
+          $pinfo = New-Object System.Diagnostics.ProcessStartInfo
+          $pinfo.FileName = $commandPath
+          $pinfo.RedirectStandardError = $true
+          $pinfo.RedirectStandardOutput = $true
+          $pinfo.UseShellExecute = $false
+          $pinfo.Arguments = $commandArguments
+          $p = New-Object System.Diagnostics.Process
+          $p.StartInfo = $pinfo
+          $p.Start() | Out-Null
+          $p.WaitForExit()
+          [pscustomobject]@{
+              commandTitle = $commandTitle
+              stdout = $p.StandardOutput.ReadToEnd()
+              stderr = $p.StandardError.ReadToEnd()
+              ExitCode = $p.ExitCode
+          }
+      }
+      $RScriptRun = Execute-Command -commandTitle "Rscript msvc.diff.R" -commandPath "$env:R_HOME\bin\$env:RBIN\Rscript.exe" -commandArguments "--arch $env:RBIN --vanilla $env:APPVEYOR_BUILD_FOLDER\msvc.diff.R"
+      type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm
+      type c:\projects\postgresql\src\tools\msvc\vcregress.pl 
       # creates both plr.vcxproj and pgsql.sln
       perl contrib\plr\buildsetup.pl
       dir
