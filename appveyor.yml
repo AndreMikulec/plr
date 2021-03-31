@@ -7,7 +7,8 @@ environment:
   PGPASSWORD: Password12!
   PGOPTIONS: -c log_error_verbosity=verbose -c log_min_messages=debug2 -c log_min_error_statement=debug2
 
-  # pg - must always be a specific version (if not a git branch, tag, or commit)
+  # pg - must always be a specific version 
+  # (if not a git branch, nor tag, nor commit(REQUIRED: "pghint: commit"))
   # that is downloadable from 
   # https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
   #
@@ -49,12 +50,14 @@ environment:
   # src/tools/msvc/Mkvcbuild.pm 
   #
   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e
+    pghint: commit
     PlatformToolset: v141
     configuration: Debug
     platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.0.3
   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e
+    pghint: commit
     PlatformToolset: v141
     configuration: Debug
     platform: x64
@@ -161,10 +164,12 @@ install:
     # no dot found - branch, tag, or commit
     if ("$env:pg" -notmatch "[.]") {
       $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
-      # git commit - alphanumeric and all lowercase letters (slower download)
-      if("$env:pg" -cmatch  "^[a-z0-9]+$") {
+      # git branch or commit - alphanumeric and all lowercase letters (slower download)
+      if(("$env:pg" -cmatch  "^[a-z0-9]+$") -and ("$env:pghint" -eq "commit")) {
         git clone -q --no-checkout             https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+        pushd c:\projects\postgresql
         git checkout                   $env:pg
+        popd
       # git branch or tag(detached head) 
       # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
       } else {
