@@ -208,7 +208,8 @@ install:
               ExitCode = $p.ExitCode
           }
       }
-      $RScriptRun = Execute-Command -commandTitle "Rscript msvc.diff.R" -commandPath "$env:R_HOME\bin\$env:RBIN\Rscript.exe" -commandArguments "--arch $env:RBIN --vanilla $env:APPVEYOR_BUILD_FOLDER\msvc.diff.R"
+      # $RScriptRun = Execute-Command -commandTitle "Rscript msvc.diff.R" -commandPath "$env:R_HOME\bin\$env:RBIN\Rscript.exe" -commandArguments "--arch $env:RBIN --vanilla $env:APPVEYOR_BUILD_FOLDER\msvc.diff.R"
+      cmd /c $env:R_HOME\bin\$env:RBIN\Rscript.exe --arch $env:RBIN --vanilla $env:APPVEYOR_BUILD_FOLDER\msvc.diff.R
       type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm
       type c:\projects\postgresql\src\tools\msvc\vcregress.pl 
       # creates both plr.vcxproj and pgsql.sln
