@@ -21,6 +21,18 @@ environment:
 
   matrix:
   
+  - pg: REL_13_0
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+  - pg: REL_13_0
+    PlatformToolset: v141
+    configuration: Debug
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 3.6.0
+  
   - pg: master
     PlatformToolset: v141
     configuration: Debug
@@ -33,18 +45,6 @@ environment:
     platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 3.6.3
-    
-  - pg: REL_13_0
-    PlatformToolset: v141
-    configuration: Debug
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
-  - pg: REL_13_0
-    PlatformToolset: v141
-    configuration: Debug
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 3.6.0
     
   # Initial pgindent and pgperltidy run for v13.
   # src/tools/msvc/Mkvcbuild.pm 
@@ -161,15 +161,19 @@ install:
 - set RBIN=%PLATFORM:x86=i386%
 - SET sed=C:\msys64\usr\bin\sed
 - ps: |
+    Set-PSDebug -Trace 2
     # no dot found - branch, tag, or commit
     if ("$env:pg" -notmatch "[.]") {
       $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
       # git branch or commit - alphanumeric and all lowercase letters (slower download)
       if(("$env:pg" -cmatch  "^[a-z0-9]+$") -and ("$env:pghint" -eq "commit")) {
         git clone -q --no-checkout             https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+        Get-Location
         pushd c:\projects\postgresql
+        Get-Location
         git checkout                   $env:pg
         popd
+        Get-Location
       # git branch or tag(detached head) 
       # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
       } else {
@@ -177,15 +181,25 @@ install:
       }
       gendef - "$env:R_HOME\bin\$env:RBIN\R.dll" > "R$env:PLATFORM.def" 2> $null
       lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
+      dir
       pushd c:\projects\postgresql
+      dir
       cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
       # patch -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
       # patch on-the-fly
       Start-Process "$env:R_HOME\bin\$env:RBIN\Rscript.exe" -ArgumentList "--arch $env:RBIN --vanilla $env:APPVEYOR_BUILD_FOLDER\msvc.diff.R" -NoNewWindow -Wait
+      type c:\projects\postgres\src\tools\msvc\Mkvcbuild.pm
+      type c:\projects\postgres\src\tools\msvc\vcregress.pl 
+      # creates both plr.vcxproj and pgsql.sln
       perl contrib\plr\buildsetup.pl
+      dir
+      type C:\projects\postgresql\pgsql.sln
+      type plr.vcxproj
+      type pgcrypto.vcxproj
       popd
+      dir
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
-      $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
+      $env:dll="c:\projects\postgresql\.\$env:CONFIGURATION\plr\plr.dll"
     } else {
       $env:PROJ="plr.vcxproj"
       $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
@@ -203,13 +217,16 @@ cache:
 - R-%rversion%-win.exe
 
 build_script:
+- REM verbosity levels: q[uiet], m[inimal](orig program), n[ormal] (default), d[etailed], and diag[nostic]
 - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%CONFIGURATION% /p:platform=%PLATFORM%
           %PROJ%
-          /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+          /verbosity:normal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+- dir
 
 after_build:
 - appveyor AddMessage Packing -Category Information
 - md tmp\share\extension
+- dir
 - copy *.sql tmp\share\extension\
 - copy *.control tmp\share\extension\
 - copy LICENSE tmp\PLR_LICENSE
@@ -217,18 +234,25 @@ after_build:
 - md tmp\symbols
 - copy %dll% tmp\lib
 - copy %dll:.dll=.pdb% tmp\symbols
+- dir tmp
 - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - 7z a -r %zip% .\tmp\* > nul
 - ps: |
+    Set-PSDebug -Trace 2
     if ("$env:pg" -notmatch "[.]") {
       pushd c:\projects\postgresql\src\tools\msvc
+      Get-Location
+      dir
       perl install.pl "$env:pgroot"
+      dir
       popd
+      Get-Location
     }
 
 test_script:
 - path %pgroot%\bin;%PATH%
 - ps: |
+    Set-PSDebug -Trace 2
     if ("$env:pg" -notmatch "[.]") {
       Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
       initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
@@ -240,8 +264,10 @@ test_script:
 - appveyor AddMessage "Starting the database server." -Category Information
 - setx /M PATH "%R_HOME%\bin\%RBIN%;%PATH%"
 - net start postgresql%x64%-%pgversion%
-
+- postgres -V
+- set pgtrueversion <- 
 - ps: |
+    Set-PSDebug -Trace 2
     Add-AppveyorTest Regression -Framework pg_regress -FileName sql\ -Outcome Running
     if (("9.3", "9.4").Contains("$env:pgversion")) {
       $env:psqlopt="--psqldir"
