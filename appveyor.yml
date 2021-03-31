@@ -179,41 +179,22 @@ install:
       } else {
         git clone -q --depth 1 --branch $env:pg https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
       }
+    }
+# patch on-the-fly
+- cmd /c %R_HOME%\bin\%RBIN%\Rscript.exe --arch %RBIN% --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R
+- type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm
+- type c:\projects\postgresql\src\tools\msvc\vcregress.pl 
+- ps: |
+    Set-PSDebug -Trace 2
+    if ("$env:pg" -notmatch "[.]") {
       gendef - "$env:R_HOME\bin\$env:RBIN\R.dll" > "R$env:PLATFORM.def" 2> $null
       lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
       dir
       pushd c:\projects\postgresql
       dir
       cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
+      # patch already done - above
       # patch -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
-      # patch on-the-fly
-      # Start-Process "$env:R_HOME\bin\$env:RBIN\Rscript.exe" -ArgumentList "--arch $env:RBIN --vanilla $env:APPVEYOR_BUILD_FOLDER\msvc.diff.R" -NoNewWindow -Wait
-      # https://stackoverflow.com/questions/8761888/capturing-standard-out-and-error-with-start-process
-      Function Execute-Command ($commandTitle, $commandPath, $commandArguments)
-      {
-          $pinfo = New-Object System.Diagnostics.ProcessStartInfo
-          $pinfo.FileName = $commandPath
-          $pinfo.RedirectStandardError = $true
-          $pinfo.RedirectStandardOutput = $true
-          $pinfo.UseShellExecute = $false
-          $pinfo.Arguments = $commandArguments
-          $p = New-Object System.Diagnostics.Process
-          $p.StartInfo = $pinfo
-          $p.Start() | Out-Null
-          $p.WaitForExit()
-          [pscustomobject]@{
-              commandTitle = $commandTitle
-              stdout = $p.StandardOutput.ReadToEnd()
-              stderr = $p.StandardError.ReadToEnd()
-              ExitCode = $p.ExitCode
-          }
-      }
-      # $RScriptRun = Execute-Command -commandTitle "Rscript msvc.diff.R" -commandPath "$env:R_HOME\bin\$env:RBIN\Rscript.exe" -commandArguments "--arch $env:RBIN --vanilla $env:APPVEYOR_BUILD_FOLDER\msvc.diff.R"
-      # cmd /c """$env:R_HOME\bin\$env:RBIN\Rscript.exe"" --arch $env:RBIN --vanilla $env:APPVEYOR_BUILD_FOLDER\msvc.diff.R"
-      echo "$env:R_HOME\bin\$env:RBIN\Rscript.exe"
-      Start-Process "$env:R_HOME\bin\$env:RBIN\Rscript.exe" -ArgumentList "--arch $env:RBIN --vanilla $env:APPVEYOR_BUILD_FOLDER\msvc.diff.R" -NoNewWindow -Wait -PassThru
-      type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm
-      type c:\projects\postgresql\src\tools\msvc\vcregress.pl 
       # creates both plr.vcxproj and pgsql.sln
       perl contrib\plr\buildsetup.pl
       dir
@@ -224,7 +205,10 @@ install:
       dir
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
       $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
-    } else {
+    } 
+- ps: |
+    Set-PSDebug -Trace 2
+    if ("$env:pg" -match "[.]") {
       $env:PROJ="plr.vcxproj"
       $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
       if (-not (Test-Path "$env:pgroot\bin")) {
@@ -293,6 +277,7 @@ test_script:
 - ps: |
     Set-PSDebug -Trace 2
     Add-AppveyorTest Regression -Framework pg_regress -FileName sql\ -Outcome Running
+    ### NEED YET FIX - detect current version by "postgres -V" ###
     if (("9.3", "9.4").Contains("$env:pgversion")) {
       $env:psqlopt="--psqldir"
     } else {
