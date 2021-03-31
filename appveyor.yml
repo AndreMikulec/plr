@@ -173,7 +173,7 @@ install:
       # git branch or tag(detached head) 
       # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
       } else {
-        git clone -q --depth 1--branch $env:pg https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+        git clone -q --depth 1 --branch $env:pg https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
       }
       gendef - "$env:R_HOME\bin\$env:RBIN\R.dll" > "R$env:PLATFORM.def" 2> $null
       lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
