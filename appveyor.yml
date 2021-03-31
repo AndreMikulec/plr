@@ -1,23 +1,137 @@
+
+# required to be here, so that Visual Studio 2015, can compile PostgreSQL
 image: Visual Studio 2015
-configuration: Release
-platform: x64
 clone_depth: 1
 environment:
   PGUSER: postgres
   PGPASSWORD: Password12!
-  rversion: 3.6.0
+  PGOPTIONS: -c log_error_verbosity=verbose -c log_min_messages=debug2 -c log_min_error_statement=debug2
+
+  # pg - must always be a specific version (if not a git branch, tag, or commit)
+  # that is downloadable from 
+  # https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+  #
+  # If PostgreSQL is already installed on Appveyor, then that version will be used.
+  # Alternately, the installation binary will downloaded and installed.
+  # 
+  # If pg is a branch, tag, or commit, then the source code will be downloaded from git
+  # and compiled (msvc.diff.R will modify files).
+  # The modified files will reduce the testing to just plr.
+
   matrix:
+  
   - pg: master
     PlatformToolset: v141
     configuration: Debug
+    platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-  - pg: 9.6.13-1
-    PlatformToolset: v120
-  - pg: 11.9-1
-    PlatformToolset: v140
+    rversion: 4.0.3
+  - pg: master
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 3.6.3
+    
+  - pg: REL_13_0
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+  - pg: REL_13_0
+    PlatformToolset: v141
+    configuration: Debug
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 3.6.0
+    
+  # Initial pgindent and pgperltidy run for v13.
+  # src/tools/msvc/Mkvcbuild.pm 
+  #
+  - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+  - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 3.6.0
+    
+  - pg: 13.2-1
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+  - pg: 13.2-1
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 3.6.0
+    
   - pg: 12.4-1
     PlatformToolset: v141
+    configuration: Release
+    platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+  - pg: 12.4-1
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 3.6.0
+    
+  - pg: 11.9-1
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+  - pg: 11.9-1
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 3.6.0
+    
+  - pg: 10.16-1
+    PlatformToolset: v140
+    configuration: Release
+    platform: x64
+    rversion: 3.6.0
+  - pg: 10.16-1
+    PlatformToolset: v140
+    configuration: Release
+    platform: x86
+    rversion: 3.6.0
+    
+  - pg: 9.6.13-1
+    PlatformToolset: v120
+    configuration: Release
+    platform: x64
+    rversion: 3.6.0
+  - pg: 9.6.13-1
+    PlatformToolset: v120
+    configuration: Release
+    platform: x86
+    rversion: 3.6.0
+  
+  - pg: 9.5.25-1
+    PlatformToolset: v120
+    configuration: Release
+    platform: x64
+    rversion: 3.6.0
+  - pg: 9.5.25-1
+    PlatformToolset: v120
+    configuration: Release
+    platform: x86
+    rversion: 3.6.0
   
 matrix:
   allow_failures:
@@ -35,8 +149,8 @@ install:
 #- if not exist Rtools35.exe appveyor downloadfile https://cran.r-project.org/bin/windows/Rtools/Rtools35.exe
 #- Rtools35.exe /VERYSILENT
 - Set mingw=C:\msys64\mingw
-# http://www.databasesoup.com/2016/05/changing-postgresql-version-numbering.html
-- for /f "tokens=1 delims=-" %%A in ("%pg%") do set pgversion=%%~nA
+# strip off, if any, the right-most part - dot then numbers then one hyphen then numbers
+- ps: $env:pgversion = $env:pg -replace "[.]\d+-\d+$", ""
 - echo pgversion=%pgversion%
 - set pgroot=%pf%\PostgreSQL\%pgversion%
 - echo %pgroot%
@@ -44,14 +158,25 @@ install:
 - set RBIN=%PLATFORM:x86=i386%
 - SET sed=C:\msys64\usr\bin\sed
 - ps: |
-    if ("$env:pg" -eq "master") {
+    # no dot found - branch, tag, or commit
+    if ("$env:pg" -notmatch "[.]") {
       $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
-      git clone -q --depth 1 https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
-      gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:PLATFORM.def" 2> $null
+      # git commit - alphanumeric and all lowercase letters (slower download)
+      if("$env:pg" -cmatch  "^[a-z0-9]+$") {
+        git clone -q --no-checkout             https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+        git checkout                   $env:pg
+      # git branch or tag(detached head) 
+      # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
+      } else {
+        git clone -q --depth 1--branch $env:pg https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+      }
+      gendef - "$env:R_HOME\bin\$env:RBIN\R.dll" > "R$env:PLATFORM.def" 2> $null
       lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
       pushd c:\projects\postgresql
       cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
-      patch -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
+      # patch -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
+      # patch on-the-fly
+      Start-Process "$env:R_HOME\bin\$env:RBIN\Rscript.exe" -ArgumentList "--arch $env:RBIN --vanilla $env:APPVEYOR_BUILD_FOLDER\msvc.diff.R" -NoNewWindow -Wait
       perl contrib\plr\buildsetup.pl
       popd
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
@@ -90,7 +215,7 @@ after_build:
 - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - 7z a -r %zip% .\tmp\* > nul
 - ps: |
-    if ("$env:pg" -eq "master") {
+    if ("$env:pg" -notmatch "[.]") {
       pushd c:\projects\postgresql\src\tools\msvc
       perl install.pl "$env:pgroot"
       popd
@@ -99,7 +224,7 @@ after_build:
 test_script:
 - path %pgroot%\bin;%PATH%
 - ps: |
-    if ("$env:pg" -eq "master") {
+    if ("$env:pg" -notmatch "[.]") {
       Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
       initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
       pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
@@ -143,6 +268,6 @@ deploy:
    draft: false
    prerelease: false
    auth_token:
-      secure: sFXG3dBiC2S9bnHbDfg2fS0OdaxiSr6fGSlMQvQPb0lJGyKM3E5UZum4rik60zyi
+      secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
    on:
       appveyor_repo_tag: true
