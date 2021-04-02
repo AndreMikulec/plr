@@ -1,0 +1,1 @@
+"%R_HOME%\bin\%RBIN%\Rscript.exe" --arch %RBIN% --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R

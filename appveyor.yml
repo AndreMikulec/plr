@@ -227,7 +227,7 @@ install:
 - if "%branchtagcommit%"=="yes" (
       echo Begin performing patching on-the-fly &
       echo Begin patching &
-      "%R_HOME%\bin\%RBIN%\Rscript.exe" --arch %RBIN% --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
+      msvc.diff.bat &
       echo End patching &
       echo Begin display of Mkvcbuild.pm &
       type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm &
