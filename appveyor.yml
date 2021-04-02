@@ -238,7 +238,7 @@ install:
       type c:\projects\postgresql\src\tools\msvc\vcregress.pl 
       echo End display of vcregress.pl
       echo End performaing patching on-the-fly
-)
+  )
 - ps: |
     Set-PSDebug -Trace 2
     if ("$env:pg" -notmatch "[.]") {
