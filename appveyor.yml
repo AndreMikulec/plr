@@ -222,6 +222,7 @@ install:
       } else {
         git clone -q --depth 1 --branch $env:pg https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
       }
+      dir c:\projects\postgresql
     }
 - |
     if "%branchtagcommit%"=="yes" (
