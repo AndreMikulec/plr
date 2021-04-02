@@ -323,6 +323,10 @@ test_script:
       7z x "$env:zip" "-o$env:pgroot"
     }
 #
+- appveyor AddMessage "Starting the database server." -Category Information
+- setx /M PATH "%R_HOME%\bin\%RBIN%;%PATH%"
+- net start postgresql%x64%-%pgversion%
+#
 # needed server_version_num to later, test psqlopt
 - psql --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=server_version_num.txt
 - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/server_version_num.sh"
@@ -330,9 +334,6 @@ test_script:
 - type  server_version_num.txt
 - echo %server_version_num%
 #
-- appveyor AddMessage "Starting the database server." -Category Information
-- setx /M PATH "%R_HOME%\bin\%RBIN%;%PATH%"
-- net start postgresql%x64%-%pgversion%
 - ps: |
     Set-PSDebug -Trace 2
     Add-AppveyorTest Regression -Framework pg_regress -FileName sql\ -Outcome Running
