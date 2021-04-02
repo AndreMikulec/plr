@@ -210,22 +210,23 @@ install:
       $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
       # git branch or commit - alphanumeric and all lowercase letters (slower download)
       if(("$env:pg" -cmatch  "^[a-z0-9]+$") -and ("$env:pghint" -eq "commit")) {
-        git clone -q --no-checkout             https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+        git clone -q                            https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
         Get-Location
         pushd c:\projects\postgresql
         Get-Location
         git checkout -q                 $env:pg -b $env:pg
+        git branch
         popd
         Get-Location
       # git branch or tag(detached head) 
       # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
       } else {
         git clone -q --depth 1 --branch $env:pg https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+        git branch
       }
       dir c:\projects\postgresql
     }
-- |
-    if "%branchtagcommit%"=="yes" (
+- if "%branchtagcommit%"=="yes" (
       echo Begin performing patching on-the-fly
       echo Begin patching
       %R_HOME%\bin\%RBIN%\Rscript.exe --arch %RBIN% --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R
@@ -237,7 +238,7 @@ install:
       type c:\projects\postgresql\src\tools\msvc\vcregress.pl 
       echo End display of vcregress.pl
       echo End performaing patching on-the-fly
-    )
+)
 - ps: |
     Set-PSDebug -Trace 2
     if ("$env:pg" -notmatch "[.]") {
