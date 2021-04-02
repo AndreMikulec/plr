@@ -214,7 +214,7 @@ install:
         Get-Location
         pushd c:\projects\postgresql
         Get-Location
-        git checkout -q                 $env:pg
+        git checkout -q                 $env:pg -b $env:pg
         popd
         Get-Location
       # git branch or tag(detached head) 
