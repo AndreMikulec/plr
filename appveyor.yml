@@ -7,81 +7,31 @@ environment:
   PGPASSWORD: Password12!
   PGOPTIONS: -c log_error_verbosity=verbose -c log_min_messages=debug2 -c log_min_error_statement=debug2
 
-  # pg - must always be a specific version,
-  # if not a git branch, nor tag, nor commit(REQUIRED: "pghint: commit"),
-  # that is downloadable from 
-  # https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+  # pg - should be a specific version
+  # from https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+  # and its platforms: "Windows x86-64"and "Windows x86-32".
   #
-  # If PostgreSQL is already installed on Appveyor, then that version and platform will be used.
-  # Alternately, the installation binary will downloaded from enterprisedb and installed.
-  # 
-  # If pg is a branch, tag, or commit, then the source code will be downloaded from git.
-  # The file msvc.diff.R that is ran through Rscript, will patch files.
-  # The patched files will reduce the PostgreSQL regression testing to just the plr extension.
+  # Alternately, pg can be a git branch, tag, or commit
+  # If a commit is chosen, then also the flag "pghint: commit" also must be sent.
+  #
+  # The R file msvc.diff.R will be run, using Rscript.exe, and will patch files.
+  # These patched files will reduce the PostgreSQL regression testing to just the plr extension.
+  #
+  # If PostgreSQL x64 is already installed on Appveyor,
+  # then instead, that version and platform will be used, and
+  # pg will not be downloaded from "enterprisedb".
 
   matrix:
-  
-  # Initial pgindent and pgperltidy run for v13.
-  # src/tools/msvc/Mkvcbuild.pm 
-  #
-  - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e
-    pghint: commit
-    PlatformToolset: v141
-    configuration: Debug
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
-  
+
   - pg: master
     PlatformToolset: v141
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
-  
-  - pg: REL_13_0
-    PlatformToolset: v141
     configuration: Debug
     platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.0.3
-  
-  - pg: 13.2-1
-    PlatformToolset: v141
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
-  
-#   
-#   - pg: REL_13_0
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#   - pg: REL_13_0
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x85
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 3.6.0
-#   
-#   - pg: master
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#   - pg: master
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 3.6.3
-#     
+
 #   # Initial pgindent and pgperltidy run for v13.
-#   # src/tools/msvc/Mkvcbuild.pm 
+#   # src/tools/msvc/Mkvcbuild.pm
 #   #
 #   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e
 #     pghint: commit
@@ -90,6 +40,57 @@ environment:
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.3
+#
+#   - pg: REL_13_0
+#     PlatformToolset: v141
+#     configuration: Debug
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+#
+#   - pg: REL_13_STABLE
+#     PlatformToolset: v141
+#     configuration: Debug
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+#
+#   - pg: 13.2-1
+#     PlatformToolset: v141
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+#
+#   - pg: 10.16-1
+#     PlatformToolset: v140
+#     configuration: Release
+#     platform: x64
+#     rversion: 3.6.0
+#
+#   - pg: REL9_4_STABLE
+#     PlatformToolset: v120
+#     configuration: Release
+#     platform: x86
+#     rversion: 3.6.0
+
+###############
+###############
+
+#   - pg: REL_13_0
+#     PlatformToolset: v141
+#     configuration: Debug
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 3.6.0
+#
+#   - pg: master
+#     PlatformToolset: v141
+#     configuration: Debug
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 3.6.3
+#
 #   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e
 #     pghint: commit
 #     PlatformToolset: v141
@@ -97,20 +98,14 @@ environment:
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 3.6.0
-#     
-#   - pg: 13.2-1
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
+#
 #   - pg: 13.2-1
 #     PlatformToolset: v141
 #     configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 3.6.0
-#     
+#
 #   - pg: 12.4-1
 #     PlatformToolset: v141
 #     configuration: Release
@@ -123,7 +118,7 @@ environment:
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 3.6.0
-#     
+#
 #   - pg: 11.9-1
 #     PlatformToolset: v141
 #     configuration: Release
@@ -136,18 +131,13 @@ environment:
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 3.6.0
-#     
-#   - pg: 10.16-1
-#     PlatformToolset: v140
-#     configuration: Release
-#     platform: x64
-#     rversion: 3.6.0
+#
 #   - pg: 10.16-1
 #     PlatformToolset: v140
 #     configuration: Release
 #     platform: x86
 #     rversion: 3.6.0
-#     
+#
 #   - pg: 9.6.13-1
 #     PlatformToolset: v120
 #     configuration: Release
@@ -158,7 +148,7 @@ environment:
 #     configuration: Release
 #     platform: x86
 #     rversion: 3.6.0
-#   
+#
 #   - pg: 9.5.25-1
 #     PlatformToolset: v120
 #     configuration: Release
@@ -169,7 +159,7 @@ environment:
 #     configuration: Release
 #     platform: x86
 #     rversion: 3.6.0
-  
+
 matrix:
   allow_failures:
     - pg: master
@@ -216,7 +206,7 @@ install:
         git branch
         popd
         Get-Location
-      # git branch or tag(detached head) 
+      # git branch or tag(detached head)
       # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
       } else {
         git clone -q --depth 1 --branch $env:pg https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
@@ -227,13 +217,13 @@ install:
 - if "%branchtagcommit%"=="yes" (
       echo Begin performing patching on-the-fly &
       echo Begin patching &
-      msvc.diff.bat &
+      "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
       echo End patching &
       echo Begin display of Mkvcbuild.pm &
       type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm &
       echo End display of Mkvcbuild.pm &
       echo Begin display of vcregress.pl &
-      type c:\projects\postgresql\src\tools\msvc\vcregress.pl & 
+      type c:\projects\postgresql\src\tools\msvc\vcregress.pl &
       echo End display of vcregress.pl &
       echo End performaing patching on-the-fly
   )
@@ -258,7 +248,7 @@ install:
       dir
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
       $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
-    } 
+    }
 - ps: |
     Set-PSDebug -Trace 2
     if ("$env:pg" -match "[.]") {
@@ -281,7 +271,7 @@ build_script:
 - REM verbosity levels: q[uiet], m[inimal](orig program), n[ormal] (default), d[etailed], and diag[nostic]
 - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%CONFIGURATION% /p:platform=%PLATFORM%
           %PROJ%
-          /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+          /verbosity:quiet /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 - dir
 
 after_build:
@@ -327,7 +317,7 @@ test_script:
 - setx /M PATH "%R_HOME%\bin\%RBIN%;%PATH%"
 - net start postgresql%x64%-%pgversion%
 #
-# needed server_version_num to later, test psqlopt
+# need server_version_num, so we can later, test psqlopt
 - psql --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=server_version_num.txt
 - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/server_version_num.sh"
 - for /f "delims=" %%i in (server_version_num.txt) do (set server_version_num=%%i)
@@ -369,6 +359,7 @@ deploy:
    prerelease: false
    artifact: plr_zip
    auth_token:
+      # CHANGE BACK TO THE 'ORIGINAL' BEFORE THE PULL REQUEST (IF ANY)
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
    on:
       appveyor_repo_tag: true

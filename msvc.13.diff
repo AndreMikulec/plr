@@ -1,3 +1,9 @@
+
+This patch works upon PostgreSQL git tags REL_13_0 through REL_13_2.
+However, instead, use the R script: msvc.diff.R
+and its call: 
+"%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R
+
 diff --git a/src/tools/msvc/Mkvcbuild.pm b/src/tools/msvc/Mkvcbuild.pm
 index 20da7985c1..d2b95cd71d 100644
 --- a/src/tools/msvc/Mkvcbuild.pm
