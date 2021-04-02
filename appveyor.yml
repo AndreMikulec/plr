@@ -21,21 +21,6 @@ environment:
 
   matrix:
   
-  
-  - pg: REL_13_0
-    PlatformToolset: v141
-    configuration: Debug
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
-  
-  - pg: 13.2-1
-    PlatformToolset: v141
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
-  
   # Initial pgindent and pgperltidy run for v13.
   # src/tools/msvc/Mkvcbuild.pm 
   #
@@ -54,6 +39,19 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.0.3
   
+  - pg: REL_13_0
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+  
+  - pg: 13.2-1
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
   
 #   
 #   - pg: REL_13_0
@@ -227,16 +225,16 @@ install:
       dir c:\projects\postgresql
     }
 - if "%branchtagcommit%"=="yes" (
-      echo Begin performing patching on-the-fly
-      echo Begin patching
-      %R_HOME%\bin\%RBIN%\Rscript.exe --arch %RBIN% --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R
-      echo End patching
-      echo Begin display of Mkvcbuild.pm
-      type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm
-      echo End display of Mkvcbuild.pm
-      echo Begin display of vcregress.pl
-      type c:\projects\postgresql\src\tools\msvc\vcregress.pl 
-      echo End display of vcregress.pl
+      echo Begin performing patching on-the-fly &
+      echo Begin patching &
+      %R_HOME%\bin\%RBIN%\Rscript.exe --arch %RBIN% --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
+      echo End patching &
+      echo Begin display of Mkvcbuild.pm &
+      type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm &
+      echo End display of Mkvcbuild.pm &
+      echo Begin display of vcregress.pl &
+      type c:\projects\postgresql\src\tools\msvc\vcregress.pl & 
+      echo End display of vcregress.pl &
       echo End performaing patching on-the-fly
   )
 - ps: |
