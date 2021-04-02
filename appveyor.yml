@@ -206,6 +206,7 @@ install:
     # no dot found - branch, tag, or commit
     if ("$env:pg" -notmatch "[.]") {
       $env:branchtagcommit = "yes"
+      git config --global advice.detachedHead false
       $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
       # git branch or commit - alphanumeric and all lowercase letters (slower download)
       if(("$env:pg" -cmatch  "^[a-z0-9]+$") -and ("$env:pghint" -eq "commit")) {
@@ -213,7 +214,7 @@ install:
         Get-Location
         pushd c:\projects\postgresql
         Get-Location
-        git checkout                    $env:pg
+        git checkout -q                 $env:pg
         popd
         Get-Location
       # git branch or tag(detached head) 
