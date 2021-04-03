@@ -145,7 +145,7 @@ install:
 - SET sed=C:\msys64\usr\bin\sed
 #
 # CHANGE THE CURL URL BEFORE THE PULL REQUEST (IF ANY)
-- pgzip=pg-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
+- set pgzip=pg-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - set pgextracted=false
 - if "%githubcache%"=="true" if not exist "%pgzip%"  (
     curl -o "%pgzip%" --fail -L -G "https://github.com/AndreMikulec/plr/releases/tag/GITHUBCACHE/%pgzip%" || date /t &
@@ -265,7 +265,7 @@ after_build:
 - 7z a -r %zip% .\tmp\* > nul
 #
 # same as above (repeated here)
-- pgzip=pg-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
+- set pgzip=pg-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 # note, the db must be down
 - if "%githubcache%"=="true" if "%githubcachefound%"="false" (
     7z a -r "%pgzip%"  "%pgroot%\*" > nul
