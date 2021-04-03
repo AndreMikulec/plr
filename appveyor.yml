@@ -188,7 +188,9 @@ install:
         popd
         pwd
       }
-      dir c:\projects\postgresql
+      pushd c:\projects\postgresql
+      dir 
+      popd
     }
 - if "%pgextracted%"=="false" if "%branchtagcommit%"=="yes" (
       echo Begin performing patching on-the-fly &
@@ -286,7 +288,12 @@ after_build:
     }
 
 test_script:
+- echo %PATH%
 - path %pgroot%\bin;%PATH%
+- echo %PATH%
+- pg_config
+# from msys2
+- which postgres
 - ps: |
     Set-PSDebug -Trace 2
     if ("$env:pg" -notmatch "[.]") {
