@@ -23,47 +23,59 @@ environment:
 
   matrix:
 
-  - pg: master
-    PlatformToolset: v141
+#   - pg: master
+#     PlatformToolset: v141
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+# 
+#   # Initial pgindent and pgperltidy run for v13.
+#   # src/tools/msvc/Mkvcbuild.pm
+#   #
+#   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e
+#     pghint: commit
+#     PlatformToolset: v141
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+# 
+#   - pg: REL_13_0
+#     PlatformToolset: v141
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+# 
+#   - pg: REL_13_STABLE
+#     PlatformToolset: v141
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+# 
+#   - pg: 13.2-1
+#     PlatformToolset: v141
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+# 
+#   - pg: 10.16-1
+#     PlatformToolset: v140
+#     configuration: Release
+#     platform: x64
+#     rversion: 3.6.0
+
+  - pg: REL9_6_STABLE
+    PlatformToolset: v120
     configuration: Release
     platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
+    rversion: 3.6.0
 
-  # Initial pgindent and pgperltidy run for v13.
-  # src/tools/msvc/Mkvcbuild.pm
-  #
-  - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e
-    pghint: commit
-    PlatformToolset: v141
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
-
-  - pg: REL_13_0
-    PlatformToolset: v141
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
-
-  - pg: REL_13_STABLE
-    PlatformToolset: v141
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
-
-  - pg: 13.2-1
-    PlatformToolset: v141
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
-
-  - pg: 10.16-1
-    PlatformToolset: v140
+  - pg: REL9_5_STABLE
+    PlatformToolset: v120
     configuration: Release
     platform: x64
     rversion: 3.6.0
@@ -71,7 +83,7 @@ environment:
   - pg: REL9_4_STABLE
     PlatformToolset: v120
     configuration: Release
-    platform: x86
+    platform: x64
     rversion: 3.6.0
 
 ###############
