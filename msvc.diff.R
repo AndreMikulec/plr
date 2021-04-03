@@ -22,17 +22,17 @@ insContribExcludesArray <- function(lines) {
   LineAllHaveRightParensPos <- which(grepl("\\)", x = lines, perl = TRUE))
   # after BeginPos, first-found line that has a right paren
   LineOnlyEndPos <- LineAllHaveRightParensPos[head(which(LineOnlyBeginPos <= LineAllHaveRightParensPos),1)]
-  
+
   ModifyLineWorking <- lines[LineOnlyEndPos]
-  
+
   # within that line
   # find the right-most paren
   LastParenPos <- tail(gregexpr("\\)", text = ModifyLineWorking, perl = TRUE)[[1L]],1L)
   # insert into that line
   ModifyLineWorking <- paste0(append(strsplit(ModifyLineWorking, split = "")[[1L]], ", 'plr'", after = LastParenPos - 1L), collapse = "")
-  
+
   lines[LineOnlyEndPos] <- ModifyLineWorking
-  
+
   writeLines("")
   writeLines("BEGIN insContribExcludesArray ")
   writeLines("")
@@ -40,7 +40,7 @@ insContribExcludesArray <- function(lines) {
   writeLines("")
   writeLines("END   insContribExcludesArray ")
   writeLines("")
-  
+
   return(lines)
 
 }
@@ -71,7 +71,7 @@ addProjectCode  <- function(lines) {
 "
   # insert into the file
   lines <- append(lines, strsplit(plrProjectText, split = "\n")[[1L]], after =  LineOnlyPos + 1L)
-  
+
   writeLines("")
   writeLines("BEGIN AddProjectCode")
   writeLines("")
@@ -93,10 +93,18 @@ addGenerateContribSqlFilesCode <- function(lines) {
 
   # lines
   LineOnlyBeginPos   <- which(grepl("sub\\s+GenerateContribSqlFiles", x = lines, perl = TRUE))
-  LineAllHaveReturnsPos <- which(grepl("\\breturn\\s*;", x = lines, perl = TRUE))
-  # after BeginPos, first-found line
-  LineOfContribReturnPos <- LineAllHaveReturnsPos[head(which(LineOnlyBeginPos < LineAllHaveReturnsPos),1L)]
 
+  # pg 11 and later has "return;"
+  LineAllHaveReturnsPos <- which(grepl("\\breturn\\s*;", x = lines, perl = TRUE))
+  if(length(LineAllHaveReturnsPos)) {
+    # after BeginPos, first-found line
+    LineOfContribReturnPos <- LineAllHaveReturnsPos[head(which(LineOnlyBeginPos < LineAllHaveReturnsPos),1L)]
+  } else {
+    # earlier than pg 11
+    # just find the function closing end-left-facing-brace
+    LineAllHaveReturnsPos <- which(grepl("^}$", x = lines, perl = TRUE))
+    LineOfContribReturnPos <- LineAllHaveReturnsPos[head(which(LineOnlyBeginPos < LineAllHaveReturnsPos),1L)]
+  }
   plrGenerateContribSqlFilesText <-
 "\telse
 \t{
@@ -107,7 +115,7 @@ addGenerateContribSqlFilesCode <- function(lines) {
 \t\t}
 \t}
 "
-  # insert into the file to the position "just above" the "return" statement
+  # insert into the file to the position "just above", the "return" statement, xor, "function closing function closing end-left-facing-brace"
   lines <- append(lines, strsplit(plrGenerateContribSqlFilesText, split = "\n")[[1L]], after =  LineOfContribReturnPos -1L)
 
   writeLines("")
@@ -142,21 +150,21 @@ modifySubContribCheck <- function(lines) {
   LineOfGlobPos <- LineAllHaveGlobPos[head(which(LineOnlyBeginPos < LineAllHaveGlobPos),1L)]
 
   ModifyLineWorking <- lines[LineOfGlobPos]
-  
+
   # within that line
   LastAsteriskPos <- tail(gregexpr("[*]", text = ModifyLineWorking, perl = TRUE)[[1L]],1L)
-  
+
   ModifyLineWorking <- strsplit(ModifyLineWorking, split = "")[[1L]]
   # remove that asterisk
   ModifyLineWorking <- as.list(ModifyLineWorking)
   ModifyLineWorking[LastAsteriskPos] <- NULL
   ModifyLineWorking <- unlist(ModifyLineWorking)
   ModifyLineWorking <- paste0(ModifyLineWorking, collapse = "")
-  
+
   # insert into the line at the old-asterisk position
   ModifyLineWorking <- paste0(append(strsplit(ModifyLineWorking, split = "")[[1L]], "plr", after = LastAsteriskPos - 1L), collapse = "")
   lines[LineOfGlobPos] <- ModifyLineWorking
-  
+
   writeLines("")
   writeLines("BEGIN modifySubContribCheck ")
   writeLines("")
@@ -164,7 +172,7 @@ modifySubContribCheck <- function(lines) {
   writeLines("")
   writeLines("END   modifySubContribCheck ")
   writeLines("")
-  
+
   return(lines)
 
 }
