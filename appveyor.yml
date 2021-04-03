@@ -68,31 +68,31 @@ environment:
 #     platform: x64
 #     rversion: 3.6.0
 
-  - pg: REL_11_STABLE
+  - pg: REL_11_0
     PlatformToolset: v120
     configuration: Release
     platform: x64
     rversion: 3.6.0
 
-  - pg: REL_10_STABLE
+  - pg: REL_10_0
     PlatformToolset: v120
     configuration: Release
     platform: x64
     rversion: 3.6.0
 
-  - pg: REL9_6_STABLE
+  - pg: REL9_6_0
     PlatformToolset: v120
     configuration: Release
     platform: x64
     rversion: 3.6.0
 
-  - pg: REL9_5_STABLE
+  - pg: REL9_5_0
     PlatformToolset: v120
     configuration: Release
     platform: x64
     rversion: 3.6.0
 
-  - pg: REL9_4_STABLE
+  - pg: REL9_4_0
     PlatformToolset: v120
     configuration: Release
     platform: x64
