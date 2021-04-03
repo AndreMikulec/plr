@@ -90,6 +90,28 @@ environment:
 #     platform: x64
 #     rversion: 3.6.0
 
+  - pg: REL_13_0
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 3.6.0
+
+  - pg: REL_12_0
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 3.6.0
+
+  - pg: REL_11_0
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 3.6.0
+
+
 #   # works
 #   - pg: REL_10_0
 #     PlatformToolset: v120
@@ -122,18 +144,19 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 
-
-  - pg: REL9_5_0
-    PlatformToolset: v120
-    configuration: Release
-    platform: x64
-    rversion: 3.6.0
-
-  - pg: REL9_4_0
-    PlatformToolset: v120
-    configuration: Release
-    platform: x64
-    rversion: 3.6.0
+#    # not work
+#   - pg: REL9_5_0
+#     PlatformToolset: v120
+#     configuration: Release
+#     platform: x64
+#     rversion: 3.6.0
+#
+#   # not work
+#   - pg: REL9_4_0
+#     PlatformToolset: v120
+#     configuration: Release
+#     platform: x64
+#     rversion: 3.6.0
 
 ###############
 ###############
