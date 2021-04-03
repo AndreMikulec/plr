@@ -91,28 +91,28 @@ environment:
 #     rversion: 3.6.0
 
   - pg: REL_10_0
-    PlatformToolset: v120
+    PlatformToolset: v140
     configuration: Release
     platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
     rversion: 3.6.0
 
   - pg: REL9_6_0
-    PlatformToolset: v120
+    PlatformToolset: v140
     configuration: Release
     platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
     rversion: 3.6.0
 
   - pg: REL9_5_0
-    PlatformToolset: v120
+    PlatformToolset: v140
     configuration: Release
     platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
     rversion: 3.6.0
 
   - pg: REL9_4_0
-    PlatformToolset: v120
+    PlatformToolset: v140
     configuration: Release
     platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
