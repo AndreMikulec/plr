@@ -1,6 +1,7 @@
 
 # required to be here, so that Visual Studio 2015, can compile PostgreSQL
 image: Visual Studio 2015
+
 clone_depth: 1
 environment:
   PGUSER: postgres
@@ -13,7 +14,11 @@ environment:
   # and its platforms: "Windows x86-64"and "Windows x86-32".
   #
   # Alternately, pg can be a git branch, tag, or commit
-  # If a commit is chosen, then also the flag "pghint: commit" also must be set.
+  # If a commit is chosen, then also the flag - "pghint: commit" also must be set.
+  #
+  # Optionally, the flag -  githubcache: true - may be set to try to store the
+  # compiled pg in the github releases GITHUBCACHE, then retrieve it when necessary.
+  # Compiling uses much time, this can be useful for static source code: "tag" and "commit"
   #
   # The R file msvc.diff.R will be run, using Rscript.exe, and will patch files.
   # These patched files will reduce the PostgreSQL regression testing to just the plr extension.
@@ -24,84 +29,90 @@ environment:
 
   matrix:
 
-  - pg: master
-    PlatformToolset: v141
-    configuration: Debug
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
-
   - pg: REL_13_0
     PlatformToolset: v141
     configuration: Release
     platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.0.3
+    #
+    githubcache: true
 
-  # REL_13_0
-  - pg: 13.1-1
-    PlatformToolset: v141
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
-
-  # Initial pgindent and pgperltidy run for v13.
-  # src/tools/msvc/Mkvcbuild.pm
-  #
-  - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e
-    pghint: commit
-    PlatformToolset: v141
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
-
-  # REL_12_0
-  - pg: 12.5-1
-    PlatformToolset: v141
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
-
-  # REL_11_0
-  - pg: 11.11-1
-    PlatformToolset: v141
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 3.6.0
-
-  # REL_10_0
-  - pg: 10.16-1
-    PlatformToolset: v120
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    rversion: 3.6.0
-
-  # REL9_6_0
-  - pg: 9.6.21 
-    PlatformToolset: v120
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    rversion: 3.6.0
-
-  - pg: 9.5.25-1
-    PlatformToolset: v120
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    rversion: 3.6.0
-
-  - pg: 9.4.4-3
-    PlatformToolset: v120
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    rversion: 3.6.0
+#   - pg: master
+#     PlatformToolset: v141
+#     configuration: Debug
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+# 
+#   # REL_13_0
+#   - pg: 13.1-1
+#     PlatformToolset: v141
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+# 
+#   # Initial pgindent and pgperltidy run for v13.
+#   # src/tools/msvc/Mkvcbuild.pm
+#   #
+#   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e
+#     #
+#     pghint: commit
+#     #
+#     PlatformToolset: v141
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+#     #
+#     githubcache: true
+# 
+#   # REL_12_0
+#   - pg: 12.5-1
+#     PlatformToolset: v141
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+# 
+#   # REL_11_0
+#   - pg: 11.11-1
+#     PlatformToolset: v141
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 3.6.0
+# 
+#   # REL_10_0
+#   - pg: 10.16-1
+#     PlatformToolset: v120
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 3.6.0
+# 
+#   # REL9_6_0
+#   - pg: 9.6.21
+#     PlatformToolset: v120
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 3.6.0
+# 
+#   - pg: 9.5.25-1
+#     PlatformToolset: v120
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 3.6.0
+# 
+#   - pg: 9.4.4-3
+#     PlatformToolset: v120
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 3.6.0
 
 matrix:
   allow_failures:
@@ -132,10 +143,24 @@ install:
 - SET R_HOME=%ProgramFiles%\R\R-%rversion%
 - set RBIN=%PLATFORM:x86=i386%
 - SET sed=C:\msys64\usr\bin\sed
+#
+# CHANGE THE CURL URL BEFORE THE PULL REQUEST (IF ANY)
+- pgzip=pg-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
+- set pgextracted=false
+- if "%githubcache%"=="true" if not exist "%pgzip%"  (
+    curl -o "%pgzip%" --fail -L -G "https://github.com/AndreMikulec/plr/releases/tag/GITHUBCACHE/%pgzip%" || date /t &
+    if exist "%pgzip%" (set githubcachefound=true) else (githubcachefound=false) &
+    if "%githubcachefound%"=="true" (
+      mkdir "%pgroot%" &
+      7z x "%pgzip%" "-o%pgroot%" &
+      if exist "%pgroot%\bin\postgres.exe" (set pgextracted=true)
+    )
+  )
+#
 - ps: |
     Set-PSDebug -Trace 2
     # no dot found - branch, tag, or commit
-    if ("$env:pg" -notmatch "[.]") {
+    if (("$env:pgextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       $env:branchtagcommit = "yes"
       git config --global advice.detachedHead false
       $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
@@ -163,7 +188,7 @@ install:
       }
       dir c:\projects\postgresql
     }
-- if "%branchtagcommit%"=="yes" (
+- if "%pgextracted%"=="false" if "%branchtagcommit%"=="yes" (
       echo Begin performing patching on-the-fly &
       echo Begin patching &
       echo %R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
@@ -179,7 +204,7 @@ install:
   )
 - ps: |
     Set-PSDebug -Trace 2
-    if ("$env:pg" -notmatch "[.]") {
+    if (("$env:pgextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       gendef - "$env:R_HOME\bin\$env:RBIN\R.dll" > "R$env:PLATFORM.def" 2> $null
       lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
       dir
@@ -201,7 +226,7 @@ install:
     }
 - ps: |
     Set-PSDebug -Trace 2
-    if ("$env:pg" -match "[.]") {
+    if (("$env:pgextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
       $env:PROJ="plr.vcxproj"
       $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
       if (-not (Test-Path "$env:pgroot\bin")) {
@@ -238,9 +263,17 @@ after_build:
 - dir tmp
 - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - 7z a -r %zip% .\tmp\* > nul
+#
+# same as above (repeated here)
+- pgzip=pg-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
+# note, the db must be down
+- if "%githubcache%"=="true" if "%githubcachefound%"="false" (
+    7z a -r "%pgzip%"  "%pgroot%\*" > nul
+  )
+#
 - ps: |
     Set-PSDebug -Trace 2
-    if ("$env:pg" -notmatch "[.]") {
+    if (("$env:pgextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       pushd c:\projects\postgresql\src\tools\msvc
       pwd
       dir
@@ -301,15 +334,28 @@ test_script:
 artifacts:
 - path: 'plr-*.zip'
   name: plr_zip
+- path: 'pg-*.zip'
+  name: pg_zip
 
 deploy:
-   provider: GitHub
-   release: $(appveyor_repo_tag_name)
-   draft: false
-   prerelease: false
-   artifact: plr_zip
-   auth_token:
+  - provider: GitHub
+    release: GITHUBCACHE
+    draft: false
+    prerelease: false
+    artifact: pg_zip
+    auth_token:
       # CHANGE BACK TO THE 'ORIGINAL' BEFORE THE PULL REQUEST (IF ANY)
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
-   on:
+    on:
+      githubcachefound: false
+
+  - provider: GitHub
+    release: $(appveyor_repo_tag_name)
+    draft: false
+    prerelease: false
+    artifact: plr_zip
+    auth_token:
+      # CHANGE BACK TO THE 'ORIGINAL' BEFORE THE PULL REQUEST (IF ANY)
+      secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
+    on:
       appveyor_repo_tag: true
