@@ -292,21 +292,16 @@ after_build:
     }
 
 test_script:
-- echo %PATH%
-- path %pgroot%\bin;%PATH%
-- echo %PATH%
-- pg_config
-# from msys2
-- which postgres
 - ps: |
     Set-PSDebug -Trace 2
     if ("$env:pg" -notmatch "[.]") {
       Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
+      which postgres
       initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
       pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
     } else {
       Add-AppveyorMessage "Copying the extension files to the PostgreSQL directories." -Category Information
-      7z x "$env:zip" "-o$env:pgroot"
+      # 7z x "$env:zip" "-o$env:pgroot"
     }
 #
 - appveyor AddMessage "Starting the database server." -Category Information
