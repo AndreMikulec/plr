@@ -153,23 +153,28 @@ install:
 - SET sed=C:\msys64\usr\bin\sed
 #
 # CHANGE THE CURL URL BEFORE THE PULL REQUEST (IF ANY)
-- set pgzip=pg-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
+# keep, if enterprisedb can install in, pre-existing empty directories
+- mkdir "%pgroot%"
+- set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
+- set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/GITHUBCACHE/%pgzip%
 - set pggithubbincachefound=false
 - set pggithubbincacheextracted=false
 - if "%githubcache%"=="true" if not exist "%pgzip%"  (
-    curl -o "%pgzip%" --fail -L -G "https://github.com/AndreMikulec/plr/releases/download/GITHUBCACHE/%pgzip%" || date /t &
+    bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
+    for /f "delims=" %%i in (pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i) &
+    if "%pggithubbincachefailingfound%"=="false" (curl -o "%pgzip%" -L "%pggithubbincacheurl%") &
     if exist "%pgzip%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false) &
     if "%pggithubbincachefound%"=="true" (
-      mkdir "%pgroot%" &
       7z x "%pgzip%" "-o%pgroot%" &
-      dir "%pgroot%" &
       if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
     )
   )
+# use provides (if any) in the matrix
 - echo githubcache %githubcache%
+# generated
 - echo pggithubbincachefound %pggithubbincachefound%
 - echo pggithubbincacheextracted %pggithubbincacheextracted%
-#
+- dir "%pgroot%"
 
 - ps: |
     # "branchtagcommit" exists only becuase it is an easier test in a windows batch
@@ -302,7 +307,7 @@ after_build:
     }
 #
 # same as above (repeated here)
-- set pgzip=pg-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
+- set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 # note, zipping must be performed here, after - perl install . pl
 # note, pg has been installed inside %pgroot% == %pf%\PostgreSQL\%pgversion% (see above)
 # note, the db must be down
