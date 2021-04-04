@@ -161,7 +161,7 @@ install:
 - set pggithubbincacheextracted=false
 - if "%githubcache%"=="true" if not exist "%pgzip%"  (
     bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
-    for /f "delims=" %%i in (pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i) &
+    for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i) &
     if "%pggithubbincachefailingfound%"=="false" (curl -o "%pgzip%" -L "%pggithubbincacheurl%") &
     if exist "%pgzip%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false) &
     if "%pggithubbincachefound%"=="true" (
