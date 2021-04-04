@@ -178,7 +178,7 @@ install:
 - ps: |
     Set-PSDebug -Trace 2
     if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
-      pushd "%pgroot%"
+      pushd "$env:pgroot"
       del share\extension\plr-*.sql
       del share\extension\plr.control
       del lib\plr.dll
