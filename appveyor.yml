@@ -174,9 +174,37 @@ install:
 - echo pggithubbincachefound %pggithubbincachefound%
 - echo pggithubbincacheextracted %pggithubbincacheextracted%
 - dir "%pgroot%"
+# remove old files
+- if "%githubcache%"=="true" if "%pggithubbincacheextracted%"=="true" (
+    pushd %pgroot%" &
+    del share\extension\plr-*.sql &
+    del share\extension\plr.control &
+    del lib\plr.dll &
+    del symbols\plr.pdb &
+    popd
+  )
+# make the "pggithubbincacheextracted" become real
+- ps: |
+    Set-PSDebug -Trace 2
+    if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
+      $env:PROJ="plr.vcxproj"
+      $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
+      if (Test-Path "$env:pgroot\bin") {
+        #
+        $env:OldPath = $env:Path
+        $env:Path = "$env:pgroot\bin;$env:Path"
+        #
+        initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
+        pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
+        Start-Service "postgresql$env:x64-$env:pgversion"
+        Stop-Service  "postgresql$env:x64-$env:pgversion"
+        #
+        $env:Path = $env:OldPath
+      }
+    }
 
 - ps: |
-    # "branchtagcommit" exists only becuase it is an easier test in a windows batch
+    # "branchtagcommit" exists only beause it is an easier test in a windows batch
     # test used in determining whether or not to perform patching (see below)
     if ("$env:pg" -notmatch "[.]") {
       $env:branchtagcommit = "yes"
@@ -307,11 +335,13 @@ after_build:
 #
 # same as above (repeated here)
 - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
+#
 # note, zipping must be performed here, after - perl install . pl
 # note, pg has been installed inside %pgroot% == %pf%\PostgreSQL\%pgversion% (see above)
 # note, the db must be down
 # note, the environment variable "pggithubbincachefound" is
-#       used in determining whether or not to attempt to deploy to the Github release GITHUBCACHE
+#       used in determining whether or not to attempt to deploy to the Github release GITHUBCACHE (see below)
+#
 # "%pgroot%\bin\postgres.exe" SHOULD BE THERE - missing should NOT happen
 - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" (
     7z a -r "%pgzip%"  "%pgroot%\*" > nul
@@ -334,7 +364,11 @@ test_script:
       Add-AppveyorMessage "Copying the extension files to the PostgreSQL directories." -Category Information
       7z x "$env:zip" "-o$env:pgroot"
     }
-#
+    #
+    if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
+      7z x "$env:zip" "-o$env:pgroot"
+    }
+
 - appveyor AddMessage "Starting the database server." -Category Information
 - setx /M PATH "%R_HOME%\bin\%RBIN%;%PATH%"
 - net start postgresql%x64%-%pgversion%
