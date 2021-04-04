@@ -157,8 +157,6 @@ install:
 - mkdir "%pgroot%"
 - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/GITHUBCACHE/%pgzip%
-# - set pggithubbincachefound=false
-# - set pggithubbincacheextracted=false
 - if "%githubcache%"=="true" if not exist "%pgzip%"  (
     bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
     for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i)
