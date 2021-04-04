@@ -196,6 +196,7 @@ install:
         $env:OldPath = $env:Path
         $env:Path = "$env:pgroot\bin;$env:Path"
         #
+        Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
         initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
         pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
         Start-Service "postgresql$env:x64-$env:pgversion"
