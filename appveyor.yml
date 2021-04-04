@@ -191,19 +191,19 @@ install:
     if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
       $env:PROJ="plr.vcxproj"
       $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
-      if (Test-Path "$env:pgroot\bin") {
-        #
-        $env:OldPath = $env:Path
-        $env:Path = "$env:pgroot\bin;$env:Path"
-        #
-        Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
-        initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
-        pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
-        Start-Service "postgresql$env:x64-$env:pgversion"
-        Stop-Service  "postgresql$env:x64-$env:pgversion"
-        #
-        $env:Path = $env:OldPath
-      }
+#       if (Test-Path "$env:pgroot\bin") {
+#         #
+#         $env:OldPath = $env:Path
+#         $env:Path = "$env:pgroot\bin;$env:Path"
+#         #
+#         Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
+#         initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
+#         pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
+#         Start-Service "postgresql$env:x64-$env:pgversion"
+#         Stop-Service  "postgresql$env:x64-$env:pgversion"
+#         #
+#         $env:Path = $env:OldPath
+#       }
     }
 
 - ps: |
