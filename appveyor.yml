@@ -209,8 +209,6 @@ install:
 - SET sed=C:\msys64\usr\bin\sed
 #
 # CHANGE THE CURL URL BEFORE THE PULL REQUEST (IF ANY)
-# keep, if enterprisedb can install in, pre-existing empty directories
-- mkdir "%pgroot%"
 - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/GITHUBCACHE/%pgzip%
 - if "%githubcache%"=="true" if not exist "%pgzip%"  (
@@ -220,6 +218,7 @@ install:
 - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" curl -o "%pgzip%" -L "%pggithubbincacheurl%"
 - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if exist "%pgzip%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false)
 - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if "%pggithubbincachefound%"=="true" (
+      mkdir            "%pgroot%" &
       7z x "%pgzip%" "-o%pgroot%" &
       if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
   )
