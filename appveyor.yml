@@ -35,7 +35,7 @@ environment:
   # and that PostgreSQL x64 version is already installed on Appveyor,
   # then instead, the Appveyor version and platform will be used.
   # A PostgreSQL pg binary will-not-be downloaded from "enterprisedb".
-
+ 
   matrix:
 
   # REL_13_STABLE # branch - non-static commit
