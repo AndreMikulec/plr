@@ -19,29 +19,45 @@ environment:
   # A branch, tag, and commit, is different from an already-compiled binary.
   # It "does not have a dot "."" in the pg name.
 
-  # If a commit is chosen, then also the flag - "pghint: commit" also must be set.
+  # Of pg, if a commit is wanted, then also the flag - "pghint: commit" also must be set.
   #
-  # Optionally, the flag -  githubcache: true - may be set, to try to store the
+  # Of a branch, tag, and commit, optionally,
+  # the flag -  githubcache: true - may be set, to try to store the
   # compiled pg in the github releases GITHUBCACHE, then retrieve it when necessary.
   # Because compiling uses much time, and to try to avoid re-compiling,
-  # this "flag" can be useful for static source code: "tag" and "commit"
+  # this "flag" can be useful for static source code, e.g., tags and commits
   #
-  # The R file msvc.diff.R will be run, using Rscript.exe, and will patch files.
+  # When compiling plr with pg source code (branch, tag, or commit), the
+  # R file msvc.diff.R will be run, using Rscript.exe, and will patch files.
   # These patched files will reduce the PostgreSQL regression testing to just the plr extension.
   #
-  # If a PostgreSQL x64 version is already installed on Appveyor,
-  # then instead, that version and platform will be used, and
-  # pg will not be downloaded from "enterprisedb".
+  # If pg is a specific binary version
+  # and that PostgreSQL x64 version is already installed on Appveyor,
+  # then instead, the Appveyor version and platform will be used.
+  # A PostgreSQL pg binary will-not-be downloaded from "enterprisedb".
 
   matrix:
 
-  # REL_13_0
-  - pg: 13.1-1
-    PlatformToolset: v141
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
+#   # REL_13_0
+#   - pg: 13.1-1
+#     PlatformToolset: v141
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+
+    # REL_13_STABLE # branch - non-static commit
+    - pg: REL_13_0  # tag - static commit
+      PlatformToolset: v141
+      configuration: Release
+      platform: x64
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      rversion: 4.0.3
+      #
+      # githubcache: true
+      #  do not look/save compiled pg in Github release GITHUBCACHE
+      #  default of githubcache is false
+
 
 #   # REL_13_STABLE # branch - non-static commit
 #   - pg: REL_13_0  # tag - static commit
@@ -197,7 +213,7 @@ install:
       del symbols\plr.pdb
       popd
     }
-# miniaml required
+# minimal required
 - ps: |
     Set-PSDebug -Trace 2
     if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
@@ -441,3 +457,14 @@ deploy:
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
     on:
       appveyor_repo_tag: true
+
+  - provider: FTP
+    host: frs.sourceforge.net
+    protocol: sftp
+    username: andremikulec,andremikulec.u
+    password:
+      secure: 4gk4GyW4O5RooiOyGeRdoA==
+    artifact: pg_zip, plr_zip
+    folder: /home/frs/project/andremikulec
+    application:
+    active_mode: false
