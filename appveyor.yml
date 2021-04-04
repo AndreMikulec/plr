@@ -157,13 +157,11 @@ install:
 - mkdir "%pgroot%"
 - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/GITHUBCACHE/%pgzip%
-- set pggithubbincachefound=false
-- set pggithubbincacheextracted=false
+# - set pggithubbincachefound=false
+# - set pggithubbincacheextracted=false
 - if "%githubcache%"=="true" if not exist "%pgzip%"  (
     bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
     for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i) &
-    type %APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt &
-    echo %pggithubbincachefailingfound% &
     if  "%pggithubbincachefailingfound%"=="false" (curl -o "%pgzip%" -L "%pggithubbincacheurl%") &
     if exist "%pgzip%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false) &
     if "%pggithubbincachefound%"=="true" (
@@ -174,6 +172,7 @@ install:
 # use provides (if any) in the matrix
 - echo githubcache %githubcache%
 # generated
+- echo pggithubbincachefailingfound %pggithubbincachefailingfound%
 - echo pggithubbincachefound %pggithubbincachefound%
 - echo pggithubbincacheextracted %pggithubbincacheextracted%
 - dir "%pgroot%"
