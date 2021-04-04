@@ -288,11 +288,12 @@ after_build:
     }
 
 test_script:
+path %pgroot%\bin;%PATH%
 - ps: |
     Set-PSDebug -Trace 2
     if ("$env:pg" -notmatch "[.]") {
       Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
-      which postgres
+      which initdb
       initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
       pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
     } else {
