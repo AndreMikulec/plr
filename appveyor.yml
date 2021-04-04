@@ -154,20 +154,21 @@ install:
 #
 # CHANGE THE CURL URL BEFORE THE PULL REQUEST (IF ANY)
 - set pgzip=pg-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
-- set githubcachefound=false
-- set pggitcacheextracted=false
+- set pggithubbincachefound=false
+- set pggithubbincacheextracted=false
 - if "%githubcache%"=="true" if not exist "%pgzip%"  (
     curl -o "%pgzip%" --fail -L -G "https://github.com/AndreMikulec/plr/releases/tag/GITHUBCACHE/%pgzip%" || date /t &
-    if exist "%pgzip%" (set githubcachefound=true) else (set githubcachefound=false) &
-    if "%githubcachefound%"=="true" (
+    if exist "%pgzip%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false) &
+    if "%pggithubbincachefound%"=="true" (
       mkdir "%pgroot%" &
       7z x "%pgzip%" "-o%pgroot%" &
-      if exist "%pgroot%\bin\postgres.exe" (set pggitcacheextracted=true) else (set pggitcacheextracted=false)
+      dir "%pgroot%" &
+      if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
     )
   )
 - echo githubcache %githubcache%
-- echo githubcachefound %githubcachefound%
-- echo pggitcacheextracted %pggitcacheextracted%
+- echo pggithubbincachefound %pggithubbincachefound%
+- echo pggithubbincacheextracted %pggithubbincacheextracted%
 #
 
 - ps: |
@@ -181,7 +182,7 @@ install:
 - ps: |
     Set-PSDebug -Trace 2
     # notmatch - no "dot found" in pg name, is a branch, tag, or commit
-    if (("$env:pggitcacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
+    if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       git config --global advice.detachedHead false
       $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
       # git branch or commit - alphanumeric and all lowercase letters (slower download)
@@ -210,7 +211,7 @@ install:
       dir
       popd
     }
-- if "%pggitcacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
+- if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
       echo Begin performing patching on-the-fly &
       echo Begin patching &
       echo "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
@@ -227,7 +228,7 @@ install:
 # from source code
 - ps: |
     Set-PSDebug -Trace 2
-    if (("$env:pggitcacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
+    if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       gendef - "$env:R_HOME\bin\$env:RBIN\R.dll" > "R$env:PLATFORM.def" 2> $null
       lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
       dir
@@ -250,7 +251,7 @@ install:
 # from binary
 - ps: |
     Set-PSDebug -Trace 2
-    if (("$env:pggitcacheextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
+    if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
       $env:PROJ="plr.vcxproj"
       $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
       if (-not (Test-Path "$env:pgroot\bin")) {
@@ -290,7 +291,7 @@ after_build:
 #
 - ps: |
     Set-PSDebug -Trace 2
-    if (("$env:pggitcacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
+    if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       pushd c:\projects\postgresql\src\tools\msvc
       pwd
       dir
@@ -305,9 +306,10 @@ after_build:
 # note, zipping must be performed here, after - perl install . pl
 # note, pg has been installed inside %pgroot% == %pf%\PostgreSQL\%pgversion% (see above)
 # note, the db must be down
-# note, the environment variable "githubcachefound" is
+# note, the environment variable "pggithubbincachefound" is
 #       used in determining whether or not to attempt to deploy to the Github release GITHUBCACHE
-- if "%githubcache%"=="true" if "%githubcachefound%"=="false" (
+# "%pgroot%\bin\postgres.exe" SHOULD BE THERE - missing should NOT happen
+- if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" (
     7z a -r "%pgzip%"  "%pgroot%\*" > nul
   )
 
@@ -326,7 +328,7 @@ test_script:
       pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
     } else {
       Add-AppveyorMessage "Copying the extension files to the PostgreSQL directories." -Category Information
-      # 7z x "$env:zip" "-o$env:pgroot"
+      7z x "$env:zip" "-o$env:pgroot"
     }
 #
 - appveyor AddMessage "Starting the database server." -Category Information
@@ -381,8 +383,9 @@ deploy:
       # CHANGE BACK TO THE 'ORIGINAL' BEFORE THE PULL REQUEST (IF ANY)
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
     on:
-      githubcachefound: false
-      # non - "branch, tag, or commit" will still be "false" - but never find a pg-*.zip to deploy
+      pggithubbincachefound: false
+      # non - "branch, tag, or commit" will still be expected "false" ( githubcache != true )
+      # and never find a pg-*.zip to deploy - and that is OK.
 
   # second, last of Github deployments, to try to appear as "latest"
   - provider: GitHub
