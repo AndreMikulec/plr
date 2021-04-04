@@ -38,6 +38,16 @@ environment:
 
   matrix:
 
+  # REL_13_STABLE # branch - non-static commit
+  - pg: REL_13_0  # tag - static commit
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+    #
+    githubcache: true
+
 #   # REL_13_0
 #   - pg: 13.1-1
 #     PlatformToolset: v141
@@ -46,17 +56,17 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.3
 
-    # REL_13_STABLE # branch - non-static commit
-    - pg: REL_13_0  # tag - static commit
-      PlatformToolset: v141
-      configuration: Release
-      platform: x64
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      rversion: 4.0.3
-      #
-      # githubcache: true
-      #  do not look/save compiled pg in Github release GITHUBCACHE
-      #  default of githubcache is false
+#     # REL_13_STABLE # branch - non-static commit
+#     - pg: REL_13_0  # tag - static commit
+#       PlatformToolset: v141
+#       configuration: Release
+#       platform: x64
+#       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#       rversion: 4.0.3
+#       #
+#       # githubcache: true
+#       #  do not look/save compiled pg in Github release GITHUBCACHE
+#       #  default of githubcache is false
 
 
 #   # REL_13_STABLE # branch - non-static commit
