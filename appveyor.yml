@@ -157,7 +157,7 @@ install:
 - set pggithubbincachefound=false
 - set pggithubbincacheextracted=false
 - if "%githubcache%"=="true" if not exist "%pgzip%"  (
-    curl -o "%pgzip%" --fail -L -G "https://github.com/AndreMikulec/plr/releases/tag/GITHUBCACHE/%pgzip%" || date /t &
+    curl -o "%pgzip%" --fail -L -G "https://github.com/AndreMikulec/plr/releases/download/GITHUBCACHE/%pgzip%" || date /t &
     if exist "%pgzip%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false) &
     if "%pggithubbincachefound%"=="true" (
       mkdir "%pgroot%" &
