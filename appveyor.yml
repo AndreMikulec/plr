@@ -163,7 +163,7 @@ install:
     bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
     for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i) &
     type %APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt &
-    echo %pggithubbincachefailingfound%
+    echo %pggithubbincachefailingfound% &
     if  "%pggithubbincachefailingfound%"=="false" (curl -o "%pgzip%" -L "%pggithubbincacheurl%") &
     if exist "%pgzip%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false) &
     if "%pggithubbincachefound%"=="true" (
