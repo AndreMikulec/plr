@@ -167,7 +167,7 @@ install:
       7z x "%pgzip%" "-o%pgroot%" &
       if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
   )
-# use provides (if any) in the matrix
+# user provides (if any), in the matrix
 - echo githubcache %githubcache%
 # generated
 - echo pggithubbincachefailingfound %pggithubbincachefailingfound%
@@ -175,14 +175,16 @@ install:
 - echo pggithubbincacheextracted %pggithubbincacheextracted%
 - dir "%pgroot%"
 # remove old files
-- if "%githubcache%"=="true" if "%pggithubbincacheextracted%"=="true" (
-    pushd %pgroot%" &
-    del share\extension\plr-*.sql &
-    del share\extension\plr.control &
-    del lib\plr.dll &
-    del symbols\plr.pdb &
-    popd
-  )
+- ps: |
+    Set-PSDebug -Trace 2
+    if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
+      pushd "%pgroot%"
+      del share\extension\plr-*.sql
+      del share\extension\plr.control
+      del lib\plr.dll
+      del symbols\plr.pdb
+      popd
+    }
 # make the "pggithubbincacheextracted" become real
 - ps: |
     Set-PSDebug -Trace 2
