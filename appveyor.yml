@@ -176,6 +176,7 @@ install:
 - echo pggithubbincachefound %pggithubbincachefound%
 - echo pggithubbincacheextracted %pggithubbincacheextracted%
 - dir "%pgroot%"
+- curl -o "%pgzip%" -L "%pggithubbincacheurl%"
 
 - ps: |
     # "branchtagcommit" exists only becuase it is an easier test in a windows batch
