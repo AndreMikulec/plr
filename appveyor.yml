@@ -9,6 +9,15 @@ environment:
   PGOPTIONS: -c log_error_verbosity=verbose -c log_min_messages=debug2 -c log_min_error_statement=debug2
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
 
+  # Notice
+  # 1. The first creation of the tag: GITHUBCACHE, will make a 2nd Appeveyor build run
+  # 2. Debug Builds of the 2nd round or later with "githubcache: true" fail fast
+  # 3. msvc.diff.R solves all msvc.diff problems of all compilations
+  # 4. After pg 13, the master, has the attional problem that the function hex_decode
+  #      is not found. 
+  #    See the commit c3826f831e6e63e13a749fd3ab9fd7106707b549
+  #    See the commit 62afb42a7f9f533efc6c19f462c3a848fa4ddb63
+
   # pg - should be a specific binary version
   # from https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
   # and its platforms: "Windows x86-64" and "Windows x86-32"
@@ -48,15 +57,15 @@ environment:
 #     #
 #     githubcache: true
 
-  # REL_13_STABLE # branch - non-static commit
-  - pg: REL_13_0  # tag - static commit
-    PlatformToolset: v141
-    configuration: Debug
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
-    #
-    githubcache: true
+#   # REL_13_STABLE # branch - non-static commit
+#   - pg: REL_13_0  # tag - static commit
+#     PlatformToolset: v141
+#     configuration: Debug
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+#     #
+#     githubcache: true
 
 #   # REL_13_0
 #   - pg: 13.1-1
@@ -78,7 +87,14 @@ environment:
 #       #  do not look/save compiled pg in Github release GITHUBCACHE
 #       #  default of githubcache is false
 
-
+  # 12.5-1
+  - pg: REL_12_0
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+    githubcache: true
 
 #
 #   - pg: master
