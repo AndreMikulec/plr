@@ -87,15 +87,22 @@ environment:
 #       #  do not look/save compiled pg in Github release GITHUBCACHE
 #       #  default of githubcache is false
 
-
-  # 12.5-1
-  - pg: REL_12_0
+  # REL_12_0
+  - pg: 12.5-1
     PlatformToolset: v141
     configuration: Debug
     platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.0.3
-    githubcache: true
+
+#   # 12.5-1
+#   - pg: REL_12_0
+#     PlatformToolset: v141
+#     configuration: Debug
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+#     githubcache: true
 
 #
 #   - pg: master
