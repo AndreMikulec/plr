@@ -126,7 +126,6 @@ matrix:
   allow_failures:
     - pg: master
 
-
 # Appveyor build server environment variables
 #
 # ProgramFiles=C:\Program Files
