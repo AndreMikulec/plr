@@ -9,27 +9,34 @@ environment:
   PGOPTIONS: -c log_error_verbosity=verbose -c log_min_messages=debug2 -c log_min_error_statement=debug2
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
 
-  # pg - should be a specific version
+  # pg - should be a specific binary version
   # from https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
-  # and its platforms: "Windows x86-64"and "Windows x86-32".
+  # and its platforms: "Windows x86-64" and "Windows x86-32"
+  # This is "platform: x64" or "platform: x86"
   #
   # Alternately, pg can be a git branch, tag, or commit
+  #
+  # A branch, tag, and commit, is different from an already-compiled binary.
+  # It "does not have a dot "."" in the pg name.
+
   # If a commit is chosen, then also the flag - "pghint: commit" also must be set.
   #
-  # Optionally, the flag -  githubcache: true - may be set to try to store the
+  # Optionally, the flag -  githubcache: true - may be set, to try to store the
   # compiled pg in the github releases GITHUBCACHE, then retrieve it when necessary.
-  # Compiling uses much time, this can be useful for static source code: "tag" and "commit"
+  # Because compiling uses much time, and to try to avoid re-compiling,
+  # this "flag" can be useful for static source code: "tag" and "commit"
   #
   # The R file msvc.diff.R will be run, using Rscript.exe, and will patch files.
   # These patched files will reduce the PostgreSQL regression testing to just the plr extension.
   #
-  # If PostgreSQL x64 is already installed on Appveyor,
+  # If a PostgreSQL x64 version is already installed on Appveyor,
   # then instead, that version and platform will be used, and
   # pg will not be downloaded from "enterprisedb".
 
   matrix:
 
-  - pg: REL_13_0
+  # REL_13_STABLE # branch - non-static commit
+  - pg: REL_13_0  # tag - static commit
     PlatformToolset: v141
     configuration: Release
     platform: x64
@@ -56,6 +63,7 @@ environment:
 #   # Initial pgindent and pgperltidy run for v13.
 #   # src/tools/msvc/Mkvcbuild.pm
 #   #
+#   # static commit
 #   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e
 #     #
 #     pghint: commit
@@ -119,7 +127,8 @@ matrix:
     - pg: master
 
 
-# Appveyor build server
+# Appveyor build server environment variables
+#
 # ProgramFiles=C:\Program Files
 # ProgramFiles(x86)=C:\Program Files (x86)
 #
@@ -135,7 +144,7 @@ install:
 #- if not exist Rtools35.exe appveyor downloadfile https://cran.r-project.org/bin/windows/Rtools/Rtools35.exe
 #- Rtools35.exe /VERYSILENT
 - Set mingw=C:\msys64\mingw
-# strip off, if any, the - right-most part dot, then numbers, then one hyphen, then numbers
+# enterprisedb version name - strip off, if any, the - right-most part dot, then numbers, then one hyphen, then numbers
 - ps: $env:pgversion = $env:pg -replace "[.]\d+-\d+$", ""
 - echo pgversion=%pgversion%
 - set pgroot=%pf%\PostgreSQL\%pgversion%
@@ -146,24 +155,34 @@ install:
 #
 # CHANGE THE CURL URL BEFORE THE PULL REQUEST (IF ANY)
 - set pgzip=pg-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
-- set pgextracted=false
+- set githubcachefound=false
+- set pggitcacheextracted=false
 - if "%githubcache%"=="true" if not exist "%pgzip%"  (
     curl -o "%pgzip%" --fail -L -G "https://github.com/AndreMikulec/plr/releases/tag/GITHUBCACHE/%pgzip%" || date /t &
     if exist "%pgzip%" (set githubcachefound=true) else (set githubcachefound=false) &
     if "%githubcachefound%"=="true" (
       mkdir "%pgroot%" &
       7z x "%pgzip%" "-o%pgroot%" &
-      if exist "%pgroot%\bin\postgres.exe" (set pgextracted=true)
+      if exist "%pgroot%\bin\postgres.exe" (set pggitcacheextracted=true) else (set pggitcacheextracted=false)
     )
   )
+- echo githubcache %githubcache%
 - echo githubcachefound %githubcachefound%
-- echo pgextracted %pgextracted%
+- echo pggitcacheextracted %pggitcacheextracted%
 #
+
+- ps: |
+    # "branchtagcommit" exists only becuase it is an easier test in a windows batch
+    # test used in determining whether or not to perform patching (see below)
+    if ("$env:pg" -notmatch "[.]") {
+      $env:branchtagcommit = "yes"
+    } else {
+      $env:branchtagcommit = "no"
+    }
 - ps: |
     Set-PSDebug -Trace 2
-    # no dot found - branch, tag, or commit
-    if (("$env:pgextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
-      $env:branchtagcommit = "yes"
+    # notmatch - no "dot found" in pg name, is a branch, tag, or commit
+    if (("$env:pggitcacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       git config --global advice.detachedHead false
       $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
       # git branch or commit - alphanumeric and all lowercase letters (slower download)
@@ -192,7 +211,7 @@ install:
       dir
       popd
     }
-- if "%pgextracted%"=="false" if "%branchtagcommit%"=="yes" (
+- if "%pggitcacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
       echo Begin performing patching on-the-fly &
       echo Begin patching &
       echo "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
@@ -206,9 +225,10 @@ install:
       echo End display of vcregress.pl &
       echo End performaing patching on-the-fly
   )
+# from source code
 - ps: |
     Set-PSDebug -Trace 2
-    if (("$env:pgextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
+    if (("$env:pggitcacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       gendef - "$env:R_HOME\bin\$env:RBIN\R.dll" > "R$env:PLATFORM.def" 2> $null
       lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
       dir
@@ -228,9 +248,10 @@ install:
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
       $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
     }
+# from binary
 - ps: |
     Set-PSDebug -Trace 2
-    if (("$env:pgextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
+    if (("$env:pggitcacheextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
       $env:PROJ="plr.vcxproj"
       $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
       if (-not (Test-Path "$env:pgroot\bin")) {
@@ -268,16 +289,9 @@ after_build:
 - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - 7z a -r %zip% .\tmp\* > nul
 #
-# same as above (repeated here)
-# - set pgzip=pg-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
-# note, the db must be down
-#  - if "%githubcache%"=="true" if "%githubcachefound%"=="false" (
-#     7z a -r "%pgzip%"  "%pgroot%\*" > nul
-#  )
-#
 - ps: |
     Set-PSDebug -Trace 2
-    if (("$env:pgextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
+    if (("$env:pggitcacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       pushd c:\projects\postgresql\src\tools\msvc
       pwd
       dir
@@ -286,14 +300,29 @@ after_build:
       popd
       pwd
     }
+#
+# same as above (repeated here)
+- set pgzip=pg-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
+# note, zipping must be performed here, after - perl install . pl
+# note, pg has been installed inside %pgroot% == %pf%\PostgreSQL\%pgversion% (see above)
+# note, the db must be down
+# note, the environment variable "githubcachefound" is
+#       used in determining whether or not to attempt to deploy to the Github release GITHUBCACHE
+- if "%githubcache%"=="true" if "%githubcachefound%"=="false" (
+    7z a -r "%pgzip%"  "%pgroot%\*" > nul
+  )
+
 
 test_script:
 - path %pgroot%\bin;%PATH%
+# which from? mingw?
+- which postgres
+# from source code, but at this point in time,
+# the source code is an already (compiled) binary on disk - see above - perl install . pl
 - ps: |
     Set-PSDebug -Trace 2
     if ("$env:pg" -notmatch "[.]") {
       Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
-      which initdb
       initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
       pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
     } else {
@@ -305,7 +334,7 @@ test_script:
 - setx /M PATH "%R_HOME%\bin\%RBIN%;%PATH%"
 - net start postgresql%x64%-%pgversion%
 #
-# need server_version_num, so we can later, test psqlopt
+# need the server_version_num, so we can later, test to determine "psqlopt"
 - psql --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=server_version_num.txt
 - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/server_version_num.sh"
 - for /f "delims=" %%i in (server_version_num.txt) do (set server_version_num=%%i)
@@ -315,6 +344,7 @@ test_script:
 - ps: |
     Set-PSDebug -Trace 2
     Add-AppveyorTest Regression -Framework pg_regress -FileName sql\ -Outcome Running
+    # less than pg 9.5
     if ([double]"$env:server_version_num" -lt 90500.0) {
       $env:psqlopt="--psqldir"
     } else {
@@ -353,7 +383,9 @@ deploy:
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
     on:
       githubcachefound: false
+      # non - "branch, tag, or commit" will still be "false" - but never find a pg-*.zip to deploy
 
+  # second, last of Github deployments, to try to appear as "latest"
   - provider: GitHub
     release: $(appveyor_repo_tag_name)
     draft: false
