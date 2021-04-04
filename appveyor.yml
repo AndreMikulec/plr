@@ -288,7 +288,7 @@ after_build:
     }
 
 test_script:
-path %pgroot%\bin;%PATH%
+- path %pgroot%\bin;%PATH%
 - ps: |
     Set-PSDebug -Trace 2
     if ("$env:pg" -notmatch "[.]") {
