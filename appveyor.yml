@@ -136,6 +136,9 @@ init: # Make %x64% available for caching
 - if %PLATFORM%==x64 ( set pf=%ProgramFiles%&& set x64=-x64) else set pf=%ProgramFiles(x86)%
 - set exe=postgresql-%pg%-windows%x64%.exe
 - setx /m exe %exe%
+# possible user provided in the matrix
+- if not defined githubcache set githubcache=false
+- if not defined pghint      set pghint=none
 
 install:
 - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
@@ -168,12 +171,20 @@ install:
       7z x "%pgzip%" "-o%pgroot%" &
       if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
   )
-# user provides (if any), in the matrix
+# user provided (if any), in the matrix
 - echo githubcache %githubcache%
 # generated
+# internal - do not reuse
 - echo pggithubbincachefailingfound %pggithubbincachefailingfound%
+# reused below
 - echo pggithubbincachefound %pggithubbincachefound%
+- if not defined pggithubbincachefound set pggithubbincachefound=false
+- echo pggithubbincachefound %pggithubbincachefound%
+# reused below
 - echo pggithubbincacheextracted %pggithubbincacheextracted%
+- if not defined pggithubbincacheextracted set pggithubbincacheextracted=false
+- echo pggithubbincacheextracted %pggithubbincacheextracted%
+
 - dir "%pgroot%"
 # remove old files
 - ps: |
@@ -186,7 +197,7 @@ install:
       del symbols\plr.pdb
       popd
     }
-# make the "pggithubbincacheextracted" become real
+# miniaml required
 - ps: |
     Set-PSDebug -Trace 2
     if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
@@ -195,13 +206,15 @@ install:
     }
 
 - ps: |
-    # "branchtagcommit" exists only beause it is an easier test in a windows batch
+    # "branchtagcommit" exists only because it is an easier test in a windows batch
     # test used in determining whether or not to perform patching (see below)
     if ("$env:pg" -notmatch "[.]") {
       $env:branchtagcommit = "yes"
     } else {
       $env:branchtagcommit = "no"
     }
+    echo "branchtagcommit $env:branchtagcommit"
+
 - ps: |
     Set-PSDebug -Trace 2
     # notmatch - no "dot found" in pg name, is a branch, tag, or commit
