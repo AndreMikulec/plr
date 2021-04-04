@@ -189,7 +189,7 @@ install:
         pwd
       }
       pushd c:\projects\postgresql
-      dir 
+      dir
       popd
     }
 - if "%pgextracted%"=="false" if "%branchtagcommit%"=="yes" (
@@ -269,11 +269,11 @@ after_build:
 - 7z a -r %zip% .\tmp\* > nul
 #
 # same as above (repeated here)
-- set pgzip=pg-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
+# - set pgzip=pg-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 # note, the db must be down
-- if "%githubcache%"=="true" if "%githubcachefound%"=="false" (
-    # 7z a -r "%pgzip%"  "%pgroot%\*" > nul
-  )
+#  - if "%githubcache%"=="true" if "%githubcachefound%"=="false" (
+#     7z a -r "%pgzip%"  "%pgroot%\*" > nul
+#  )
 #
 - ps: |
     Set-PSDebug -Trace 2
