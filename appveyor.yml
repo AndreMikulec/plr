@@ -87,13 +87,13 @@ environment:
 #       #  do not look/save compiled pg in Github release GITHUBCACHE
 #       #  default of githubcache is false
 
-  # REL_12_0
-  - pg: 12.5-1
-    PlatformToolset: v141
-    configuration: Debug
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.3
+#   # REL_12_0
+#   - pg: 12.5-1
+#     PlatformToolset: v141
+#     configuration: Debug
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
 
 #   # 12.5-1
 #   - pg: REL_12_0
@@ -168,12 +168,33 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #
-#   - pg: 9.4.4-3
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
+  - pg: 9.4.4-3
+    PlatformToolset: v120
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+  - pg: 9.4.4-3
+    PlatformToolset: v120
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+  - pg: 9.4.4-3
+    PlatformToolset: v120
+    configuration: Release
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+  - pg: 9.4.4-3
+    PlatformToolset: v120
+    configuration: Debug
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
 
 matrix:
   allow_failures:
