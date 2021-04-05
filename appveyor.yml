@@ -67,6 +67,79 @@ environment:
 #     #
 #     githubcache: true
 
+
+  # REL_13_STABLE # branch - non-static commit
+  - pg: REL_13_0  # tag - static commit
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+    #
+    githubcache: true
+
+  # REL_13_STABLE # branch - non-static commit
+  - pg: REL_13_0  # tag - static commit
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+    #
+    githubcache: true
+
+  # REL_13_STABLE # branch - non-static commit
+  - pg: REL_13_0  # tag - static commit
+    PlatformToolset: v141
+    configuration: Release
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+    #
+    githubcache: true
+
+  # REL_13_STABLE # branch - non-static commit
+  - pg: REL_13_0  # tag - static commit
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+    #
+    githubcache: true
+
+  # REL_13_0
+  - pg: 13.1-1
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+
+  # REL_13_0
+  - pg: 13.1-1
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+
+  # REL_13_0
+  - pg: 13.1-1
+    PlatformToolset: v141
+    configuration: Release
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+
+  # REL_13_0
+  - pg: 13.1-1
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.3
+
 #   # REL_13_0
 #   - pg: 13.1-1
 #     PlatformToolset: v141
@@ -153,34 +226,51 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 
-
-  - pg: REL_10_0
-    PlatformToolset: v120
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    rversion: 3.6.0
-
-  - pg: REL_10_0
-    PlatformToolset: v120
-    configuration: Debug
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    rversion: 3.6.0
-
-  - pg: REL_10_0
-    PlatformToolset: v120
-    configuration: Release
-    platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    rversion: 3.6.0
-
-  - pg: REL_10_0
-    PlatformToolset: v120
-    configuration: Debug
-    platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    rversion: 3.6.0
+#   # good
+#   - pg: REL_10_0
+#     PlatformToolset: v120
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 3.6.0
+#
+#   # good
+#   - pg: REL_10_0
+#     PlatformToolset: v120
+#     configuration: Debug
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 3.6.0
+#
+#   # fail:
+#   # C:\projects\postgresql\pgsql.sln.metaproj : error MSB4126:
+#   # The specified solution configuration "Release|x86" is invalid.
+#   # Please specify a valid solution configuration using the
+#   # Configuration and Platform properties
+#   # (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU")
+#   # or leave those properties blank to use the default solution configuration.
+#   # [C:\projects\postgresql\pgsql.sln]
+#   - pg: REL_10_0
+#     PlatformToolset: v120
+#     configuration: Release
+#     platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 3.6.0
+#
+#   # fail:
+#   # C:\projects\postgresql\pgsql.sln.metaproj : error MSB4126:
+#   # The specified solution configuration "Debug|x86" is invalid.
+#   # Please specify a valid solution configuration using the
+#   # Configuration and Platform properties
+#   # (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU")
+#   # or leave those properties blank to use the default solution configuration.
+#   # [C:\projects\postgresql\pgsql.sln]
+#   - pg: REL_10_0
+#     PlatformToolset: v120
+#     configuration: Debug
+#     platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 3.6.0
 
 #   # REL9_6_0
 #   - pg: 9.6.21
