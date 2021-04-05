@@ -11,7 +11,7 @@ environment:
 
   # Notice
   # 1. The first creation of the tag: GITHUBCACHE, will make a 2nd Appeveyor build run
-  # 2. Debug Builds of the 2nd round or later with "githubcache: true" fail fast
+  # 2. Debug Builds that use the hardcoded plr.vcxproj (and plr.vcxproj.proj?) fail fast !
   # 3. msvc.diff.R solves all msvc.diff problems of all compilations
   # 4. After pg 13, the master, has the attional problem that the function hex_decode
   #      is not found. 
