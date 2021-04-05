@@ -241,6 +241,7 @@ install:
 - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if "%pggithubbincachefound%"=="true" (
       mkdir            "%pgroot%" &
       7z x "%pgzip%" "-o%pgroot%" &
+      dir "%pgroot%" &
       if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
   )
 # user provided (if any), in the matrix
@@ -257,7 +258,6 @@ install:
 - if not defined pggithubbincacheextracted set pggithubbincacheextracted=false
 - echo pggithubbincacheextracted %pggithubbincacheextracted%
 
-- dir "%pgroot%"
 # remove old files
 - ps: |
     Set-PSDebug -Trace 2
@@ -368,6 +368,7 @@ install:
         }
         & ".\$env:exe" --unattendedmodeui none --mode unattended --superpassword "$env:PGPASSWORD" --servicepassword "$env:PGPASSWORD" | Out-Null
         Stop-Service "postgresql$env:x64-$env:pgversion"
+        dir "$env:pgroot"
       }
     }
 
