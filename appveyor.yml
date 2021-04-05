@@ -370,6 +370,7 @@ install:
         Stop-Service "postgresql$env:x64-$env:pgversion"
         dir "$env:pgroot"
       }
+      dir "$env:pgroot"
     }
 
 cache:
