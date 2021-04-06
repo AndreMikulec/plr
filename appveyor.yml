@@ -45,6 +45,20 @@ environment:
   # then instead, the Appveyor version and platform will be used.
   # A PostgreSQL pg binary will-not-be downloaded from "enterprisedb".
 
+  # VsDevCmd.bat
+  # VsDevCmd -arch=amd64
+  # VsDevCmd -arch=x86 (default)
+  # set PATH=C:\Program Files\Git\bin;%PATH%
+  # bash
+  # find '/c/Program Files (x86)' -name 'VsDevCmd.bat' -type f
+  # echo $(cygpath -w "NIXPATH/VsDevCmd.bat")
+  # which cl
+  # no help (in yaml enclosed in outside single quotes)
+  # "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\VsDevCmd.bat" -arch=x86
+  # VsDevCmd.bat is new with Visual Studio 2017 
+  # and replaces vsvars32.bat that came with Visual Studio 2015 and earlier
+  # https://renenyffenegger.ch/notes/Windows/dirs/Program-Files-x86/Microsoft-Visual-Studio/version/edition/Common7/Tools/VsDevCmd_bat
+
   matrix:
 
 #   # REL_13_STABLE # branch - non-static commit
