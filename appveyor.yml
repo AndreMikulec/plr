@@ -55,7 +55,7 @@ environment:
   # which cl
   # no help (in yaml enclosed in outside single quotes)
   # "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\VsDevCmd.bat" -arch=x86
-  # VsDevCmd.bat is new with Visual Studio 2017 
+  # VsDevCmd.bat is new with Visual Studio 2017
   # and replaces vsvars32.bat that came with Visual Studio 2015 and earlier
   # https://renenyffenegger.ch/notes/Windows/dirs/Program-Files-x86/Microsoft-Visual-Studio/version/edition/Common7/Tools/VsDevCmd_bat
 
@@ -574,19 +574,17 @@ install:
 - set RBIN=%PLATFORM:x86=i386%
 - SET sed=C:\msys64\usr\bin\sed
 #
-# Perhaps a regular expression reading problem
-# Solution.pm - sub DeterminePlatform
-#   wrong: Detected hardware platform x## Wrong!
-# ActiveState Perl is good, but Strawberry Perl is preferred
-#
-- if %PLATFORM%==x64 (set BIT=64) else set BIT=32
-- set betterperlurl=https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-%BIT%bit-portable.zip
-- set betterperl=strawberry%BIT%
-- if not exist %betterperl%.zip curl -o %betterperl%.zip %betterperlurl%
-- 7z x %betterperl%.zip -oc:\%betterperl%
-- set Path=c:\%betterperl%\perl\bin;%Path%
-- which perl
-- set Path=%Path%;c:\%betterperl%\c\bin
+# # Appveyor specific: seems not required - with Appveyor
+# # ActiveState Perl is good, but Strawberry Perl is preferred
+# #
+# - if %PLATFORM%==x64 (set BIT=64) else set BIT=32
+# - set betterperlurl=https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-%BIT%bit-portable.zip
+# - set betterperl=strawberry%BIT%
+# - if not exist %betterperl%.zip curl -o %betterperl%.zip %betterperlurl%
+# - 7z x %betterperl%.zip -oc:\%betterperl%
+# - set Path=c:\%betterperl%\perl\bin;%Path%
+# - which perl
+# - set Path=%Path%;c:\%betterperl%\c\bin
 #
 # CHANGE THE CURL URL BEFORE THE PULL REQUEST (IF ANY)
 - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
@@ -690,8 +688,32 @@ install:
       echo Begin display of vcregress.pl &
       type c:\projects\postgresql\src\tools\msvc\vcregress.pl &
       echo End display of vcregress.pl &
-      echo End performaing patching on-the-fly
+      echo End performing patching on-the-fly
   )
+# Appveyor specific: "cl /?" or "cl /help" can not be ran, so the Platform can not be correctly determined
+#
+# Trying to override the phantom alias executable "cl" - Microsoft "call"
+# https://help.appveyor.com/discussions/problems/29255-trying-to-override-the-phantom-alias-executable-cl-microsoft-call
+#
+# force x86 to have the CPlatform Win32
+# force x64 to have the CPlatform x64
+#
+- echo Begin performing patching on-the-fly
+- echo Begin patching
+- if "%platform%"=="x86" (
+      echo "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R MSWin32 &
+           "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R MSWin32
+  )
+- if "%platform%"=="x64" (
+      echo "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R x64 &
+           "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R x64
+  )
+- echo End patching
+- echo Begin display of Solution.pm
+- type c:\projects\postgres\src\tools\msvc\Solution.pm
+- echo End display of Solution.pm
+- echo End performing patching on-the-fly
+#
 # from source code
 - ps: |
     Set-PSDebug -Trace 2
