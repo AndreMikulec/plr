@@ -10,7 +10,7 @@ environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
 
   # Notice
-  # 1. The first creation of the tag: GITHUBCACHE, will make a 2nd Appeveyor build run
+  # 1. The first creation of the tag: 0.0.0.0.0.GITHUBCACHE, will make a 2nd Appeveyor build run
   # 2. Debug Builds that use the hardcoded plr.vcxproj (and plr.vcxproj.proj?) fail fast !
   # 3. msvc.diff.R solves all msvc.diff problems of all compilations
   # 4. After pg 13, the master, has the attional problem that the function hex_decode
@@ -32,7 +32,7 @@ environment:
   #
   # Of a branch, tag, and commit, optionally,
   # the flag -  githubcache: true - may be set, to try to store the
-  # compiled pg in the github releases GITHUBCACHE, then retrieve it when necessary.
+  # compiled pg in the github releases 0.0.0.0.0.GITHUBCACHE, then retrieve it when necessary.
   # Because compiling uses much time, and to try to avoid re-compiling,
   # this "flag" can be useful for static source code, e.g., tags and commits
   #
@@ -207,7 +207,7 @@ environment:
 #       rversion: 4.0.3
 #       #
 #       # githubcache: true
-#       #  do not look/save compiled pg in Github release GITHUBCACHE
+#       #  do not look/save compiled pg in Github release 0.0.0.0.0.GITHUBCACHE
 #       #  default of githubcache is false
 
 #   # works
@@ -590,7 +590,7 @@ install:
 #
 # CHANGE THE CURL URL BEFORE THE PULL REQUEST (IF ANY)
 - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
-- set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/GITHUBCACHE/%pgzip%
+- set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pgzip%
 - if "%githubcache%"=="true" if not exist "%pgzip%"  (
     bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
     for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i)
@@ -789,7 +789,7 @@ after_build:
 # note, pg has been installed inside %pgroot% == %pf%\PostgreSQL\%pgversion% (see above)
 # note, the db must be down
 # note, the environment variable "pggithubbincachefound" is
-#       used in determining whether or not to attempt to deploy to the Github release GITHUBCACHE (see below)
+#       used in determining whether or not to attempt to deploy to the Github release 0.0.0.0.0.GITHUBCACHE (see below)
 #
 # "%pgroot%\bin\postgres.exe" SHOULD BE THERE - missing should NOT happen
 - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" (
@@ -863,7 +863,7 @@ artifacts:
 
 deploy:
   - provider: GitHub
-    release: GITHUBCACHE
+    release: 0.0.0.0.0.GITHUBCACHE
     draft: false
     prerelease: false
     artifact: pg_zip
