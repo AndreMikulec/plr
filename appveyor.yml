@@ -147,16 +147,23 @@ environment:
 
 
 
-  # ???
+#   # tag: THAT_WORKS
+#   # REL_10_0
+#   - pg: 10.16-1
+#     PlatformToolset: v120
+#     configuration: Release
+#     platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 4.0.3
+
+
   # REL_10_0
   - pg: 10.16-1
     PlatformToolset: v120
-    configuration: Release
+    configuration: Debug
     platform: x86
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     rversion: 4.0.3
-
-
 
 
 #   # not work
