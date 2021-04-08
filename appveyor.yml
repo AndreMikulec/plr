@@ -168,13 +168,46 @@ environment:
 
 
 
+# # perl : Could not copy release\pgcrypto\pgcrypto.dll to C:\Program Files (x86)\PostgreSQL\REL_10_0\lib\pgcrypto.dll
+# # At line:6 char:3
+# # +   perl install.pl "$env:pgroot"
+# # +   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# #     + CategoryInfo          : NotSpecified: (Could not copy ...ib\pgcrypto.dll:String) [], RemoteException
+# #     + FullyQualifiedErrorId : NativeCommandError
+# #  
+# #  at Install.pm line 40.
+# # 	Install::lcopy("release\\pgcrypto\\pgcrypto.dll", "C:\\Program Files (x86)\\PostgreSQL\\REL_10_0\\lib\\pgcrypto.dll") called at Install.pm line 329
+# # 	Install::CopySolutionOutput("release", "C:\\Program Files (x86)\\PostgreSQL\\REL_10_0") called at Install.pm line 93
+# # 	Install::Install("C:\\Program Files (x86)\\PostgreSQL\\REL_10_0", undef) called at install.pl line 26
+# # Copying build output files...
+# 
+#   # 10.16-1
+#   - pg: REL_10_0
+#     PlatformToolset: v120
+#     configuration: Release
+#     platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 4.0.3
+
+
+  # DID I REGRESS?
   # 10.16-1
   - pg: REL_10_0
     PlatformToolset: v120
     configuration: Release
-    platform: x86
+    platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     rversion: 4.0.3
+
+  # DID I REGRESS?
+  # 10.16-1
+  - pg: REL_10_0
+    PlatformToolset: v120
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 4.0.3
+
 
 # 
 #   # perl : Could not copy debug\zic\zic.exe to C:\Program Files (x86)\PostgreSQL\REL_10_0\bin\zic.exe
