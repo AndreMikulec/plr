@@ -945,9 +945,12 @@ after_build:
 - 7z a -r %zip% .\tmp\* > nul
 #
 - REM BEGIN FIND INSTALLED FILES LOCATION
-- if %PLATFORM%==x86 find '/c/projects/postgresql' -name '*postgres.exe' -type f 2>/dev/null
-- if %PLATFORM%==x86 find '/c/projects/postgresql' -name '*plr.dll'      -type f 2>/dev/null
+- if %PLATFORM%==x86 bash --login -c "find '/c/projects/postgresql' -name '*postgres.exe' -type f 2>/dev/null"
+- if %PLATFORM%==x86 bash --login -c "find '/c/projects/postgresql' -name '*plr.dll'      -type f 2>/dev/null"
 - REM END FIND INSTALLED FILES LOCATION
+#
+- if %PLATFORM%==x86 set PLATFORM=Win32
+- echo PLATFORM just before install.pl is %PLATFORM%
 #
 - ps: |
     Set-PSDebug -Trace 2
@@ -960,6 +963,10 @@ after_build:
       popd
       pwd
     }
+#
+#
+- if %PLATFORM%==Win32 set PLATFORM=x86
+- echo PLATFORM just after install.pl is %PLATFORM%
 #
 # same as above (repeated here)
 - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
