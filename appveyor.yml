@@ -214,7 +214,7 @@ environment:
   - pg: REL_10_0
     PlatformToolset: v120
     configuration: Release
-    platform: x64
+    platform: x86
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     rversion: 4.0.3
 
@@ -223,7 +223,7 @@ environment:
   - pg: REL_10_0
     PlatformToolset: v120
     configuration: Debug
-    platform: x64
+    platform: x86
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     rversion: 4.0.3
 
