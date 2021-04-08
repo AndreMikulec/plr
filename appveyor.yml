@@ -210,13 +210,13 @@ environment:
 
 
 
-  # 10.16-1
-  - pg: REL_10_0
-    PlatformToolset: v120
-    configuration: Release
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    rversion: 4.0.3
+#   # 10.16-1
+#   - pg: REL_10_0
+#     PlatformToolset: v120
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 4.0.3
 
 
   # 10.16-1
@@ -228,14 +228,14 @@ environment:
     rversion: 4.0.3
 
 
-  # made dll - can not find postgres.exe
-  # 10.16-1
-  - pg: REL_10_0
-    PlatformToolset: v120
-    configuration: Release
-    platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    rversion: 4.0.3
+#   # made dll - can not find postgres.exe
+#   # 10.16-1
+#   - pg: REL_10_0
+#     PlatformToolset: v120
+#     configuration: Release
+#     platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 4.0.3
 
   # made dll - can not find postgres.exe
   # 10.16-1
@@ -963,11 +963,17 @@ after_build:
 - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - 7z a -r %zip% .\tmp\* > nul
 #
-- echo BEGIN TRY TO FIND BUILD FILES LOCATION: postgres.exe and plr.dll
+- echo BEGIN TRY TO FIND BUILT FILES LOCATION: postgres.exe and plr.dll
 - bash --login -c "find '/c/projects/postgresql' -name '*postgres.exe' -type f 2>/dev/null"
 - bash --login -c "find '/c/projects/postgresql' -name '*plr.dll'      -type f 2>/dev/null"
-- echo END TRY TO FIND BUILD FILES LOCATION: postgres.exe and plr.dll
+- echo END TRY TO FIND BUILT FILES LOCATION: postgres.exe and plr.dll
 #
+- echo BEGIN TRY TO PRINT ALL BUILT FILES
+- if exist "c:\projects\postgresql\Release" bash -login -c "find '/c/projects/postgresql/Release' -name '*' -print 2>/dev/null"
+- if exist "c:\projects\postgresql\Debug"   bash -login -c "find '/c/projects/postgresql/Debug'   -name '*' -print 2>/dev/null"
+- echo END TRY TO PRINT ALL BUILT FILES
+#
+
 - if %PLATFORM%==x86 set PLATFORM=Win32
 - echo PLATFORM just before install.pl is %PLATFORM%
 #
@@ -1005,7 +1011,8 @@ after_build:
 - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" (
     7z a -r "%pgzip%"  "%pgroot%\*" > nul
   )
-
+# what did I 7z up?
+- if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" 7z l "%pgzip%"
 
 test_script:
 - path %pgroot%\bin;%PATH%
