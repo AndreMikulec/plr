@@ -918,8 +918,8 @@ cache:
 
 before_build:
 #
-- if %PLATFORM%==x86 set PLATFORM=Win32
-- echo PLATFORM before build is %PLATFORM%
+### - if %PLATFORM%==x86 set PLATFORM=Win32
+### - echo PLATFORM before build is %PLATFORM%
 
 #   Platform-	The operating system you are building for. Valid values are "Any CPU", "x86", and "x64".
 # https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2015/msbuild/common-msbuild-project-properties?view=vs-2015
@@ -927,8 +927,8 @@ before_build:
 #   $(PlatformShortName)	The short name of current architecture, for example, "x86" or "x64".
 # https://docs.microsoft.com/en-us/cpp/build/reference/common-macros-for-build-commands-and-properties?redirectedfrom=MSDN&view=msvc-160
 #
-# alternative to build.pl - test - omit sending /p:platform=%PLATFORM% - what happens?
-#
+# alternative to build.pl - test - omit sending /p:platform=%PLATFORM% - what happens? x86 -> PLATFORM=Win32 -> correct Win32
+#                         - test - omit sending /p:platform=%PLATFORM% - what happens? x86 -> PLATFORM=x86   -> ???
 build_script:
 - REM verbosity levels: q[uiet], m[inimal](orig program), n[ormal] (default), d[etailed], and diag[nostic]
 - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%CONFIGURATION%
@@ -941,8 +941,8 @@ after_build:
 #
 # note: going forward PLATFORM is not seen in any perl: .pl nor an .pm files
 #
-- if %PLATFORM%==Win32 set PLATFORM=x86
-- echo PLATFORM after build is %PLATFORM%
+### - if %PLATFORM%==Win32 set PLATFORM=x86
+### - echo PLATFORM after build is %PLATFORM%
 #
 - appveyor AddMessage Packing -Category Information
 - md tmp\share\extension
@@ -969,8 +969,8 @@ after_build:
 - echo END TRY TO PRINT ALL BUILT FILES
 #
 
-- if %PLATFORM%==x86 set PLATFORM=Win32
-- echo PLATFORM just before install.pl is %PLATFORM%
+### - if %PLATFORM%==x86 set PLATFORM=Win32
+### - echo PLATFORM just before install.pl is %PLATFORM%
 #
 - ps: |
     Set-PSDebug -Trace 2
