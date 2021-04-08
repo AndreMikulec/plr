@@ -209,7 +209,26 @@ environment:
 #     rversion: 4.0.3
 
 
-  # DID I REGRESS?
+
+  # 10.16-1
+  - pg: REL_10_0
+    PlatformToolset: v120
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 4.0.3
+
+
+  # 10.16-1
+  - pg: REL_10_0
+    PlatformToolset: v120
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 4.0.3
+
+
+  # made dll - can not find postgres.exe
   # 10.16-1
   - pg: REL_10_0
     PlatformToolset: v120
@@ -218,7 +237,7 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     rversion: 4.0.3
 
-  # still expected to fail
+  # made dll - can not find postgres.exe
   # 10.16-1
   - pg: REL_10_0
     PlatformToolset: v120
@@ -944,10 +963,10 @@ after_build:
 - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - 7z a -r %zip% .\tmp\* > nul
 #
-- REM BEGIN TRY TO FIND BUILD FILES LOCATION: postgres.exe and plr.dll
+- echo BEGIN TRY TO FIND BUILD FILES LOCATION: postgres.exe and plr.dll
 - bash --login -c "find '/c/projects/postgresql' -name '*postgres.exe' -type f 2>/dev/null"
 - bash --login -c "find '/c/projects/postgresql' -name '*plr.dll'      -type f 2>/dev/null"
-- REM END TRY TO FIND BUILD FILES LOCATION: postgres.exe and plr.dll
+- echo END TRY TO FIND BUILD FILES LOCATION: postgres.exe and plr.dll
 #
 - if %PLATFORM%==x86 set PLATFORM=Win32
 - echo PLATFORM just before install.pl is %PLATFORM%
@@ -965,10 +984,10 @@ after_build:
     }
 #
 #
-- REM BEGIN TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
+- echo BEGIN TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
 - bash --login -c "find '/c/Program Files'       -name '*postgres.exe' -type f 2>/dev/null"
 - bash --login -c "find '/c/Program Files (x86)' -name '*plr.dll'      -type f 2>/dev/null"
-- REM END TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
+- echo END TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
 #
 - if %PLATFORM%==Win32 set PLATFORM=x86
 - echo PLATFORM just after install.pl is %PLATFORM%
