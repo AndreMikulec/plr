@@ -944,10 +944,10 @@ after_build:
 - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - 7z a -r %zip% .\tmp\* > nul
 #
-- REM BEGIN FIND INSTALLED FILES LOCATION
-- if %PLATFORM%==x86 bash --login -c "find '/c/projects/postgresql' -name '*postgres.exe' -type f 2>/dev/null"
-- if %PLATFORM%==x86 bash --login -c "find '/c/projects/postgresql' -name '*plr.dll'      -type f 2>/dev/null"
-- REM END FIND INSTALLED FILES LOCATION
+- REM BEGIN TRY TO FIND BUILD FILES LOCATION: postgres.exe and plr.dll
+- bash --login -c "find '/c/projects/postgresql' -name '*postgres.exe' -type f 2>/dev/null"
+- bash --login -c "find '/c/projects/postgresql' -name '*plr.dll'      -type f 2>/dev/null"
+- REM END TRY TO FIND BUILD FILES LOCATION: postgres.exe and plr.dll
 #
 - if %PLATFORM%==x86 set PLATFORM=Win32
 - echo PLATFORM just before install.pl is %PLATFORM%
@@ -964,6 +964,11 @@ after_build:
       pwd
     }
 #
+#
+- REM BEGIN TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
+- bash --login -c "find '/c/Program Files'       -name '*postgres.exe' -type f 2>/dev/null"
+- bash --login -c "find '/c/Program Files (x86)' -name '*plr.dll'      -type f 2>/dev/null"
+- REM END TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
 #
 - if %PLATFORM%==Win32 set PLATFORM=x86
 - echo PLATFORM just after install.pl is %PLATFORM%
