@@ -850,6 +850,11 @@ install:
       type plr.vcxproj
       echo Comparing . . .
       type pgcrypto.vcxproj
+      echo WHERE DOES THE postgre.exe EVENTUALLY LIVE?
+      type pg_config.vcxproj
+      type pg_ctl.vcxproj 
+      type pg_regress.vcxproj
+      type postgres.vcxproj 
       popd
       dir
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
@@ -940,8 +945,8 @@ after_build:
 - 7z a -r %zip% .\tmp\* > nul
 #
 - REM BEGIN FIND INSTALLED FILES LOCATION
-- if %PLATFORM%==x86 find '/c/Program Files (x86)' -name '*postgres.exe' -type f
-- if %PLATFORM%==x64 find '/c/Program Files'       -name '*postgres.exe' -type f
+# - if %PLATFORM%==x86 find '/c/Program Files (x86)' -name '*postgres.exe' -type f
+# - if %PLATFORM%==x64 find '/c/Program Files'       -name '*postgres.exe' -type f
 - REM END FIND INSTALLED FILES LOCATION
 #
 - ps: |
