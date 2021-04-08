@@ -710,7 +710,7 @@ install:
   )
 - echo End patching
 - echo Begin display of Solution.pm
-- type c:\projects\postgres\src\tools\msvc\Solution.pm
+- type c:\projects\postgresql\src\tools\msvc\Solution.pm
 - echo End display of Solution.pm
 - echo End performing patching on-the-fly
 #
