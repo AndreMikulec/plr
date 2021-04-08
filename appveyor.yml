@@ -190,6 +190,25 @@ environment:
 #     rversion: 4.0.3
 
 
+#   # DID I REGRESS? - no: strictly an x86 problem
+#   # 10.16-1
+#   - pg: REL_10_0
+#     PlatformToolset: v120
+#     configuration: Release
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 4.0.3
+# 
+#   # DID I REGRESS? - no: strictly an x86 problem
+#   # 10.16-1
+#   - pg: REL_10_0
+#     PlatformToolset: v120
+#     configuration: Debug
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 4.0.3
+
+
   # DID I REGRESS?
   # 10.16-1
   - pg: REL_10_0
@@ -199,7 +218,7 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     rversion: 4.0.3
 
-  # DID I REGRESS?
+  # still expected to fail
   # 10.16-1
   - pg: REL_10_0
     PlatformToolset: v120
@@ -207,6 +226,7 @@ environment:
     platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     rversion: 4.0.3
+
 
 
 # 
