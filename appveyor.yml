@@ -133,19 +133,28 @@ environment:
 #     #
 #     githubcache: true
 
+#   # try
+#   # compiled - but could not create testing environment - directory problem
+#   # REL_10_STABLE # branch - non-static commit
+#   - pg: REL_10_0  # tag - static commit
+#     PlatformToolset: v120
+#     configuration: Release
+#     platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 4.0.3
+#     #
+#     githubcache: true
 
 
-  # try
-  # REL_10_STABLE # branch - non-static commit
-  - pg: REL_10_0  # tag - static commit
+
+  # ???
+  # REL_10_0
+  - pg: 10.16-1
     PlatformToolset: v120
     configuration: Release
     platform: x86
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     rversion: 4.0.3
-    #
-    githubcache: true
-
 
 
 
@@ -792,9 +801,6 @@ build_script:
           /verbosity:quiet /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 - dir
 
-# after build failure or success
-on_finish:
-- type C:\projects\postgresql\pgsql.sln.metaproj
 
 after_build:
 #
