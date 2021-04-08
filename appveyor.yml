@@ -119,20 +119,32 @@ environment:
 
 
 
-  # not work
-  # C:\projects\postgresql\pgsql.sln.metaproj : error MSB4126: The specified solution configuration "Release|x86" is invalid. Please specify a valid solution configuration using the Configuration and Platform properties (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU") or leave those properties blank to use the default solution configuration. [C:\projects\postgresql\pgsql.sln]
-  # REL_13_STABLE # branch - non-static commit
-  - pg: REL_13_0  # tag - static commit
-    PlatformToolset: v141
+#   # not work
+#   # C:\projects\postgresql\pgsql.sln.metaproj : error MSB4126: The specified solution configuration "Release|x86" is invalid. Please specify a valid solution configuration using the Configuration and Platform properties (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU") or leave those properties blank to use the default solution configuration. [C:\projects\postgresql\pgsql.sln]
+#   # after I force to Win32
+#   # C:\projects\postgresql\pgsql.sln.metaproj : error MSB4126: The specified solution configuration "Release|x86" is invalid. Please specify a valid solution configuration using the Configuration and Platform properties (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU") or leave those properties blank to use the default solution configuration. [C:\projects\postgresql\pgsql.sln]
+#   # REL_13_STABLE # branch - non-static commit
+#   - pg: REL_13_0  # tag - static commit
+#     PlatformToolset: v141
+#     configuration: Release
+#     platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.3
+#     #
+#     githubcache: true
+
+
+
+  # try
+  # REL_10_STABLE # branch - non-static commit
+  - pg: REL_10_0  # tag - static commit
+    PlatformToolset: v120
     configuration: Release
     platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     rversion: 4.0.3
     #
     githubcache: true
-
-
-
 
 
 
@@ -772,6 +784,7 @@ cache:
 
 build_script:
 - REM verbosity levels: q[uiet], m[inimal](orig program), n[ormal] (default), d[etailed], and diag[nostic]
+- C:\projects\postgresql\pgsql.sln.metaproj
 - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%CONFIGURATION% /p:platform=%PLATFORM%
           %PROJ%
           /verbosity:quiet /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
