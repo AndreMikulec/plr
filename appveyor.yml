@@ -701,8 +701,8 @@ install:
 - echo Begin performing patching on-the-fly
 - echo Begin patching
 - if "%platform%"=="x86" (
-      echo "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R MSWin32 &
-           "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R MSWin32
+      echo "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R Win32 &
+           "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R Win32
   )
 - if "%platform%"=="x64" (
       echo "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R x64 &
