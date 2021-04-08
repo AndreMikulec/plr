@@ -879,10 +879,6 @@ install:
       type plr.vcxproj
       echo Comparing . . .
       type pgcrypto.vcxproj
-      echo WHERE DOES THE postgre.exe EVENTUALLY LIVE?
-      type pg_config.vcxproj
-      type pg_ctl.vcxproj
-      type pg_regress.vcxproj
       type postgres.vcxproj
       popd
       dir
@@ -1004,6 +1000,8 @@ after_build:
 #
 - echo BEGIN TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
 - bash --login -c "find '/c/Program Files'       -name '*postgres.exe' -type f 2>/dev/null"
+- bash --login -c "find '/c/Program Files (x86)' -name '*postgres.exe' -type f 2>/dev/null"
+- bash --login -c "find '/c/Program Files'       -name '*plr.dll'      -type f 2>/dev/null"
 - bash --login -c "find '/c/Program Files (x86)' -name '*plr.dll'      -type f 2>/dev/null"
 - echo END TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
 #
