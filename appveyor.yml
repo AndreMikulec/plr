@@ -701,6 +701,14 @@ install:
 - echo pgversion=%pgversion%
 - set pgroot=%pf%\PostgreSQL\%pgversion%
 - echo %pgroot%
+#
+# perl x86 case, in perl, in install.pl,  mkdir silently fails
+# %pgroot% is always needed (to use\place binaries in) to do the regression test
+# so just explicitly (early) create that directory here now
+- if not exist "%pgroot%" mkdir "%pgroot%"
+- echo SHOWING pgroot - "%pgroot"
+- dir "%pgroot"
+#
 - SET R_HOME=%ProgramFiles%\R\R-%rversion%
 - set RBIN=%PLATFORM:x86=i386%
 - SET sed=C:\msys64\usr\bin\sed
@@ -717,6 +725,8 @@ install:
 # - which perl
 # - set Path=%Path%;c:\%betterperl%\c\bin
 #
+#
+
 # CHANGE THE CURL URL BEFORE THE PULL REQUEST (IF ANY)
 - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pgzip%
@@ -946,6 +956,8 @@ build_script:
 
 after_build:
 #
+# note: going forward PLATFORM is not seen in any perl: .pl nor an .pm files
+#
 - if %PLATFORM%==Win32 set PLATFORM=x86
 - echo PLATFORM after build is %PLATFORM%
 #
@@ -1012,7 +1024,11 @@ after_build:
     7z a -r "%pgzip%"  "%pgroot%\*" > nul
   )
 # what did I 7z up?
-- if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" 7z l "%pgzip%"
+- ps: |
+    Set-PSDebug -Trace 2
+    if ( ("$env:githubcache" -eq "true") -and ("$env:pggithubbincachefound" -eq "false") -and (Test-Path "$env:pgroot\bin\postgres.exe") ) {
+      7z l "$env:pgzip"
+    }
 
 test_script:
 - path %pgroot%\bin;%PATH%
