@@ -174,13 +174,13 @@ environment:
 # # +   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # #     + CategoryInfo          : NotSpecified: (Could not copy ...ib\pgcrypto.dll:String) [], RemoteException
 # #     + FullyQualifiedErrorId : NativeCommandError
-# #  
+# #
 # #  at Install.pm line 40.
 # # 	Install::lcopy("release\\pgcrypto\\pgcrypto.dll", "C:\\Program Files (x86)\\PostgreSQL\\REL_10_0\\lib\\pgcrypto.dll") called at Install.pm line 329
 # # 	Install::CopySolutionOutput("release", "C:\\Program Files (x86)\\PostgreSQL\\REL_10_0") called at Install.pm line 93
 # # 	Install::Install("C:\\Program Files (x86)\\PostgreSQL\\REL_10_0", undef) called at install.pl line 26
 # # Copying build output files...
-# 
+#
 #   # 10.16-1
 #   - pg: REL_10_0
 #     PlatformToolset: v120
@@ -198,7 +198,7 @@ environment:
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 4.0.3
-# 
+#
 #   # DID I REGRESS? - no: strictly an x86 problem
 #   # 10.16-1
 #   - pg: REL_10_0
@@ -229,14 +229,14 @@ environment:
 
 
 
-# 
+#
 #   # perl : Could not copy debug\zic\zic.exe to C:\Program Files (x86)\PostgreSQL\REL_10_0\bin\zic.exe
 #   # At line:6 char:3
 #   # +   perl install.pl "$env:pgroot"
 #   # +   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #   #     + CategoryInfo          : NotSpecified: (Could not copy ...0_0\bin\zic.exe:String) [], RemoteException
 #   #     + FullyQualifiedErrorId : NativeCommandError
-#   #  
+#   #
 #   #  at Install.pm line 40.
 #   # 	Install::lcopy("debug\\zic\\zic.exe", "C:\\Program Files (x86)\\PostgreSQL\\REL_10_0\\bin\\zic.exe") called at Install.pm line 329
 #   # 	Install::CopySolutionOutput("debug", "C:\\Program Files (x86)\\PostgreSQL\\REL_10_0") called at Install.pm line 93
@@ -852,9 +852,9 @@ install:
       type pgcrypto.vcxproj
       echo WHERE DOES THE postgre.exe EVENTUALLY LIVE?
       type pg_config.vcxproj
-      type pg_ctl.vcxproj 
+      type pg_ctl.vcxproj
       type pg_regress.vcxproj
-      type postgres.vcxproj 
+      type postgres.vcxproj
       popd
       dir
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
@@ -892,9 +892,9 @@ cache:
 - R-%rversion%-win.exe
 
 before_build:
-# note this (if PLATFORM set ) makes plr on x86/Win32 compile (both Debug/Release) 
+# note this (if PLATFORM set ) makes plr on x86/Win32 compile (both Debug/Release)
 # and be found and be zipped up.
-# however, the install.pl, can not do any work: 
+# however, the install.pl, can not do any work:
 #
 # perl : Could not copy debug\ANY\ANY.exe to C:\Program Files (x86)\PostgreSQL\REL_10_0\bin\pg_regress_ecpg.exe
 # At line:6 char:3
@@ -902,7 +902,7 @@ before_build:
 # +   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #     + CategoryInfo          : NotSpecified: (Could not copy ...egress_ecpg.exe:String) [], RemoteException
 #     + FullyQualifiedErrorId : NativeCommandError
-#  
+#
 #  at Install.pm line 40.
 # 	Install::lcopy("debug\\pg_regress_ecpg\\pg_regress_ecpg.exe", "C:\\Program Files (x86)\\PostgreSQL\\REL_10_0\\bin\\pg_regress_ecp"...) called at Install.pm line 329
 # 	Install::CopySolutionOutput("debug", "C:\\Program Files (x86)\\PostgreSQL\\REL_10_0") called at Install.pm line 93
@@ -945,8 +945,8 @@ after_build:
 - 7z a -r %zip% .\tmp\* > nul
 #
 - REM BEGIN FIND INSTALLED FILES LOCATION
-# - if %PLATFORM%==x86 find '/c/Program Files (x86)' -name '*postgres.exe' -type f
-# - if %PLATFORM%==x64 find '/c/Program Files'       -name '*postgres.exe' -type f
+- if %PLATFORM%==x86 find '/c/projects/postgresql' -name '*postgres.exe' -type f 2>/dev/null
+- if %PLATFORM%==x86 find '/c/projects/postgresql' -name '*plr.dll'      -type f 2>/dev/null
 - REM END FIND INSTALLED FILES LOCATION
 #
 - ps: |
