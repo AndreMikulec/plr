@@ -706,8 +706,8 @@ install:
 # %pgroot% is always needed (to use\place binaries in) to do the regression test
 # so just explicitly (early) create that directory here now
 - if not exist "%pgroot%" mkdir "%pgroot%"
-- echo SHOWING pgroot - "%pgroot"
-- dir "%pgroot"
+- echo SHOWING pgroot - "%pgroot%"
+- dir "%pgroot%"
 #
 - SET R_HOME=%ProgramFiles%\R\R-%rversion%
 - set RBIN=%PLATFORM:x86=i386%
