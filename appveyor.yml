@@ -719,21 +719,25 @@ install:
 # force x86 to have the CPlatform Win32
 # force x64 to have the CPlatform x64
 #
-- echo Begin performing patching on-the-fly
-- echo Begin patching
-- if "%platform%"=="x86" (
+- if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
+    echo Begin performing patching on-the-fly &
+    echo Begin patching
+  )
+- if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" if "%platform%"=="x86" (
       echo "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R Win32 &
            "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R Win32
   )
-- if "%platform%"=="x64" (
+- if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" if "%platform%"=="x64" (
       echo "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R x64 &
            "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R x64
   )
-- echo End patching
-- echo Begin display of Solution.pm
-- type c:\projects\postgresql\src\tools\msvc\Solution.pm
-- echo End display of Solution.pm
-- echo End performing patching on-the-fly
+- if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
+    echo End patching &
+    echo Begin display of Solution.pm &
+    type c:\projects\postgresql\src\tools\msvc\Solution.pm &
+    echo End display of Solution.pm &
+    echo End performing patching on-the-fly
+  )
 #
 # from source code
 - ps: |
