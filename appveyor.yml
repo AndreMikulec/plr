@@ -947,7 +947,7 @@ build_script:
           %PROJ%
           /verbosity:quiet /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 - dir
-
+#
 
 after_build:
 #
