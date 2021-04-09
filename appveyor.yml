@@ -1,676 +1,224 @@
 
-# required to be here, so that Visual Studio 2015, can compile PostgreSQL
+
 image: Visual Studio 2015
 
 clone_depth: 1
 environment:
+  #
+  # Appveyor PostgreSQL clusters specific
+  #
   PGUSER: postgres
   PGPASSWORD: Password12!
+  #
+  # PostgreSQL regression tests
+  #
   PGOPTIONS: -c log_error_verbosity=verbose -c log_min_messages=debug2 -c log_min_error_statement=debug2
+  #
+  # Try to save
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
 
   # Notice
-  # 1. The first creation of the tag: 0.0.0.0.0.GITHUBCACHE, will make a 2nd Appeveyor build run
-  # 2. Debug Builds that use the hardcoded plr.vcxproj (and plr.vcxproj.proj?) fail fast !
-  # 3. msvc.diff.R solves all msvc.diff problems of all compilations
-  # 4. After pg 13, the master, has the attional problem that the function hex_decode
-  #      is not found.
-  #    See the commit c3826f831e6e63e13a749fd3ab9fd7106707b549
-  #    See the commit 62afb42a7f9f533efc6c19f462c3a848fa4ddb63
+  # 1. The very first creation of the tag: 0.0.0.0.0.GITHUBCACHE,
+  #    will make a 2nd Appeveyor build run
+  # 1a. Alternatively, the tag 0.0.0.0.0.GITHUBCACHE can be pushed,
+  #    and then immediately a user should cancel the Appveyor build.
+  # 2. msvc.diff.R solves all msvc.diff problems of all compilations
+  # 3. Solutions.pm.R correctly sets the "internal" platform,
+  #    that use is used by perl to generate project files.
 
-  # pg - should be a specific binary version
+  # pg - should be a specific already-compiled-binary version
   # from https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
-  # and its platforms: "Windows x86-64" and "Windows x86-32"
-  # This is "platform: x64" or "platform: x86"
+  # and its platforms: "Windows x86-64"(x64) and "Windows x86-32"(x86).
   #
-  # Alternately, pg can be a git branch, tag, or commit
+  # Alternately, pg can be a git branch, tag, or commit.
   #
-  # A branch, tag, and commit, is different from an already-compiled binary.
-  # It "does not have a dot "."" in the pg name.
+  # Branches, tags, and commits, are different from an already-compiled binaries.
+  # They "does not have a dot "."" in the pg name.
 
-  # Of pg, if a commit is wanted, then also the flag - "pghint: commit" also must be set.
-  #
-  # Of a branch, tag, and commit, optionally,
-  # the flag -  githubcache: true - may be set, to try to store the
-  # compiled pg in the github releases 0.0.0.0.0.GITHUBCACHE, then retrieve it when necessary.
+  # Of pg, if a commit is wanted,
+  # then also the environment variable - "pghint: commit" also must be set.
+
   # Because compiling uses much time, and to try to avoid re-compiling,
-  # this "flag" can be useful for static source code, e.g., tags and commits
+  # this environment variable "githubcache: true" can be useful for static source code,
+  # e.g., tags and commits
   #
+  # Of a (branch,) tag, and commit, optionally,
+  # the environment variable -  "githubcache: true" - may be set, to try to store the
+  # compiled PostgreSQL (pg) in the github releases 0.0.0.0.0.GITHUBCACHE,
+  # then retrieve it when necessary, then expand it and use it for plr compiling
+  # and plr regression testing.
+
   # When compiling plr with pg source code (branch, tag, or commit), the
   # R file msvc.diff.R will be run, using Rscript.exe, and will patch files.
   # These patched files will reduce the PostgreSQL regression testing to just the plr extension.
   #
-  # If pg is a specific binary version
-  # and that PostgreSQL x64 version is already installed on Appveyor,
-  # then instead, the Appveyor version and platform will be used.
-  # A PostgreSQL pg binary will-not-be downloaded from "enterprisedb".
+  # If pg is a already-compiled-binary version
+  # and that PostgreSQL x64 version (subtracting off the non-version part of pg)
+  # is already installed on Appveyor,
+  # then instead, that Appveyor version and platform will be used
+  # to compile plr and perform regression testing.
+  # Therefore, a PostgreSQL already-compiled-binary will-not-be downloaded from "enterprisedb".
 
-  # VsDevCmd.bat
-  # VsDevCmd -arch=amd64
-  # VsDevCmd -arch=x86 (default)
-  # set PATH=C:\Program Files\Git\bin;%PATH%
-  # bash
-  # find '/c/Program Files (x86)' -name 'VsDevCmd.bat' -type f
-  # echo $(cygpath -w "NIXPATH/VsDevCmd.bat")
-  # which cl
-  # no help (in yaml enclosed in outside single quotes)
-  # "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\VsDevCmd.bat" -arch=x86
-  # VsDevCmd.bat is new with Visual Studio 2017
-  # and replaces vsvars32.bat that came with Visual Studio 2015 and earlier
-  # https://renenyffenegger.ch/notes/Windows/dirs/Program-Files-x86/Microsoft-Visual-Studio/version/edition/Common7/Tools/VsDevCmd_bat
+  # The file plr.vcxproj.user must not exist (or be named plr.vcxproj.user.NOMOREUSE).
+  # The existance of file plr.vcxproj.user
+  # will cause non-"branch, tag, or commit" Debug builds to fail.
 
   matrix:
 
-#   # REL_13_STABLE # branch - non-static commit
-#   - pg: REL_13_0  # tag - static commit
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
+  # notice
+  # Enterprisedb does not have PostgreSQL x86 platform binaries
+  # for PostgreSQL versions 11 and greater
 
-#   # REL_13_STABLE # branch - non-static commit
-#   - pg: REL_13_0  # tag - static commit
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
+  # notice
+  # Appveyor (as of this date APR 2021), does not have PostgreSQL x64 version 13 available
+  # Appveyor does not have any PostgreSQL x86 versions available.
+
+  # notice
+  # I can not compile plr using PostgreSQL 9.6, 9.5 from source: "git, tag, or commit":
+  # I have not found the right combination of APPVEYOR_BUILD_WORKER_IMAGE/PlatformToolset.
+  #
+  # Moreover, I CAN STILL compile plr using pg as an already-compiled-binary version
+  # of PostgreSQL 9.6 or 9.5.
 
 
-#   # works: 1st run
-#   # REL_13_STABLE # branch - non-static commit
-#   - pg: REL_13_0  # tag - static commit
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
-#
-#   # works: 1st run
-#   # REL_13_STABLE # branch - non-static commit
-#   - pg: REL_13_0  # tag - static commit
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
-#
-#   # not work
-#   # C:\projects\postgresql\pgsql.sln.metaproj : error MSB4126: The specified solution configuration "Release|x86" is invalid. Please specify a valid solution configuration using the Configuration and Platform properties (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU") or leave those properties blank to use the default solution configuration. [C:\projects\postgresql\pgsql.sln]
-#   # REL_13_STABLE # branch - non-static commit
-#   - pg: REL_13_0  # tag - static commit
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
-#
-
-
-
-#   # not work
-#   # C:\projects\postgresql\pgsql.sln.metaproj : error MSB4126: The specified solution configuration "Release|x86" is invalid. Please specify a valid solution configuration using the Configuration and Platform properties (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU") or leave those properties blank to use the default solution configuration. [C:\projects\postgresql\pgsql.sln]
-#   # after I force to Win32
-#   # C:\projects\postgresql\pgsql.sln.metaproj : error MSB4126: The specified solution configuration "Release|x86" is invalid. Please specify a valid solution configuration using the Configuration and Platform properties (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU") or leave those properties blank to use the default solution configuration. [C:\projects\postgresql\pgsql.sln]
-#   # REL_13_STABLE # branch - non-static commit
-#   - pg: REL_13_0  # tag - static commit
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
-
-#   # try
-#   # compiled - but could not create testing environment - directory problem
-#   # REL_10_STABLE # branch - non-static commit
-#   - pg: REL_10_0  # tag - static commit
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
-
-
-
-#   # tag: THAT_WORKS
-#   # REL_10_0
-#   - pg: 10.16-1
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-
-
-#   # works - Try 10.16-1 x86 Debug (plr.vcxproj.user.NOMOREUSE)
-#   # REL_10_0
-#   - pg: 10.16-1
-#     PlatformToolset: v120
-#     configuration: Debug
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-
-
-
-# # perl : Could not copy release\pgcrypto\pgcrypto.dll to C:\Program Files (x86)\PostgreSQL\REL_10_0\lib\pgcrypto.dll
-# # At line:6 char:3
-# # +   perl install.pl "$env:pgroot"
-# # +   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# #     + CategoryInfo          : NotSpecified: (Could not copy ...ib\pgcrypto.dll:String) [], RemoteException
-# #     + FullyQualifiedErrorId : NativeCommandError
-# #
-# #  at Install.pm line 40.
-# # 	Install::lcopy("release\\pgcrypto\\pgcrypto.dll", "C:\\Program Files (x86)\\PostgreSQL\\REL_10_0\\lib\\pgcrypto.dll") called at Install.pm line 329
-# # 	Install::CopySolutionOutput("release", "C:\\Program Files (x86)\\PostgreSQL\\REL_10_0") called at Install.pm line 93
-# # 	Install::Install("C:\\Program Files (x86)\\PostgreSQL\\REL_10_0", undef) called at install.pl line 26
-# # Copying build output files...
-#
-#   # 10.16-1
-#   - pg: REL_10_0
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-
-
-#   # DID I REGRESS? - no: strictly an x86 problem
-#   # 10.16-1
-#   - pg: REL_10_0
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-#
-#   # DID I REGRESS? - no: strictly an x86 problem
-#   # 10.16-1
-#   - pg: REL_10_0
-#     PlatformToolset: v120
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-
-
-
-#   # 10.16-1
-#   - pg: REL_10_0
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-
-
-#   # 10.16-1
-#   - pg: REL_10_0
-#     PlatformToolset: v120
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-
-
-#   # made dll - can not find postgres.exe
-#   # 10.16-1
-#   - pg: REL_10_0
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-
-  # made dll - can not find postgres.exe
-  # 10.16-1
-  - pg: REL_10_0
-    PlatformToolset: v120
+  - pg: master # branch - non-static commit - from git
+    PlatformToolset: v141
     configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+
+
+  # Initial pgindent and pgperltidy run for v13.
+  # src/tools/msvc/Mkvcbuild.pm
+  #
+  - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e # static commit - from git
+    #
+    pghint: commit
+    #
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+    #
+    githubcache: true
+
+
+  - pg: REL_13_STABLE  # branch - non-static commit - from git
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+
+
+  - pg: REL_13_0  # tag - static commit - from git
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+    #
+    githubcache: true
+
+
+  - pg: 13.1-1 # from enterprisedb
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+
+
+  - pg: 12.5-1 # from Appveyor
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+
+
+  - pg: 12.5-1 # from Appveyor
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 3.6.0
+
+
+  - pg: 11.11-1 # from Appveyor
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 3.6.0
+
+
+  - pg: 10.16-1 # from Appveyor
+    PlatformToolset: v120
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+
+  # REL_10_0
+  - pg: 10.16-1 # from enterprisedb
+    PlatformToolset: v120
+    configuration: Release
     platform: x86
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    rversion: 4.0.3
+    rversion: 3.6.0
 
 
-
-#
-#   # perl : Could not copy debug\zic\zic.exe to C:\Program Files (x86)\PostgreSQL\REL_10_0\bin\zic.exe
-#   # At line:6 char:3
-#   # +   perl install.pl "$env:pgroot"
-#   # +   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#   #     + CategoryInfo          : NotSpecified: (Could not copy ...0_0\bin\zic.exe:String) [], RemoteException
-#   #     + FullyQualifiedErrorId : NativeCommandError
-#   #
-#   #  at Install.pm line 40.
-#   # 	Install::lcopy("debug\\zic\\zic.exe", "C:\\Program Files (x86)\\PostgreSQL\\REL_10_0\\bin\\zic.exe") called at Install.pm line 329
-#   # 	Install::CopySolutionOutput("debug", "C:\\Program Files (x86)\\PostgreSQL\\REL_10_0") called at Install.pm line 93
-#   # 	Install::Install("C:\\Program Files (x86)\\PostgreSQL\\REL_10_0", undef) called at install.pl line 26
-#   #
-#   # 10.16-1
-#   - pg: REL_10_0
-#     PlatformToolset: v120
-#     configuration: Debug
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-
-#   # not work
-#   # C:\projects\postgresql\pgsql.sln.metaproj : error MSB4126: The specified solution configuration "Debug|x86" is invalid. Please specify a valid solution configuration using the Configuration and Platform properties (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU") or leave those properties blank to use the default solution configuration. [C:\projects\postgresql\pgsql.sln]
-#   # REL_13_STABLE # branch - non-static commit
-#   - pg: REL_13_0  # tag - static commit
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
-#
-#   # works
-#   # REL_13_0
-#   - pg: 13.1-1
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#
-#   # not work
-#   # copy %dll% tmp\lib
-#   # The system cannot find the file specified
-#   # REL_13_0
-#   - pg: 13.1-1
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#
-#   # not work (not available at enterprisedb)
-#   # dir : Cannot find path 'C:\Program Files (x86)\PostgreSQL\13' because it does not exist.
-#   # REL_13_0
-#   - pg: 13.1-1
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#
-#   # not work (not available at enerprisedb)
-#   # dir : Cannot find path 'C:\Program Files (x86)\PostgreSQL\13' because it does not exist.
-#   # REL_13_0
-#   - pg: 13.1-1
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-
-#   # REL_13_0
-#   - pg: 13.1-1
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-
-#     # REL_13_STABLE # branch - non-static commit
-#     - pg: REL_13_0  # tag - static commit
-#       PlatformToolset: v141
-#       configuration: Release
-#       platform: x64
-#       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#       rversion: 4.0.3
-#       #
-#       # githubcache: true
-#       #  do not look/save compiled pg in Github release 0.0.0.0.0.GITHUBCACHE
-#       #  default of githubcache is false
-
-#   # works
-#   # REL_12_STABLE # branch - non-static commit
-#   - pg: REL_12_0  # tag - static commit
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
-#
-#   # works
-#   # REL_12_STABLE # branch - non-static commit
-#   - pg: REL_12_0  # tag - static commit
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
-#
-#   # not work
-#   # C:\projects\postgresql\pgsql.sln.metaproj : error MSB4126: The specified solution configuration "Release|x86" is invalid. Please specify a valid solution configuration using the Configuration and Platform properties (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU") or leave those properties blank to use the default solution configuration. [C:\projects\postgresql\pgsql.sln]
-#   # REL_12_STABLE # branch - non-static commit
-#   - pg: REL_12_0  # tag - static commit
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
-#
-#   # not work
-#   # C:\projects\postgresql\pgsql.sln.metaproj : error MSB4126: The specified solution configuration "Debug|x86" is invalid. Please specify a valid solution configuration using the Configuration and Platform properties (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU") or leave those properties blank to use the default solution configuration. [C:\projects\postgresql\pgsql.sln]
-#   # REL_12_STABLE # branch - non-static commit
-#   - pg: REL_12_0  # tag - static commit
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
-#
-#   # works
-#   # REL_12_0
-#   - pg: 12.5-1
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#
-#   # not work
-#   # copy %dll% tmp\lib
-#   # The system cannot find the file specified.
-#   # REL_12_0
-#   - pg: 12.5-1
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#
-#   # not work (enterprisedb does not have)
-#   # Cannot find path 'C:\Program Files (x86)\PostgreSQL\12' because it does not exist.
-#   # REL_12_0
-#   - pg: 12.5-1
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#
-#   # not work (enterprisedb does not have)
-#   # Cannot find path 'C:\Program Files (x86)\PostgreSQL\12' because it does not exist.
-#   # REL_12_0
-#   - pg: 12.5-1
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
+  - pg: 9.6.21 # from Appveyor
+    PlatformToolset: v120
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
 
 
-#   # REL_12_0
-#   - pg: 12.5-1
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-
-#   # 12.5-1
-#   - pg: REL_12_0
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#     githubcache: true
-
-#
-#   - pg: master
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#
-#
-#   # Initial pgindent and pgperltidy run for v13.
-#   # src/tools/msvc/Mkvcbuild.pm
-#   #
-#   # static commit
-#   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e
-#     #
-#     pghint: commit
-#     #
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
-#
-#   # REL_12_0
-#   - pg: 12.5-1
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.3
-#
-#   # REL_11_0
-#   - pg: 11.11-1
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 3.6.0
-
-#   # works
-#   # REL_10_STABLE # branch - non-static commit
-#   - pg: REL_10_0  # tag - static commit
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
-#
-#   # works
-#   # REL_10_STABLE # branch - non-static commit
-#   - pg: REL_10_0  # tag - static commit
-#     PlatformToolset: v120
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
-#
-#   # not work
-#   # C:\projects\postgresql\pgsql.sln.metaproj : error MSB4126: The specified solution configuration "Release|x86" is invalid. Please specify a valid solution configuration using the Configuration and Platform properties (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU") or leave those properties blank to use the default solution configuration. [C:\projects\postgresql\pgsql.sln]
-#   # REL_10_STABLE # branch - non-static commit
-#   - pg: REL_10_0  # tag - static commit
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
-#
-#   # not work
-#   # C:\projects\postgresql\pgsql.sln.metaproj : error MSB4126: The specified solution configuration "Debug|x86" is invalid. Please specify a valid solution configuration using the Configuration and Platform properties (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU") or leave those properties blank to use the default solution configuration. [C:\projects\postgresql\pgsql.sln]
-#   # REL_10_STABLE # branch - non-static commit
-#   - pg: REL_10_0  # tag - static commit
-#     PlatformToolset: v120
-#     configuration: Debug
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-#     #
-#     githubcache: true
-#
-#   # works
-#   # REL_10_0
-#   - pg: 10.16-1
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-#
-#   # not work
-#   # copy %dll% tmp\lib
-#   # The system cannot find the file specified.
-#   # REL_10_0
-#   - pg: 10.16-1
-#     PlatformToolset: v120
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-#
-#   # enterprisedb has this binary
-#   # works
-#   # REL_10_0
-#   - pg: 10.16-1
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-#
-#   # not work
-#   # copy %dll% tmp\lib
-#   # The system cannot find the file specified.
-#   # REL_10_0
-#   - pg: 10.16-1
-#     PlatformToolset: v120
-#     configuration: Debug
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.3
-#
+  - pg: 9.6.21 # from enterprisedb
+    PlatformToolset: v120
+    configuration: Release
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
 
 
-#   # REL_10_0
-#   - pg: 10.16-1
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
+  - pg: 9.5.25-1 # from Appveyor
+    PlatformToolset: v120
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
 
-#   # good
-#   - pg: REL_10_0
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#   # good
-#   - pg: REL_10_0
-#     PlatformToolset: v120
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#   # fail:
-#   # C:\projects\postgresql\pgsql.sln.metaproj : error MSB4126:
-#   # The specified solution configuration "Release|x86" is invalid.
-#   # Please specify a valid solution configuration using the
-#   # Configuration and Platform properties
-#   # (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU")
-#   # or leave those properties blank to use the default solution configuration.
-#   # [C:\projects\postgresql\pgsql.sln]
-#   - pg: REL_10_0
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#   # fail:
-#   # C:\projects\postgresql\pgsql.sln.metaproj : error MSB4126:
-#   # The specified solution configuration "Debug|x86" is invalid.
-#   # Please specify a valid solution configuration using the
-#   # Configuration and Platform properties
-#   # (e.g. MSBuild.exe Solution.sln /p:Configuration=Debug /p:Platform="Any CPU")
-#   # or leave those properties blank to use the default solution configuration.
-#   # [C:\projects\postgresql\pgsql.sln]
-#   - pg: REL_10_0
-#     PlatformToolset: v120
-#     configuration: Debug
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
 
-#   # REL9_6_0
-#   - pg: 9.6.21
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#   - pg: 9.5.25-1
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
+  - pg: 9.5.25-1 # from enterprisedb
+    PlatformToolset: v120
+    configuration: Release
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
 
-#   - pg: 9.4.4-3
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#   - pg: 9.4.4-3
-#     PlatformToolset: v120
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#   - pg: 9.4.4-3
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#   - pg: 9.4.4-3
-#     PlatformToolset: v120
-#     configuration: Debug
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
+
+  - pg: 9.4.4-3 # from Appveyor
+    PlatformToolset: v120
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+
+  - pg: 9.4.4-3 # from enterprisedb
+    PlatformToolset: v120
+    configuration: Release
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
 
 matrix:
   allow_failures:
@@ -682,29 +230,44 @@ matrix:
 # ProgramFiles(x86)=C:\Program Files (x86)
 #
 init: # Make %x64% available for caching
-- if %PLATFORM%==x64 (set pf=%ProgramFiles%&& set x64=-x64) else set pf=%ProgramFiles(x86)%
-- set exe=postgresql-%pg%-windows%x64%.exe
-- setx /m exe %exe%
+- ps: |
+    if ("$env:PLATFORM" -eq "x64") {
+      $env:pf = "$env:ProgramFiles"
+      $env:x64 = "-x64"
+    } else {
+      $env:pf = "${env:ProgramFiles(x86)}"
+    }
+    $env:exe = "postgresql-$env:pg-windows$env:x64.exe"
+    [Environment]::SetEnvironmentVariable("exe", $env:exe, "Machine")
+
+#
 # possible user provided in the matrix
+#
 - if not defined githubcache set githubcache=false
 - if not defined pghint      set pghint=none
 
 install:
 - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
 - R-%rversion%-win.exe /VERYSILENT
+#
 # We could have used RTools many R users have, but let's use msys64 existing on Appveyor intead
 #- if not exist Rtools35.exe appveyor downloadfile https://cran.r-project.org/bin/windows/Rtools/Rtools35.exe
 #- Rtools35.exe /VERYSILENT
+#
 - Set mingw=C:\msys64\mingw
-# enterprisedb version name - strip off, if any, the - right-most part dot, then numbers, then one hyphen, then numbers
+#
+# From the enterprisedb version name,
+# if any, strip off the: right-most part dot, then numbers, then one hyphen, then numbers.
 - ps: $env:pgversion = $env:pg -replace "[.]\d+-\d+$", ""
+#
 - echo pgversion=%pgversion%
 - set pgroot=%pf%\PostgreSQL\%pgversion%
 - echo %pgroot%
 #
-# perl x86 case, in perl, in install.pl,  mkdir silently fails
-# %pgroot% is always needed (to use\place binaries in) to do the regression test
-# so just explicitly (early) create that directory here now
+# In the perl x86 case, in perl, in install.pl,  "mkdir" silently fails.
+# %pgroot% is always needed (to use\place binaries in) to do the regression tests,
+# so just, explicitly (early), create that directory here now.
+#
 - if not exist "%pgroot%" mkdir "%pgroot%"
 - echo SHOWING pgroot - "%pgroot%"
 - dir "%pgroot%"
@@ -724,12 +287,17 @@ install:
 # - set Path=c:\%betterperl%\perl\bin;%Path%
 # - which perl
 # - set Path=%Path%;c:\%betterperl%\c\bin
-#
-#
+
 
 # CHANGE THE CURL URL BEFORE THE PULL REQUEST (IF ANY)
+#
+# if "githubcache: true",
+#   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
+#   pg already-compiled-binaries
+#
 - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pgzip%
+#
 - if "%githubcache%"=="true" if not exist "%pgzip%"  (
     bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
     for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i)
@@ -756,7 +324,10 @@ install:
 - if not defined pggithubbincacheextracted set pggithubbincacheextracted=false
 - echo pggithubbincacheextracted %pggithubbincacheextracted%
 
-# remove old files
+#
+# Remove old plr files, from the pg already-compiled-binary
+# extraction from 0.0.0.0.0.GITHUBCACHE, if any old files
+#
 - ps: |
     Set-PSDebug -Trace 2
     if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
@@ -767,7 +338,10 @@ install:
       del symbols\plr.pdb
       popd
     }
-# minimal required
+
+#
+# minimal required to build plr
+#
 - ps: |
     Set-PSDebug -Trace 2
     if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
@@ -775,9 +349,12 @@ install:
       $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
     }
 
+
 - ps: |
-    # "branchtagcommit" exists only because it is an easier test in a windows batch
-    # test used in determining whether or not to perform patching (see below)
+    # "branchtagcommit" exists only because, this makes an easier test in a windows batch
+    # This environment variable is use in a test that is used that is used in determining
+    # whether or not to perform patching (see below).
+    #
     if ("$env:pg" -notmatch "[.]") {
       $env:branchtagcommit = "yes"
     } else {
@@ -785,13 +362,19 @@ install:
     }
     echo "branchtagcommit $env:branchtagcommit"
 
+
+#
+# PostgreSQL from source code: git, tag, or commit
+#
 - ps: |
     Set-PSDebug -Trace 2
-    # notmatch - no "dot found" in pg name, is a branch, tag, or commit
+    # notmatch - if no "dot is found" in pg name, then pg is a: git: branch, tag, or commit.
     if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       git config --global advice.detachedHead false
       $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
+      #
       # git branch or commit - alphanumeric and all lowercase letters (slower download)
+      #
       if(("$env:pg" -cmatch  "^[a-z0-9]+$") -and ("$env:pghint" -eq "commit")) {
         git clone -q                            https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
         pwd
@@ -802,8 +385,10 @@ install:
         echo $env:pg
         popd
         pwd
+      #
       # git branch or tag(detached head)
       # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
+      #
       } else {
         git clone -q --depth 1 --branch $env:pg https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
         pushd c:\projects\postgresql
@@ -817,6 +402,13 @@ install:
       dir
       popd
     }
+
+
+#
+# PostgreSQL from source code: git, tag, or commit
+#
+# dynamically patch, so that a separate msvc.diff file does not have to be used
+#
 - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
       echo Begin performing patching on-the-fly &
       echo Begin patching &
@@ -831,13 +423,20 @@ install:
       echo End display of vcregress.pl &
       echo End performing patching on-the-fly
   )
-# Appveyor specific: "cl /?" or "cl /help" can not be ran, so the Platform can not be correctly determined
+
+
+#
+# PostgreSQL from source code: git, tag, or commit
+#
+# Microsoft Visual Studio specific: "cl /?" or "cl /help" can not be ran.
+# "cl" is interpreted as an Appveyor specific alias to the Windows command "call"
+# so PostgreSQL, can not correctly determing the Platform
 #
 # Trying to override the phantom alias executable "cl" - Microsoft "call"
 # https://help.appveyor.com/discussions/problems/29255-trying-to-override-the-phantom-alias-executable-cl-microsoft-call
 #
-# force x86 to have the CPlatform Win32
-# force x64 to have the CPlatform x64
+# force x86 to have the CPlatform: Win32
+# force x64 to have the CPlatform: x64
 #
 - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
     echo Begin performing patching on-the-fly &
@@ -858,8 +457,11 @@ install:
     echo End display of Solution.pm &
     echo End performing patching on-the-fly
   )
+
+
 #
-# from source code
+# PostgreSQL from source code: git, tag, or commit
+#
 - ps: |
     Set-PSDebug -Trace 2
     if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
@@ -869,7 +471,8 @@ install:
       pushd c:\projects\postgresql
       dir
       cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
-      # patch already done - above
+      #
+      # patch already done - above - using msvc.diff.R
       # patch -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
       #
       # creates both plr.vcxproj and pgsql.sln
@@ -885,7 +488,9 @@ install:
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
       $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
     }
-# from binary
+
+
+# PostgreSQL from Appveyor or an enterprisedb already-compiled-binary.
 - ps: |
     Set-PSDebug -Trace 2
     if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
@@ -912,32 +517,31 @@ install:
       }
     }
 
+
+
 cache:
 - '%exe%'
 - R-%rversion%-win.exe
 
 
-# msbuild: reads the environment variable PLATFORM. The PLATFORM value can be either Win32 xor x64
+
+# msbuild: reads the environment variable PLATFORM. The PLATFORM value can be either Win32 xor x64.
 # xor
 # msbuild: can read /p:platform=Value. The Value can be either Win32 xor x64
 #
 build_script:
 - if %PLATFORM%==x86 set CPLATFORM=Win32
 - if %PLATFORM%==x64 set CPLATFORM=x64
+#
+# note: build.pl is an alternative
+#
 - REM verbosity levels: q[uiet], m[inimal](orig program), n[ormal] (default), d[etailed], and diag[nostic]
 - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%CONFIGURATION% /p:platform=%CPLATFORM%
           %PROJ%
           /verbosity:quiet /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-- dir
 
 
 after_build:
-#
-# note: going forward PLATFORM is not seen in any perl: .pl nor an .pm files
-#
-### - if %PLATFORM%==Win32 set PLATFORM=x86
-### - echo PLATFORM after build is %PLATFORM%
-#
 - appveyor AddMessage Packing -Category Information
 - md tmp\share\extension
 - dir
@@ -951,20 +555,21 @@ after_build:
 - dir tmp
 - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - 7z a -r %zip% .\tmp\* > nul
-#
-- echo BEGIN TRY TO FIND BUILT FILES LOCATION: postgres.exe and plr.dll
-- bash --login -c "find '/c/projects/postgresql' -name '*postgres.exe' -type f 2>/dev/null"
-- bash --login -c "find '/c/projects/postgresql' -name '*plr.dll'      -type f 2>/dev/null"
-- echo END TRY TO FIND BUILT FILES LOCATION: postgres.exe and plr.dll
-#
-- echo BEGIN TRY TO PRINT ALL BUILT FILES
-- if exist "c:\projects\postgresql\Release" bash -login -c "find '/c/projects/postgresql/Release' -name '*' -print 2>/dev/null"
-- if exist "c:\projects\postgresql\Debug"   bash -login -c "find '/c/projects/postgresql/Debug'   -name '*' -print 2>/dev/null"
-- echo END TRY TO PRINT ALL BUILT FILES
-#
 
-### - if %PLATFORM%==x86 set PLATFORM=Win32
-### - echo PLATFORM just before install.pl is %PLATFORM%
+# #
+# - echo BEGIN TRY TO FIND BUILT FILES LOCATION: postgres.exe and plr.dll
+# - bash --login -c "find '/c/projects/postgresql' -name '*postgres.exe' -type f 2>/dev/null"
+# - bash --login -c "find '/c/projects/postgresql' -name '*plr.dll'      -type f 2>/dev/null"
+# - echo END TRY TO FIND BUILT FILES LOCATION: postgres.exe and plr.dll
+# #
+# - echo BEGIN TRY TO PRINT ALL BUILT FILES
+# - if exist "c:\projects\postgresql\Release" bash -login -c "find '/c/projects/postgresql/Release' -name '*' -print 2>/dev/null"
+# - if exist "c:\projects\postgresql\Debug"   bash -login -c "find '/c/projects/postgresql/Debug'   -name '*' -print 2>/dev/null"
+# - echo END TRY TO PRINT ALL BUILT FILES
+# #
+
+#
+# place files from the .\Debug or .\Release directories onto $env:pgroot
 #
 - ps: |
     Set-PSDebug -Trace 2
@@ -978,25 +583,25 @@ after_build:
       pwd
     }
 #
-#
-- echo BEGIN TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
-- bash --login -c "find '/c/Program Files'       -name '*postgres.exe' -type f 2>/dev/null"
-- bash --login -c "find '/c/Program Files (x86)' -name '*postgres.exe' -type f 2>/dev/null"
-- bash --login -c "find '/c/Program Files'       -name '*plr.dll'      -type f 2>/dev/null"
-- bash --login -c "find '/c/Program Files (x86)' -name '*plr.dll'      -type f 2>/dev/null"
-- echo END TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
-#
-- if %PLATFORM%==Win32 set PLATFORM=x86
-- echo PLATFORM just after install.pl is %PLATFORM%
+# #
+# - echo BEGIN TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
+# - bash --login -c "find '/c/Program Files'       -name '*postgres.exe' -type f 2>/dev/null"
+# - bash --login -c "find '/c/Program Files (x86)' -name '*postgres.exe' -type f 2>/dev/null"
+# - bash --login -c "find '/c/Program Files'       -name '*plr.dll'      -type f 2>/dev/null"
+# - bash --login -c "find '/c/Program Files (x86)' -name '*plr.dll'      -type f 2>/dev/null"
+# - echo END TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
+# #
+
 #
 # same as above (repeated here)
 - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 #
-# note, zipping must be performed here, after - perl install . pl
-# note, pg has been installed inside %pgroot% == %pf%\PostgreSQL\%pgversion% (see above)
-# note, the db must be down
-# note, the environment variable "pggithubbincachefound" is
-#       used in determining whether or not to attempt to deploy to the Github release 0.0.0.0.0.GITHUBCACHE (see below)
+# Zipping must be performed here, after "perl install.pl".
+# pg has been installed inside %pgroot% == %pf%\PostgreSQL\%pgversion% (see above).
+# The PostgreSQL cluster must be down.
+# The environment variable "pggithubbincachefound" is
+#   used in determining whether or not to attempt to
+#   deploy to the Github release 0.0.0.0.0.GITHUBCACHE (see below).
 #
 # "%pgroot%\bin\postgres.exe" SHOULD BE THERE - missing should NOT happen
 - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" (
@@ -1011,10 +616,10 @@ after_build:
 
 test_script:
 - path %pgroot%\bin;%PATH%
-# which from? mingw?
 - which postgres
-# from source code, but at this point in time,
-# the source code is an already (compiled) binary on disk - see above - perl install . pl
+# From source code, but at this point in time,
+# the source code is an already (compiled) binary on disk and correctly located within $env:pgroot.
+#   see above - perl install.pl
 - ps: |
     Set-PSDebug -Trace 2
     if ("$env:pg" -notmatch "[.]") {
@@ -1026,6 +631,9 @@ test_script:
       7z x "$env:zip" "-o$env:pgroot"
     }
     #
+    # If the pg is from the already-compiled-binary 0.0.0.0.0.GITHUBCACHE,
+    # then, add the "plr" to be (eventually) regression tested.
+    #
     if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
       7z x "$env:zip" "-o$env:pgroot"
     }
@@ -1034,12 +642,17 @@ test_script:
 - setx /M PATH "%R_HOME%\bin\%RBIN%;%PATH%"
 - net start postgresql%x64%-%pgversion%
 #
-# need the server_version_num, so we can later, test to determine "psqlopt"
+# I need the server_version_num, so we can later, test to determine "$env:psqlopt".
+# I can not use "$env:pgversion" because a branch, tag, or commit
+# name (e.g.) "master" can not (always) be (easily) compared.
+#
 - psql --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=server_version_num.txt
 - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/server_version_num.sh"
 - for /f "delims=" %%i in (server_version_num.txt) do (set server_version_num=%%i)
 - type  server_version_num.txt
 - echo %server_version_num%
+#
+# testing
 #
 - ps: |
     Set-PSDebug -Trace 2
@@ -1066,6 +679,7 @@ test_script:
       $host.SetShouldExit($LastExitCode)
     }
 
+
 artifacts:
 - path: 'plr-*.zip'
   name: plr_zip
@@ -1087,7 +701,9 @@ deploy:
       # non - "branch, tag, or commit" will still be expected "false" ( githubcache != true )
       # and never find a pg-*.zip to deploy - and that is OK.
 
+  #
   # second, last of Github deployments, to try to appear as "latest"
+  #
   - provider: GitHub
     release: $(appveyor_repo_tag_name)
     draft: false
@@ -1099,6 +715,9 @@ deploy:
     on:
       appveyor_repo_tag: true
 
+  #
+  # REMOVE THIS SOURCEFORGE DEPLOYMENT, BEFORE THE PULL REQUEST (IF ANY)
+  #
   - provider: FTP
     host: frs.sourceforge.net
     protocol: sftp
