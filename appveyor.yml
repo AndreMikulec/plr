@@ -163,7 +163,14 @@ environment:
     rversion: 3.6.0
 
 
-  # REL_10_0
+  - pg: 10.16-1 # from Appveyor
+    PlatformToolset: v120
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+
   - pg: 10.16-1 # from enterprisedb
     PlatformToolset: v120
     configuration: Release
@@ -172,7 +179,15 @@ environment:
     rversion: 3.6.0
 
 
-  - pg: 9.6.21 # from Appveyor
+  - pg: 10.16-1 # from enterprisedb
+    PlatformToolset: v120
+    configuration: Debug
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+
+  - pg: 9.6.21-1 # from Appveyor
     PlatformToolset: v120
     configuration: Release
     platform: x64
@@ -180,7 +195,7 @@ environment:
     rversion: 3.6.0
 
 
-  - pg: 9.6.21 # from enterprisedb
+  - pg: 9.6.21-1 # from enterprisedb
     PlatformToolset: v120
     configuration: Release
     platform: x86
