@@ -10,7 +10,7 @@ environment:
   PGUSER: postgres
   PGPASSWORD: Password12!
   #
-  # PostgreSQL regression tests
+  # PostgreSQL client session
   #
   PGOPTIONS: -c log_error_verbosity=verbose -c log_min_messages=debug2 -c log_min_error_statement=debug2
   #
@@ -65,19 +65,19 @@ environment:
 
   matrix:
 
-  # notice
+  # Notice
   # Enterprisedb does not have PostgreSQL x86 platform binaries
-  # for PostgreSQL versions 11 and greater
+  # for PostgreSQL versions 11 and greater.
 
-  # notice
+  # Notice
   # Appveyor (as of this date APR 2021), does not have PostgreSQL x64 version 13 available
   # Appveyor does not have any PostgreSQL x86 versions available.
 
-  # notice
+  # Notice
   # I can not compile plr using PostgreSQL 9.6, 9.5 from source: "git, tag, or commit":
   # I have not found the right combination of APPVEYOR_BUILD_WORKER_IMAGE/PlatformToolset.
   #
-  # Moreover, I CAN STILL compile plr using pg as an already-compiled-binary version
+  # Moreover, still can be compiled plr using pg as an already-compiled-binary version
   # of PostgreSQL 9.6 or 9.5.
 
 
@@ -279,7 +279,7 @@ install:
 - set pgroot=%pf%\PostgreSQL\%pgversion%
 - echo %pgroot%
 #
-# In the perl x86 case, in perl, in install.pl,  "mkdir" silently fails.
+# In the Perl x86 case, in Perl, in install.pl,  "mkdir" silently fails.
 # %pgroot% is always needed (to use\place binaries in) to do the regression tests,
 # so just, explicitly (early), create that directory here now.
 #
@@ -308,7 +308,7 @@ install:
 #
 # if "githubcache: true",
 #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
-#   pg already-compiled-binaries
+#   pg already-compiled-binaries.
 #
 - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pgzip%
@@ -344,7 +344,7 @@ install:
 # extraction from 0.0.0.0.0.GITHUBCACHE, if any old files
 #
 - ps: |
-    Set-PSDebug -Trace 2
+    # Set-PSDebug -Trace 2
     if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
       pushd "$env:pgroot"
       del share\extension\plr-*.sql
@@ -355,10 +355,10 @@ install:
     }
 
 #
-# minimal required to build plr
+# msbuild needs
 #
 - ps: |
-    Set-PSDebug -Trace 2
+    # Set-PSDebug -Trace 2
     if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
       $env:PROJ="plr.vcxproj"
       $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
@@ -382,7 +382,7 @@ install:
 # PostgreSQL from source code: git, tag, or commit
 #
 - ps: |
-    Set-PSDebug -Trace 2
+    # Set-PSDebug -Trace 2
     # notmatch - if no "dot is found" in pg name, then pg is a: git: branch, tag, or commit.
     if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       git config --global advice.detachedHead false
@@ -414,7 +414,7 @@ install:
         pwd
       }
       pushd c:\projects\postgresql
-      dir
+      dir .
       popd
     }
 
@@ -430,12 +430,12 @@ install:
       echo "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
            "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
       echo End patching &
-      echo Begin display of Mkvcbuild.pm &
-      type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm &
-      echo End display of Mkvcbuild.pm &
-      echo Begin display of vcregress.pl &
-      type c:\projects\postgresql\src\tools\msvc\vcregress.pl &
-      echo End display of vcregress.pl &
+      REM echo Begin display of Mkvcbuild.pm &
+      REM type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm &
+      REM echo End display of Mkvcbuild.pm &
+      REM echo Begin display of vcregress.pl &
+      REM type c:\projects\postgresql\src\tools\msvc\vcregress.pl &
+      REM echo End display of vcregress.pl &
       echo End performing patching on-the-fly
   )
 
@@ -467,9 +467,9 @@ install:
   )
 - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
     echo End patching &
-    echo Begin display of Solution.pm &
-    type c:\projects\postgresql\src\tools\msvc\Solution.pm &
-    echo End display of Solution.pm &
+    REM echo Begin display of Solution.pm &
+    REM type c:\projects\postgresql\src\tools\msvc\Solution.pm &
+    REM echo End display of Solution.pm &
     echo End performing patching on-the-fly
   )
 
@@ -478,13 +478,13 @@ install:
 # PostgreSQL from source code: git, tag, or commit
 #
 - ps: |
-    Set-PSDebug -Trace 2
+    # Set-PSDebug -Trace 2
     if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       gendef - "$env:R_HOME\bin\$env:RBIN\R.dll" > "R$env:PLATFORM.def" 2> $null
       lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
-      dir
+      dir .
       pushd c:\projects\postgresql
-      dir
+      dir .
       cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
       #
       # patch already done - above - using msvc.diff.R
@@ -492,14 +492,14 @@ install:
       #
       # creates both plr.vcxproj and pgsql.sln
       perl contrib\plr\buildsetup.pl
-      dir
+      dir .
       type C:\projects\postgresql\pgsql.sln
       type plr.vcxproj
-      echo . . . COMPARING . . .
-      type pgcrypto.vcxproj
-      type postgres.vcxproj
+      # echo . . . COMPARING . . .
+      # type pgcrypto.vcxproj
+      # type postgres.vcxproj
       popd
-      dir
+      dir .
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
       $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
     }
@@ -507,7 +507,7 @@ install:
 
 # PostgreSQL from Appveyor or an enterprisedb already-compiled-binary.
 - ps: |
-    Set-PSDebug -Trace 2
+    # Set-PSDebug -Trace 2
     if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
       $env:PROJ="plr.vcxproj"
       $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
@@ -559,7 +559,7 @@ build_script:
 after_build:
 - appveyor AddMessage Packing -Category Information
 - md tmp\share\extension
-- dir
+- dir .
 - copy *.sql tmp\share\extension\
 - copy *.control tmp\share\extension\
 - copy LICENSE tmp\PLR_LICENSE
@@ -587,13 +587,13 @@ after_build:
 # place files from the .\Debug or .\Release directories onto $env:pgroot
 #
 - ps: |
-    Set-PSDebug -Trace 2
+    # Set-PSDebug -Trace 2
     if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       pushd c:\projects\postgresql\src\tools\msvc
       pwd
-      dir
+      dir .
       perl install.pl "$env:pgroot"
-      dir
+      dir .
       popd
       pwd
     }
@@ -624,7 +624,7 @@ after_build:
   )
 # what did I 7z up?
 - ps: |
-    Set-PSDebug -Trace 2
+    # Set-PSDebug -Trace 2
     if ( ("$env:githubcache" -eq "true") -and ("$env:pggithubbincachefound" -eq "false") -and (Test-Path "$env:pgroot\bin\postgres.exe") ) {
       7z l "$env:pgzip"
     }
@@ -636,7 +636,7 @@ test_script:
 # the source code is an already (compiled) binary on disk and correctly located within $env:pgroot.
 #   see above - perl install.pl
 - ps: |
-    Set-PSDebug -Trace 2
+    # Set-PSDebug -Trace 2
     if ("$env:pg" -notmatch "[.]") {
       Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
       initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
@@ -670,7 +670,7 @@ test_script:
 # testing
 #
 - ps: |
-    Set-PSDebug -Trace 2
+    # Set-PSDebug -Trace 2
     Add-AppveyorTest Regression -Framework pg_regress -FileName sql\ -Outcome Running
     # less than pg 9.5
     if ([double]"$env:server_version_num" -lt 90500.0) {
