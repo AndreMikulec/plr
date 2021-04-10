@@ -748,7 +748,7 @@ test_script:
 # https://github.com/postgres-plr/plr/issues/89
 - ps: |
     Set-PSDebug -Trace 2
-    if (("$env:pversion" -eq "master") -and ([double]"$env:server_version_num" -ge 140000.0)) {
+    if (("$env:pgversion" -eq "master") -and ([double]"$env:server_version_num" -ge 140000.0)) {
       echo "BEGIN change expected\bad_fun.out from ERROR to WARNING"
       echo "PRINTING expected\bad_fun.out"
       type "expected\bad_fun.out"
