@@ -25,57 +25,21 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.0.5
 
-#   # master is dirty: will not compile
-#   - pg: 32d6287d2eef6b6a4dde07e0513f3e4f321792ad # master # 12/30/2020 7:21:42 PM # static commit - from git
-#     #
-#     pghint: commit
-#     #
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
-# 
-#   # master is dirty: will not compile
-#   - pg: 6b1c5cacec5e8305a3880b441526c47bd47c64cd # master # 9/30/2020 8:37:34 PM # static commit - from git
-#     #
-#     pghint: commit
-#     #
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
-# 
-#   # master is dirty: will not compile
-#   - pg: a69e041d0c91759fb60ab52e7e21e3ec3752c69b # master # 6/30/2020 9:28:36 PM # static commit - from git
-#     #
-#     pghint: commit
-#     #
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
+  # note
+  # master is dirty: will not compile
+  # 32d6287d2eef6b6a4dde07e0513f3e4f321792ad # master # 12/30/2020 7:21:42 PM # static commit - from git
+  # 6b1c5cacec5e8305a3880b441526c47bd47c64cd # master #  9/30/2020 8:37:34 PM # static commit - from git
+  # a69e041d0c91759fb60ab52e7e21e3ec3752c69b # master #  6/30/2020 9:28:36 PM # static commit - from git
 
 
-#   # fails: -ERROR:  R interpreter parse error +WARNING:  R interpreter parse error
-#   - pg: master # branch - non-static commit - from git
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
+  - pg: REL_13_STABLE  # branch - non-static commit - from git
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
 
-#   # fails: -ERROR:  R interpreter parse error +WARNING:  R interpreter parse error
-#   - pg: master # branch - non-static commit - from git
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 3.6.0
 
-#
 #   # Initial pgindent and pgperltidy run for v13.
 #   # src/tools/msvc/Mkvcbuild.pm
 #   #
@@ -90,151 +54,143 @@ environment:
 #     rversion: 4.0.5
 #     #
 #     githubcache: true
-#
-#
-#   - pg: REL_13_STABLE  # branch - non-static commit - from git
-#     PlatformToolset: v141
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
-#
-#
-#   - pg: REL_13_0  # tag - static commit - from git
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
-#     #
-#     githubcache: true
-#
-#
-#   - pg: 13.1-1 # from enterprisedb
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
-#
-#
-#   - pg: REL_12_0  # tag - static commit - from git
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
-#     #
-#     githubcache: true
-#
-#
-#   - pg: 12.5-1 # from Appveyor
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
-#
-#
-#   - pg: 12.5-1 # from Appveyor
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 3.6.0
-#
-#
-#   - pg: 11.11-1 # from Appveyor
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 3.6.0
-#
-#
-#   - pg: 10.16-1 # from Appveyor
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#
-#   - pg: 10.16-1 # from Appveyor
-#     PlatformToolset: v120
-#     configuration: Debug
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#
-#   - pg: 10.16-1 # from enterprisedb
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#
-#   - pg: 10.16-1 # from enterprisedb
-#     PlatformToolset: v120
-#     configuration: Debug
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#
-#   - pg: 9.6.21-1 # from Appveyor
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#
-#   - pg: 9.6.21-1 # from enterprisedb
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#
-#   - pg: 9.5.25-1 # from Appveyor
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#
-#   - pg: 9.5.25-1 # from enterprisedb
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#
-#   - pg: 9.4.4-3 # from Appveyor
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
-#
-#
-#   - pg: 9.4.4-3 # from enterprisedb
-#     PlatformToolset: v120
-#     configuration: Release
-#     platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 3.6.0
 
 
-matrix:
-  allow_failures:
-    - pg: master
+  - pg: REL_13_0  # tag - static commit - from git
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+    #
+    githubcache: true
+
+
+  - pg: 13.1-1 # from enterprisedb
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+
+
+  - pg: REL_12_0  # tag - static commit - from git
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+    #
+    githubcache: true
+
+
+  - pg: 12.5-1 # from Appveyor
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+
+
+  - pg: 12.5-1 # from Appveyor
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 3.6.0
+
+
+  - pg: 11.11-1 # from Appveyor
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 3.6.0
+
+
+  - pg: 10.16-1 # from Appveyor
+    PlatformToolset: v120
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+
+  - pg: 10.16-1 # from Appveyor
+    PlatformToolset: v120
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+
+  - pg: 10.16-1 # from enterprisedb
+    PlatformToolset: v120
+    configuration: Release
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+
+  - pg: 10.16-1 # from enterprisedb
+    PlatformToolset: v120
+    configuration: Debug
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+
+  - pg: 9.6.21-1 # from Appveyor
+    PlatformToolset: v120
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+
+  - pg: 9.6.21-1 # from enterprisedb
+    PlatformToolset: v120
+    configuration: Release
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+
+  - pg: 9.5.25-1 # from Appveyor
+    PlatformToolset: v120
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+
+  - pg: 9.5.25-1 # from enterprisedb
+    PlatformToolset: v120
+    configuration: Release
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+
+  - pg: 9.4.4-3 # from Appveyor
+    PlatformToolset: v120
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+
+  - pg: 9.4.4-3 # from enterprisedb
+    PlatformToolset: v120
+    configuration: Release
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 3.6.0
+
+
+# matrix:
+#   allow_failures:
+#     - pg: master
 
 ### Documentation Begins ###
 
@@ -300,6 +256,21 @@ matrix:
   # The existance of file plr.vcxproj.user
   # will cause non-"branch, tag, or commit" Debug builds to fail.
 
+  # note: see OTHER work by (the original author): Mikhail Titov
+  # 
+  # https://ci.appveyor.com/project/PurpleI2P/sqlite-fdw/history
+  # https://github.com/mlt/sqlite_fdw/blob/9903e2f1d70726bfb3819908750f40126940279c/.appveyor.yml
+  # https://github.com/pgspider/sqlite_fdw/pull/26
+  #
+  # https://github.com/mlt/odbc_fdw/blob/40cceb5753948964c2698f432d349ef2cb32c55d/.appveyor.yml
+  # https://github.com/mlt/odbc_fdw/blob/40cceb5753948964c2698f432d349ef2cb32c55d/test/appveyor_tests.ps1
+  #
+  # https://github.com/arkhipov/temporal_tables/blame/3ce22da51f2549e8f8b8fbf2850c63eb3a2f1fbb/appveyor.yml
+  # https://ci.appveyor.com/project/arkhipov/temporal-tables/builds/37866474
+  #
+  # https://github.com/xocolatl/periods/blob/d7b2081dd65514bbb8e96d8de4904d9357fa30c9/appveyor.yml
+  #
+  # https://github.com/arkhipov/acl/blob/a22179c62236b1bfa0e542c9875488163032d200/appveyor.yml
 
 ### Documentation Ends ###
 
@@ -363,7 +334,7 @@ install:
 - set RBIN=%PLATFORM:x86=i386%
 - SET sed=C:\msys64\usr\bin\sed
 #
-# # Appveyor specific: seems not required - with Appveyor
+# # Appveyor specific: seems not required - with Appveyor - Strawberry perl is already in the path
 # # ActiveState Perl is good, but Strawberry Perl is preferred
 # #
 # - if %PLATFORM%==x64 (set BIT=64) else set BIT=32
@@ -376,7 +347,7 @@ install:
 # - set Path=%Path%;c:\%betterperl%\c\bin
 
 
-# CHANGE THE CURL URL BEFORE THE PULL REQUEST (IF ANY)
+# CHANGE THE CURL URL BEFORE A PULL REQUEST (IF ANY)
 #
 # if "githubcache: true",
 #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
@@ -384,6 +355,9 @@ install:
 #
 - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pgzip%
+#
+# note: using Windows instead of Powershell
+# I could not get the Invoke-??? . . . I would silently run (and die), I would not get error feedback.
 #
 - if "%githubcache%"=="true" if not exist "%pgzip%"  (
     bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
@@ -757,7 +731,7 @@ test_script:
       sed -i "s/ERROR/WARNING/" "expected\bad_fun.out"
       echo "PRINTING expected\bad_fun.out"
       type "expected\bad_fun.out"
-      echo "BEGIN change expected\bad_fun.out from ERROR to WARNING"
+      echo "END change expected\bad_fun.out from ERROR to WARNING"
     }
 #
 - ps: |
@@ -800,7 +774,7 @@ deploy:
     prerelease: false
     artifact: pg_zip
     auth_token:
-      # CHANGE BACK TO THE 'ORIGINAL' BEFORE THE PULL REQUEST (IF ANY)
+      # CHANGE BACK TO THE 'ORIGINAL' BEFORE A PULL REQUEST (IF ANY)
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
     on:
       pggithubbincachefound: false
