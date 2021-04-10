@@ -13,71 +13,10 @@ environment:
   #
   PGOPTIONS: -c log_error_verbosity=verbose -c log_min_messages=debug2 -c log_min_error_statement=debug2
   #
-  # Try to save
+  # Always Try to save
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
 
-  # Notice
-  # 1. The very first creation of the tag: 0.0.0.0.0.GITHUBCACHE,
-  #    will make a 2nd Appeveyor build run
-  # 1a. Alternatively, the tag 0.0.0.0.0.GITHUBCACHE can be pushed,
-  #    and then immediately a user should cancel the Appveyor build.
-  # 2. msvc.diff.R solves all msvc.diff problems of all compilations
-  # 3. Solutions.pm.R correctly sets the "internal" platform,
-  #    that use is used by perl to generate project files.
-
-  # pg - should be a specific already-compiled-binary version
-  # from https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
-  # and its platforms: "Windows x86-64"(x64) and "Windows x86-32"(x86).
-  #
-  # Alternately, pg can be a git branch, tag, or commit.
-  #
-  # Branches, tags, and commits, are different from an already-compiled binaries.
-  # They "does not have a dot "."" in the pg name.
-
-  # Of pg, if a commit is wanted,
-  # then also the environment variable - "pghint: commit" also must be set.
-
-  # Because compiling uses much time, and to try to avoid re-compiling,
-  # this environment variable "githubcache: true" can be useful for static source code,
-  # e.g., tags and commits
-  #
-  # Of a (branch,) tag, and commit, optionally,
-  # the environment variable -  "githubcache: true" - may be set, to try to store the
-  # compiled PostgreSQL (pg) in the github releases 0.0.0.0.0.GITHUBCACHE,
-  # then retrieve it when necessary, then expand it and use it for plr compiling
-  # and plr regression testing.
-
-  # When compiling plr with pg source code (branch, tag, or commit), the
-  # R file msvc.diff.R will be run, using Rscript.exe, and will patch files.
-  # These patched files will reduce the PostgreSQL regression testing to just the plr extension.
-  #
-  # If pg is a already-compiled-binary version
-  # and that PostgreSQL x64 version (subtracting off the non-version part of pg)
-  # is already installed on Appveyor,
-  # then instead, that Appveyor version and platform will be used
-  # to compile plr and perform regression testing.
-  # Therefore, a PostgreSQL already-compiled-binary will-not-be downloaded from "enterprisedb".
-
-  # The file plr.vcxproj.user must not exist (or be named plr.vcxproj.user.NOMOREUSE).
-  # The existance of file plr.vcxproj.user
-  # will cause non-"branch, tag, or commit" Debug builds to fail.
-
   matrix:
-
-  # Notice
-  # Enterprisedb does not have PostgreSQL x86 platform binaries
-  # for PostgreSQL versions 11 and greater.
-
-  # Notice
-  # Appveyor (as of this date APR 2021), does not have PostgreSQL x64 version 13 available
-  # Appveyor does not have any PostgreSQL x86 versions available.
-
-  # Notice
-  # I can not compile plr using PostgreSQL 9.6, 9.5 from source: "git, tag, or commit":
-  # I have not found the right combination of APPVEYOR_BUILD_WORKER_IMAGE/PlatformToolset.
-  #
-  # Moreover, still can be compiled plr using pg as an already-compiled-binary version
-  # of PostgreSQL 9.6 or 9.5.
 
 
   - pg: master # branch - non-static commit - from git
@@ -247,6 +186,73 @@ environment:
 matrix:
   allow_failures:
     - pg: master
+
+### Documentation Begins ###
+
+  # matrix-Notice
+  # Enterprisedb does not have PostgreSQL x86 platform binaries
+  # for PostgreSQL versions 11 and greater.
+
+  # matrix-Notice
+  # Appveyor (as of this date APR 2021), does not have PostgreSQL x64 version 13 available
+  # Appveyor does not have any PostgreSQL x86 versions available.
+
+  # matrix-Notice
+  # I can not compile plr using PostgreSQL 9.6, 9.5 from source: "git, tag, or commit":
+  # I have not found the right combination of APPVEYOR_BUILD_WORKER_IMAGE/PlatformToolset.
+  #
+  # matrix-Notice
+  # Moreover, still can be compiled plr using pg as an already-compiled-binary version
+  # of PostgreSQL 9.6 or 9.5.
+
+  # Notice
+  # 1. The very first creation of the tag: 0.0.0.0.0.GITHUBCACHE,
+  #    will make a 2nd Appeveyor build run
+  # 1a. Alternatively, the tag 0.0.0.0.0.GITHUBCACHE can be pushed,
+  #    and then immediately a user should cancel the Appveyor build.
+  # 2. msvc.diff.R solves all msvc.diff problems of all compilations
+  # 3. Solutions.pm.R correctly sets the "internal" platform,
+  #    that use is used by perl to generate project files.
+
+  # pg - should be a specific already-compiled-binary version
+  # from https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+  # and its platforms: "Windows x86-64"(x64) and "Windows x86-32"(x86).
+  #
+  # Alternately, pg can be a git branch, tag, or commit.
+  #
+  # Branches, tags, and commits, are different from an already-compiled binaries.
+  # They "does not have a dot "."" in the pg name.
+
+  # Of pg, if a commit is wanted,
+  # then also the environment variable - "pghint: commit" also must be set.
+
+  # Because compiling uses much time, and to try to avoid re-compiling,
+  # this environment variable "githubcache: true" can be useful for static source code,
+  # e.g., tags and commits
+  #
+  # Of a (branch,) tag, and commit, optionally,
+  # the environment variable -  "githubcache: true" - may be set, to try to store the
+  # compiled PostgreSQL (pg) in the github releases 0.0.0.0.0.GITHUBCACHE,
+  # then retrieve it when necessary, then expand it and use it for plr compiling
+  # and plr regression testing.
+
+  # When compiling plr with pg source code (branch, tag, or commit), the
+  # R file msvc.diff.R will be run, using Rscript.exe, and will patch files.
+  # These patched files will reduce the PostgreSQL regression testing to just the plr extension.
+  #
+  # If pg is a already-compiled-binary version
+  # and that PostgreSQL x64 version (subtracting off the non-version part of pg)
+  # is already installed on Appveyor,
+  # then instead, that Appveyor version and platform will be used
+  # to compile plr and perform regression testing.
+  # Therefore, a PostgreSQL already-compiled-binary will-not-be downloaded from "enterprisedb".
+
+  # The file plr.vcxproj.user must not exist (or be named plr.vcxproj.user.NOMOREUSE).
+  # The existance of file plr.vcxproj.user
+  # will cause non-"branch, tag, or commit" Debug builds to fail.
+
+
+### Documentation Ends ###
 
 # Appveyor build server environment variables
 #
