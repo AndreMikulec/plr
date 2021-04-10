@@ -24,10 +24,17 @@ environment:
     configuration: Debug
     platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.5
+    rversion: 3.6.0
 
 
-# 
+  - pg: master # branch - non-static commit - from git
+    PlatformToolset: v141
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.0
+
+#
 #   # Initial pgindent and pgperltidy run for v13.
 #   # src/tools/msvc/Mkvcbuild.pm
 #   #
@@ -42,16 +49,16 @@ environment:
 #     rversion: 4.0.5
 #     #
 #     githubcache: true
-# 
-# 
+#
+#
 #   - pg: REL_13_STABLE  # branch - non-static commit - from git
 #     PlatformToolset: v141
 #     configuration: Debug
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.5
-# 
-# 
+#
+#
 #   - pg: REL_13_0  # tag - static commit - from git
 #     PlatformToolset: v141
 #     configuration: Release
@@ -60,16 +67,16 @@ environment:
 #     rversion: 4.0.5
 #     #
 #     githubcache: true
-# 
-# 
+#
+#
 #   - pg: 13.1-1 # from enterprisedb
 #     PlatformToolset: v141
 #     configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.5
-# 
-# 
+#
+#
 #   - pg: REL_12_0  # tag - static commit - from git
 #     PlatformToolset: v141
 #     configuration: Release
@@ -78,104 +85,104 @@ environment:
 #     rversion: 4.0.5
 #     #
 #     githubcache: true
-# 
-# 
+#
+#
 #   - pg: 12.5-1 # from Appveyor
 #     PlatformToolset: v141
 #     configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.5
-# 
-# 
+#
+#
 #   - pg: 12.5-1 # from Appveyor
 #     PlatformToolset: v141
 #     configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 3.6.0
-# 
-# 
+#
+#
 #   - pg: 11.11-1 # from Appveyor
 #     PlatformToolset: v141
 #     configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 3.6.0
-# 
-# 
+#
+#
 #   - pg: 10.16-1 # from Appveyor
 #     PlatformToolset: v120
 #     configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
-# 
-# 
+#
+#
 #   - pg: 10.16-1 # from Appveyor
 #     PlatformToolset: v120
 #     configuration: Debug
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
-# 
-# 
+#
+#
 #   - pg: 10.16-1 # from enterprisedb
 #     PlatformToolset: v120
 #     configuration: Release
 #     platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
-# 
-# 
+#
+#
 #   - pg: 10.16-1 # from enterprisedb
 #     PlatformToolset: v120
 #     configuration: Debug
 #     platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
-# 
-# 
+#
+#
 #   - pg: 9.6.21-1 # from Appveyor
 #     PlatformToolset: v120
 #     configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
-# 
-# 
+#
+#
 #   - pg: 9.6.21-1 # from enterprisedb
 #     PlatformToolset: v120
 #     configuration: Release
 #     platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
-# 
-# 
+#
+#
 #   - pg: 9.5.25-1 # from Appveyor
 #     PlatformToolset: v120
 #     configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
-# 
-# 
+#
+#
 #   - pg: 9.5.25-1 # from enterprisedb
 #     PlatformToolset: v120
 #     configuration: Release
 #     platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
-# 
-# 
+#
+#
 #   - pg: 9.4.4-3 # from Appveyor
 #     PlatformToolset: v120
 #     configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
-# 
-# 
+#
+#
 #   - pg: 9.4.4-3 # from enterprisedb
 #     PlatformToolset: v120
 #     configuration: Release
