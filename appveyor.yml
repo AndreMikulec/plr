@@ -423,7 +423,7 @@ install:
         pwd
       }
       pushd c:\projects\postgresql
-      dir .
+      Get-ChildItem
       popd
     }
 
@@ -491,9 +491,9 @@ install:
     if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       gendef - "$env:R_HOME\bin\$env:RBIN\R.dll" > "R$env:PLATFORM.def" 2> $null
       lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
-      dir .
+      Get-ChildItem
       pushd c:\projects\postgresql
-      dir .
+      Get-ChildItem
       cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
       #
       # patch already done - above - using msvc.diff.R
@@ -501,14 +501,14 @@ install:
       #
       # creates both plr.vcxproj and pgsql.sln
       perl contrib\plr\buildsetup.pl
-      dir .
+      Get-ChildItem
       type C:\projects\postgresql\pgsql.sln
       type plr.vcxproj
       # echo . . . COMPARING . . .
       # type pgcrypto.vcxproj
       # type postgres.vcxproj
       popd
-      dir .
+      Get-ChildItem
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
       $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
     }
@@ -528,14 +528,14 @@ install:
         Stop-Service "postgresql$env:x64-$env:pgversion"
         if ( Test-Path "$env:pgroot\bin" ) {
           echo  "Directory $env:pgroot\bin does exist. - software from enterprisedb (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)."
-          dir "$env:pgroot"
+          Get-ChildItem "$env:pgroot"
         } else {
           throw "Directory $env:pgroot\bin does not exist.`r`nDoes enterprisedb (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) have that version/platform combination?"
         }
       }
       if ( Test-Path "$env:pgroot\bin" ) {
         echo  "Directory $env:pgroot\bin does exist. - solution from appveyor (https://www.appveyor.com/docs/services-databases/#postgresql) or enterprisedb (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)."
-        dir "$env:pgroot"
+        Get-ChildItem "$env:pgroot"
       } else {
         throw "Neither appveyor (https://www.appveyor.com/docs/services-databases/#postgresql) nor enterprisedb (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) have that version/platform combination?"
       }
@@ -600,9 +600,9 @@ after_build:
     if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       pushd c:\projects\postgresql\src\tools\msvc
       pwd
-      dir .
+      Get-ChildItem
       perl install.pl "$env:pgroot"
-      dir .
+      Get-ChildItem
       popd
       pwd
     }
