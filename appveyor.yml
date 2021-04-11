@@ -257,7 +257,7 @@ environment:
   # will cause non-"branch, tag, or commit" Debug builds to fail.
 
   # note: see OTHER work by (the original author): Mikhail Titov
-  # 
+  #
   # https://ci.appveyor.com/project/PurpleI2P/sqlite-fdw/history
   # https://github.com/mlt/sqlite_fdw/blob/9903e2f1d70726bfb3819908750f40126940279c/.appveyor.yml
   # https://github.com/pgspider/sqlite_fdw/pull/26
@@ -460,7 +460,8 @@ install:
         pwd
       }
       pushd c:\projects\postgresql
-      Get-ChildItem
+      $Table = Get-ChildItem
+      foreach ($Row in $Table) { $Row.Name }
       popd
     }
 
@@ -528,9 +529,11 @@ install:
     if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       gendef - "$env:R_HOME\bin\$env:RBIN\R.dll" > "R$env:PLATFORM.def" 2> $null
       lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
-      Get-ChildItem
+      $Table = Get-ChildItem
+      foreach ($Row in $Table) { $Row.Name }
       pushd c:\projects\postgresql
-      Get-ChildItem
+      $Table = Get-ChildItem
+      foreach ($Row in $Table) { $Row.Name }
       cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
       #
       # patch already done - above - using msvc.diff.R
@@ -538,14 +541,16 @@ install:
       #
       # creates both plr.vcxproj and pgsql.sln
       perl contrib\plr\buildsetup.pl
-      Get-ChildItem
+      $Table = Get-ChildItem
+      foreach ($Row in $Table) { $Row.Name }
       type C:\projects\postgresql\pgsql.sln
       type plr.vcxproj
       # echo . . . COMPARING . . .
       # type pgcrypto.vcxproj
       # type postgres.vcxproj
       popd
-      Get-ChildItem
+      $Table = Get-ChildItem
+      foreach ($Row in $Table) { $Row.Name }
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
       $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
     }
@@ -565,14 +570,16 @@ install:
         Stop-Service "postgresql$env:x64-$env:pgversion"
         if ( Test-Path "$env:pgroot\bin" ) {
           echo  "Directory $env:pgroot\bin does exist. - software from enterprisedb (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)."
-          Get-ChildItem "$env:pgroot"
+          $Table = Get-ChildItem "$env:pgroot"
+          foreach ($Row in $Table) { $Row.Name }
         } else {
           throw "Directory $env:pgroot\bin does not exist.`r`nDoes enterprisedb (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) have that version/platform combination?"
         }
       }
       if ( Test-Path "$env:pgroot\bin" ) {
         echo  "Directory $env:pgroot\bin does exist. - solution from appveyor (https://www.appveyor.com/docs/services-databases/#postgresql) or enterprisedb (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)."
-        Get-ChildItem "$env:pgroot"
+        $Table = Get-ChildItem "$env:pgroot"
+        foreach ($Row in $Table) { $Row.Name }
       } else {
         throw "Neither appveyor (https://www.appveyor.com/docs/services-databases/#postgresql) nor enterprisedb (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) have that version/platform combination?"
       }
@@ -637,9 +644,11 @@ after_build:
     if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       pushd c:\projects\postgresql\src\tools\msvc
       pwd
-      Get-ChildItem
+      $Table = Get-ChildItem
+      foreach ($Row in $Table) { $Row.Name }
       perl install.pl "$env:pgroot"
-      Get-ChildItem
+      $Table = Get-ChildItem
+      foreach ($Row in $Table) { $Row.Name }
       popd
       pwd
     }
@@ -652,7 +661,8 @@ after_build:
 # - bash --login -c "find '/c/Program Files (x86)' -name '*plr.dll'      -type f 2>/dev/null"
 # - echo END TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
 # #
-
+- bash --login -c "find '$(cygpath ${pf})' -name '*postgres.exe' -type f 2>/dev/null"
+- bash --login -c "find '$(cygpath ${pf})' -name '*plr.dll'      -type f 2>/dev/null"
 #
 # same as above (repeated here)
 - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
@@ -717,7 +727,7 @@ test_script:
 #
 #
 # hopefull a temporary patch - on Windows(msvc)
-# So the reason master is failing is because for some reason the error is 
+# So the reason master is failing is because for some reason the error is
 #   now returning a warning on windows but not on linux
 # https://github.com/postgres-plr/plr/issues/89
 - ps: |
