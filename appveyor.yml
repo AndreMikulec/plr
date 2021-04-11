@@ -663,14 +663,11 @@ after_build:
 #
 # #
 # - echo BEGIN TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
-# - bash --login -c "find '/c/Program Files'       -name '*postgres.exe' -type f 2>/dev/null"
-# - bash --login -c "find '/c/Program Files (x86)' -name '*postgres.exe' -type f 2>/dev/null"
-# - bash --login -c "find '/c/Program Files'       -name '*plr.dll'      -type f 2>/dev/null"
-# - bash --login -c "find '/c/Program Files (x86)' -name '*plr.dll'      -type f 2>/dev/null"
+- bash --login -c "find \"$(cygpath \"${pf}\")\" -name '*postgres.exe' -type f 2>/dev/null"
+- bash --login -c "find \"$(cygpath \"${pf}\")\" -name '*plr.exe'      -type f 2>/dev/null"
 # - echo END TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
 # #
-- bash --login -c "find '$(cygpath ${pf})' -name '*postgres.exe' -type f 2>/dev/null"
-- bash --login -c "find '$(cygpath ${pf})' -name '*plr.dll'      -type f 2>/dev/null"
+
 #
 # same as above (repeated here)
 - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
