@@ -460,6 +460,7 @@ install:
         pwd
       }
       pushd c:\projects\postgresql
+      pwd
       $Table = Get-ChildItem
       foreach ($Row in $Table) { $Row.Name }
       popd
@@ -529,9 +530,11 @@ install:
     if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
       gendef - "$env:R_HOME\bin\$env:RBIN\R.dll" > "R$env:PLATFORM.def" 2> $null
       lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
+      pwd
       $Table = Get-ChildItem
       foreach ($Row in $Table) { $Row.Name }
       pushd c:\projects\postgresql
+      pwd
       $Table = Get-ChildItem
       foreach ($Row in $Table) { $Row.Name }
       cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
@@ -541,6 +544,7 @@ install:
       #
       # creates both plr.vcxproj and pgsql.sln
       perl contrib\plr\buildsetup.pl
+      pwd
       $Table = Get-ChildItem
       foreach ($Row in $Table) { $Row.Name }
       type C:\projects\postgresql\pgsql.sln
@@ -549,6 +553,7 @@ install:
       # type pgcrypto.vcxproj
       # type postgres.vcxproj
       popd
+      pwd
       $Table = Get-ChildItem
       foreach ($Row in $Table) { $Row.Name }
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
@@ -570,6 +575,7 @@ install:
         Stop-Service "postgresql$env:x64-$env:pgversion"
         if ( Test-Path "$env:pgroot\bin" ) {
           echo  "Directory $env:pgroot\bin does exist. - software from enterprisedb (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)."
+          echo "$env:pgroot"
           $Table = Get-ChildItem "$env:pgroot"
           foreach ($Row in $Table) { $Row.Name }
         } else {
@@ -578,6 +584,7 @@ install:
       }
       if ( Test-Path "$env:pgroot\bin" ) {
         echo  "Directory $env:pgroot\bin does exist. - solution from appveyor (https://www.appveyor.com/docs/services-databases/#postgresql) or enterprisedb (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)."
+        echo "$env:pgroot"
         $Table = Get-ChildItem "$env:pgroot"
         foreach ($Row in $Table) { $Row.Name }
       } else {
@@ -647,6 +654,7 @@ after_build:
       $Table = Get-ChildItem
       foreach ($Row in $Table) { $Row.Name }
       perl install.pl "$env:pgroot"
+      pwd
       $Table = Get-ChildItem
       foreach ($Row in $Table) { $Row.Name }
       popd
