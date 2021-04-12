@@ -386,7 +386,7 @@ for:
   #
   - ps: |
       # Set-PSDebug -Trace 2
-      ${env:betterperl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:BIT}bit-portable.zip"
+      ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:BIT}bit-portable.zip"
       ${env:betterperl} = "strawberry${env:BIT}"
       if (-not (Test-Path "${env:betterperl}.zip")) {
         curl -o ${env:betterperl}.zip "${env:betterperlurl}"
