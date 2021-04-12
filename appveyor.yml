@@ -321,8 +321,6 @@ for:
       $env:exe = "postgresql-$env:pg-windows$env:x64.exe"
       [Environment]::SetEnvironmentVariable("exe", $env:exe, "Machine")
 
-
-
   #
   # possible user provided in the matrix
   #
@@ -377,25 +375,28 @@ for:
 
   - SET sed=C:\msys64\usr\bin\sed
 
-  # - ps: |
-  #     if ("$env:platform" -eq "x64") {
-  #       $env:BIT = "64"
-  #     } else {
-  #       $env:BIT = "32
-  #     }
+  - ps: |
+      if ("${env:platform}" -eq "x64") {
+        ${env:BIT} = "64"
+      } else {
+        ${env:BIT} = "32"
+      }
+  # Appveyor specific: seems not required - with Appveyor - Strawberry perl is already in the path
+  # ActiveState Perl is good, but Strawberry Perl is preferred
   #
-  # # Appveyor specific: seems not required - with Appveyor - Strawberry perl is already in the path
-  # # ActiveState Perl is good, but Strawberry Perl is preferred
-  # #
-  # - if %PLATFORM%==x64 (set BIT=64) else set BIT=32
-  # - set betterperlurl=https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-%BIT%bit-portable.zip
-  # - set betterperl=strawberry%BIT%
-  # - if not exist %betterperl%.zip curl -o %betterperl%.zip %betterperlurl%
-  # - 7z x %betterperl%.zip -oc:\%betterperl%
-  # - set Path=c:\%betterperl%\perl\bin;%Path%
-  # - which perl
-  # - set Path=%Path%;c:\%betterperl%\c\bin
-
+  - ps: |
+      # Set-PSDebug -Trace 2
+      ${env:betterperl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:BIT}bit-portable.zip"
+      ${env:betterperl} = "strawberry${env:BIT}"
+      if (-not (Test-Path "${env:betterperl}.zip")) {
+        curl -o ${env:betterperl}.zip "${env:betterperlurl}"
+        7z x ${env:betterperl}.zip -oc:\${env:betterperl}
+      }
+      # of needed to install pl/perl
+      ${env:Path} = "c:\${env:betterperl}\perl\bin;${env:Path}"
+      which perl
+      ${env:Path} = "${env:Path};c:\${env:betterperl}\c\bin"
+      which pexports
 
   # CHANGE THE CURL URL BEFORE A PULL REQUEST (IF ANY)
   #
