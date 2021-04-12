@@ -624,11 +624,6 @@ install:
 
 
 
-cache:
-- '%exe%'
-- R-%rversion%-win.exe
-
-
 
 # msbuild: reads the environment variable PLATFORM. The PLATFORM value can be either Win32 xor x64.
 # xor
@@ -805,6 +800,14 @@ test_script:
       type regression.diffs
       $host.SetShouldExit($LastExitCode)
     }
+
+
+
+
+cache:
+- '%exe%'
+- R-%rversion%-win.exe
+
 
 
 artifacts:
