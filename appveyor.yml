@@ -91,7 +91,7 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.0.5
     compiler: msvc
-    
+
 
   - pg: 12.5-1 # from Appveyor
     PlatformToolset: v141
@@ -136,7 +136,7 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     rversion: 3.6.0
     compiler: msvc
-    
+
 
   - pg: 10.16-1 # from enterprisedb
     PlatformToolset: v120
@@ -145,7 +145,7 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     rversion: 3.6.0
     compiler: msvc
-    
+
 
   - pg: 9.6.21-1 # from Appveyor
     PlatformToolset: v120
@@ -154,7 +154,7 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     rversion: 3.6.0
     compiler: msvc
-    
+
 
   - pg: 9.6.21-1 # from enterprisedb
     PlatformToolset: v120
@@ -163,7 +163,7 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     rversion: 3.6.0
     compiler: msvc
-    
+
 
   - pg: 9.5.25-1 # from Appveyor
     PlatformToolset: v120
@@ -321,6 +321,8 @@ for:
       $env:exe = "postgresql-$env:pg-windows$env:x64.exe"
       [Environment]::SetEnvironmentVariable("exe", $env:exe, "Machine")
 
+
+
   #
   # possible user provided in the matrix
   #
@@ -328,6 +330,7 @@ for:
   - if not defined pghint      set pghint=none
 
   install:
+
   #
   # FUTURE: bleeding edge versions of R for Windows (non-cygwin)
   # https://cran.r-project.org/bin/windows/base/R-devel-win.exe
@@ -336,8 +339,16 @@ for:
   # https://cran.r-project.org/bin/windows/base/R-4.0.5patched-win.exe
   # https://cran.r-project.org/bin/windows/base/rpatched.html
   #
+  - ps: |
+      if ("$env:platform" -eq "x64") {
+        $env:components_arch = "',x64'"
+      } else {
+        $env:components_arch = "',i386'"
+
+      }
   - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
-  - R-%rversion%-win.exe /VERYSILENT
+  # - R-%rversion%-win.exe /VERYSILENT
+  - R-%rversion%-win.exe  /SP- /VERYSILENT /COMPONENTS=main%components_arch%,translations /NOICONS /TASKS=
   #
   # We could have used RTools many R users have, but let's use msys64 existing on Appveyor intead
   #- if not exist Rtools35.exe appveyor downloadfile https://cran.r-project.org/bin/windows/Rtools/Rtools35.exe
@@ -363,7 +374,15 @@ for:
   #
   - SET R_HOME=%ProgramFiles%\R\R-%rversion%
   - set RBIN=%PLATFORM:x86=i386%
+
   - SET sed=C:\msys64\usr\bin\sed
+
+  # - ps: |
+  #     if ("$env:platform" -eq "x64") {
+  #       $env:BIT = "64"
+  #     } else {
+  #       $env:BIT = "32
+  #     }
   #
   # # Appveyor specific: seems not required - with Appveyor - Strawberry perl is already in the path
   # # ActiveState Perl is good, but Strawberry Perl is preferred
