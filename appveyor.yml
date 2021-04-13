@@ -8,6 +8,39 @@ environment:
 
   matrix:
 
+  - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e # static commit - from git
+    #
+    pghint: commit
+    #
+    PlatformToolset: v142
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.0.5
+    compiler: msys2
+    MSYSTEM: MINGW64
+    #
+    pglink: bin
+    pglinkbinoldurl: http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-postgresql-12.4-1-any.pkg.tar.zst
+
+
+  - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e # static commit - from git
+    #
+    pghint: commit
+    #
+    PlatformToolset: v142
+    configuration: Debug
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.0.5
+    compiler: msys2
+    MSYSTEM: MINGW64
+    #
+    githubcache: true
+    #
+    pglink: src
+
+
   - pg: master # branch - non-static commit - from git
     PlatformToolset: v141
     configuration: Debug
@@ -288,6 +321,23 @@ environment:
 ### Documentation Ends ###
 
 for:
+-
+  matrix:
+    only:
+      - compiler: msys2
+
+  init:
+  - echo compiler msys2 init
+
+  install:
+  - echo compiler msys2 install
+
+  build_script:
+  - echo compiler msys2 build_script
+
+  test_script:
+  - echo compiler msys2 test_script
+
 -
   matrix:
     only:
