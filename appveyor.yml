@@ -389,7 +389,7 @@ for:
       ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:BIT}bit-portable.zip"
       ${env:betterperl} = "strawberry${env:BIT}"
       if (-not (Test-Path "${env:betterperl}.zip")) {
-        curl --verbose -o ${env:betterperl}.zip "${env:betterperlurl}"
+        curl -o ${env:betterperl}.zip -v "${env:betterperlurl}"
         7z x ${env:betterperl}.zip "-oc:\${env:betterperl}"
       }
       # of needed to install pl/perl
