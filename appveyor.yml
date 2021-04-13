@@ -337,16 +337,8 @@ for:
   # https://cran.r-project.org/bin/windows/base/R-4.0.5patched-win.exe
   # https://cran.r-project.org/bin/windows/base/rpatched.html
   #
-  - ps: |
-      if ("$env:platform" -eq "x64") {
-        $env:components_arch = "',x64'"
-      } else {
-        $env:components_arch = "',i386'"
-
-      }
   - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
-  # - R-%rversion%-win.exe /VERYSILENT
-  - R-%rversion%-win.exe  /SP- /VERYSILENT /COMPONENTS=main%components_arch%,translations /NOICONS /TASKS=
+  - R-%rversion%-win.exe /VERYSILENT
   #
   # We could have used RTools many R users have, but let's use msys64 existing on Appveyor intead
   #- if not exist Rtools35.exe appveyor downloadfile https://cran.r-project.org/bin/windows/Rtools/Rtools35.exe
