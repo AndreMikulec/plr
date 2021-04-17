@@ -4,6 +4,7 @@ clone_depth: 1
 
 environment:
   APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+  R_VERSION: 4.0.5
 
   matrix:
     - MSYSTEM: MINGW64
@@ -21,17 +22,18 @@ init:
       ${env:R_ARCH} = "/i386"
       ${env:COMPONENTS_ARCH} = "',i386'"
     }
-    
+
+    ${env:RBINURL} = "https://cran.r-project.org/bin/windows/base/old/${env:R_VERSION}/R-${env:R_VERSION}-win.exe"
     # "make installcheck" does not like spaces
     ${env:R_HOME} = "C:\RINSTALL"
 
-  # also see init.sh
+    # also see that each *.sh dot sources early ". ./init.sh"
 
 install:
 - ps: |
     Set-PSDebug -Trace 2
     if (-not (Test-Path "R-${env:R_VERSION}-win.exe")) {
-      curl -o "R-${env:R_VERSION}-win.exe" -v "$[env:rbinurl}"
+      curl -o "R-${env:R_VERSION}-win.exe" -v "$[env:RBINURL}"
       R-${env:R_VERSION}-win.exe /SP- /VERYSILENT /DIR=${env:R_HOME} /COMPONENTS=main${env:COMPONENTS_ARCH},translations /NOICONS /TASKS=
     }
     bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql"

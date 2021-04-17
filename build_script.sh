@@ -5,15 +5,6 @@ cd "$(dirname "$0")"
 
 . ./init.sh
 
-pwd
-# /c/projects/plr
-
-echo $APPVEYOR_BUILD_FOLDER
-# /c/projects/plr
-
-echo ${MINGW_PREFIX}
-# /mingw64
-
 # not required in compilation
 #     required in "CREATE EXTENSION plr;" and regression tests
 export PATH=${R_HOME}/bin${R_ARCH}:$PATH
