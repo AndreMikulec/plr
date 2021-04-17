@@ -38,4 +38,6 @@ winpty -Xallow-non-tty psql -c 'SELECT plr_version();'
 winpty -Xallow-non-tty psql -c 'SELECT   r_version();'
 winpty -Xallow-non-tty psql -c 'DROP EXTENSION plr;'
 
+pg_ctl -D ${PGDATA} -l logfile stop
+
 set +v +x
