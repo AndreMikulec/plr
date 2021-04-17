@@ -27,9 +27,6 @@ pg_ctl -D ${PGDATA} -l logfile start
 
 winpty -Xallow-non-tty psql -c 'select version();'
 
-echo pg_config
-pg_config
-
 USE_PGXS=1 make
 
 USE_PGXS=1 make install

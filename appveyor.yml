@@ -34,7 +34,7 @@ install:
       curl -o "R-win.exe" -v "${env:RBINURL}"
     }
 - R-win.exe /SP- /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
-- bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql"
+- bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql && pg_config"
 
 build_script:
 - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
