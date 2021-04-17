@@ -30,8 +30,6 @@ init:
 install:
 - ps: |
     Set-PSDebug -Trace 2
-    echo ${env:APPVEYOR_BUILD_FOLDER}
-    pwd
     if (-not (Test-Path "R-${env:R_VERSION}-win.exe")) {
       curl -o "R-win.exe" -v "${env:RBINURL}"
     }

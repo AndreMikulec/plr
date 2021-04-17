@@ -35,7 +35,9 @@ USE_PGXS=1 make
 
 USE_PGXS=1 make install
 
-psql -c 'CREATE EXTENSION plr;'
-psql -c 'DROP EXTENSION plr;'
+winpty -Xallow-non-tty psql -c 'CREATE EXTENSION plr;'
+winpty -Xallow-non-tty psql -c 'SELECT plr_version();'
+winpty -Xallow-non-tty psql -c 'SELECT   r_version();'
+winpty -Xallow-non-tty psql -c 'DROP EXTENSION plr;'
 
 set +v +x
