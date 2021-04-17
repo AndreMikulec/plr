@@ -8,11 +8,11 @@ environment:
 
   matrix:
     - MSYSTEM: MINGW64
-    # - MSYSTEM: MINGW32
+    - MSYSTEM: MINGW32
 
 init:
 - ps: |
-    Set-PSDebug -Trace 2
+    # Set-PSDebug -Trace 2
     ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
 
     if ("${env:MSYSTEM}" -eq "MINGW64") {
@@ -29,7 +29,7 @@ init:
 
 install:
 - ps: |
-    Set-PSDebug -Trace 2
+    # Set-PSDebug -Trace 2
     if (-not (Test-Path "R-${env:R_VERSION}-win.exe")) {
       curl -o "R-win.exe" -v "${env:RBINURL}"
     }
