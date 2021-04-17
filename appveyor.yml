@@ -36,10 +36,10 @@ install:
     pwd
     if (-not (Test-Path "R-${env:R_VERSION}-win.exe")) {
       curl -o "R-win.exe" -v "${env:RBINURL}"
-      Invoke-Command -ScriptBlock {& cmd /c "C:\projects\plr\R-win.exe /SP- /VERYSILENT /DIR=C:\RINSTALL /NOICONS /TASKS=" /batch}
-      dir "C:\RINSTALL"
     }
-    bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql"
+
+- R-win.exe /SP- /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
+- bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql"
 
 build_script:
 - ps: |
