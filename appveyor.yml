@@ -15,10 +15,12 @@ init:
     Set-PSDebug -Trace 2
     ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
 
-    if ("${env:MSYSTEM}" -eq "MINGW64") {
+    if ("${env:MSYSTEM}" -eq "MSYSTEM") {
       ${env:R_ARCH} = "/x64"
+      ${env:COMPONENTS_ARCH} = "',x64'"
     } else {
       ${env:R_ARCH} = "/i386"
+      ${env:COMPONENTS_ARCH} = "',i386'"
     }
 
     ${env:RBINURL} = "https://cran.r-project.org/bin/windows/base/old/${env:R_VERSION}/R-${env:R_VERSION}-win.exe"
@@ -30,6 +32,8 @@ init:
 install:
 - ps: |
     Set-PSDebug -Trace 2
+    echo ${env:APPVEYOR_BUILD_FOLDER}
+    pwd
     if (-not (Test-Path "R-${env:R_VERSION}-win.exe")) {
       curl -o "R-win.exe" -v "${env:RBINURL}"
     }
@@ -40,5 +44,7 @@ build_script:
 - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
 test_script:
+- echo begin test script
 - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
+
 
