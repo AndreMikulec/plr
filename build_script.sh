@@ -6,11 +6,12 @@ cd "$(dirname "$0")"
 # set -v -x -e
 set -e
 
-which R
+# which R
 # /c/RINSTALL/bin/x64/R
 
 winpty -Xallow-non-tty initdb --username=${PGUSER} --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
 # Success. You can now start the database server using:
+# C:/msys64/mingw64/bin/pg_ctl -D C:/msys64//home/appveyor/mingw64/postgresql/Data -l logfile start
 # C:/msys64/mingw64/bin/pg_ctl -D ${PGDATA} -l logfile start
 
 # first
@@ -26,6 +27,7 @@ pg_ctl -D ${PGDATA} -l logfile start
 
 winpty -Xallow-non-tty psql -c 'select version();'
 
+echo pg_config
 pg_config
 
 USE_PGXS=1 make
@@ -37,7 +39,9 @@ winpty -Xallow-non-tty psql -c 'SELECT plr_version();'
 winpty -Xallow-non-tty psql -c 'SELECT   r_version();'
 winpty -Xallow-non-tty psql -c 'DROP EXTENSION plr;'
 
+# must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
+
 
 # set +v +x +e
 set +e
