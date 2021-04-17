@@ -1,11 +1,9 @@
 
-set -v -x
-
 cd "$(dirname "$0")"
 
 . ./init.sh
 
-
+set -v -x -e
 
 which R
 # /c/RINSTALL/bin/x64/R
@@ -40,4 +38,4 @@ winpty -Xallow-non-tty psql -c 'DROP EXTENSION plr;'
 
 pg_ctl -D ${PGDATA} -l logfile stop
 
-set +v +x
+set +v +x +e
