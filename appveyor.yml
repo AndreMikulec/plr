@@ -37,17 +37,12 @@ install:
     if (-not (Test-Path "R-${env:R_VERSION}-win.exe")) {
       curl -o "R-win.exe" -v "${env:RBINURL}"
     }
-
 - R-win.exe /SP- /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
 - bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql"
 
 build_script:
-- ps: |
-    Set-PSDebug -Trace 2
-    bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
+- bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
 test_script:
-- ps: |
-    Set-PSDebug -Trace 2
-    bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
+- bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
 
