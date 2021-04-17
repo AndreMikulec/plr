@@ -31,3 +31,6 @@ export PGDATABASE=postgres
 export PGPORT=5432
 export PGUSER=postgres
 
+# not required in compilation
+#     required in "CREATE EXTENSION plr;" and regression tests
+export PATH=${R_HOME}/bin${R_ARCH}:$PATH

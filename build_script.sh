@@ -5,9 +5,7 @@ cd "$(dirname "$0")"
 
 . ./init.sh
 
-# not required in compilation
-#     required in "CREATE EXTENSION plr;" and regression tests
-export PATH=${R_HOME}/bin${R_ARCH}:$PATH
+
 
 which R
 # /c/RINSTALL/bin/x64/R
