@@ -1,5 +1,5 @@
 
-set -v -x
+
 
 cd "$(dirname "$0")"
 
@@ -31,4 +31,3 @@ export PGDATABASE=postgres
 export PGPORT=5432
 export PGUSER=postgres
 
-set +v +x

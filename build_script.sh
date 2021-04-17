@@ -27,7 +27,7 @@ pg_ctl -D ${PGDATA} -l logfile stop
 # leave it up
 pg_ctl -D ${PGDATA} -l logfile start
 
-psql -c 'select version();'
+winpty -Xallow-non-tty psql -c 'select version();'
 
 pg_config
 
