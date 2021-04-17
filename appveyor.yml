@@ -34,7 +34,7 @@ install:
     Set-PSDebug -Trace 2
     if (-not (Test-Path "R-${env:R_VERSION}-win.exe")) {
       curl -o "R-win.exe" -v "${env:RBINURL}"
-      cmd /c C:\projects\plr\R-win.exe /SP- /VERYSILENT /DIR=C:\RINSTALL /NOICONS /TASKS=
+      Invoke-Command -ScriptBlock {& C:\projects\plr\R-win.exe /SP- /VERYSILENT /DIR=C:\RINSTALL /NOICONS /TASKS=}
       dir "C:\RINSTALL"
     }
     bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql"
