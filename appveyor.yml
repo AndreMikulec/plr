@@ -824,27 +824,49 @@ for:
   - for /f "delims=" %%i in (server_version_num.txt) do (set server_version_num=%%i)
   - type  server_version_num.txt
   - echo %server_version_num%
+
+  # # HAD ALREADY BEEN FIXED IN . . .
+  # # https://github.com/postgres-plr/plr/commit/1ba43857fe7d79629e1c6dda7e47f75f0581c115
+  # #
+  # Author:			Dave Cramer <davecramer@gmail.com>
+  # Date:			(4/12/2021 7:37:38 AM)
+  # Committer:		GitHub <noreply@github.com>
+  # Commit hash:	1ba43857fe7d79629e1c6dda7e47f75f0581c115
+  # Child:			5722598a
+  # Parent:			9e72c5d9
+  # Update for PostgreSQL >= 14 (#88)
+  # 
+  # * Update msvc.diff for master.
+  # hex_decode has been removed in 14 in favour of pg_hex_decode, adjust code to call new function for versions greater than or equal to 14.0
+  # 
+  # * use PGERROR, PGWARNING where defined
+  # Contained in branches:
+  # master
+  # master_msys2_simplest_test_installcheck
+  # Contained in no tag
+  # 
+  # Derives from tag: REL8_4_1 + 4 commits
   #
-  # testing
-  #
-  #
-  # hopefull a temporary patch - on Windows(msvc)
-  # So the reason master is failing is because for some reason the error is
-  #   now returning a warning on windows but not on linux
-  # https://github.com/postgres-plr/plr/issues/89
-  - ps: |
-      Set-PSDebug -Trace 2
-      if (("$env:pgversion" -eq "master") -and ([double]"$env:server_version_num" -ge 140000.0)) {
-        echo "BEGIN change expected\bad_fun.out from ERROR to WARNING"
-        echo "PRINTING expected\bad_fun.out"
-        type "expected\bad_fun.out"
-        # should have returned ERROR - but windows(msvc) returns WARNING(wrong)
-        # forcing a regression test to pass
-        sed -i "s/ERROR/WARNING/" "expected\bad_fun.out"
-        echo "PRINTING expected\bad_fun.out"
-        type "expected\bad_fun.out"
-        echo "END change expected\bad_fun.out from ERROR to WARNING"
-      }
+  #   # testing
+  #   #
+  #   #
+  #   # hopefull a temporary patch - on Windows(msvc)
+  #   # So the reason master is failing is because for some reason the error is
+  #   #   now returning a warning on windows but not on linux
+  #   # https://github.com/postgres-plr/plr/issues/89
+  #   - ps: |
+  #       Set-PSDebug -Trace 2
+  #       if (("$env:pgversion" -eq "master") -and ([double]"$env:server_version_num" -ge 140000.0)) {
+  #         echo "BEGIN change expected\bad_fun.out from ERROR to WARNING"
+  #         echo "PRINTING expected\bad_fun.out"
+  #         type "expected\bad_fun.out"
+  #         # should have returned ERROR - but windows(msvc) returns WARNING(wrong)
+  #         # forcing a regression test to pass
+  #         sed -i "s/ERROR/WARNING/" "expected\bad_fun.out"
+  #         echo "PRINTING expected\bad_fun.out"
+  #         type "expected\bad_fun.out"
+  #         echo "END change expected\bad_fun.out from ERROR to WARNING"
+  #       }
   #
   - ps: |
       # Set-PSDebug -Trace 2
