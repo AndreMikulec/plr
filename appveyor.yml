@@ -18,27 +18,42 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     rversion: 4.0.5
     compiler: msys2
-    MSYSTEM: MINGW64
     #
     pglink: bin
-    pglinkbinoldurl: http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-postgresql-12.4-1-any.pkg.tar.zst
 
 
-  - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e # static commit - from git
-    #
-    pghint: commit
-    #
-    PlatformToolset: v142
-    configuration: Debug
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.0.5
-    compiler: msys2
-    MSYSTEM: MINGW64
-    #
-    githubcache: true
-    #
-    pglink: src
+#   # TO BE DEVELOPED
+# 
+#   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e # static commit - from git
+#     #
+#     pghint: commit
+#     #
+#     PlatformToolset: v142
+#     configuration: Debug
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5
+#     compiler: msys2
+#     #
+#     pglink: bin
+#     pglinkbinoldurl: http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-postgresql-12.4-1-any.pkg.tar.zst
+# 
+# 
+#   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e # static commit - from git
+#     #
+#     pghint: commit
+#     #
+#     PlatformToolset: v142
+#     configuration: Debug
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5
+#     compiler: msys2
+#     MSYSTEM: MINGW64
+#     #
+#     githubcache: true
+#     #
+#     pglink: src
 
 
   - pg: master # branch - non-static commit - from git
@@ -302,7 +317,8 @@ environment:
   # The existance of file plr.vcxproj.user
   # will cause non-"branch, tag, or commit" Debug builds to fail.
 
-  # note: see OTHER work by (the original author): Mikhail Titov
+  # OTHER work by (the original author): Mikhail Titov
+  # --------------------------------------------------
   #
   # https://ci.appveyor.com/project/PurpleI2P/sqlite-fdw/history
   # https://github.com/mlt/sqlite_fdw/blob/9903e2f1d70726bfb3819908750f40126940279c/.appveyor.yml
@@ -318,6 +334,83 @@ environment:
   #
   # https://github.com/arkhipov/acl/blob/a22179c62236b1bfa0e542c9875488163032d200/appveyor.yml
 
+  # 
+  # (Other notes from Peter Eisentraut)
+  # Developing PostgreSQL for Windows
+  # ----------------------------------
+  # 
+  # https://www.2ndquadrant.com/en/blog/developing-postgresql-windows-part-1/
+  # https://www.2ndquadrant.com/en/blog/developing-postgresql-windows-part-2/
+  # https://www.2ndquadrant.com/en/blog/developing-postgresql-windows-part-3/
+  # 
+  # https://github.com/petere/postgresql/blob/appveyor-msvc/.appveyor.yml
+  # https://github.com/petere/postgresql/blob/appveyor-mingw/.appveyor.yml
+  #   NOTE: STRANGLY DOES NOT DO: make check-world COPT=-Werror
+  #     SO"test: off" SO? NOT DO: creating database "regression"
+  #   https://ci.appveyor.com/project/petere/postgresql/builds/31378850?fullLog=true
+  # 
+  # https://github.com/petere/postgresql/blob/appveyor-cygwin/.appveyor.yml
+  # . . .
+  # https://ci.appveyor.com/project/petere/postgresql/builds/37986514
+  # 
+  # SPECIFICALLY THE BIG CYGWIN TESTS (WITH THE LONG 64 PASSING) RAN USING CODE
+  # OF THIS COMMIT:
+  # https://github.com/petere/postgresql/blob/92d42045cc81cb2b12612c6484fb00881cfed2b9/.appveyor.yml
+  # . . . 
+  # RUN OUTPUT
+  # 64bit
+  # https://ci.appveyor.com/project/petere/postgresql/builds/37986514/job/or09udib29ew619r?fullLog=true
+
+  #
+  # help: 1 of 3
+  # From:	Andrew Dunstan <andrew(at)dunslane(dot)net>
+  # To:	PostgreSQL-development <pgsql-hackers(at)postgresql(dot)org>
+  # Subject:	msys2
+  # Date:	2018-10-07 19:32:44
+  # Message-ID:	9f4f22be-f9f1-b350-bc06-521226b87f7a@dunslane.net
+  # Views:	Raw Message | Whole Thread | Download mbox | Resend email
+  # Thread:
+  # 2018-10-07 19:32:44 from Andrew Dunstan <andrew(at)dunslane(dot)net>
+  # Lists:	pgsql-hackers
+  # https://www.postgresql.org/message-id/9f4f22be-f9f1-b350-bc06-521226b87f7a%40dunslane.net
+
+  # help: 2 of 3
+  # Developing PostgreSQL for Windows, Part 3
+  # March 24, 2020/in Eisentraut's PlanetPostgreSQL, PostgreSQL /by Peter Eisentraut
+  # https://www.2ndquadrant.com/en/blog/developing-postgresql-windows-part-3/
+  # . . .
+  # some AppVeyor files
+  # From:	Peter Eisentraut <peter(dot)eisentraut(at)2ndquadrant(dot)com>
+  # To:	pgsql-hackers <pgsql-hackers(at)postgresql(dot)org>
+  # Subject:	some AppVeyor files
+  # Date:	2020-03-23 16:05:33
+  # Message-ID:	d8e78714-dc77-4a64-783f-e863ba4d951f@2ndquadrant.com
+  # Views:	Raw Message | Whole Thread | Download mbox | Resend email
+  # Thread:
+  # 2020-03-23 16:05:33 from Peter Eisentraut <peter(dot)eisentraut(at)2ndquadrant(dot)com>
+  # Lists:	pgsql-hackers
+  # https://www.postgresql.org/message-id/d8e78714-dc77-4a64-783f-e863ba4d951f%402ndquadrant.com
+  # . . .
+  # From a04c2140482645a810bfd682b204bac5194eea8d Mon Sep 17 00:00:00 2001
+  # From: Peter Eisentraut <peter@eisentraut.org>
+  # Date: Tue, 10 Mar 2020 19:23:46 +0100
+  # Subject: [PATCH] AppVeyor configuration for MinGW
+  # https://www.postgresql.org/message-id/attachment/109033/0001-AppVeyor-configuration-for-MinGW.patch
+
+  # help: 3 of 3
+  # Package: mingw-w64-x86_64-postgresql
+  # Libraries for use with PostgreSQL (mingw-w64)
+  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-postgresql/PKGBUILD
+  # and
+  # https://packages.msys2.org/package/mingw-w64-x86_64-postgresql
+
+  # SEE ALSO 
+  #
+  # https://aur.archlinux.org/packages/?O=0&SeB=n&K=postgres&outdated=&SB=n&SO=a&PP=50&do_Search=Go
+  #
+  # https://archlinux.org/packages/?sort=&arch=any&arch=x86_64&repo=Community&repo=Community-Testing&repo=Core&repo=Extra&repo=KDE-Unstable&repo=Multilib&repo=Multilib-Testing&repo=Testing&q=postgres&maintainer=&flagged=
+
+
 ### Documentation Ends ###
 
 for:
@@ -327,16 +420,59 @@ for:
       - compiler: msys2
 
   init:
-  - echo compiler msys2 init
+  - echo compiler msys2 ininit
+  - ps: |
+      Set-PSDebug -Trace 2
+
+      if ("${env:compiler}" -eq "msys2") {
+        if ("${env:platform}" -eq "x64") {
+          ${env:MSYSTEM} = "MINGW64"
+        } else {
+          ${env:MSYSTEM} = "MINGW32"
+        }
+      }
+
+      if ("${env:MSYSTEM}" -eq "MINGW64") {
+        ${env:R_ARCH} = "/x64"
+      } else {
+        ${env:R_ARCH} = "/i386"
+      }
+
+      ${env:rbinurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
+      # "make installcheck" does not like spaces
+      ${env:R_HOME} = "C:\RINSTALL"
+      #
+      # also see that each *.sh dot sources early ". ./init.sh"
+
 
   install:
   - echo compiler msys2 install
+  - ps: |
+      Set-PSDebug -Trace 2
+      ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
+  - ps: |
+      # Set-PSDebug -Trace 2
+      if (-not (Test-Path "R-${env:rversion}-win.exe")) {
+        curl -o "R-win.exe" -v "${env:rbinurl}"
+      } else {
+        copy "R-${env:rversion}-win.exe" "R-win.exe"
+      }
+  # In powershell this will not run/install
+  # neither plain as here, nor in Invoke-Command
+  # (Perhaps because, of "some" complexity)
+  - R-win.exe /SP- /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
+  - bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql && pg_config"
 
   build_script:
   - echo compiler msys2 build_script
+  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
   test_script:
   - echo compiler msys2 test_script
+  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
+
+  after_test:
+  - echo compiler msys2 after_test
 
 -
   matrix:
