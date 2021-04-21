@@ -23,9 +23,11 @@ else
 fi
 
 pg_config | grep "^PKGLIBDIR\|^SHAREDIR" | sed s"/ = /=/" > newvars.sh
+cat newvars.sh
 . ./newvars.sh
+export
 
-mkdir    tmp
+mkdir                                 tmp
 cp LICENSE                            tmp/PLR_LICENSE
 mkdir -p                              tmp/lib
 cp ${LIBDIR}/plr.dll                  tmp/lib
