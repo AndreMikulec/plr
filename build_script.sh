@@ -27,6 +27,13 @@ pg_ctl -D ${PGDATA} -l logfile start
 
 winpty -Xallow-non-tty psql -c 'select version();'
 
+if [ "${configuration}" = "Debug" ]
+then
+  echo ""                          >> Makefile
+  echo "override CFLAGS += -g -Og" >> Makefile
+  echo ""                          >> Makefile
+fi
+
 USE_PGXS=1 make
 
 USE_PGXS=1 make install

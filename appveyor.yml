@@ -2,6 +2,12 @@
 image: Visual Studio 2015
 clone_depth: 1
 
+# Skipping commits affecting specific files (GitHub only).
+skip_commits:
+  files:
+    - '**/*.md'
+  message: /\[skip ci]/
+
 environment:
   # Always Try to save
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
@@ -9,10 +15,20 @@ environment:
   matrix:
 
   - PlatformToolset: v142
+    configuration: Debug
     platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     rversion: 4.0.5
     compiler: msys2
+    pglinkbinoldurl: http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-postgresql-12.4-1-any.pkg.tar.zst
+
+
+  - PlatformToolset: v142
+    platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.0.5
+    compiler: msys2
+
 
 #   # TO BE DEVELOPED
 #
@@ -271,7 +287,8 @@ environment:
   #    and then immediately a user should cancel the Appveyor build.
   # 2. msvc.diff.R solves all msvc.diff problems of all compilations
   # 3. Solutions.pm.R correctly sets the "internal" platform,
-  #    that use is used by perl to generate project files.
+  #    "Win32" xor "x64".  
+  #    The file Solutions.pm is used by perl to generate project files.
 
   # pg - should be a specific already-compiled-binary version
   # from https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
@@ -413,7 +430,8 @@ for:
       - compiler: msys2
 
   init:
-  - echo compiler msys2 ininit
+  - echo compiler msys2 init
+  - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
   - ps: |
       Set-PSDebug -Trace 2
 
@@ -442,29 +460,42 @@ for:
   - ps: |
       Set-PSDebug -Trace 2
       ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
-  - ps: |
-      # Set-PSDebug -Trace 2
+
+      bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql && pg_config"
+      #
+      # How to obtain older versions of packages using MSYS2?
+      # 2015
+      # https://stackoverflow.com/questions/33969803/how-to-obtain-older-versions-of-packages-using-msys2
+      #
+      if ( "${env:pglinkbinoldurl}" -ne "" ) {
+        bash -login -c "curl   -o             install.pkg.tar.zst ${pglinkbinoldurl}"
+        bash -login -c "pacman -U --noconfirm install.pkg.tar.zst"
+      }
+
       if (-not (Test-Path "R-${env:rversion}-win.exe")) {
         curl -o "R-win.exe" -v "${env:rbinurl}"
       } else {
         copy "R-${env:rversion}-win.exe" "R-win.exe"
       }
+
   # In powershell this will not run/install
-  # neither plain as here, nor in Invoke-Command
+  # neither plain as here, nor in Invoke-Command,
   # (Perhaps because, of "some" complexity)
+  #
   - R-win.exe /SP- /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
-  - bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql && pg_config"
 
   build_script:
   - echo compiler msys2 build_script
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
+  after_build:
+  - echo compiler msys2 after_build
+  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/after_build.sh"
+
   test_script:
   - echo compiler msys2 test_script
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
 
-  after_test:
-  - echo compiler msys2 after_test
 
 -
   matrix:
@@ -948,6 +979,7 @@ for:
   # name (e.g.) "master" can not (always) be (easily) compared.
   #
   - psql --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=server_version_num.txt
+  # also used in compiler - msys2
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/server_version_num.sh"
   - for /f "delims=" %%i in (server_version_num.txt) do (set server_version_num=%%i)
   - type  server_version_num.txt
