@@ -33,7 +33,7 @@ mkdir -p                              tmp/share/extension
 cp ${SHAREDIR}/extension/plr.control  tmp/share/extension
 cp ${SHAREDIR}/extension/plr-*.sql    tmp/share/extension
 
-export zip=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${Platform}-${configuration}-${Configuration}.zip
+export zip=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${Platform}-${Configuration}-${compiler}.zip
 
 7z a -r ${APPVEYOR_BUILD_FOLDER}/${zip} .\tmp\*
 
