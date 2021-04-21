@@ -467,8 +467,8 @@ for:
       # https://stackoverflow.com/questions/33969803/how-to-obtain-older-versions-of-packages-using-msys2
       #
       if ( "${env:pglinkbinoldurl}" -ne "" ) {
-        $command = "bash -login -c \"curl   -o             install.pkg.tar.zst ${pglinkbinoldurl}\""
-        $command
+        "bash -login -c "curl   -o             install.pkg.tar.zst ${pglinkbinoldurl}""
+
         bash -login -c "pacman -U --noconfirm install.pkg.tar.zst"
       }
 
