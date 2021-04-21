@@ -8,11 +8,10 @@ set -e
 
 export pg=$(postgres -V | grep -oP '(?<=\) ).*$')
 
-psql --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=${APPVEYOR_BUILD_FOLDER}/server_version_num.txt
+winpty -Xallow-non-tty psql --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=${APPVEYOR_BUILD_FOLDER}/server_version_num.txt
 # also used in compiler - msvc
 ./server_version_num.sh
 export server_version_num=$(cat ${APPVEYOR_BUILD_FOLDER}/server_version_num.txt)
-
 
 if [ ${server_version_num} -lt 100000.0 ]
 then
