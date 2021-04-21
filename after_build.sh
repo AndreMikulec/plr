@@ -22,7 +22,7 @@ else
   export pgversion=$(echo ${pg} | grep -oP '^\d+')
 fi
 
-pg_config | grep "^LIBDIR\|^SHAREDIR" | sed s"/ = /=/" > newvars.sh
+pg_config | grep "^PKGLIBDIR\|^SHAREDIR" | sed s"/ = /=/" > newvars.sh
 . ./newvars.sh
 
 mkdir    tmp
