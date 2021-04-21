@@ -460,15 +460,18 @@ for:
   - ps: |
       Set-PSDebug -Trace 2
       ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
-      "bash --login -c `"pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql`""
+      $command = "bash --login -c `"pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql`""
+      $command
       #
       # How to obtain older versions of packages using MSYS2?
       # 2015
       # https://stackoverflow.com/questions/33969803/how-to-obtain-older-versions-of-packages-using-msys2
       #
       if ( "${env:pglinkbinoldurl}" -ne "" ) {
-        "bash -login -c `"curl   -o             install.pkg.tar.zst ${pglinkbinoldurl}`""
-        "bash -login -c `"pacman -U --noconfirm install.pkg.tar.zst`""
+        $command = "bash -login -c `"curl   -o             install.pkg.tar.zst ${pglinkbinoldurl}`""
+        $command
+        $command = "bash -login -c `"pacman -U --noconfirm install.pkg.tar.zst`""
+        $command
       }
 
       if (-not (Test-Path "R-${env:rversion}-win.exe")) {
