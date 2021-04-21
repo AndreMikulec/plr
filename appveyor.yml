@@ -24,6 +24,7 @@ environment:
 
 
   - PlatformToolset: v142
+    configuration: Release
     platform: x86
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     rversion: 4.0.5
@@ -287,7 +288,7 @@ environment:
   #    and then immediately a user should cancel the Appveyor build.
   # 2. msvc.diff.R solves all msvc.diff problems of all compilations
   # 3. Solutions.pm.R correctly sets the "internal" platform,
-  #    "Win32" xor "x64".  
+  #    "Win32" xor "x64".
   #    The file Solutions.pm is used by perl to generate project files.
 
   # pg - should be a specific already-compiled-binary version
@@ -460,7 +461,7 @@ for:
   - ps: |
       Set-PSDebug -Trace 2
       ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
-      
+
   - bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql"
   #
   # How to obtain older versions of packages using MSYS2?
