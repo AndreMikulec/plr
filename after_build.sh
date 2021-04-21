@@ -35,7 +35,7 @@ cp ${SHAREDIR}/extension/plr-*.sql    tmp/share/extension
 
 export zip=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${Platform}-${Configuration}-${compiler}.zip
 
-7z a -r ${APPVEYOR_BUILD_FOLDER}/${zip} tmp/*
+7z a -r ${APPVEYOR_BUILD_FOLDER}/${zip} ./tmp/*
 
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
