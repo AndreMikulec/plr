@@ -457,11 +457,10 @@ for:
 
   install:
   - echo compiler msys2 install
+  - bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql && pg_config"
   - ps: |
       Set-PSDebug -Trace 2
       ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
-
-      bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql && pg_config"
       #
       # How to obtain older versions of packages using MSYS2?
       # 2015
