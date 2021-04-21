@@ -6,11 +6,6 @@ cd "$(dirname "$0")"
 # set -v -x -e
 set -e
 
-set -v -x -e
-export
-set +v +x +e
-set -e
-
 export pg=$(postgres -V | grep -oP '(?<=\) ).*$')
 
 pg_ctl -D ${PGDATA} -l logfile start
@@ -30,7 +25,6 @@ fi
 pg_config | grep "^PKGLIBDIR\|^SHAREDIR" | sed "s/ = /=/" | sed s"/^/export /" > newvars.sh
 . ./newvars.sh
 
-
 mkdir                                 tmp
 cp LICENSE                            tmp/PLR_LICENSE
 mkdir -p                              tmp/lib
@@ -39,7 +33,7 @@ mkdir -p                              tmp/share/extension
 cp ${SHAREDIR}/extension/plr.control  tmp/share/extension
 cp ${SHAREDIR}/extension/plr-*.sql    tmp/share/extension
 
-export zip=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${platform}-${configuration}-${compiler}.zip
+export zip=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${Platform}-${configuration}-${Configuration}.zip
 
 7z a -r ${APPVEYOR_BUILD_FOLDER}/${zip} .\tmp\*
 

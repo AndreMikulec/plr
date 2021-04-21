@@ -486,18 +486,12 @@ for:
   - R-win.exe /SP- /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
 
   build_script:
-  - echo compiler msys2 build_script
-  - set
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
   after_build:
-  - echo compiler msys2 after_build
-  - set
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/after_build.sh"
 
   test_script:
-  - echo compiler msys2 test_script
-  - set
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
 
 
