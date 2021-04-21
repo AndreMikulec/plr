@@ -3,8 +3,13 @@ cd "$(dirname "$0")"
 
 . ./init.sh
 
+# set -v -x -e
+set -e
+
 set -v -x -e
-# set -e
+export
+set +v +x +e
+set -e
 
 export pg=$(postgres -V | grep -oP '(?<=\) ).*$')
 
@@ -41,5 +46,5 @@ export zip=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${platform}-${configur
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
 
-set +v +x +e
-# set +e
+# set +v +x +e
+set +e

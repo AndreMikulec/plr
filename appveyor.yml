@@ -22,7 +22,6 @@ environment:
     compiler: msys2
     pglinkbinoldurl: http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-postgresql-12.4-1-any.pkg.tar.zst
 
-
   - PlatformToolset: v142
     configuration: Release
     platform: x86
@@ -434,7 +433,7 @@ for:
   - echo compiler msys2 init
   - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
   - ps: |
-      Set-PSDebug -Trace 2
+      # Set-PSDebug -Trace 2
 
       if ("${env:compiler}" -eq "msys2") {
         if ("${env:platform}" -eq "x64") {
@@ -459,7 +458,7 @@ for:
   install:
   - echo compiler msys2 install
   - ps: |
-      Set-PSDebug -Trace 2
+      # Set-PSDebug -Trace 2
       ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
 
   - bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql"
@@ -473,7 +472,7 @@ for:
       bash -login -c "pacman -U --noconfirm install.pkg.tar.zst"
     )
   - ps: |
-      Set-PSDebug -Trace 2
+      # Set-PSDebug -Trace 2
       if (-not (Test-Path "R-${env:rversion}-win.exe")) {
         curl -o "R-win.exe" -v "${env:rbinurl}"
       } else {
@@ -488,14 +487,17 @@ for:
 
   build_script:
   - echo compiler msys2 build_script
+  - set
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
   after_build:
   - echo compiler msys2 after_build
+  - set
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/after_build.sh"
 
   test_script:
   - echo compiler msys2 test_script
+  - set
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
 
 
