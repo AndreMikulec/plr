@@ -15,7 +15,7 @@ winpty -Xallow-non-tty psql --quiet --tuples-only -c "\pset footer off" -c "\tim
 ./server_version_num.sh
 export server_version_num=$(cat ${APPVEYOR_BUILD_FOLDER}/server_version_num.txt)
 
-if [ ${server_version_num} -lt 100000.0 ]
+if [ ${server_version_num} -lt 100000 ]
 then
   export pgversion=$(echo ${pg} | grep -oP '^\d+[.]\d+')
 else
