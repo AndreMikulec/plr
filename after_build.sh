@@ -22,16 +22,14 @@ else
   export pgversion=$(echo ${pg} | grep -oP '^\d+')
 fi
 
-echo "" > newvars.sh
-pg_config | grep "^PKGLIBDIR\|^SHAREDIR" | sed "s/ = /=/" | sed s"/^/export /" >> newvars.sh
-cat newvars.sh
+pg_config | grep "^PKGLIBDIR\|^SHAREDIR" | sed "s/ = /=/" | sed s"/^/export /" > newvars.sh
 . ./newvars.sh
-export
+
 
 mkdir                                 tmp
 cp LICENSE                            tmp/PLR_LICENSE
 mkdir -p                              tmp/lib
-cp ${LIBDIR}/plr.dll                  tmp/lib
+cp ${PKGLIBDIR}/plr.dll                  tmp/lib
 mkdir -p                              tmp/share/extension   
 cp ${SHAREDIR}/extension/plr.control  tmp/share/extension
 cp ${SHAREDIR}/extension/plr-*.sql    tmp/share/extension
