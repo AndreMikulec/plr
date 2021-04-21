@@ -8,6 +8,8 @@ set -e
 
 export pg=$(postgres -V | grep -oP '(?<=\) ).*$')
 
+pg_ctl -D ${PGDATA} -l logfile start
+
 winpty -Xallow-non-tty psql --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=${APPVEYOR_BUILD_FOLDER}/server_version_num.txt
 # also used in compiler - msvc
 ./server_version_num.sh
@@ -31,9 +33,12 @@ mkdir -p                              tmp/share/extension
 cp ${SHAREDIR}/extension/plr.control  tmp/share/extension
 cp ${SHAREDIR}/extension/plr-*.sql    tmp/share/extension
 
-export zip==plr-${gitrevshort}-pg${pgversion}-R${rversion}-${platform}-${configuration}-${compiler}.zip
+export zip=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${platform}-${configuration}-${compiler}.zip
 
 7z a -r ${APPVEYOR_BUILD_FOLDER}/${zip} .\tmp\*
+
+# must stop, else Appveyor job will hang.
+pg_ctl -D ${PGDATA} -l logfile stop
 
 # set +v +x +e
 set +e
