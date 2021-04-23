@@ -21,7 +21,6 @@ environment:
     rversion: 4.1.0alpha
     compiler: msys2
 
-
 #   # works
 #   - PlatformToolset: v142
 #     Configuration: Debug
@@ -1163,6 +1162,7 @@ deploy:
   - provider: FTP
     host: frs.sourceforge.net
     protocol: sftp
+    # https://sourceforge.net/projects/andremikulec/files/
     username: andremikulec,andremikulec.u
     password:
       secure: 4gk4GyW4O5RooiOyGeRdoA==
