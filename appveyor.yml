@@ -578,17 +578,17 @@ for:
 
   - ps: |
       if ("${env:Platform}" -eq "x64") {
-        ${env:BIT} = "64"
+        ${env:bit} = "64"
       } else {
-        ${env:BIT} = "32"
+        ${env:bit} = "32"
       }
   # Appveyor specific: seems not required - with Appveyor - Strawberry perl is already in the path
   # ActiveState Perl is good, but Strawberry Perl is preferred
   #
   - ps: |
       # Set-PSDebug -Trace 2
-      ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:BIT}bit-portable.zip"
-      ${env:betterperl} = "strawberry${env:BIT}"
+      ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
+      ${env:betterperl} = "strawberry${env:bit}"
       if (-not (Test-Path "${env:betterperl}.zip")) {
         curl -o "${env:betterperl}.zip" -v "${env:betterperlurl}"
         7z x    "${env:betterperl}.zip" "-oc:\${env:betterperl}"
