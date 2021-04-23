@@ -132,15 +132,15 @@ environment:
 # # older versions #
 #
 #
-#   - pg: REL_12_0  # tag - static commit - from git
-#     PlatformToolset: v141
-#     Configuration: Release
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
-#     compiler: msvc
-#     #
-#     githubcache: true
+  - pg: REL_12_0  # tag - static commit - from git
+    PlatformToolset: v141
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+    compiler: msvc
+    #
+    githubcache: true
 #
 #
 #   - pg: 12.5-1 # from Appveyor
