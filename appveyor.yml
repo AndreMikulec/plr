@@ -520,6 +520,7 @@ for:
   # ProgramFiles(x86)=C:\Program Files (x86)
   #
   init: # Make %x64% available for caching
+        # a variable used in the Appveyor cach area must be defined in the init
   - ps: |
       if ("$env:Platform" -eq "x64") {
         $env:pf = "$env:ProgramFiles"
@@ -529,9 +530,14 @@ for:
       }
       $env:exe = "postgresql-$env:pg-windows$env:x64.exe"
       [Environment]::SetEnvironmentVariable("exe", $env:exe, "Machine")
-      #
-      ${env:betterperl} = "strawberry64"
 
+      if ("${env:Platform}" -eq "x64") {
+        ${env:bit} = "64"
+      } else {
+        ${env:bit} = "32"
+      }
+      ${env:betterperl} = "strawberry${env:bit}"
+      ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
   #
   # possible user provided in the matrix
   #
@@ -539,7 +545,6 @@ for:
   - if not defined pghint      set pghint=none
 
   install:
-
   #
   # FUTURE: bleeding edge versions of R for Windows (non-cygwin)
   # https://cran.r-project.org/bin/windows/base/R-devel-win.exe
@@ -551,11 +556,8 @@ for:
   - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
   - R-%rversion%-win.exe /VERYSILENT
   #
-  # We could have used RTools many R users have, but let's use msys64 existing on Appveyor intead
-  #- if not exist Rtools35.exe appveyor downloadfile https://cran.r-project.org/bin/windows/Rtools/Rtools35.exe
-  #- Rtools35.exe /VERYSILENT
-  #
-  - Set mingw=C:\msys64\mingw
+
+  - set mingw=C:\msys64\mingw
   #
   # From the EnterpriseDB version name,
   # if any, strip off the: right-most part dot, then numbers, then one hyphen, then numbers.
@@ -578,19 +580,11 @@ for:
 
   - SET sed=C:\msys64\usr\bin\sed
 
-  - ps: |
-      if ("${env:Platform}" -eq "x64") {
-        ${env:bit} = "64"
-      } else {
-        ${env:bit} = "32"
-      }
   # Appveyor specific: seems not required - with Appveyor - Strawberry perl is already in the path
   # ActiveState Perl is good, but Strawberry Perl is preferred
   #
   - ps: |
       # Set-PSDebug -Trace 2
-      ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
-      ${env:betterperl} = "strawberry${env:bit}"
       if (-not (Test-Path "${env:betterperl}.zip")) {
         curl -o "${env:betterperl}.zip" -v "${env:betterperlurl}"
         pwd
