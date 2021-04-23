@@ -120,7 +120,7 @@ environment:
     githubcache: true
 #
 #
-#   - pg: 13.1-1 # from enterprisedb
+#   - pg: 13.1-1 # from EnterpriseDB
 #     PlatformToolset: v141
 #     Configuration: Release
 #     Platform: x64
@@ -188,7 +188,7 @@ environment:
 #     compiler: msvc
 #
 #
-#   - pg: 10.16-1 # from enterprisedb
+#   - pg: 10.16-1 # from EnterpriseDB
 #     PlatformToolset: v120
 #     Configuration: Release
 #     Platform: x86
@@ -197,7 +197,7 @@ environment:
 #     compiler: msvc
 #
 #
-#   - pg: 10.16-1 # from enterprisedb
+#   - pg: 10.16-1 # from EnterpriseDB
 #     PlatformToolset: v120
 #     Configuration: Debug
 #     Platform: x86
@@ -215,7 +215,7 @@ environment:
 #     compiler: msvc
 #
 #
-#   - pg: 9.6.21-1 # from enterprisedb
+#   - pg: 9.6.21-1 # from EnterpriseDB
 #     PlatformToolset: v120
 #     Configuration: Release
 #     Platform: x86
@@ -233,7 +233,7 @@ environment:
 #     compiler: msvc
 #
 #
-#   - pg: 9.5.25-1 # from enterprisedb
+#   - pg: 9.5.25-1 # from EnterpriseDB
 #     PlatformToolset: v120
 #     Configuration: Release
 #     Platform: x86
@@ -251,7 +251,7 @@ environment:
 #     compiler: msvc
 #
 #
-#   - pg: 9.4.4-3 # from enterprisedb
+#   - pg: 9.4.4-3 # from EnterpriseDB
 #     PlatformToolset: v120
 #     Configuration: Release
 #     Platform: x86
@@ -267,7 +267,7 @@ environment:
 ### Documentation Begins ###
 
   # matrix-Notice
-  # Enterprisedb does not have PostgreSQL x86 platform binaries
+  # EnterpriseDB does not have PostgreSQL x86 platform binaries
   # for PostgreSQL versions 11 and greater.
 
   # matrix-Notice
@@ -323,7 +323,7 @@ environment:
   # is already installed on Appveyor,
   # then instead, that Appveyor version and platform will be used
   # to compile plr and perform regression testing.
-  # Therefore, a PostgreSQL already-compiled-binary will-not-be downloaded from "enterprisedb".
+  # Therefore, a PostgreSQL already-compiled-binary will-not-be downloaded from "EnterpriseDB".
 
   # The file plr.vcxproj.user must not exist (or be named plr.vcxproj.user.NOTUSED).
   # The existance of file plr.vcxproj.user
@@ -555,7 +555,7 @@ for:
   #
   - Set mingw=C:\msys64\mingw
   #
-  # From the enterprisedb version name,
+  # From the EnterpriseDB version name,
   # if any, strip off the: right-most part dot, then numbers, then one hyphen, then numbers.
   - ps: $env:pgversion = $env:pg -replace "[.]\d+-\d+$", ""
   #
@@ -818,7 +818,7 @@ for:
       }
 
 
-  # PostgreSQL from Appveyor or an enterprisedb already-compiled-binary.
+  # PostgreSQL from Appveyor or an EnterpriseDB already-compiled-binary.
   - ps: |
       # Set-PSDebug -Trace 2
       if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
@@ -826,28 +826,28 @@ for:
         $env:dll="$($env:Platform.replace('x86', '.'))\$env:Configuration\plr.dll"
         if (-not (Test-Path "$env:pgroot\bin")) {
           if (-not (Test-Path "$env:exe")) {
-            Start-FileDownload "http://get.enterprisedb.com/postgresql/$env:exe"
+            Start-FileDownload "http://get.EnterpriseDB.com/postgresql/$env:exe"
           }
           & ".\$env:exe" --unattendedmodeui none --mode unattended --superpassword "$env:PGPASSWORD" --servicepassword "$env:PGPASSWORD" | Out-Null
           Stop-Service "postgresql$env:x64-$env:pgversion"
           if ( Test-Path "$env:pgroot\bin" ) {
-            echo  "Directory $env:pgroot\bin does exist. - software from enterprisedb (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)."
+            echo  "Directory $env:pgroot\bin does exist. - software from EnterpriseDB (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)."
             echo "$env:pgroot"
             echo "Files . . ."
             $Table = Get-ChildItem "$env:pgroot"
             foreach ($Row in $Table) { $Row.Name }
           } else {
-            throw "Directory $env:pgroot\bin does not exist.`r`nDoes enterprisedb (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) have that version/platform combination?"
+            throw "Directory $env:pgroot\bin does not exist.`r`nDoes EnterpriseDB (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) have that version/platform combination?"
           }
         }
         if ( Test-Path "$env:pgroot\bin" ) {
-          echo  "Directory $env:pgroot\bin does exist. - solution from appveyor (https://www.appveyor.com/docs/services-databases/#postgresql) or enterprisedb (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)."
+          echo  "Directory $env:pgroot\bin does exist. - solution from appveyor (https://www.appveyor.com/docs/services-databases/#postgresql) or EnterpriseDB (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)."
           echo "$env:pgroot"
           echo "Files . . ."
           $Table = Get-ChildItem "$env:pgroot"
           foreach ($Row in $Table) { $Row.Name }
         } else {
-          throw "Neither appveyor (https://www.appveyor.com/docs/services-databases/#postgresql) nor enterprisedb (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) have that version/platform combination?"
+          throw "Neither appveyor (https://www.appveyor.com/docs/services-databases/#postgresql) nor EnterpriseDB (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) have that version/platform combination?"
         }
       }
 
@@ -1094,7 +1094,7 @@ deploy:
     auth_token:
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
     on:
-      appveyor_repo_tag: true
+      APPVEYOR_REPO_TAG: true
 
   #
   # To deploy, the following must have happened.
@@ -1111,4 +1111,3 @@ deploy:
     folder: /home/frs/project/andremikulec
     application:
     active_mode: false
-
