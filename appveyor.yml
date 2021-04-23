@@ -14,20 +14,22 @@ environment:
 
   matrix:
 
-  - PlatformToolset: v142
-    configuration: Debug
-    platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.0.5
-    compiler: msys2
-    pglinkbinoldurl: http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-postgresql-12.4-1-any.pkg.tar.zst
-
-  - PlatformToolset: v142
-    configuration: Release
-    platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.0.5
-    compiler: msys2
+#   # works
+#   - PlatformToolset: v142
+#     configuration: Debug
+#     platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5
+#     compiler: msys2
+#     pglinkbinoldurl: http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-postgresql-12.4-1-any.pkg.tar.zst
+# 
+#   # works
+#   - PlatformToolset: v142
+#     configuration: Release
+#     platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5
+#     compiler: msys2
 
 
 #   # TO BE DEVELOPED
@@ -107,15 +109,15 @@ environment:
 # #     githubcache: true
 #
 #
-#   - pg: REL_13_0  # tag - static commit - from git
-#     PlatformToolset: v141
-#     configuration: Release
-#     platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
-#     compiler: msvc
-#     #
-#     githubcache: true
+  - pg: REL_13_0  # tag - static commit - from git
+    PlatformToolset: v141
+    configuration: Release
+    platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+    compiler: msvc
+    #
+    githubcache: true
 #
 #
 #   - pg: 13.1-1 # from enterprisedb
@@ -603,7 +605,7 @@ for:
   #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
   #   pg already-compiled-binaries.
   #
-  - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%-%compiler%.zip
+  - set pgzip=pg-pg%pgversion%-%PLATFORM%-%CONFIGURATION%-%compiler%.zip
   - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pgzip%
   #
   # note: using Windows instead of Powershell
@@ -643,10 +645,10 @@ for:
       # Set-PSDebug -Trace 2
       if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
         pushd "$env:pgroot"
-        del share\extension\plr-*.sql
-        del share\extension\plr.control
-        del lib\plr.dll
-        del symbols\plr.pdb
+        del share\extension\plr-*.sql    2>null 
+        del share\extension\plr.control  2>null
+        del lib\plr.dll                  2>null
+        del symbols\plr.pdb              2>null
         popd
       }
 
@@ -924,7 +926,7 @@ for:
 
   #
   # same as above (repeated here)
-  - set pgzip=pg-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%-%compiler%.zip
+  - set pgzip=pg-pg%pgversion%-%PLATFORM%-%CONFIGURATION%-%compiler%.zip
   #
   # Zipping must be performed here, after "perl install.pl".
   # pg has been installed inside %pgroot% == %pf%\PostgreSQL\%pgversion% (see above).
@@ -1075,7 +1077,6 @@ deploy:
     prerelease: false
     artifact: pg_zip
     auth_token:
-      # CHANGE BACK TO THE 'ORIGINAL' BEFORE A PULL REQUEST (IF ANY)
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
     on:
       pggithubbincachefound: false
@@ -1091,7 +1092,6 @@ deploy:
     prerelease: false
     artifact: plr_zip
     auth_token:
-      # CHANGE BACK TO THE 'ORIGINAL' BEFORE THE PULL REQUEST (IF ANY)
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
     on:
       appveyor_repo_tag: true
