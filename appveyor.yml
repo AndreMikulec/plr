@@ -17,7 +17,7 @@ environment:
 #   # works
 #   - PlatformToolset: v142
 #     Configuration: Debug
-#     platform: x64
+#     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.0.5
 #     compiler: msys2
@@ -26,7 +26,7 @@ environment:
 #   # works
 #   - PlatformToolset: v142
 #     Configuration: Release
-#     platform: x86
+#     Platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.0.5
 #     compiler: msys2
@@ -40,7 +40,7 @@ environment:
 #     #
 #     PlatformToolset: v142
 #     Configuration: Debug
-#     platform: x64
+#     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.0.5
 #     compiler: msys2
@@ -55,7 +55,7 @@ environment:
 #     #
 #     PlatformToolset: v142
 #     Configuration: Debug
-#     platform: x64
+#     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.0.5
 #     compiler: msys2
@@ -75,7 +75,7 @@ environment:
 #   - pg: master # branch - non-static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
-#     platform: x64
+#     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.5
 #     compiler: msvc
@@ -86,7 +86,7 @@ environment:
 #   - pg: REL_13_STABLE  # branch - non-static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
-#     platform: x64
+#     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.5
 #     compiler: msvc
@@ -101,7 +101,7 @@ environment:
 # #     #
 # #     PlatformToolset: v141
 # #     Configuration: Debug
-# #     platform: x64
+# #     Platform: x64
 # #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 # #     rversion: 4.0.5
 # #     compiler: msvc
@@ -112,7 +112,7 @@ environment:
   - pg: REL_13_0  # tag - static commit - from git
     PlatformToolset: v141
     Configuration: Release
-    platform: x64
+    Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.0.5
     compiler: msvc
@@ -123,7 +123,7 @@ environment:
 #   - pg: 13.1-1 # from enterprisedb
 #     PlatformToolset: v141
 #     Configuration: Release
-#     platform: x64
+#     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.5
 #     compiler: msvc
@@ -135,7 +135,7 @@ environment:
 #   - pg: REL_12_0  # tag - static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Release
-#     platform: x64
+#     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.5
 #     compiler: msvc
@@ -146,7 +146,7 @@ environment:
 #   - pg: 12.5-1 # from Appveyor
 #     PlatformToolset: v141
 #     Configuration: Release
-#     platform: x64
+#     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.5
 #     compiler: msvc
@@ -155,7 +155,7 @@ environment:
 #   - pg: 12.5-1 # from Appveyor
 #     PlatformToolset: v141
 #     Configuration: Release
-#     platform: x64
+#     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 3.6.0
 #     compiler: msvc
@@ -164,7 +164,7 @@ environment:
 #   - pg: 11.11-1 # from Appveyor
 #     PlatformToolset: v141
 #     Configuration: Release
-#     platform: x64
+#     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 3.6.0
 #     compiler: msvc
@@ -173,7 +173,7 @@ environment:
 #   - pg: 10.16-1 # from Appveyor
 #     PlatformToolset: v120
 #     Configuration: Release
-#     platform: x64
+#     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #     compiler: msvc
@@ -182,7 +182,7 @@ environment:
 #   - pg: 10.16-1 # from Appveyor
 #     PlatformToolset: v120
 #     Configuration: Debug
-#     platform: x64
+#     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #     compiler: msvc
@@ -191,7 +191,7 @@ environment:
 #   - pg: 10.16-1 # from enterprisedb
 #     PlatformToolset: v120
 #     Configuration: Release
-#     platform: x86
+#     Platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #     compiler: msvc
@@ -200,7 +200,7 @@ environment:
 #   - pg: 10.16-1 # from enterprisedb
 #     PlatformToolset: v120
 #     Configuration: Debug
-#     platform: x86
+#     Platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #     compiler: msvc
@@ -209,7 +209,7 @@ environment:
 #   - pg: 9.6.21-1 # from Appveyor
 #     PlatformToolset: v120
 #     Configuration: Release
-#     platform: x64
+#     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #     compiler: msvc
@@ -218,7 +218,7 @@ environment:
 #   - pg: 9.6.21-1 # from enterprisedb
 #     PlatformToolset: v120
 #     Configuration: Release
-#     platform: x86
+#     Platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #     compiler: msvc
@@ -227,7 +227,7 @@ environment:
 #   - pg: 9.5.25-1 # from Appveyor
 #     PlatformToolset: v120
 #     Configuration: Release
-#     platform: x64
+#     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #     compiler: msvc
@@ -236,7 +236,7 @@ environment:
 #   - pg: 9.5.25-1 # from enterprisedb
 #     PlatformToolset: v120
 #     Configuration: Release
-#     platform: x86
+#     Platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #     compiler: msvc
@@ -245,7 +245,7 @@ environment:
 #   - pg: 9.4.4-3 # from Appveyor
 #     PlatformToolset: v120
 #     Configuration: Release
-#     platform: x64
+#     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #     compiler: msvc
@@ -254,7 +254,7 @@ environment:
 #   - pg: 9.4.4-3 # from enterprisedb
 #     PlatformToolset: v120
 #     Configuration: Release
-#     platform: x86
+#     Platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #     compiler: msvc
@@ -438,7 +438,7 @@ for:
       # Set-PSDebug -Trace 2
 
       if ("${env:compiler}" -eq "msys2") {
-        if ("${env:platform}" -eq "x64") {
+        if ("${env:Platform}" -eq "x64") {
           ${env:MSYSTEM} = "MINGW64"
         } else {
           ${env:MSYSTEM} = "MINGW32"
@@ -521,7 +521,7 @@ for:
   #
   init: # Make %x64% available for caching
   - ps: |
-      if ("$env:PLATFORM" -eq "x64") {
+      if ("$env:Platform" -eq "x64") {
         $env:pf = "$env:ProgramFiles"
         $env:x64 = "-x64"
       } else {
@@ -572,12 +572,12 @@ for:
   - dir "%pgroot%"
   #
   - SET R_HOME=%ProgramFiles%\R\R-%rversion%
-  - set RBIN=%PLATFORM:x86=i386%
+  - set RBIN=%Platform:x86=i386%
 
   - SET sed=C:\msys64\usr\bin\sed
 
   - ps: |
-      if ("${env:platform}" -eq "x64") {
+      if ("${env:Platform}" -eq "x64") {
         ${env:BIT} = "64"
       } else {
         ${env:BIT} = "32"
@@ -605,7 +605,7 @@ for:
   #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
   #   pg already-compiled-binaries.
   #
-  - set pgzip=pg-pg%pgversion%-%PLATFORM%-%Configuration%-%compiler%.zip
+  - set pgzip=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.zip
   - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pgzip%
   #
   # note: using Windows instead of Powershell
@@ -659,7 +659,7 @@ for:
       # Set-PSDebug -Trace 2
       if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
         $env:PROJ="plr.vcxproj"
-        $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:Configuration\plr.dll"
+        $env:dll="$($env:Platform.replace('x86', '.'))\$env:Configuration\plr.dll"
       }
 
 
@@ -746,7 +746,7 @@ for:
   #
   # Microsoft Visual Studio specific: "cl /?" or "cl /help" can not be ran.
   # "cl" is interpreted as an Appveyor specific alias to the Windows command "call"
-  # so PostgreSQL, can not correctly determing the Platform
+  # so PostgreSQL, can not correctly determing the platform.
   #
   # Trying to override the phantom alias executable "cl" - Microsoft "call"
   # https://help.appveyor.com/discussions/problems/29255-trying-to-override-the-phantom-alias-executable-cl-microsoft-call
@@ -758,11 +758,11 @@ for:
       echo Begin performing patching on-the-fly &
       echo Begin patching
     )
-  - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" if "%platform%"=="x86" (
+  - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" if "%Platform%"=="x86" (
         echo "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R Win32 &
              "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R Win32
     )
-  - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" if "%platform%"=="x64" (
+  - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" if "%Platform%"=="x64" (
         echo "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R x64 &
              "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R x64
     )
@@ -781,8 +781,8 @@ for:
   - ps: |
       # Set-PSDebug -Trace 2
       if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
-        gendef - "$env:R_HOME\bin\$env:RBIN\R.dll" > "R$env:PLATFORM.def" 2> $null
-        lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
+        gendef - "$env:R_HOME\bin\$env:RBIN\R.dll" > "R$env:Platform.def" 2> $null
+        lib "/def:R$env:Platform.def" "/out:R$env:Platform.lib" "/MACHINE:$env:Platform"
         pwd
         echo "Files . . ."
         $Table = Get-ChildItem
@@ -823,7 +823,7 @@ for:
       # Set-PSDebug -Trace 2
       if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
         $env:PROJ="plr.vcxproj"
-        $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:Configuration\plr.dll"
+        $env:dll="$($env:Platform.replace('x86', '.'))\$env:Configuration\plr.dll"
         if (-not (Test-Path "$env:pgroot\bin")) {
           if (-not (Test-Path "$env:exe")) {
             Start-FileDownload "http://get.enterprisedb.com/postgresql/$env:exe"
@@ -854,18 +854,18 @@ for:
 
 
 
-  # msbuild: reads the environment variable PLATFORM. The PLATFORM value can be either Win32 xor x64.
+  # msbuild: reads the environment variable Platform. The Platform value can be either Win32 xor x64.
   # xor
   # msbuild: can read /p:platform=Value. The Value can be either Win32 xor x64.
   #
   build_script:
-  - if %PLATFORM%==x86 set CPLATFORM=Win32
-  - if %PLATFORM%==x64 set CPLATFORM=x64
+  - if %Platform%==x86 set CPlatform=Win32
+  - if %Platform%==x64 set CPlatform=x64
   #
   # note: build.pl is an alternative
   #
   - REM verbosity levels: q[uiet], m[inimal](orig program), n[ormal] (default), d[etailed], and diag[nostic]
-  - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%Configuration% /p:platform=%CPLATFORM%
+  - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%Configuration% /p:platform=%CPlatform%
             %PROJ%
             /verbosity:quiet /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
@@ -882,7 +882,7 @@ for:
   - copy %dll% tmp\lib
   - copy %dll:.dll=.pdb% tmp\symbols
   - dir tmp
-  - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%Configuration%-%compiler%.zip
+  - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%Platform%-%Configuration%-%compiler%.zip
   - 7z a -r %zip% .\tmp\* > nul
 
   # #
@@ -926,7 +926,7 @@ for:
 
   #
   # same as above (repeated here)
-  - set pgzip=pg-pg%pgversion%-%PLATFORM%-%Configuration%-%compiler%.zip
+  - set pgzip=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.zip
   #
   # Zipping must be performed here, after "perl install.pl".
   # pg has been installed inside %pgroot% == %pf%\PostgreSQL\%pgversion% (see above).
