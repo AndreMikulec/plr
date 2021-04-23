@@ -529,6 +529,8 @@ for:
       }
       $env:exe = "postgresql-$env:pg-windows$env:x64.exe"
       [Environment]::SetEnvironmentVariable("exe", $env:exe, "Machine")
+      #
+      ${env:betterperl} = "strawberry64"
 
   #
   # possible user provided in the matrix
