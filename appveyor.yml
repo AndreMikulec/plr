@@ -22,7 +22,7 @@ environment:
 #     rversion: 4.0.5
 #     compiler: msys2
 #     pglinkbinoldurl: http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-postgresql-12.4-1-any.pkg.tar.zst
-# 
+#
 #   # works
 #   - PlatformToolset: v142
 #     Configuration: Release
@@ -645,7 +645,7 @@ for:
       # Set-PSDebug -Trace 2
       if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
         pushd "$env:pgroot"
-        del share\extension\plr-*.sql    2>null 
+        del share\extension\plr-*.sql    2>null
         del share\extension\plr.control  2>null
         del lib\plr.dll                  2>null
         del symbols\plr.pdb              2>null
