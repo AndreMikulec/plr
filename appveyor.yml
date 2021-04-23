@@ -589,10 +589,10 @@ for:
       # Set-PSDebug -Trace 2
       ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
       ${env:betterperl} = "strawberry${env:bit}"
-      # so the Appveyor cache section can SEE it
-      [Environment]::SetEnvironmentVariable("betterperl", $env:betterperl, "Machine")
       if (-not (Test-Path "${env:betterperl}.zip")) {
         curl -o "${env:betterperl}.zip" -v "${env:betterperlurl}"
+        pwd
+        dir "${env:betterperl}.zip"
         7z x    "${env:betterperl}.zip" "-oc:\${env:betterperl}"
       }
       # of needed to install pl/perl
@@ -922,7 +922,7 @@ for:
   # #
   # - echo BEGIN TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
   - bash --login -c "find \"$(cygpath \"${pf}\")\" -name '*postgres.exe' -type f 2>/dev/null"
-  - bash --login -c "find \"$(cygpath \"${pf}\")\" -name '*plr.exe'      -type f 2>/dev/null"
+  - bash --login -c "find \"$(cygpath \"${pf}\")\" -name '*plr.dll'      -type f 2>/dev/null"
   # - echo END TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
   # #
 
