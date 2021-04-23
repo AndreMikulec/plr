@@ -1097,8 +1097,6 @@ deploy:
       appveyor_repo_tag: true
 
   #
-  # REMOVE THIS SOURCEFORGE DEPLOYMENT, BEFORE THE PULL REQUEST (IF ANY)
-  #
   # To deploy, the following must have happened.
   # Requesting a new shell for "andremikulec" and waiting for it to start.
   # queued... creating... starting...
