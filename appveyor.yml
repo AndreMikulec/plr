@@ -658,7 +658,7 @@ for:
   - ps: |
       # Set-PSDebug -Trace 2
       if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
-        $env:PROJ="plr.vcxproj"
+        $env:proj="plr.vcxproj"
         $env:dll="$($env:Platform.replace('x86', '.'))\$env:Configuration\plr.dll"
       }
 
@@ -813,7 +813,7 @@ for:
         echo "Files . . ."
         $Table = Get-ChildItem
         foreach ($Row in $Table) { $Row.Name }
-        $env:PROJ="C:\projects\postgresql\pgsql.sln"
+        $env:proj="C:\projects\postgresql\pgsql.sln"
         $env:dll="c:\projects\postgresql\$env:Configuration\plr\plr.dll"
       }
 
@@ -822,7 +822,7 @@ for:
   - ps: |
       # Set-PSDebug -Trace 2
       if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
-        $env:PROJ="plr.vcxproj"
+        $env:proj="plr.vcxproj"
         $env:dll="$($env:Platform.replace('x86', '.'))\$env:Configuration\plr.dll"
         if (-not (Test-Path "$env:pgroot\bin")) {
           if (-not (Test-Path "$env:exe")) {
@@ -866,7 +866,7 @@ for:
   #
   - REM verbosity levels: q[uiet], m[inimal](orig program), n[ormal] (default), d[etailed], and diag[nostic]
   - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%Configuration% /p:platform=%CPlatform%
-            %PROJ%
+            %proj%
             /verbosity:quiet /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 
