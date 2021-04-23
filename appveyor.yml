@@ -575,7 +575,7 @@ for:
         ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
       }
       if (-not (Test-Path "R-${env:rversion}-win.exe.zip")) {
-        curl -o "R-${env:rversion}-win.exe.zip" -v "${env:rversionurl}"
+        curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
       }
   #
   - R-%rversion%-win.exe /VERYSILENT
