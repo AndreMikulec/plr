@@ -1087,7 +1087,7 @@ deploy:
   # second, last of Github deployments, to try to appear as "latest"
   #
   - provider: GitHub
-    release: $(appveyor_repo_tag_name)
+    release: $(APPVEYOR_REPO_TAG_NAME)
     draft: false
     prerelease: false
     artifact: plr_zip
