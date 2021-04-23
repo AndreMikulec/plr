@@ -571,7 +571,7 @@ for:
       # Set-PSDebug -Trace 2
       ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
       # special named version(s)
-      if("${env:rversion}" -match "beta|alpa|devel|patched") {
+      if("${env:rversion}" -match "beta|alpha|devel|patched") {
         ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
       }
       if (-not (Test-Path "R-${env:rversion}-win.exe.zip")) {
