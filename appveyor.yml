@@ -513,7 +513,7 @@ for:
     #
     PGOPTIONS: -c log_error_verbosity=verbose -c log_min_messages=debug2 -c log_min_error_statement=debug2
     #
-
+ 
   # Appveyor build server environment variables
   #
   # ProgramFiles=C:\Program Files
