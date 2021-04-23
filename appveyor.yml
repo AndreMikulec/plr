@@ -1061,7 +1061,7 @@ cache:
 - '%exe%'
 - R-%rversion%-win.exe
 # I think that I have the space
-- %betterperl%.zip
+- '%betterperl%.zip'
 
 
 artifacts:
