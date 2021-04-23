@@ -594,9 +594,9 @@ for:
         7z x    "${env:betterperl}.zip" "-oc:\${env:betterperl}"
       }
       # of needed to install pl/perl
-      ${env:Path} = "c:\${env:betterperl}\perl\bin;${env:Path}"
+      ${env:PATH} = "c:\${env:betterperl}\perl\bin;${env:PATH}"
       which perl
-      ${env:Path} = "${env:Path};c:\${env:betterperl}\c\bin"
+      ${env:PATH} = "${env:PATH};c:\${env:betterperl}\c\bin"
       which pexports
 
   # CHANGE THE CURL URL BEFORE A PULL REQUEST (IF ANY)
