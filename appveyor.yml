@@ -572,7 +572,7 @@ for:
   - dir "%pgroot%"
   #
   - SET R_HOME=%ProgramFiles%\R\R-%rversion%
-  - set RBIN=%Platform:x86=i386%
+  - set rbin=%Platform:x86=i386%
 
   - SET sed=C:\msys64\usr\bin\sed
 
@@ -728,8 +728,8 @@ for:
   - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
         echo Begin performing patching on-the-fly &
         echo Begin patching &
-        echo "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
-             "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
+        echo "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
+             "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
         echo End patching &
         echo Begin display of Mkvcbuild.pm &
         type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm &
@@ -759,12 +759,12 @@ for:
       echo Begin patching
     )
   - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" if "%Platform%"=="x86" (
-        echo "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R Win32 &
-             "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R Win32
+        echo "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R Win32 &
+             "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R Win32
     )
   - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" if "%Platform%"=="x64" (
-        echo "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R x64 &
-             "%R_HOME%\bin\%RBIN%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R x64
+        echo "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R x64 &
+             "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R x64
     )
   - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
       echo End patching &
@@ -781,7 +781,7 @@ for:
   - ps: |
       # Set-PSDebug -Trace 2
       if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
-        gendef - "$env:R_HOME\bin\$env:RBIN\R.dll" > "R$env:Platform.def" 2> $null
+        gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:Platform.def" 2> $null
         lib "/def:R$env:Platform.def" "/out:R$env:Platform.lib" "/MACHINE:$env:Platform"
         pwd
         echo "Files . . ."
@@ -971,7 +971,7 @@ for:
       }
 
   - appveyor AddMessage "Starting the database server." -Category Information
-  - setx /M PATH "%R_HOME%\bin\%RBIN%;%PATH%"
+  - setx /M PATH "%R_HOME%\bin\%rbin%;%PATH%"
   - net start postgresql%x64%-%pgversion%
   #
   # I need the server_version_num, so we can later, test to determine "$env:psqlopt".
