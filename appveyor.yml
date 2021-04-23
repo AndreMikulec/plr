@@ -16,7 +16,7 @@ environment:
 
 #   # works
 #   - PlatformToolset: v142
-#     configuration: Debug
+#     Configuration: Debug
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.0.5
@@ -25,7 +25,7 @@ environment:
 # 
 #   # works
 #   - PlatformToolset: v142
-#     configuration: Release
+#     Configuration: Release
 #     platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.0.5
@@ -39,7 +39,7 @@ environment:
 #     pghint: commit
 #     #
 #     PlatformToolset: v142
-#     configuration: Debug
+#     Configuration: Debug
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.0.5
@@ -54,7 +54,7 @@ environment:
 #     pghint: commit
 #     #
 #     PlatformToolset: v142
-#     configuration: Debug
+#     Configuration: Debug
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.0.5
@@ -74,7 +74,7 @@ environment:
 #
 #   - pg: master # branch - non-static commit - from git
 #     PlatformToolset: v141
-#     configuration: Debug
+#     Configuration: Debug
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.5
@@ -85,7 +85,7 @@ environment:
 #
 #   - pg: REL_13_STABLE  # branch - non-static commit - from git
 #     PlatformToolset: v141
-#     configuration: Debug
+#     Configuration: Debug
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.5
@@ -100,7 +100,7 @@ environment:
 # #     pghint: commit
 # #     #
 # #     PlatformToolset: v141
-# #     configuration: Debug
+# #     Configuration: Debug
 # #     platform: x64
 # #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 # #     rversion: 4.0.5
@@ -111,7 +111,7 @@ environment:
 #
   - pg: REL_13_0  # tag - static commit - from git
     PlatformToolset: v141
-    configuration: Release
+    Configuration: Release
     platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.0.5
@@ -122,7 +122,7 @@ environment:
 #
 #   - pg: 13.1-1 # from enterprisedb
 #     PlatformToolset: v141
-#     configuration: Release
+#     Configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.5
@@ -134,7 +134,7 @@ environment:
 #
 #   - pg: REL_12_0  # tag - static commit - from git
 #     PlatformToolset: v141
-#     configuration: Release
+#     Configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.5
@@ -145,7 +145,7 @@ environment:
 #
 #   - pg: 12.5-1 # from Appveyor
 #     PlatformToolset: v141
-#     configuration: Release
+#     Configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.5
@@ -154,7 +154,7 @@ environment:
 #
 #   - pg: 12.5-1 # from Appveyor
 #     PlatformToolset: v141
-#     configuration: Release
+#     Configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 3.6.0
@@ -163,7 +163,7 @@ environment:
 #
 #   - pg: 11.11-1 # from Appveyor
 #     PlatformToolset: v141
-#     configuration: Release
+#     Configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 3.6.0
@@ -172,7 +172,7 @@ environment:
 #
 #   - pg: 10.16-1 # from Appveyor
 #     PlatformToolset: v120
-#     configuration: Release
+#     Configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
@@ -181,7 +181,7 @@ environment:
 #
 #   - pg: 10.16-1 # from Appveyor
 #     PlatformToolset: v120
-#     configuration: Debug
+#     Configuration: Debug
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
@@ -190,7 +190,7 @@ environment:
 #
 #   - pg: 10.16-1 # from enterprisedb
 #     PlatformToolset: v120
-#     configuration: Release
+#     Configuration: Release
 #     platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
@@ -199,7 +199,7 @@ environment:
 #
 #   - pg: 10.16-1 # from enterprisedb
 #     PlatformToolset: v120
-#     configuration: Debug
+#     Configuration: Debug
 #     platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
@@ -208,7 +208,7 @@ environment:
 #
 #   - pg: 9.6.21-1 # from Appveyor
 #     PlatformToolset: v120
-#     configuration: Release
+#     Configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
@@ -217,7 +217,7 @@ environment:
 #
 #   - pg: 9.6.21-1 # from enterprisedb
 #     PlatformToolset: v120
-#     configuration: Release
+#     Configuration: Release
 #     platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
@@ -226,7 +226,7 @@ environment:
 #
 #   - pg: 9.5.25-1 # from Appveyor
 #     PlatformToolset: v120
-#     configuration: Release
+#     Configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
@@ -235,7 +235,7 @@ environment:
 #
 #   - pg: 9.5.25-1 # from enterprisedb
 #     PlatformToolset: v120
-#     configuration: Release
+#     Configuration: Release
 #     platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
@@ -244,7 +244,7 @@ environment:
 #
 #   - pg: 9.4.4-3 # from Appveyor
 #     PlatformToolset: v120
-#     configuration: Release
+#     Configuration: Release
 #     platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
@@ -253,7 +253,7 @@ environment:
 #
 #   - pg: 9.4.4-3 # from enterprisedb
 #     PlatformToolset: v120
-#     configuration: Release
+#     Configuration: Release
 #     platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
@@ -605,7 +605,7 @@ for:
   #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
   #   pg already-compiled-binaries.
   #
-  - set pgzip=pg-pg%pgversion%-%PLATFORM%-%CONFIGURATION%-%compiler%.zip
+  - set pgzip=pg-pg%pgversion%-%PLATFORM%-%Configuration%-%compiler%.zip
   - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pgzip%
   #
   # note: using Windows instead of Powershell
@@ -659,7 +659,7 @@ for:
       # Set-PSDebug -Trace 2
       if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
         $env:PROJ="plr.vcxproj"
-        $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
+        $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:Configuration\plr.dll"
       }
 
 
@@ -814,7 +814,7 @@ for:
         $Table = Get-ChildItem
         foreach ($Row in $Table) { $Row.Name }
         $env:PROJ="C:\projects\postgresql\pgsql.sln"
-        $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
+        $env:dll="c:\projects\postgresql\$env:Configuration\plr\plr.dll"
       }
 
 
@@ -823,7 +823,7 @@ for:
       # Set-PSDebug -Trace 2
       if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
         $env:PROJ="plr.vcxproj"
-        $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
+        $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:Configuration\plr.dll"
         if (-not (Test-Path "$env:pgroot\bin")) {
           if (-not (Test-Path "$env:exe")) {
             Start-FileDownload "http://get.enterprisedb.com/postgresql/$env:exe"
@@ -865,7 +865,7 @@ for:
   # note: build.pl is an alternative
   #
   - REM verbosity levels: q[uiet], m[inimal](orig program), n[ormal] (default), d[etailed], and diag[nostic]
-  - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%CONFIGURATION% /p:platform=%CPLATFORM%
+  - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%Configuration% /p:platform=%CPLATFORM%
             %PROJ%
             /verbosity:quiet /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
@@ -882,7 +882,7 @@ for:
   - copy %dll% tmp\lib
   - copy %dll:.dll=.pdb% tmp\symbols
   - dir tmp
-  - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%-%compiler%.zip
+  - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%Configuration%-%compiler%.zip
   - 7z a -r %zip% .\tmp\* > nul
 
   # #
@@ -926,7 +926,7 @@ for:
 
   #
   # same as above (repeated here)
-  - set pgzip=pg-pg%pgversion%-%PLATFORM%-%CONFIGURATION%-%compiler%.zip
+  - set pgzip=pg-pg%pgversion%-%PLATFORM%-%Configuration%-%compiler%.zip
   #
   # Zipping must be performed here, after "perl install.pl".
   # pg has been installed inside %pgroot% == %pf%\PostgreSQL\%pgversion% (see above).
