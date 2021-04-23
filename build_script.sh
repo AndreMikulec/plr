@@ -30,7 +30,7 @@ winpty -Xallow-non-tty psql -c 'select version();'
 if [ "${Configuration}" = "Debug" ]
 then
   echo ""                          >> Makefile
-  echo "override CFLAGS += -g -Og" >> Makefile
+  echo "override CFLAGS += -g -O0" >> Makefile
   echo ""                          >> Makefile
 fi
 
