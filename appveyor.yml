@@ -537,7 +537,7 @@ for:
       ${env:PATH} = "${env:PATH};c:\${env:betterperl}\c\bin"
       which pexports
   # note, if compiling PostgreSQL from source,
-  # then in the .sh files one has to re-set the path
+  # then in the .sh files. one has to re-set the path
   # xor append . . .
   # export PATH=. . .etc . . .:${PATH}
   # to the /etc/profile
@@ -563,8 +563,9 @@ for:
         mkdir            "%pgroot%" &
         7z x "%pgzip%" "-o%pgroot%" &
         dir "%pgroot%" &
-        if exist "%pgroot%\bin\postgres" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
+        if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
     )
+  #                            msys2: executable IS STILL postgres.exe (not postgres)
   # user provided (if any), in the matrix
   - echo githubcache %githubcache%
   # generated
