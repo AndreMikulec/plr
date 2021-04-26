@@ -63,6 +63,7 @@ fi
 
 # build from source
 # psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
+# psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
 #
 ### winpty -Xallow-non-tty initdb --username=${PGUSER} --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
 winpty -Xallow-non-tty initdb                      --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
@@ -83,6 +84,7 @@ pg_ctl -D ${PGDATA} -l logfile start
 
 # build from source
 # psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
+# psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
 #
 winpty -Xallow-non-tty psql -c 'SELECT version();'
 
