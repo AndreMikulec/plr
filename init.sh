@@ -31,10 +31,8 @@ else
 fi
 echo pgroot $pgroot
 
-if [ ! "${pg}" == "none" ]
+if [ -d "${pgroot}/share/postgresql" ]
 then
-  export dirpostgresql=/
-else
   export dirpostgresql=/postgresql
 fi
 
@@ -50,9 +48,11 @@ export PGLOCALDIR=${pgroot}/share${dirpostgresql}/
 # psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
 # psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
 #
-# export PGDATABASE=postgres
-# export PGPORT=5432
-### export PGUSER=postgres
+# database params (default)
+export PGDATABASE=postgres
+export PGPORT=5432
+export PGUSER=postgres
+
 #
 # not required in compilation
 #     required in "CREATE EXTENSION plr;" and regression tests

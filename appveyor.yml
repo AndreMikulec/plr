@@ -14,27 +14,29 @@ environment:
 
   matrix:
 
-  - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e # static commit - from git
-    #
-    pghint: commit
-    #
-    PlatformToolset: v142
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.0.5
-    compiler: msys2
-    MSYSTEM: MINGW64
-    #
-    githubcache: true
-
-#   # should have worked: I forgot result
-#   - PlatformToolset: v142
-#     Configuration: Release
+#   # work in progress
+#   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e # static commit - from git
+#     #
+#     pghint: commit
+#     #
+#     PlatformToolset: v142
+#     Configuration: Debug
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.1.0alpha
+#     rversion: 4.0.5
 #     compiler: msys2
+#     MSYSTEM: MINGW64
+#     #
+#     githubcache: true
+
+  # works (see appveyor success at https://ci.appveyor.com/project/AndreMikulec/plr/builds/38838738 )
+  # works (see appveyor success at https://github.com/AndreMikulec/plr/tree/bb02ce373ec0f81ffe905edb74907ac14884aeb4 )
+  - PlatformToolset: v142
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.1.0alpha
+    compiler: msys2
 
 #   # works
 #   - PlatformToolset: v142
