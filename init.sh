@@ -47,10 +47,6 @@ export      PGLOG=${PGAPPDIR}/log.txt
 # psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
 # psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
 #
-# database params (default)
-export PGDATABASE=postgres
-export PGPORT=5432
-export PGUSER=postgres
 
 #
 # not required in compilation
