@@ -29,8 +29,9 @@ then
 else
   export pgroot=${MINGW_PREFIX}
 fi
+echo pgroot $pgroot
 
-[ ! "${pg}" == "none" ]
+if [ ! "${pg}" == "none" ]
 then
   export dirpostgresql=/
 else
