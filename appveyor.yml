@@ -15,6 +15,21 @@ environment:
   matrix:
 
   # works
+  - PlatformToolset: v142
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.1.0alpha
+    compiler: msys2
+
+  - PlatformToolset: v142
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.1.0alpha
+    compiler: msys2
+
+  # works
   - pg: REL_13_0 # static commit - from git
     PlatformToolset: v142
     Configuration: Debug
@@ -23,6 +38,17 @@ environment:
     rversion: 4.0.5
     compiler: msys2
     MSYSTEM: MINGW64
+    #
+    githubcache: true
+
+  - pg: REL_13_0 # static commit - from git
+    PlatformToolset: v142
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.0.5
+    compiler: msys2
+    MSYSTEM: MINGW32
     #
     githubcache: true
 
@@ -40,14 +66,6 @@ environment:
 #     MSYSTEM: MINGW64
 #     #
 #     githubcache: true
-
-  # works
-  - PlatformToolset: v142
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.1.0alpha
-    compiler: msys2
 
 #   # works
 #   - PlatformToolset: v142
@@ -78,9 +96,6 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.5
 #     compiler: msvc
-#
-#
-#
 #
 #   - pg: REL_13_STABLE  # branch - non-static commit - from git
 #     PlatformToolset: v141
