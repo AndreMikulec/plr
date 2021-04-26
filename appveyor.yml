@@ -14,17 +14,17 @@ environment:
 
   matrix:
 
-  # work in progress
-  - pg: REL_13_0 # static commit - from git
-    PlatformToolset: v142
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.0.5
-    compiler: msys2
-    MSYSTEM: MINGW64
-    #
-    githubcache: true
+#   # work in progress
+#   - pg: REL_13_0 # static commit - from git
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5
+#     compiler: msys2
+#     MSYSTEM: MINGW64
+#     #
+#     githubcache: true
 
 #   # work in progress
 #   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e # static commit - from git
@@ -41,13 +41,13 @@ environment:
 #     #
 #     githubcache: true
 
-#   # works
-#   - PlatformToolset: v142
-#     Configuration: Release
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.1.0alpha
-#     compiler: msys2
+  # works
+  - PlatformToolset: v142
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.1.0alpha
+    compiler: msys2
 
 #   # works
 #   - PlatformToolset: v142
