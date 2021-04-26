@@ -65,6 +65,11 @@ echo BEGIN MY ENV VARIABLES
 export
 echo END MY ENV VARIABLES
 
+echo BEGIN MY pg_config
+which pg_config
+pg_config
+echo END MY pg_config
+
 # build from source
 # psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
 # psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
