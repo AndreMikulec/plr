@@ -10,7 +10,7 @@ export R_HOME=$(cygpath "${R_HOME}")
 # only used about a custom PostgreSQL build (not an MSYS2 already compiled binary)
 #
 
-[ ! "${pg}" == "none" ]
+if [ ! "${pg}" == "none" ]
 then
   export pgsource=$(cygpath "c:\projects\postgresql")
 fi
@@ -23,7 +23,7 @@ export APPVEYOR_BUILD_FOLDER=$(cygpath "${APPVEYOR_BUILD_FOLDER}")
 # echo ${MINGW_PREFIX}
 # /mingw64
 
-[ ! "${pg}" == "none" ]
+if [ ! "${pg}" == "none" ]
 then
   export pgroot=$(cygpath "${pgroot}")
 else
