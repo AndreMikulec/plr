@@ -484,7 +484,7 @@ for:
       if("${env:rversion}" -match "beta|alpha|devel|patched") {
         ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
       }
-      if (-not (Test-Path "R-${env:rversion}-win.exe.zip")) {
+      if (-not (Test-Path "R-${env:rversion}-win.exe")) {
         curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
       }
   #
