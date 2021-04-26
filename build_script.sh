@@ -61,7 +61,11 @@ then
   export PATH=${pgroot}/bin:${PATH}
 fi
 
-winpty -Xallow-non-tty initdb --username=${PGUSER} --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
+# build from source
+# psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
+#
+### winpty -Xallow-non-tty initdb --username=${PGUSER} --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
+winpty -Xallow-non-tty initdb                      --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
 # Success. You can now start the database server using:
 # C:/msys64/mingw64/bin/pg_ctl -D C:/msys64//home/appveyor/mingw64/postgresql/Data -l logfile start
 # C:/msys64/mingw64/bin/pg_ctl -D ${PGDATA} -l logfile start
@@ -77,6 +81,9 @@ pg_ctl -D ${PGDATA} -l logfile stop
 # leave it up
 pg_ctl -D ${PGDATA} -l logfile start
 
+# build from source
+# psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
+#
 winpty -Xallow-non-tty psql -c 'SELECT version();'
 
 # -O0 because of the many macros

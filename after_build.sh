@@ -49,7 +49,7 @@ pg_config | grep "^PKGLIBDIR\|^SHAREDIR" | sed "s/ = /=/" | sed s"/^/export /" >
 mkdir                                 tmp
 cp LICENSE                            tmp/PLR_LICENSE
 mkdir -p                              tmp/lib
-cp ${PKGLIBDIR}/plr.dll                  tmp/lib
+cp ${PKGLIBDIR}/plr.dll               tmp/lib
 mkdir -p                              tmp/share/extension
 cp ${SHAREDIR}/extension/plr.control  tmp/share/extension
 cp ${SHAREDIR}/extension/plr-*.sql    tmp/share/extension
