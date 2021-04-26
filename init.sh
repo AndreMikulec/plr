@@ -45,7 +45,7 @@ export      PGLOG=${PGAPPDIR}/log.txt
 # minimum (strange that this is explictly required)
 export PGDATABASE=postgres
 # not require for an msys2 bin
-export PGUSER=postgres
+# export PGUSER=postgres
 
 #
 # not required in compilation
