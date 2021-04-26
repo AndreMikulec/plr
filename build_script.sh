@@ -81,6 +81,11 @@ which pg_config
 pg_config
 echo END MY pg_config
 
+
+#
+# PostgreSQL on msys2 does not use(read) PG* variables (strang)
+#
+
 # build from source
 # psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
 # psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
@@ -125,8 +130,7 @@ USE_PGXS=1 make install
 winpty -Xallow-non-tty psql -d postgres -c 'CREATE EXTENSION plr;'
 winpty -Xallow-non-tty psql -d postgres -c 'SELECT plr_version();'
 winpty -Xallow-non-tty psql -d postgres -c 'SELECT   r_version();'
-export PGDATABASE=postgres
-winpty -Xallow-non-tty psql             -c 'DROP EXTENSION plr;'
+winpty -Xallow-non-tty psql -d postgres -c 'DROP EXTENSION plr;'
 
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
