@@ -9,6 +9,47 @@ set -e
 # which R
 # /c/RINSTALL/bin/x64/R
 
+if [ "${pggithubbincacheextracted}" == "false" ] && [ ! "${pg}" == "none" ]
+then
+  echo "BEGIN POSTGRESQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
+  if [ ! -f "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip" ]
+  then
+    echo "BEGIN POSTGRESQL CONFIGURE"
+    cd ${pgsource}
+    if [ "${Configuration}" == "Release" ]
+    then
+      ./configure --enable-depend --disable-rpath --prefix=${pgroot}
+    fi
+    if [ "${Configuration}" == "Debug" ]
+    then
+      ./configure --enable-depend --disable-rpath --enable-debug --enable-cassert --prefix=${pgroot}
+    fi
+    echo "END   POSTGRESQL CONFIGURE"
+    echo "BEGIN POSTGRESQL BUILD"
+    make
+    echo "END   POSTGRESQL BUILD"
+    echo "BEGIN POSTGRESQL INSTALL"
+    make install
+    echo "END   POSTGRESQL INSTALL"
+    cd ${APPVEYOR_BUILD_FOLDER}
+    echo "END   POSTGRESQL BUILD + INSTALL"
+  else
+    echo "BEGIN zip EXTRACTION"
+    cd ${pgroot}
+    7z x "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
+    ls -alrt ${pgroot}
+    cd ${APPVEYOR_BUILD_FOLDER}
+    echo "END   zip EXTRACTION"
+  fi
+  echo "END   POSTGRESQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
+fi
+
+# put in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
+if [ -f "${pgroot}/bin/postgres" ]
+then
+  export PATH=${pgroot}/bin:${PATH}
+fi
+
 winpty -Xallow-non-tty initdb --username=${PGUSER} --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
 # Success. You can now start the database server using:
 # C:/msys64/mingw64/bin/pg_ctl -D C:/msys64//home/appveyor/mingw64/postgresql/Data -l logfile start
@@ -27,6 +68,8 @@ pg_ctl -D ${PGDATA} -l logfile start
 
 winpty -Xallow-non-tty psql -c 'SELECT version();'
 
+# -O0 because of the many macros
+#
 if [ "${Configuration}" = "Debug" ]
 then
   echo ""                             >> Makefile
@@ -35,7 +78,6 @@ then
 fi
 
 USE_PGXS=1 make
-
 USE_PGXS=1 make install
 
 winpty -Xallow-non-tty psql -c 'CREATE EXTENSION plr;'
@@ -45,7 +87,6 @@ winpty -Xallow-non-tty psql -c 'DROP EXTENSION plr;'
 
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
-
 
 # set +v +x +e
 set +e

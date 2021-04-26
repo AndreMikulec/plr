@@ -14,12 +14,27 @@ environment:
 
   matrix:
 
-  - PlatformToolset: v142
-    Configuration: Release
+  - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e # static commit - from git
+    #
+    pghint: commit
+    #
+    PlatformToolset: v142
+    Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.1.0alpha
+    rversion: 4.0.5
     compiler: msys2
+    MSYSTEM: MINGW64
+    #
+    githubcache: true
+
+#   # should have worked: I forgot result
+#   - PlatformToolset: v142
+#     Configuration: Release
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.1.0alpha
+#     compiler: msys2
 
 #   # works
 #   - PlatformToolset: v142
@@ -37,40 +52,6 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.0.5
 #     compiler: msys2
-
-
-#   # TO BE DEVELOPED
-#
-#   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e # static commit - from git
-#     #
-#     pghint: commit
-#     #
-#     PlatformToolset: v142
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.0.5
-#     compiler: msys2
-#     #
-#     pglink: bin
-#     pglinkbinoldurl: http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-postgresql-12.4-1-any.pkg.tar.zst
-#
-#
-#   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e # static commit - from git
-#     #
-#     pghint: commit
-#     #
-#     PlatformToolset: v142
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.0.5
-#     compiler: msys2
-#     MSYSTEM: MINGW64
-#     #
-#     githubcache: true
-#     #
-#     pglink: src
 
 
 
@@ -481,24 +462,19 @@ for:
       }
       ${env:betterperl} = "strawberry${env:bit}"
       ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
-
+  #
+  # possible user provided in the matrix
+  #
+  - if not defined githubcache     set githubcache=false
+  - if not defined pghint          set pghint=none
+  - if not defined pg              set pg=none
+  - if not defined pglinkbinoldurl set pglinkbinoldurl=none
 
   install:
   - echo compiler msys2 install
   - ps: |
       # Set-PSDebug -Trace 2
       ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
-
-  - bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql"
-  #
-  # How to obtain older versions of packages using MSYS2?
-  # 2015
-  # https://stackoverflow.com/questions/33969803/how-to-obtain-older-versions-of-packages-using-msys2
-  #
-  - if not "%pglinkbinoldurl%"=="" (
-      bash -login -c "curl   -o             install.pkg.tar.zst ${pglinkbinoldurl}" &
-      bash -login -c "pacman -U --noconfirm install.pkg.tar.zst"
-    )
 
   # - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
   - ps: |
@@ -513,6 +489,25 @@ for:
       }
   #
   - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
+
+  # From the version
+  - ps: |
+      # Set-PSDebug -Trace 2
+      if("${env:pg}" -ne "none") {
+        ${env:pgversion} = ${env:pg}
+      }
+      # if pg equals none - msys2 binary case,
+      # then later in the .sh scripts, pgversion will be determined by SQL
+
+  #
+  # only used about a custom PostgreSQL build (not an MSYS2 already compiled binary)
+  #
+  - set pgroot="C:\PGINSTALL"
+  - echo %pgroot%
+  #
+  - if not exist "%pgroot%" mkdir "%pgroot%"
+  #
+
   #
   # In powershell the (above) will not run/install
   # neither plain as here, nor in Invoke-Command,
@@ -534,6 +529,117 @@ for:
   # xor append . . .
   # export PATH=. . .etc . . .:${PATH}
   # to the /etc/profile
+
+  #
+  # if "githubcache: true",
+  #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
+  #   pg already-compiled-binaries.
+  #
+  - set pgzip=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.zip
+  - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pgzip%
+  #
+  # note: using Windows instead of Powershell
+  # I could not get the Invoke-??? . . . I would silently run (and die), I would not get error feedback.
+  #
+  - if "%githubcache%"=="true" if not exist "%pgzip%"  (
+      bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
+      for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i)
+    )
+  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" curl -o "%pgzip%" -L "%pggithubbincacheurl%"
+  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if exist "%pgzip%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false)
+  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if "%pggithubbincachefound%"=="true" (
+        mkdir            "%pgroot%" &
+        7z x "%pgzip%" "-o%pgroot%" &
+        dir "%pgroot%" &
+        if exist "%pgroot%\bin\postgres" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
+    )
+  # user provided (if any), in the matrix
+  - echo githubcache %githubcache%
+  # generated
+  # internal - do not reuse
+  - echo pggithubbincachefailingfound %pggithubbincachefailingfound%
+  # reused below
+  - echo pggithubbincachefound %pggithubbincachefound%
+  - if not defined pggithubbincachefound set pggithubbincachefound=false
+  - echo pggithubbincachefound %pggithubbincachefound%
+  # reused below
+  - echo pggithubbincacheextracted %pggithubbincacheextracted%
+  - if not defined pggithubbincacheextracted set pggithubbincacheextracted=false
+  - echo pggithubbincacheextracted %pggithubbincacheextracted%
+
+  #
+  # Remove old plr files, from the pg already-compiled-binary
+  # extraction from 0.0.0.0.0.GITHUBCACHE, if any old files
+  #
+  # in the msys2 case, this will not happen (TODO: later remove this code)
+  #
+  - ps: |
+      # Set-PSDebug -Trace 2
+      if (("${env:githubcache}" -eq "true") -and ("${env:pggithubbincacheextracted}" -eq "true")) {
+        pushd "${env:pgroot}"
+        del share\extension\plr-*.sql    2>null
+        del share\extension\plr.control  2>null
+        del lib\plr.dll                  2>null
+        del symbols\plr.pdb              2>null
+        popd
+      }
+
+  #
+  # PostgreSQL from source code: git, tag, or commit
+  #
+  - ps: |
+      # Set-PSDebug -Trace 2
+      if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:pg}" -ne "none")) {
+        git config --global advice.detachedHead false
+        $env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
+        #
+        # git branch or commit - alphanumeric and all lowercase letters (slower download)
+        #
+        if("${env:pghint}" -eq "commit") {
+          git clone -q                            https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+          pwd
+          pushd c:\projects\postgresql
+          pwd
+          git checkout -q                 ${env:pg} -b ${env:pg}
+          git branch
+          echo ${env:pg}
+          popd
+          pwd
+        #
+        # git branch or tag(detached head)
+        # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
+        #
+        } else {
+          git clone -q --depth 1 --branch ${env:pg} https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+          pushd c:\projects\postgresql
+          pwd
+          git branch
+          echo ${env:pg}
+          popd
+          pwd
+        }
+        pushd c:\projects\postgresql
+        pwd
+        echo "Files . . ."
+        $Table = Get-ChildItem
+        foreach ($Row in $Table) { $Row.Name }
+        popd
+      }
+
+  # PostgreSQL from an MSYS2 already-compiled-binary.
+  - if "%pg%"=="none" (
+      bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql"
+    )
+
+  #
+  # How to obtain older versions of packages using MSYS2?
+  # 2015
+  # https://stackoverflow.com/questions/33969803/how-to-obtain-older-versions-of-packages-using-msys2
+  #
+  - if "%pg%"=="none" if not "%pglinkbinoldurl%"=="none" (
+      bash -login -c "curl   -o             install.pkg.tar.zst ${pglinkbinoldurl}" &
+      bash -login -c "pacman -U --noconfirm install.pkg.tar.zst"
+    )
 
   build_script:
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
@@ -656,7 +762,6 @@ for:
       ${env:PATH} = "${env:PATH};c:\${env:betterperl}\c\bin"
       which pexports
 
-  # CHANGE THE CURL URL BEFORE A PULL REQUEST (IF ANY)
   #
   # if "githubcache: true",
   #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
@@ -700,8 +805,8 @@ for:
   #
   - ps: |
       # Set-PSDebug -Trace 2
-      if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
-        pushd "$env:pgroot"
+      if (("${env:githubcache}" -eq "true") -and ("${env:pggithubbincacheextracted}" -eq "true")) {
+        pushd "${env:pgroot}"
         del share\extension\plr-*.sql    2>null
         del share\extension\plr.control  2>null
         del lib\plr.dll                  2>null
@@ -725,12 +830,12 @@ for:
       # This environment variable is use in a test that is used that is used in determining
       # whether or not to perform patching (see below).
       #
-      if ("$env:pg" -notmatch "[.]") {
-        $env:branchtagcommit = "yes"
+      if ("${env:pg}" -notmatch "[.]") {
+        ${env:branchtagcommit} = "yes"
       } else {
-        $env:branchtagcommit = "no"
+        ${env:branchtagcommit} = "no"
       }
-      echo "branchtagcommit $env:branchtagcommit"
+      echo "branchtagcommit ${env:branchtagcommit}"
 
 
   #
@@ -739,20 +844,20 @@ for:
   - ps: |
       # Set-PSDebug -Trace 2
       # notmatch - if no "dot is found" in pg name, then pg is a: git: branch, tag, or commit.
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
+      if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:pg}" -notmatch "[.]")) {
         git config --global advice.detachedHead false
-        $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
+        $env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
         #
         # git branch or commit - alphanumeric and all lowercase letters (slower download)
         #
-        if(("$env:pg" -cmatch  "^[a-z0-9]+$") -and ("$env:pghint" -eq "commit")) {
+        if(("${env:pg}" -cmatch  "^[a-z0-9]+$") -and ("${env:pghint}" -eq "commit")) {
           git clone -q                            https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
           pwd
           pushd c:\projects\postgresql
           pwd
-          git checkout -q                 $env:pg -b $env:pg
+          git checkout -q                 ${env:pg} -b ${env:pg}
           git branch
-          echo $env:pg
+          echo ${env:pg}
           popd
           pwd
         #
@@ -760,11 +865,11 @@ for:
         # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
         #
         } else {
-          git clone -q --depth 1 --branch $env:pg https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+          git clone -q --depth 1 --branch ${env:pg} https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
           pushd c:\projects\postgresql
           pwd
           git branch
-          echo $env:pg
+          echo ${env:pg}
           popd
           pwd
         }

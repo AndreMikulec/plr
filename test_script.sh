@@ -6,6 +6,12 @@ cd "$(dirname "$0")"
 # set -v -x -e
 set -e
 
+# put in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
+if [ -f "${pgroot}/bin/postgres" ]
+then
+  export PATH=${pgroot}/bin:${PATH}
+fi
+
 pg_ctl -D ${PGDATA} -l logfile start
 
 USE_PGXS=1 make installcheck || (cat regression.diffs && false)

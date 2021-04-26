@@ -6,6 +6,12 @@ cd "$(dirname "$0")"
 
 export R_HOME=$(cygpath "${R_HOME}")
 
+#
+# only used about a custom PostgreSQL build (not an MSYS2 already compiled binary)
+#
+export pgsource=$(cygpath "c:\projects\postgresql")
+export pgroot=$(cygpath "${pgroot}")
+
 export APPVEYOR_BUILD_FOLDER=$(cygpath "${APPVEYOR_BUILD_FOLDER}")
 # echo $APPVEYOR_BUILD_FOLDER
 # /c/projects/plr
