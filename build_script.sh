@@ -122,10 +122,11 @@ fi
 USE_PGXS=1 make
 USE_PGXS=1 make install
 
-winpty -Xallow-non-tty psql -c 'CREATE EXTENSION plr;'
-winpty -Xallow-non-tty psql -c 'SELECT plr_version();'
-winpty -Xallow-non-tty psql -c 'SELECT   r_version();'
-winpty -Xallow-non-tty psql -c 'DROP EXTENSION plr;'
+winpty -Xallow-non-tty psql -d postgres -c 'CREATE EXTENSION plr;'
+winpty -Xallow-non-tty psql -d postgres -c 'SELECT plr_version();'
+winpty -Xallow-non-tty psql -d postgres -c 'SELECT   r_version();'
+export PGDATABASE=postgres
+winpty -Xallow-non-tty psql             -c 'DROP EXTENSION plr;'
 
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
