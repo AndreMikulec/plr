@@ -24,7 +24,7 @@ environment:
 
   - PlatformToolset: v142
     Configuration: Release
-    Platform: x64
+    Platform: x86
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     rversion: 4.1.0alpha
     compiler: msys2
@@ -44,7 +44,7 @@ environment:
   - pg: REL_13_0 # static commit - from git
     PlatformToolset: v142
     Configuration: Debug
-    Platform: x64
+    Platform: x86
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     rversion: 4.0.5
     compiler: msys2
@@ -1072,6 +1072,8 @@ for:
   - dir tmp
   - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%Platform%-%Configuration%-%compiler%.zip
   - 7z a -r %zip% .\tmp\* > nul
+  - dir "%zip%"
+  - appveyor PushArtifact "%zip%"
 
   # #
   # - echo BEGIN TRY TO FIND BUILT FILES LOCATION: postgres.exe and plr.dll
@@ -1125,7 +1127,8 @@ for:
   #
   # "%pgroot%\bin\postgres.exe" SHOULD BE THERE - missing should NOT happen
   - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" (
-      7z a -r "%pgzip%"  "%pgroot%\*" > nul
+      7z a -r "%pgzip%"  "%pgroot%\*" > nul &
+      appveyor PushArtifact "%pgzip%"
     )
   # what did I 7z up?
   - ps: |

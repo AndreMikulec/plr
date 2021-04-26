@@ -13,7 +13,7 @@ then
   ls -alrt  ${APPVEYOR_BUILD_FOLDER}
   7z a -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip *
   ls -alrt  ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-  # appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+  appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
   cd ${APPVEYOR_BUILD_FOLDER}
   echo "END   zip CREATION"
 fi
@@ -58,6 +58,8 @@ cp ${SHAREDIR}/extension/plr-*.sql    tmp/share/extension
 export zip=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${Platform}-${Configuration}-${compiler}.zip
 
 7z a -r ${APPVEYOR_BUILD_FOLDER}/${zip} ./tmp/*
+ls -alrt ${APPVEYOR_BUILD_FOLDER}/${zip}
+appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
 
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
