@@ -41,7 +41,6 @@ export TZ=UTC
 export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
 export     PGDATA=${PGAPPDIR}
 export      PGLOG=${PGAPPDIR}/log.txt
-export PGLOCALDIR=${pgroot}/share${dirpostgresql}/
 # database params (default)
 #
 # build from source
