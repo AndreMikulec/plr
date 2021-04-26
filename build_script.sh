@@ -9,6 +9,17 @@ set -e
 # which R
 # /c/RINSTALL/bin/x64/R
 
+# just needed for the "make"
+#
+# so perl can use better regular expressions
+export PATH=$(echo $(cygpath "c:\\${betterperl}\perl\bin")):${PATH}
+#
+# also, so I need "pexports", that is needed when,
+# I try to use "postresql source code from git" to build postgres
+# ("pexports" is not needed when I use the "downloadable postgrsql" source code)
+export PATH=${PATH}:$(echo $(cygpath "c:\\${betterperl}\c\bin"))
+
+
 if [ "${pggithubbincacheextracted}" == "false" ] && [ ! "${pg}" == "none" ]
 then
   echo "BEGIN POSTGRESQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
