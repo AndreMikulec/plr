@@ -6,10 +6,17 @@ cd "$(dirname "$0")"
 # set -v -x -e
 set -e
 
-#
-# PUT BACK pg-*.zip CREATION HERE
-#
-
+if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && [ -f "${pgroot}/bin/postgres" ]
+then
+  echo "BEGIN zip CREATION"
+  cd ${pgroot}
+  ls -alrt  ${APPVEYOR_BUILD_FOLDER}
+  7z a -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip *
+  ls -alrt  ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+  # appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+  cd ${APPVEYOR_BUILD_FOLDER}
+  echo "END   zip CREATION"
+fi
 
 # put in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
 if [ -f "${pgroot}/bin/postgres" ]

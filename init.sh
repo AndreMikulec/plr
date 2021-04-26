@@ -31,11 +31,6 @@ else
 fi
 echo pgroot $pgroot
 
-if [ -d "${pgroot}/share/postgresql" ]
-then
-  export dirpostgresql=/postgresql
-fi
-
 # e.g., in the users home directory
 export TZ=UTC
 export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
@@ -47,6 +42,7 @@ export      PGLOG=${PGAPPDIR}/log.txt
 # psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
 # psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
 #
+# minimum (strange that this is explictly required)
 export PGDATABASE=postgres
 
 #

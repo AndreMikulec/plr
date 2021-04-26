@@ -55,28 +55,29 @@ then
   echo "END   POSTGRESQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
 fi
 
-#
-# MOVE LATER to after_build.sh
-#
-if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && [ -f "${pgroot}/bin/postgres" ]
-then
-  echo "BEGIN zip CREATION"
-  cd ${pgroot}
-  ls -alrt  ${APPVEYOR_BUILD_FOLDER}
-  7z a -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip *
-  ls -alrt  ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-  appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-  cd ${APPVEYOR_BUILD_FOLDER}
-  echo "END   zip CREATION"
-fi
-
-
-
-
-# put in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
+# put this in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
 if [ -f "${pgroot}/bin/postgres" ]
 then
   export PATH=${pgroot}/bin:${PATH}
+fi
+
+# help determine where to extract the plr files
+if [ -d "${pgroot}/share/postgresql" ]
+then
+  export dirpostgresql=/postgresql
+fi
+
+# build from source
+# psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
+# psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
+#
+# not an msys2 binary
+if [ ! "${dirpostgresql}" == "/postgresql" ]
+then
+  # override
+  export PGDATABASE="appveyor"
+  # add
+  export PGUSER="appveyor"
 fi
 
 echo BEGIN MY ENV VARIABLES
@@ -88,12 +89,7 @@ which pg_config
 pg_config
 echo END MY pg_config
 
-# build from source
-# psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
-# psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
-#
 winpty -Xallow-non-tty initdb --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
-### winpty -Xallow-non-tty initdb                            --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
 # Success. You can now start the database server using:
 # C:/msys64/mingw64/bin/pg_ctl -D C:/msys64//home/appveyor/mingw64/postgresql/Data -l logfile start
 # C:/msys64/mingw64/bin/pg_ctl -D ${PGDATA} -l logfile start
