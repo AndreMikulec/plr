@@ -93,8 +93,8 @@ then
   export PGDATABASE=appveyor
   winpty -Xallow-non-tty initdb --username=appveyor --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
 else
-  export PGDATABASE=postgres
-  winpty -Xallow-non-tty initdb --username=postgres --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
+  export PGDATABASE=appveyor
+  winpty -Xallow-non-tty initdb --username=appveyor --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
 fi
 
 # Success. You can now start the database server using:
