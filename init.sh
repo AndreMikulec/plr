@@ -9,27 +9,40 @@ export R_HOME=$(cygpath "${R_HOME}")
 #
 # only used about a custom PostgreSQL build (not an MSYS2 already compiled binary)
 #
-export pgsource=$(cygpath "c:\projects\postgresql")
-export pgroot=$(cygpath "${pgroot}")
+
+[ ! "${pg}" == "none" ]
+then
+  export pgsource=$(cygpath "c:\projects\postgresql")
+fi
 
 export APPVEYOR_BUILD_FOLDER=$(cygpath "${APPVEYOR_BUILD_FOLDER}")
 # echo $APPVEYOR_BUILD_FOLDER
 # /c/projects/plr
 
-export plrsource=${APPVEYOR_BUILD_FOLDER}
 
 # echo ${MINGW_PREFIX}
 # /mingw64
-export pginstall=${MINGW_PREFIX}
 
-export dirpostgresql=/postgresql
+[ ! "${pg}" == "none" ]
+then
+  export pgroot=$(cygpath "${pgroot}")
+else
+  export pgroot=${MINGW_PREFIX}
+fi
+
+[ ! "${pg}" == "none" ]
+then
+  export dirpostgresql=/
+else
+  export dirpostgresql=/postgresql
+fi
 
 # e.g., in the users home directory
 export TZ=UTC
-export PGAPPDIR="C:/msys64$HOME"${pginstall}/postgresql/Data
+export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
 export     PGDATA=${PGAPPDIR}
 export      PGLOG=${PGAPPDIR}/log.txt
-export PGLOCALDIR=${pginstall}/share${dirpostgresql}/
+export PGLOCALDIR=${pgroot}/share${dirpostgresql}/
 # database params (default)
 export PGDATABASE=postgres
 export PGPORT=5432

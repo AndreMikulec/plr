@@ -502,7 +502,7 @@ for:
   #
   # only used about a custom PostgreSQL build (not an MSYS2 already compiled binary)
   #
-  - set pgroot="C:\PGINSTALL"
+  - set pgroot="c:\PGINSTALL"
   - echo %pgroot%
   #
   - if not exist "%pgroot%" mkdir "%pgroot%"
