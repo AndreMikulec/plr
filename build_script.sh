@@ -83,15 +83,12 @@ echo END MY pg_config
 
 
 #
-# PostgreSQL on msys2 does not use(read) PG* variables (strang)
+# PostgreSQL on msys2 does not use(read) PG* variables [correctly] (strang)
 #
 
 # build from source
 # psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
 # psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
-#
-# minimum (strange that this env variable PGDATABASE is explictly required)
-#
 #
 winpty -Xallow-non-tty initdb --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
 # Success. You can now start the database server using:
@@ -109,10 +106,6 @@ pg_ctl -D ${PGDATA} -l logfile stop
 # leave it up
 pg_ctl -D ${PGDATA} -l logfile start
 
-# build from source
-# psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
-# psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
-#
 winpty -Xallow-non-tty psql -d postgres -c 'SELECT version();'
 
 # -O0 because of the many macros
