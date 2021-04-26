@@ -108,7 +108,7 @@ pg_ctl -D ${PGDATA} -l logfile start
 # psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
 # psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
 #
-winpty -Xallow-non-tty psql -c 'SELECT version();'
+winpty -Xallow-non-tty psql -d postgres -c 'SELECT version();'
 
 # -O0 because of the many macros
 #
