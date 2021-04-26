@@ -36,16 +36,6 @@ export TZ=UTC
 export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
 export     PGDATA=${PGAPPDIR}
 export      PGLOG=${PGAPPDIR}/log.txt
-# database params (default)
-#
-# build from source
-# psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
-# psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
-#
-# minimum (strange that this is explictly required)
-export PGDATABASE=postgres
-# not require for an msys2 bin
-# export PGUSER=postgres
 
 #
 # not required in compilation

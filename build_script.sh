@@ -71,14 +71,6 @@ fi
 # psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
 # psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
 #
-# not an msys2 binary
-if [ ! "${dirpostgresql}" == "/postgresql" ]
-then
-  # override
-  export PGDATABASE="appveyor"
-  # add
-  export PGUSER="appveyor"
-fi
 
 echo BEGIN MY ENV VARIABLES
 export
@@ -89,7 +81,22 @@ which pg_config
 pg_config
 echo END MY pg_config
 
-winpty -Xallow-non-tty initdb --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
+# build from source
+# psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
+# psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
+#
+# minimum (strange that this env variable PGDATABASE is explictly required)
+#
+# not an msys2 binary
+if [ ! "${dirpostgresql}" == "/postgresql" ]
+then
+  export PGDATABASE=appveyor
+  winpty -Xallow-non-tty initdb --username=appveyor --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
+else
+  export PGDATABASE=postgres
+  winpty -Xallow-non-tty initdb --username=postgres --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
+fi
+
 # Success. You can now start the database server using:
 # C:/msys64/mingw64/bin/pg_ctl -D C:/msys64//home/appveyor/mingw64/postgresql/Data -l logfile start
 # C:/msys64/mingw64/bin/pg_ctl -D ${PGDATA} -l logfile start
