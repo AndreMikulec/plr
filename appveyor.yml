@@ -14,7 +14,7 @@ environment:
 
   matrix:
 
-  # work in progress
+  # works
   - pg: REL_13_0 # static commit - from git
     PlatformToolset: v142
     Configuration: Debug
@@ -26,7 +26,7 @@ environment:
     #
     githubcache: true
 
-#   # work in progress
+#   # should work
 #   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e # static commit - from git
 #     #
 #     pghint: commit
@@ -41,13 +41,13 @@ environment:
 #     #
 #     githubcache: true
 
-#   # works
-#   - PlatformToolset: v142
-#     Configuration: Release
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.1.0alpha
-#     compiler: msys2
+  # works
+  - PlatformToolset: v142
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.1.0alpha
+    compiler: msys2
 
 #   # works
 #   - PlatformToolset: v142
@@ -65,8 +65,6 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.0.5
 #     compiler: msys2
-
-
 
 # # classic msvc # #
 

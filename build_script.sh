@@ -72,15 +72,14 @@ fi
 # psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
 #
 
-echo BEGIN MY ENV VARIABLES
-export
-echo END MY ENV VARIABLES
+# echo BEGIN MY ENV VARIABLES
+# export
+# echo END MY ENV VARIABLES
 
-echo BEGIN MY pg_config
-which pg_config
-pg_config
-echo END MY pg_config
-
+# echo BEGIN MY pg_config
+# which pg_config
+# pg_config
+# echo END MY pg_config
 
 #
 # PostgreSQL on msys2 does not use(read) PG* variables [correctly] (strang)

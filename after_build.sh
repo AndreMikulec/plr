@@ -26,7 +26,7 @@ fi
 
 pg_ctl -D ${PGDATA} -l logfile start
 
-winpty -Xallow-non-tty psql  -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=${APPVEYOR_BUILD_FOLDER}/server_version_num.txt
+winpty -Xallow-non-tty psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=${APPVEYOR_BUILD_FOLDER}/server_version_num.txt
 # also used in compiler - msvc
 ./server_version_num.sh
 export server_version_num=$(cat ${APPVEYOR_BUILD_FOLDER}/server_version_num.txt)
