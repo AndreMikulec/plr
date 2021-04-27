@@ -56,4 +56,10 @@ export      PGLOG=${PGAPPDIR}/log.txt
 #
 # not required in compilation
 #     required in "CREATE EXTENSION plr;" and regression tests
-export PATH=${R_HOME}/bin${R_ARCH}:$PATH
+
+if [ "${compiler}" == "msys2" ]
+then
+  export PATH=${R_HOME}/bin${R_ARCH}:$PATH
+else # cygwin does not do R sub architectures
+  export PATH=${R_HOME}/bin:$PATH
+fi

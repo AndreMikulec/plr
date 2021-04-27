@@ -493,11 +493,12 @@ for:
         }
       }
 
-      if ("${env:Platform}" -eq "x64") {
-        ${env:R_ARCH} = "/x64"
-      } else {
-        ${env:R_ARCH} = "/i386"
-      }
+#       # cygwin DOES NOT do R subarchitectures
+#       if ("${env:Platform}" -eq "x64") {
+#         ${env:R_ARCH} = "/x64"
+#       } else {
+#         ${env:R_ARCH} = "/i386"
+#       }
 
       ${env:rbinurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
       # "make installcheck" does not like spaces
