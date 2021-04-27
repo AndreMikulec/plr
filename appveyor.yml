@@ -20,7 +20,7 @@ environment:
 
   matrix:
 
-  # work in progress
+  # works
   - PlatformToolset: v142
     Configuration: Debug
     Platform: x86
@@ -28,12 +28,13 @@ environment:
     rversion: 4.1.0alpha
     compiler: cygwin
 
-  - PlatformToolset: v142
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.1.0alpha
-    compiler: cygwin
+#   # works
+#   - PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.1.0alpha
+#     compiler: cygwin
 
 #   # works
 #   - PlatformToolset: v142
@@ -42,14 +43,14 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.1.0alpha
 #     compiler: msys2
-#
-#   - PlatformToolset: v142
-#     Configuration: Release
-#     Platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.1.0alpha
-#     compiler: msys2
-#
+
+  - PlatformToolset: v142
+    Configuration: Release
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.1.0alpha
+    compiler: msys2
+
 #   # works
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v142
@@ -529,6 +530,7 @@ for:
       ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
       ${env:PATH} = "${env:CYG_ROOT}\bin;${env:PATH}"
 
+#   # uses cygwin R
 #   # - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
 #   - ps: |
 #       # Set-PSDebug -Trace 2
@@ -621,10 +623,8 @@ for:
   - echo pggithubbincacheextracted %pggithubbincacheextracted%
 
   #
-  # Remove old plr files, from the pg already-compiled-binary
-  # extraction from 0.0.0.0.0.GITHUBCACHE, if any old files
-  #
-  # in the msys2 case, this will not happen (TODO: later remove this code)
+  # Remove (if any) old plr files, from the pg already-compiled-binary
+  # extraction from 0.0.0.0.0.GITHUBCACHE
   #
   - ps: |
       # Set-PSDebug -Trace 2
@@ -679,10 +679,9 @@ for:
         popd
       }
 
-
   # https://cygwin.com/faq/faq.html#faq.setup.cli
 
-  # environement of cygwin
+  # environment of cygwin
   #
   # EARLY 2021
   # https://github.com/petere/postgresql/blob/c3606de647583d7cbb39aadd2a2a989af28b97ea/.appveyor.yml
@@ -692,7 +691,7 @@ for:
   - 'appveyor DownloadFile http://cygwin.com/setup-%CYG_ARCH%.exe -FileName setup.exe'
   - 'setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel'
   #
-  # plr - andre - other packages - experience of need - while trying to create plr manually
+  # plr - andre - other packages - experience of need - while trying to - manually step by step build plr
   - 'setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libintl-devel -P libcrypt-devel'
   #
   # to archive and un-archive (7z)
@@ -710,11 +709,14 @@ for:
   # PostgreSQL on cygwin
   # https://cygwin.com/cgi-bin2/package-grep.cgi?grep=postgresql&arch=x86_64
   #
-  # PostgreSQL - from an CYGWIN already-compiled-binary. - psql - postgres
+  # PostgreSQL - from an CYGWIN already-compiled-binary. - psql and postgres
   - if "%pg%"=="none" (
       setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P postgresql-client -P postgresql -P postgresql-devel
     )
 
+  # needs pg_config
+  # 1. USE_PGXS=1
+  # 2. new variables PKGLIBDIR SHAREDIR to determine the location of the new plr files (to be archived)
   # PostgreSQL - from an CYGWIN already-compiled-binary - pg_config
   - if "%pg%"=="none" (
       setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpq-devel

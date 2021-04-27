@@ -6,8 +6,9 @@ cd "$(dirname "$0")"
 # set -v -x -e
 set -e
 
-# which R
+# which R msys2 and cygwin
 # /c/RINSTALL/bin/x64/R
+# /usr/bin/R
 
 # just needed for the "make"
 #
@@ -47,6 +48,7 @@ then
   else
     echo "BEGIN zip EXTRACTION"
     cd ${pgroot}
+    7z l "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
     7z x "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
     ls -alrt ${pgroot}
     cd ${APPVEYOR_BUILD_FOLDER}
@@ -56,7 +58,8 @@ then
 fi
 
 # put this in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
-if [ -f "${pgroot}/bin/postgres" ]
+# but psql is already in the path
+if [ -f "${pgroot}/bin/psql" ]
 then
   export PATH=${pgroot}/bin:${PATH}
 fi
@@ -72,12 +75,17 @@ then
   export PATH=${pgroot}/sbin:${PATH}
 fi
 
-
-# help determine where to extract the plr files
-if [ -d "${pgroot}/share/postgresql" ]
-then
-  export dirpostgresql=/postgresql
-fi
+# # later I get this information from pgconfig PKGLIBDIR SHAREDIR
+# # therefore, I do not need this variable "dirpostgresql" anymore
+# 
+# # help determine where to extract the plr files
+# # /postgresql, if the plr files are found in the
+# # default cygwin-package-management shared install folders
+# #
+# if [ -d "${pgroot}/share/postgresql" ]
+# then
+#   export dirpostgresql=/postgresql
+# fi
 
 # build from source
 # psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
@@ -97,10 +105,9 @@ fi
 # ls -alrt ${pgroot}/sbin
 # which postgres
 
-
 #
-# PostgreSQL on msys2 does not use(read) PG* variables [correctly] (strang)
-#
+# PostgreSQL on msys2 (maybe also cygwin?) does not use(read) PG* variables [always] [correctly] (strange!)
+# so, e.g. in psql, I do not rely on environment variables
 
 # build from source
 # psql: error: could not connect to server: FATAL:  role "appveyor" does not exist

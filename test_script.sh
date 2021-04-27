@@ -6,8 +6,9 @@ cd "$(dirname "$0")"
 # set -v -x -e
 set -e
 
-# put in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
-if [ -f "${pgroot}/bin/postgres" ]
+# put this in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
+# but psql is already in the path
+if [ -f "${pgroot}/bin/psql" ]
 then
   export PATH=${pgroot}/bin:${PATH}
 fi

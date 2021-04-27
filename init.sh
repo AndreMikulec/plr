@@ -7,7 +7,8 @@ cd "$(dirname "$0")"
 export R_HOME=$(cygpath "${R_HOME}")
 
 #
-# only used about a custom PostgreSQL build (not an MSYS2 already compiled binary)
+# "pgsource" variable
+# is only used about a custom PostgreSQL build (not an MSYS2 or CYGWIN already compiled binary)
 #
 
 if [ ! "${pg}" == "none" ]
@@ -19,7 +20,7 @@ export APPVEYOR_BUILD_FOLDER=$(cygpath "${APPVEYOR_BUILD_FOLDER}")
 # echo $APPVEYOR_BUILD_FOLDER
 # /c/projects/plr
 
-
+# 
 # echo ${MINGW_PREFIX}
 # /mingw64
 
@@ -31,7 +32,7 @@ else
   # cygwin override
   if [ "${compiler}" == "cygwin" ]
   then
-    # override (not all uses: initdb, postgres, and pg_ctl are in "/usr/sbin")
+    # override (not all executables use "/usr/bin": initdb, postgres, and pg_ctl are in "/usr/sbin")
     export pgroot=/usr
   fi
 fi
@@ -57,9 +58,11 @@ export      PGLOG=${PGAPPDIR}/log.txt
 # not required in compilation
 #     required in "CREATE EXTENSION plr;" and regression tests
 
+# R in msys2 does sub architectures
 if [ "${compiler}" == "msys2" ]
 then
   export PATH=${R_HOME}/bin${R_ARCH}:$PATH
-else # cygwin does not do R sub architectures
+else 
+  # cygwin does-not-do R sub architectures
   export PATH=${R_HOME}/bin:$PATH
 fi
