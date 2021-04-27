@@ -23,10 +23,29 @@ if [ -f "${pgroot}/bin/postgres" ]
 then
   export PATH=${pgroot}/bin:${PATH}
 fi
+#
+# cygwin # pgroot: /usr - is the general location of binaries (psql) and already in the PATH
+#
+# $ echo $(cygpath "C:\cygwin\bin")
+# /usr/bin
+#
+# cygwin # initdb, postgres, and pg_ctl are here "/usr/sbin"
+if [ -f "${pgroot}/sbin/postgres" ]
+then
+  export PATH=${pgroot}/sbin:${PATH}
+fi
+
 
 pg_ctl -D ${PGDATA} -l logfile start
 
-winpty -Xallow-non-tty psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=${APPVEYOR_BUILD_FOLDER}/server_version_num.txt
+
+if [ "compiler" == "msys2" ]
+then
+  winpty -Xallow-non-tty psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=${APPVEYOR_BUILD_FOLDER}/server_version_num.txt
+else
+  psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=${APPVEYOR_BUILD_FOLDER}/server_version_num.txt
+fi
+
 # also used in compiler - msvc
 ./server_version_num.sh
 export server_version_num=$(cat ${APPVEYOR_BUILD_FOLDER}/server_version_num.txt)

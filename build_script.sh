@@ -60,6 +60,18 @@ if [ -f "${pgroot}/bin/postgres" ]
 then
   export PATH=${pgroot}/bin:${PATH}
 fi
+#
+# cygwin # pgroot: /usr - is the general location of binaries (psql) and already in the PATH
+#
+# $ echo $(cygpath "C:\cygwin\bin")
+# /usr/bin
+#
+# cygwin # initdb, postgres, and pg_ctl are here "/usr/sbin"
+if [ -f "${pgroot}/sbin/postgres" ]
+then
+  export PATH=${pgroot}/sbin:${PATH}
+fi
+
 
 # help determine where to extract the plr files
 if [ -d "${pgroot}/share/postgresql" ]
@@ -105,7 +117,13 @@ pg_ctl -D ${PGDATA} -l logfile stop
 # leave it up
 pg_ctl -D ${PGDATA} -l logfile start
 
-winpty -Xallow-non-tty psql -d postgres -c 'SELECT version();'
+if [ "compiler" == "msys2" ]
+then
+  winpty -Xallow-non-tty psql -d postgres -c 'SELECT version();'
+else
+  psql -d postgres -c 'SELECT version();'
+fi
+
 
 # -O0 because of the many macros
 #
@@ -119,10 +137,33 @@ fi
 USE_PGXS=1 make
 USE_PGXS=1 make install
 
-winpty -Xallow-non-tty psql -d postgres -c 'CREATE EXTENSION plr;'
-winpty -Xallow-non-tty psql -d postgres -c 'SELECT plr_version();'
-winpty -Xallow-non-tty psql -d postgres -c 'SELECT   r_version();'
-winpty -Xallow-non-tty psql -d postgres -c 'DROP EXTENSION plr;'
+if [ "compiler" == "msys2" ]
+then
+  winpty -Xallow-non-tty psql -d postgres -c 'CREATE EXTENSION plr;'
+else
+  psql -d postgres -c 'CREATE EXTENSION plr;'
+fi
+
+if [ "compiler" == "msys2" ]
+then
+  winpty -Xallow-non-tty psql -d postgres -c 'SELECT plr_version();'
+else
+  psql -d postgres -c 'SELECT plr_version();'
+fi
+
+if [ "compiler" == "msys2" ]
+then
+  winpty -Xallow-non-tty psql -d postgres -c 'SELECT   r_version();'
+else
+  psql -d postgres -c 'SELECT   r_version();'
+fi
+
+if [ "compiler" == "msys2" ]
+then
+  winpty -Xallow-non-tty psql -d postgres -c 'DROP EXTENSION plr;'
+else
+  psql -d postgres -c 'DROP EXTENSION plr;'
+fi
 
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop

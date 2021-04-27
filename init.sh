@@ -34,6 +34,11 @@ echo pgroot $pgroot
 # e.g., in the users home directory
 export TZ=UTC
 export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
+# cygwin override
+if [ "compiler" == "cygwin" ]
+then
+  export PGAPPDIR=$(cygpath "${CYG_ROOT}")${HOME}${pgroot}/postgresql/Data
+fi
 export     PGDATA=${PGAPPDIR}
 export      PGLOG=${PGAPPDIR}/log.txt
 

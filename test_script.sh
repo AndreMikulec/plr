@@ -11,6 +11,17 @@ if [ -f "${pgroot}/bin/postgres" ]
 then
   export PATH=${pgroot}/bin:${PATH}
 fi
+#
+# cygwin # pgroot: /usr - is the general location of binaries (psql) and already in the PATH
+#
+# $ echo $(cygpath "C:\cygwin\bin")
+# /usr/bin
+#
+# cygwin # initdb, postgres, and pg_ctl are here "/usr/sbin"
+if [ -f "${pgroot}/sbin/postgres" ]
+then
+  export PATH=${pgroot}/sbin:${PATH}
+fi
 
 pg_ctl -D ${PGDATA} -l logfile start
 
