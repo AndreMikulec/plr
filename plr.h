@@ -132,8 +132,17 @@ extern int R_SignalHandlers;
 #undef WARNING
 #endif
 
+#ifdef PGWARNING
+#define WARNING		PGWARNING
+#else
 #define WARNING		19
+#endif
+
+#ifdef PGERROR
+#define ERROR		PGERROR
+#else
 #define ERROR		20
+#endif
 
 /* starting in R-2.7.0 this defn was removed from Rdevices.h */
 #ifndef KillAllDevices
