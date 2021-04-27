@@ -50,6 +50,8 @@ fi
 ./server_version_num.sh
 export server_version_num=$(cat ${APPVEYOR_BUILD_FOLDER}/server_version_num.txt)
 #
+postgres -V
+
 export pg=$(postgres -V | grep -oP '(?<=\) ).*$')
 #
 # override - msys2 binary case
@@ -78,6 +80,8 @@ export zip=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${Platform}-${Configur
 
 7z a -r ${APPVEYOR_BUILD_FOLDER}/${zip} ./tmp/*
 ls -alrt ${APPVEYOR_BUILD_FOLDER}/${zip}
+ls -alrt ${APPVEYOR_BUILD_FOLDER}
+
 appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
 
 # must stop, else Appveyor job will hang.
