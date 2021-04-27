@@ -72,6 +72,10 @@ then
   export PATH=${pgroot}/sbin:${PATH}
 fi
 
+ls -alrt /usr/sbin
+ls -alrt ${pgroot}/sbin
+which postgres
+
 
 # help determine where to extract the plr files
 if [ -d "${pgroot}/share/postgresql" ]
@@ -101,7 +105,14 @@ fi
 # psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
 # psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
 #
-winpty -Xallow-non-tty initdb --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
+
+if [ "compiler" == "msys2" ]
+then
+  winpty -Xallow-non-tty initdb --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
+else
+  initdb --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
+fi
+
 # Success. You can now start the database server using:
 # C:/msys64/mingw64/bin/pg_ctl -D C:/msys64//home/appveyor/mingw64/postgresql/Data -l logfile start
 # C:/msys64/mingw64/bin/pg_ctl -D ${PGDATA} -l logfile start
