@@ -11,46 +11,64 @@ skip_commits:
 environment:
   # Always Try to save
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
+  #
+  CYG_MIRROR: http://cygwin.mirror.rafal.ca/
+  CYG_CACHE: C:/cygwin/var/cache/setup
 
   matrix:
 
   # works
   - PlatformToolset: v142
-    Configuration: Release
+    Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     rversion: 4.1.0alpha
-    compiler: msys2
+    compiler: cygwin
 
   - PlatformToolset: v142
-    Configuration: Release
+    Configuration: Debug
     Platform: x86
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     rversion: 4.1.0alpha
-    compiler: msys2
+    compiler: cygwin
 
-  # works
-  - pg: REL_13_0 # static commit - from git
-    PlatformToolset: v142
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.0.5
-    compiler: msys2
-    MSYSTEM: MINGW64
-    #
-    githubcache: true
-
-  - pg: REL_13_0 # static commit - from git
-    PlatformToolset: v142
-    Configuration: Debug
-    Platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.0.5
-    compiler: msys2
-    MSYSTEM: MINGW32
-    #
-    githubcache: true
+#   # works
+#   - PlatformToolset: v142
+#     Configuration: Release
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.1.0alpha
+#     compiler: msys2
+#
+#   - PlatformToolset: v142
+#     Configuration: Release
+#     Platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.1.0alpha
+#     compiler: msys2
+#
+#   # works
+#   - pg: REL_13_0 # static commit - from git
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5
+#     compiler: msys2
+#     MSYSTEM: MINGW64
+#     #
+#     githubcache: true
+#
+#   - pg: REL_13_0 # static commit - from git
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5
+#     compiler: msys2
+#     MSYSTEM: MINGW32
+#     #
+#     githubcache: true
 
 #   # should work
 #   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e # static commit - from git
@@ -283,10 +301,11 @@ environment:
 #     rversion: 3.6.0
 #     compiler: msvc
 
-
-# matrix:
-#   allow_failures:
-#     - pg: master
+matrix:
+  allow_failures:
+    # - pg: master
+    - compiler: cygwin
+      Platform: x86
 
 ### Documentation Begins ###
 
