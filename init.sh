@@ -43,7 +43,12 @@ export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
 # cygwin override
 if [ "${compiler}" == "cygwin" ]
 then
-  export PGAPPDIR=$(cygpath "${CYG_ROOT}")${HOME}${pgroot}/postgresql/Data
+  if [ "${Platform}" == "x64" ]
+  then
+    export PGAPPDIR=/cygdrive/c/cygwin64${HOME}${pgroot}/postgresql/Data
+  else
+    export PGAPPDIR=/cygdrive/c/cygwin${HOME}${pgroot}/postgresql/Data
+  fi
 fi
 export     PGDATA=${PGAPPDIR}
 export      PGLOG=${PGAPPDIR}/log.txt
