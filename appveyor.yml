@@ -23,14 +23,14 @@ environment:
   # work in progress
   - PlatformToolset: v142
     Configuration: Debug
-    Platform: x64
+    Platform: x86
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     rversion: 4.1.0alpha
     compiler: cygwin
 
   - PlatformToolset: v142
     Configuration: Debug
-    Platform: x86
+    Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     rversion: 4.1.0alpha
     compiler: cygwin
@@ -696,7 +696,7 @@ for:
   #
   # to archive and un-archive (7z)
   - 'setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P p7zip'
-  
+
   #
   - bash -login -c "cygserver-config --yes"
   #

@@ -72,10 +72,6 @@ then
   export PATH=${pgroot}/sbin:${PATH}
 fi
 
-ls -alrt /usr/sbin
-ls -alrt ${pgroot}/sbin
-which postgres
-
 
 # help determine where to extract the plr files
 if [ -d "${pgroot}/share/postgresql" ]
@@ -89,13 +85,19 @@ fi
 #
 
 # echo BEGIN MY ENV VARIABLES
-# export
+export
 # echo END MY ENV VARIABLES
 
 # echo BEGIN MY pg_config
-# which pg_config
-# pg_config
+which pg_config
+pg_config
 # echo END MY pg_config
+
+ls -alrt /usr/sbin
+ls -alrt ${pgroot}/sbin
+which postgres
+
+
 
 #
 # PostgreSQL on msys2 does not use(read) PG* variables [correctly] (strang)
