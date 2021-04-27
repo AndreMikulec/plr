@@ -28,6 +28,12 @@ then
   export pgroot=$(cygpath "${pgroot}")
 else
   export pgroot=${MINGW_PREFIX}
+  # cygwin override
+  if [ "${compiler}" == "cygwin" ]
+  then
+    # override (not all uses: initdb, postgres, and pg_ctl are in "/usr/sbin")
+    export pgroot=/usr
+  fi
 fi
 echo pgroot $pgroot
 
@@ -35,7 +41,7 @@ echo pgroot $pgroot
 export TZ=UTC
 export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
 # cygwin override
-if [ "compiler" == "cygwin" ]
+if [ "${compiler}" == "cygwin" ]
 then
   export PGAPPDIR=$(cygpath "${CYG_ROOT}")${HOME}${pgroot}/postgresql/Data
 fi

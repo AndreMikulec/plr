@@ -108,7 +108,7 @@ which postgres
 # psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
 #
 
-if [ "compiler" == "msys2" ]
+if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty initdb --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
 else
@@ -130,7 +130,7 @@ pg_ctl -D ${PGDATA} -l logfile stop
 # leave it up
 pg_ctl -D ${PGDATA} -l logfile start
 
-if [ "compiler" == "msys2" ]
+if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'SELECT version();'
 else
@@ -150,28 +150,28 @@ fi
 USE_PGXS=1 make
 USE_PGXS=1 make install
 
-if [ "compiler" == "msys2" ]
+if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'CREATE EXTENSION plr;'
 else
   psql -d postgres -c 'CREATE EXTENSION plr;'
 fi
 
-if [ "compiler" == "msys2" ]
+if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'SELECT plr_version();'
 else
   psql -d postgres -c 'SELECT plr_version();'
 fi
 
-if [ "compiler" == "msys2" ]
+if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'SELECT   r_version();'
 else
   psql -d postgres -c 'SELECT   r_version();'
 fi
 
-if [ "compiler" == "msys2" ]
+if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'DROP EXTENSION plr;'
 else

@@ -709,9 +709,14 @@ for:
   # PostgreSQL on cygwin
   # https://cygwin.com/cgi-bin2/package-grep.cgi?grep=postgresql&arch=x86_64
   #
-  # PostgreSQL - from an CYGWIN already-compiled-binary.
+  # PostgreSQL - from an CYGWIN already-compiled-binary. - psql - postgres
   - if "%pg%"=="none" (
       setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P postgresql-client -P postgresql -P postgresql-devel
+    )
+
+  # PostgreSQL - from an CYGWIN already-compiled-binary - pg_config
+  - if "%pg%"=="none" (
+      setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpq-devel
     )
 
   # R on cygwin
@@ -725,8 +730,6 @@ for:
   build_script:
   # override
   - set R_HOME=%CYG_ROOT%\lib\R
-  # override (not all uses: initdb, postgres, and pg_ctl are in "/usr/sbin")
-  - set pgroot=%CYG_ROOT%\usr
   #
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
