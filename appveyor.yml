@@ -17,7 +17,7 @@ environment:
 
   matrix:
 
-  # works
+  # work in progress
   - PlatformToolset: v142
     Configuration: Debug
     Platform: x64
