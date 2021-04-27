@@ -700,7 +700,7 @@ for:
   #
   - bash -login -c "cygserver-config --yes"
   #
-  - copy C:\%CYG_ROOT%\etc\defaults\etc\cygserver.conf C:\%CYG_ROOT%\etc\defaults\etc\cygserver.conf.original
+  - copy %CYG_ROOT%\etc\defaults\etc\cygserver.conf %CYG_ROOT%\etc\defaults\etc\cygserver.conf.original
   - echo kern.ipc.shmmni 32767 >> C:\%CYG_ROOT%\etc\defaults\etc\cygserver.conf
   - echo kern.ipc.shmseg 32767 >> C:\%CYG_ROOT%\etc\defaults\etc\cygserver.conf
   #
