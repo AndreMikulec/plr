@@ -69,7 +69,7 @@ export server_version_num=$(cat ${APPVEYOR_BUILD_FOLDER}/server_version_num.txt)
 
 echo server_version_num ${server_version_num}
 
-echo pg ${pg)
+echo pg ${pg}
 #
 # override - msys2 and cygwin binary case
 if [ "${pg}" == "none" ]
