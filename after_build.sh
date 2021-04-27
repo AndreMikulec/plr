@@ -41,15 +41,18 @@ pg_ctl -D ${PGDATA} -l logfile start
 
 if [ "${compiler}" == "msys2" ]
 then
-  winpty -Xallow-non-tty psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=${APPVEYOR_BUILD_FOLDER}/server_version_num.txt
+  winpty -Xallow-non-tty psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=$server_version_num.txt
 else
-  psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=${APPVEYOR_BUILD_FOLDER}/server_version_num.txt
+  psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=server_version_num.txt
 fi
 
+# BAD 
 # also used in compiler - msvc
-./server_version_num.sh
-export server_version_num=$(cat ${APPVEYOR_BUILD_FOLDER}/server_version_num.txt)
+# ./server_version_num.sh
+# export server_version_num=$(cat ${APPVEYOR_BUILD_FOLDER}/server_version_num.txt)
 #
+export server_version_num=$(echo -n $(sed -r 's/\s+//g' server_version_num.txt))
+
 postgres -V
 postgres -V | grep -oP '(?<=\) ).*$'
 
@@ -81,6 +84,9 @@ cp ${SHAREDIR}/extension/plr.control  tmp/share/extension
 cp ${SHAREDIR}/extension/plr-*.sql    tmp/share/extension
 
 export zip=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${Platform}-${Configuration}-${compiler}.zip
+echo ${zip}
+
+echo ${APPVEYOR_BUILD_FOLDER}
 
 7z a -r ${APPVEYOR_BUILD_FOLDER}/${zip} ./tmp/*
 ls -alrt ${APPVEYOR_BUILD_FOLDER}/${zip}
