@@ -48,27 +48,27 @@ fi
 
 # BAD 
 # also used in compiler - msvc
-# ./server_version_num.sh
-# export server_version_num=$(cat ${APPVEYOR_BUILD_FOLDER}/server_version_num.txt)
+
+./server_version_num.sh
+export server_version_num=$(cat ${APPVEYOR_BUILD_FOLDER}/server_version_num.txt)
 #
-export server_version_num=$(echo -n $(sed -r 's/\s+//g' server_version_num.txt))
+# export server_version_num=$(echo -n $(sed -r 's/\s+//g' server_version_num.txt))
 
-postgres -V
-postgres -V | grep -oP '(?<=\) ).*$'
+echo $server_version_num
 
-export pg=$(postgres -V | grep -oP '(?<=\) ).*$')
-
-echo ${pg}
 #
 # override - msys2 binary case
 if [ "${pg}" == "none" ]
   then
+  export pg=$(postgres -V | grep -oP '(?<=\) ).*$')
+  echo ${pg}
   if [ ${server_version_num} -lt 100000 ]
   then
     export pgversion=$(echo ${pg} | grep -oP '^\d+[.]\d+')
   else
     export pgversion=$(echo ${pg} | grep -oP '^\d+')
   fi
+  echo ${pgversion}
 fi
 echo ${pgversion}
 
@@ -96,7 +96,7 @@ if [ "${compiler}" == "msys2" ]
 then
   appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
 else
-  appveyor PushArtifact "${APPVEYOR_BUILD_FOLDER}/${zip}"
+  appveyor PushArtifact ${zip}
 fi
 
 # must stop, else Appveyor job will hang.
