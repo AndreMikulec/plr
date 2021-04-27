@@ -51,8 +51,11 @@ fi
 export server_version_num=$(cat ${APPVEYOR_BUILD_FOLDER}/server_version_num.txt)
 #
 postgres -V
+postgres -V | grep -oP '(?<=\) ).*$'
 
 export pg=$(postgres -V | grep -oP '(?<=\) ).*$')
+
+echo ${pg}
 #
 # override - msys2 binary case
 if [ "${pg}" == "none" ]
@@ -64,6 +67,7 @@ if [ "${pg}" == "none" ]
     export pgversion=$(echo ${pg} | grep -oP '^\d+')
   fi
 fi
+echo ${pgversion}
 
 pg_config | grep "^PKGLIBDIR\|^SHAREDIR" | sed "s/ = /=/" | sed s"/^/export /" > newvars.sh
 . ./newvars.sh
@@ -82,7 +86,12 @@ export zip=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${Platform}-${Configur
 ls -alrt ${APPVEYOR_BUILD_FOLDER}/${zip}
 ls -alrt ${APPVEYOR_BUILD_FOLDER}
 
-appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
+if [ "${compiler}" == "msys2" ]
+then
+  appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
+else
+  appveyor PushArtifact "${APPVEYOR_BUILD_FOLDER}/${zip}"
+fi
 
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
