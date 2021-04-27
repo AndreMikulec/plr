@@ -724,9 +724,9 @@ for:
 
   build_script:
   # override
-  - set R_HOME=C:\%CYG_ROOT%\lib\R
+  - set R_HOME=%CYG_ROOT%\lib\R
   # override (not all uses: initdb, postgres, and pg_ctl are in "/usr/sbin")
-  - set pgroot=C:\%CYG_ROOT%\usr
+  - set pgroot=%CYG_ROOT%\usr
   #
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
