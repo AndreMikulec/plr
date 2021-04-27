@@ -486,10 +486,10 @@ for:
       if ("${env:compiler}" -eq "cygwin") {
         if ("${env:Platform}" -eq "x64") {
           ${env:CYG_ARCH} = "x86_64"
-          ${env:CYG_ROOT} = "C:/cygwin64"
+          ${env:CYG_ROOT} = "C:\cygwin64"
         } else {
           ${env:CYG_ARCH} = "x86"
-          ${env:CYG_ROOT} = "C:/cygwin"
+          ${env:CYG_ROOT} = "C:\cygwin"
         }
       }
 
