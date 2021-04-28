@@ -26,7 +26,7 @@ environment:
   # plr attempted build . . .
   # cannot find -lpostgres
   # collect2: error: ld returned 1 exit status
-  # make: *** [/cygdrive/c/PGINSTALL/lib/postgresql/pgxs/src/makefiles/../../src/Makefile.shlib:346: plr.dll] Error 
+  # make: *** [/cygdrive/c/PGINSTALL/lib/postgresql/pgxs/src/makefiles/../../src/Makefile.shlib:346: plr.dll] Error
   #
   - pg: REL_13_0 # static commit - from git
     PlatformToolset: v142
@@ -343,28 +343,28 @@ matrix:
   # of PostgreSQL 9.6 or 9.5.
 
   # matrix-Notice
-  
-  # Platform x86 or x64 mean 32bit and 64bit. 
-  
+
+  # Platform x86 or x64 mean 32bit and 64bit.
+
   # If compiling on msvc, the end product is a 32bit application xor a 64bit application.
   # If compiling on msys2, then these are MINGW32 and MINGW64.
   # If compiling on cygwin, then these are C:\cygwin and C:\cygwin64.
-  
-  # Of Configuration options are "Release" and "Debug".  
-  
+
+  # Of Configuration options are "Release" and "Debug".
+
   # If compiling on msvc, these are the configurations "Release" and "Debug".
-  
-  # If compiling on msys2 or cygwin, if "Debug" is chosen, then 
-  # plr will be compiled with "-ggdb -O0".  Also, if PostgreSQL happens 
-  # to also be compiled, then it will compile 
+
+  # If compiling on msys2 or cygwin, if "Debug" is chosen, then
+  # plr will be compiled with "-ggdb -O0".  Also, if PostgreSQL happens
+  # to also be compiled, then it will compile
   # with the options "--enable-debug --enable-cassert".
 
   # Not all APPVEYOR_BUILD_WORKER_IMAGE\PlatformToolset pairs work for every matrix.
 
-  # Msvc doing (PostgreSQL and) plr builds require an 
+  # Msvc doing (PostgreSQL and) plr builds require an
   # exact APPVEYOR_BUILD_WORKER_IMAGE\PlatformToolset per PostgreSQL version.
 
-  # msys2 and cygwin builds, should be done on the 
+  # msys2 and cygwin builds, should be done on the
   # latest available APPVEYOR_BUILD_WORKER_IMAGE\PlatformToolset.
 
   # Notice
@@ -424,23 +424,23 @@ matrix:
   #
   # The same matrix as in the previous sentence, plus, the matrix element "pglinkbinoldurl"
   # means after installing from the existing msys2 binary, then install over(override)
-  # the version, with binaries provided by the URL. This may or may not work. This is 
+  # the version, with binaries provided by the URL. This may or may not work. This is
   # meant for testing on "one version less than the current version". Typically, a new
   # msys2 PostgreSQL version may appear six(6) months after the official version release
   # date. Therefore, the msys2 PostgreSQL version may be current 50 percent of the time
   # and old another 50 percent of the time
-  
+
   # A matrix that does have  a pg value.  This is a git branch, release, or commit.
-  # The rules are the same as the msvc - "Of a (branch,) tag, and commit", except 
+  # The rules are the same as the msvc - "Of a (branch,) tag, and commit", except
   # msvc.diff.R (nor any .diff file) nor any R are every run (used).
-  
+
   # begin - cygwin
 
   # These are the same rules as "msys2".  However, no back version loading is implemented.
   # So, the "pglinkbinoldurl" feature does not (currently) work for cygwin.
-  
-  # No "rversion".  The version of R, is the latest "Cygwin version of R." 
-  
+
+  # No "rversion".  The version of R, is the latest "Cygwin version of R."
+
 
   # OTHER work by (the original author): Mikhail Titov
   # --------------------------------------------------
@@ -551,46 +551,46 @@ matrix:
   # https://archlinux.org/packages/?sort=&arch=any&arch=x86_64&repo=Community&repo=Community-Testing&repo=Core&repo=Extra&repo=KDE-Unstable&repo=Multilib&repo=Multilib-Testing&repo=Testing&q=postgres&maintainer=&flagged=
 
   # # # MISC CYGWIN NOTES
-  # 
+  #
   # # # now 32bit cygwin version of R
   # # #
   # # # https://cygwin.com/setup-x86.exe
   # # # https://cygwin.com/install.html
-  # # 
+  # #
   # # # postgresql # 12.6-1 R(found in the Science group)
   # # # https://cygwin.com/packages/package_list.html
-  # # 
-  # # # perl make gcc-core readline(already in Base)  
+  # #
+  # # # perl make gcc-core readline(already in Base)
   # # # flex(to build from git) bison(to build from git)
   # # # zlib
   # # # no optionals selected
   # # https://www.postgresql.org/docs/13/install-requirements.html
-  # 
-  # 
+  #
+  #
   # # ALMOST OBSOLETE NOTE
   # # Thread: Postgresql on Windows 2000
   # # https://postgrespro.com/list/thread-id/1977270
-  # 
-  # 
+  #
+  #
   # # running bootstrap script ... [403] FATAL:  could not create shared memory segment: Function not implemented
   # # $ cat /etc/defaults/etc/cygserver.conf
   # # # cygserver.conf
-  # 
-  # 
+  #
+  #
   # # Enable Postgresql in Cygwin
-  # # 
+  # #
   # # Try foregoing your method of using a Windows service,
   # #   and
   # # simply start the Cygwin server background process service with:
-  # # 
+  # #
   # #   export CYGWIN=server; /usr/sbin/cygserver -E &
-  # # 
+  # #
   # # 2013
   # # https://stackoverflow.com/questions/15915952/enable-postgresql-in-cygwin
-  # 
-  # 
+  #
+  #
   # # cygserver and the PostgreSQL server
-  # # 
+  # #
   # # Start cygserver for shared memory support.
   # # To do this, enter the command
   # #   /usr/sbin/cygserver &.
@@ -598,41 +598,41 @@ matrix:
   # #   running anytime you start the PostgreSQL server
   # #   or
   # #   initialize a database cluster (initdb).
-  # #   
+  # #
   # # The default cygserver configuration may need to be changed
   # # (e.g., increase SEMMNS) to prevent PostgreSQL from failing due to a lack of system resources.
-  # #   
+  # #
   # # The parallel regression tests (make check) can generate spurious regression test failures
   # # due to overflowing the listen() backlog queue which causes
   # # connection refused errors or hangs.
   # # You can limit the number of connections
   # # using the make variable MAX_CONNECTIONS thus:
-  # # 
+  # #
   # #   make MAX_CONNECTIONS=5 check
-  # #   
+  # #
   # # https://www.postgresql.org/docs/13/installation-platform-notes.html#INSTALLATION-NOTES-CYGWIN
-  # 
-  # 
+  #
+  #
   # # Cygwin PostgreSQL 7.4.1 Regression Test Issue
-  # # 
+  # #
   # #   The rules test passes under make check:
   # #   $ make MAX_CONNECTIONS=5 check
-  # # 
+  # #
   # # 2003
   # # https://cryptominer.info/t/postgresql/pgsql-cygwin/03cxh00mc2/cygwin-postgresql-7-4-1-regression-test-issue
-  # 
-  # 
+  #
+  #
   # # make installcheck
-  # # 
+  # #
   # # 1. make check can generate spurious regression test failures due to overflowing
   # # the the listen() backlog queue which generates connection refused errors.  Note
-  # # that 
+  # # that
   # #
-  # #   make installcheck 
-  # # 
+  # #   make installcheck
+  # #
   # # does not have this problem since it runs all tests
   # # sequentially instead of in large concurrent groups.
-  # # 
+  # #
   # # $Id: README,v 1.15 2001/07/12 19:00:49 jt Exp $
   # # http://web.mit.edu/cygwin/cygwin_v1.3.2/usr/doc/Cygwin/postgresql-7.1.2.README
 
@@ -877,17 +877,17 @@ for:
   # https://cygwin.com/cgi-bin2/package-grep.cgi?grep=postgresql&arch=x86_64
   #
   # PostgreSQL - from an CYGWIN already-compiled-binary. - psql and postgres
-  - if "%pg%"=="none" (
-      setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P postgresql-client -P postgresql -P postgresql-devel
-    )
+  ### - if "%pg%"=="none" ( )
+  ### trying to add more -devel to try to solve a plr-make "lpostgres" linking error
+  - setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P postgresql-client -P postgresql -P postgresql-devel
 
   # needs pg_config
   # 1. USE_PGXS=1
   # 2. new variables PKGLIBDIR SHAREDIR to determine the location of the new plr files (to be archived)
   # PostgreSQL - from an CYGWIN already-compiled-binary - pg_config
-  - if "%pg%"=="none" (
-      setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpq-devel
-    )
+  ### - if "%pg%"=="none" ( )
+  ### trying to add more -devel to try to solve a plr-make "lpostgres" linking error
+  - setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpq-devel
 
   # R on cygwin
   # https://cygwin.com/cgi-bin2/package-grep.cgi?grep=R-&arch=x86
@@ -896,7 +896,6 @@ for:
   # only linking to the "R from cygwin"
   ### - if "%pg%"=="none" ( )
   - setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
-   
 
   build_script:
   # override
