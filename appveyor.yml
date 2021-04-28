@@ -887,9 +887,10 @@ for:
   # https://cygwin.com/cgi-bin2/package-grep.cgi?grep=R-&arch=x86
   #
   # R - from an CYGWIN already-compiled-binary.
-  - if "%pg%"=="none" (
-      setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
-    )
+  # only linking to the "R from cygwin"
+  ### - if "%pg%"=="none" ( )
+  - setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
+   
 
   build_script:
   # override
