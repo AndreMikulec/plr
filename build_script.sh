@@ -101,15 +101,15 @@ fi
 # export
 # # loginfo "END MY ENV VARIABLES"
 # 
-loginfo "BEGIN VERIFY THAT PLR WILL LINK TO THE CORRECT POSTGRESQL"
+loginfo "BEGIN verify that PLR will link to the correct PostgreSQL"
 loginfo "which psql : $(which psql)"
 loginfo "which pg_ctl: $(which pg_ctl)"
 loginfo "which initdb: $(which initdb)"
 loginfo "which postgres: $(which postgres)"
 loginfo "which pg_config: $(which pg_config)"
-loginfo "pg_config . . ."
+logok   "pg_config . . ."
 pg_config
-loginfo "END   VERIFY THAT PLR WILL LINK TO THE CORRECT POSTGRESQL"
+loginfo "END   verify that PLR will link to the correct PostgreSQL"
 # 
 # ls -alrt /usr/sbin
 # ls -alrt ${pgroot}/sbin

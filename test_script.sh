@@ -26,15 +26,15 @@ then
   export PATH=${pgroot}/sbin:${PATH}
 fi
 
-loginfo "BEGIN VERIFIED THAT PLR HAS LINKED TO THE CORRECT POSTGRESQL"
+loginfo "BEGIN verified that PLR has linked to the correct postgreSQL"
 loginfo "which psql : $(which psql)"
 loginfo "which pg_ctl: $(which pg_ctl)"
 loginfo "which initdb: $(which initdb)"
 loginfo "which postgres: $(which postgres)"
 loginfo "which pg_config: $(which pg_config)"
-loginfo "pg_config . . ."
+logok   "pg_config . . ."
 pg_config
-loginfo "END   VERIFIED THAT PLR HAS LINKED TO THE CORRECT POSTGRESQL"
+loginfo "END   verified that PLR has linked to the correct postgreSQL"
 
 pg_ctl -D ${PGDATA} -l logfile start
 
