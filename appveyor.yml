@@ -16,24 +16,32 @@ environment:
   #
   # CYG_MIRROR: http://cygwin.mirror.rafal.ca/
   CYG_MIRROR: https://mirrors.kernel.org/sourceware/cygwin/
-  CYG_CACHE: C:/cygwin/var/cache/setup
+  CYG_CACHE: C:\cygwin\var\cache\setup
 
   matrix:
-# 
-#   # works well
-#   - PlatformToolset: v142
+
+#   # trying to compile PostgreSQL in cygwin
+#   - pg: REL_13_0 # static commit - from git
+#     PlatformToolset: v142
 #     Configuration: Debug
 #     Platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.1.0alpha
 #     compiler: cygwin
+#     #
+#     githubcache: true
+
+  # works well
+  - PlatformToolset: v142
+    Configuration: Debug
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    compiler: cygwin
 
 #   # works
 #   - PlatformToolset: v142
 #     Configuration: Debug
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.1.0alpha
 #     compiler: cygwin
 
 #   # works
@@ -51,18 +59,17 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.1.0alpha
 #     compiler: msys2
-
-  # works
-  - pg: REL_13_0 # static commit - from git
-    PlatformToolset: v142
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.0.5
-    compiler: msys2
-    MSYSTEM: MINGW64
-    #
-    githubcache: true
+# 
+#   # works well
+#   - pg: REL_13_0 # static commit - from git
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5
+#     compiler: msys2
+#     #
+#     githubcache: true
 #
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v142
@@ -71,7 +78,6 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.0.5
 #     compiler: msys2
-#     MSYSTEM: MINGW32
 #     #
 #     githubcache: true
 
@@ -86,7 +92,6 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.0.5
 #     compiler: msys2
-#     MSYSTEM: MINGW64
 #     #
 #     githubcache: true
 
