@@ -119,10 +119,13 @@ if [ "${compiler}" == "cygwin" ]
 then
   # command will automatically pre-prepend A DIRECTORY (strange!)
   # e.g. 
-  pushd ${APPVEYOR_BUILD_FOLDER}
-  echo appveyor PushArtifact ${zip}
-       appveyor PushArtifact ${zip}
-  popd
+  # pushd ${APPVEYOR_BUILD_FOLDER}
+  # echo appveyor PushArtifact ${zip}
+  #      appveyor PushArtifact ${zip}
+  # popd
+  # CHOOSE BAD PUSH-ARTIFACT
+  echo appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
+       appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
 else
   echo appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
        appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}

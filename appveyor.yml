@@ -44,13 +44,13 @@ environment:
 #     rversion: 4.1.0alpha
 #     compiler: msys2
 
-  # works well
-  - PlatformToolset: v142
-    Configuration: Debug
-    Platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.1.0alpha
-    compiler: msys2
+#   # works well
+#   - PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.1.0alpha
+#     compiler: msys2
 
 #   # works
 #   - pg: REL_13_0 # static commit - from git
@@ -702,8 +702,8 @@ for:
   - bash -login -c "cygserver-config --yes"
   #
   - copy %CYG_ROOT%\etc\defaults\etc\cygserver.conf %CYG_ROOT%\etc\defaults\etc\cygserver.conf.original
-  - echo kern.ipc.shmmni 32767 >> C:\%CYG_ROOT%\etc\defaults\etc\cygserver.conf
-  - echo kern.ipc.shmseg 32767 >> C:\%CYG_ROOT%\etc\defaults\etc\cygserver.conf
+  - echo kern.ipc.shmmni 32767 >> %CYG_ROOT%\etc\defaults\etc\cygserver.conf
+  - echo kern.ipc.shmseg 32767 >> %CYG_ROOT%\etc\defaults\etc\cygserver.conf
   #
   - bash -login -c "cygrunsrv -S cygserver"
 
