@@ -330,6 +330,23 @@ matrix:
   # Moreover, still can be compiled plr using pg as an already-compiled-binary version
   # of PostgreSQL 9.6 or 9.5.
 
+  # matrix-Notice
+  
+  # Platform x86 or x64 mean 32bit and 64bit. 
+  
+  # If compiling on msvc, the end product is a 32bit application xor a 64bit application.
+  # If compiling on msys2, then these are MINGW32 and MINGW64.
+  # If compiling on cygwin, then these are C:\cygwin and C:\cygwin64.
+  
+  # Of Configuration options are "Release" and "Debug".  
+  
+  # If compiling on msvc, these are the configurations "Release" and "Debug".
+  
+  # If compiling on msys2 or cygwin, if "Debug" is chosen, then 
+  # plr will be compiled with "-ggdb -O0".  Also, if PostgreSQL happens 
+  # to also be compiled, then it will compile 
+  # with the options "--enable-debug --enable-cassert".
+
   # Notice
   # 1. The very first creation of the tag: 0.0.0.0.0.GITHUBCACHE,
   #    will make a 2nd Appeveyor build run
@@ -339,6 +356,8 @@ matrix:
   # 3. Solutions.pm.R correctly sets the "internal" platform,
   #    "Win32" xor "x64".
   #    The file Solutions.pm is used by perl to generate project files.
+
+  # begin - Microsoft Visual C++
 
   # pg - should be a specific already-compiled-binary version
   # from https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
@@ -355,6 +374,8 @@ matrix:
   # Because compiling uses much time, and to try to avoid re-compiling,
   # this environment variable "githubcache: true" can be useful for static source code,
   # e.g., tags and commits
+  #
+  # Of a (branch,) tag, and commit
   #
   # Of a (branch,) tag, and commit, optionally,
   # the environment variable -  "githubcache: true" - may be set, to try to store the
@@ -376,6 +397,30 @@ matrix:
   # The file plr.vcxproj.user must not exist (or be named plr.vcxproj.user.NOTUSED).
   # The existance of file plr.vcxproj.user
   # will cause non-"branch, tag, or commit" Debug builds to fail.
+
+  # begin - msys2
+
+  # A matrix that does NOT have pg means build plr from an already existing msys2 binary.
+  #
+  # The same matrix as in the previous sentence, plus, the matrix element "pglinkbinoldurl"
+  # means after installing from the existing msys2 binary, then install over(override)
+  # the version, with binaries provided by the URL. This may or may not work. This is 
+  # meant for testing on "one version less than the current version". Typically, a new
+  # msys2 PostgreSQL version may appear six(6) months after the official version release
+  # date. Therefore, the msys2 PostgreSQL version may be current 50 percent of the time
+  # and old another 50 percent of the time
+  
+  # A matrix that does have  a pg value.  This is a git branch, release, or commit.
+  # The rules are the same as the msvc - "Of a (branch,) tag, and commit", except 
+  # msvc.diff.R (nor any .diff file) nor any R are every run (used).
+  
+  # begin - cygwin
+
+  # These are the same rules as "msys2".  However, no back version loading is implemented.
+  # So, the "pglinkbinoldurl" feature does not (currently) work for cygwin.
+  
+  # No "rversion".  The version of R, is the latest "Cygwin version of R." 
+  
 
   # OTHER work by (the original author): Mikhail Titov
   # --------------------------------------------------
