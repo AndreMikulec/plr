@@ -59,7 +59,6 @@ fi
 
 
 
-
 # put this in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
 # but psql is already in the path
 if [ -f "${pgroot}/bin/psql" ]
@@ -99,10 +98,13 @@ fi
 # export
 # # echo END MY ENV VARIABLES
 # 
-# # echo BEGIN MY pg_config
-# which pg_config
-# pg_config
-# # echo END MY pg_config
+# # echo BEGIN VERIFY THAT PLR WILL LINK TO THE CORRECT POSTGRESQL
+which psql
+which initdb
+which postgres
+which pg_config
+pg_config
+## echo END VERIFY THAT PLR WILL LINK TO THE CORRECT POSTGRESQL
 # 
 # ls -alrt /usr/sbin
 # ls -alrt ${pgroot}/sbin
