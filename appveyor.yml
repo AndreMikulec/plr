@@ -398,9 +398,24 @@ matrix:
   # Developing PostgreSQL for Windows: Peter Eisentraut
   # ---------------------------------------------------
   #
+  # Developing PostgreSQL for Windows
+  # 2020
   # https://www.2ndquadrant.com/en/blog/developing-postgresql-windows-part-1/
   # https://www.2ndquadrant.com/en/blog/developing-postgresql-windows-part-2/
   # https://www.2ndquadrant.com/en/blog/developing-postgresql-windows-part-3/
+  #   2020
+  #   https://www.postgresql.org/message-id/d8e78714-dc77-4a64-783f-e863ba4d951f%402ndquadrant.com
+  #     https://www.postgresql.org/message-id/attachment/109034/0001-AppVeyor-configuration-for-MSVC.patch
+  #     https://www.postgresql.org/message-id/attachment/109033/0001-AppVeyor-configuration-for-MinGW.patch
+  #     https://www.postgresql.org/message-id/attachment/109032/0001-AppVeyor-configuration-for-Cygwin.patch
+  # 2021
+  # https://github.com/petere/postgresql/blob/appveyor-msvc/.appveyor.yml
+  # https://github.com/petere/postgresql/blob/appveyor-mingw/.appveyor.yml
+  # https://github.com/petere/postgresql/blob/appveyor-cygwin/.appveyor.yml
+  # . . .
+  # 2021
+  # https://ci.appveyor.com/project/petere/postgresql/builds/37986514
+  #
   #
   # https://github.com/petere/postgresql/blob/appveyor-msvc/.appveyor.yml
   # https://github.com/petere/postgresql/blob/appveyor-mingw/.appveyor.yml
@@ -464,11 +479,97 @@ matrix:
   # https://packages.msys2.org/package/mingw-w64-x86_64-postgresql
 
 
-  # SEE ALSO postgres and related builds: various authors
+  # SEE ALSO postgres and related msys2 builds: various authors
   #
   # https://aur.archlinux.org/packages/?O=0&SeB=n&K=postgres&outdated=&SB=n&SO=a&PP=50&do_Search=Go
   #
   # https://archlinux.org/packages/?sort=&arch=any&arch=x86_64&repo=Community&repo=Community-Testing&repo=Core&repo=Extra&repo=KDE-Unstable&repo=Multilib&repo=Multilib-Testing&repo=Testing&q=postgres&maintainer=&flagged=
+
+  # # # MISC CYGWIN NOTES
+  # 
+  # # # now 32bit cygwin version of R
+  # # #
+  # # # https://cygwin.com/setup-x86.exe
+  # # # https://cygwin.com/install.html
+  # # 
+  # # # postgresql # 12.6-1 R(found in the Science group)
+  # # # https://cygwin.com/packages/package_list.html
+  # # 
+  # # # perl make gcc-core readline(already in Base)  
+  # # # flex(to build from git) bison(to build from git)
+  # # # zlib
+  # # # no optionals selected
+  # # https://www.postgresql.org/docs/13/install-requirements.html
+  # 
+  # 
+  # # ALMOST OBSOLETE NOTE
+  # # Thread: Postgresql on Windows 2000
+  # # https://postgrespro.com/list/thread-id/1977270
+  # 
+  # 
+  # # running bootstrap script ... [403] FATAL:  could not create shared memory segment: Function not implemented
+  # # $ cat /etc/defaults/etc/cygserver.conf
+  # # # cygserver.conf
+  # 
+  # 
+  # # Enable Postgresql in Cygwin
+  # # 
+  # # Try foregoing your method of using a Windows service,
+  # #   and
+  # # simply start the Cygwin server background process service with:
+  # # 
+  # #   export CYGWIN=server; /usr/sbin/cygserver -E &
+  # # 
+  # # 2013
+  # # https://stackoverflow.com/questions/15915952/enable-postgresql-in-cygwin
+  # 
+  # 
+  # # cygserver and the PostgreSQL server
+  # # 
+  # # Start cygserver for shared memory support.
+  # # To do this, enter the command
+  # #   /usr/sbin/cygserver &.
+  # # This program needs to be
+  # #   running anytime you start the PostgreSQL server
+  # #   or
+  # #   initialize a database cluster (initdb).
+  # #   
+  # # The default cygserver configuration may need to be changed
+  # # (e.g., increase SEMMNS) to prevent PostgreSQL from failing due to a lack of system resources.
+  # #   
+  # # The parallel regression tests (make check) can generate spurious regression test failures
+  # # due to overflowing the listen() backlog queue which causes
+  # # connection refused errors or hangs.
+  # # You can limit the number of connections
+  # # using the make variable MAX_CONNECTIONS thus:
+  # # 
+  # #   make MAX_CONNECTIONS=5 check
+  # #   
+  # # https://www.postgresql.org/docs/13/installation-platform-notes.html#INSTALLATION-NOTES-CYGWIN
+  # 
+  # 
+  # # Cygwin PostgreSQL 7.4.1 Regression Test Issue
+  # # 
+  # #   The rules test passes under make check:
+  # #   $ make MAX_CONNECTIONS=5 check
+  # # 
+  # # 2003
+  # # https://cryptominer.info/t/postgresql/pgsql-cygwin/03cxh00mc2/cygwin-postgresql-7-4-1-regression-test-issue
+  # 
+  # 
+  # # make installcheck
+  # # 
+  # # 1. make check can generate spurious regression test failures due to overflowing
+  # # the the listen() backlog queue which generates connection refused errors.  Note
+  # # that 
+  # #
+  # #   make installcheck 
+  # # 
+  # # does not have this problem since it runs all tests
+  # # sequentially instead of in large concurrent groups.
+  # # 
+  # # $Id: README,v 1.15 2001/07/12 19:00:49 jt Exp $
+  # # http://web.mit.edu/cygwin/cygwin_v1.3.2/usr/doc/Cygwin/postgresql-7.1.2.README
 
 
 ### Documentation Ends ###

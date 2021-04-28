@@ -119,13 +119,20 @@ if [ "${compiler}" == "cygwin" ]
 then
   # command will automatically pre-prepend A DIRECTORY (strange!)
   # e.g. 
-  # pushd ${APPVEYOR_BUILD_FOLDER}
-  # echo appveyor PushArtifact ${zip}
-  #      appveyor PushArtifact ${zip}
-  # popd
-  # CHOOSE BAD PUSH-ARTIFACT
-  echo appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
-       appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
+  pushd ${APPVEYOR_BUILD_FOLDER}
+  echo appveyor PushArtifact ${zip}
+       appveyor PushArtifact ${zip}
+  popd
+  #
+  # BAD PUSH-ARTIFACT - DEFINITELY A BUG
+  #
+  # echo appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
+  #      appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
+  #
+  # appveyor PushArtifact /cygdrive/c/projects/plr/plr-761a5fbc-pg12-R4.1.0alpha-x86-Debug-cygwin.zip
+  # File not found: C:\projects\plr\cygdrive\c\projects\plr\plr-761a5fbc-pg12-R4.1.0alpha-x86-Debug-cygwin.zip
+  # Command exited with code 2
+  # 
 else
   echo appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
        appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
