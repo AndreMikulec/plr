@@ -19,14 +19,14 @@ environment:
   CYG_CACHE: C:/cygwin/var/cache/setup
 
   matrix:
-
-  # works well
-  - PlatformToolset: v142
-    Configuration: Debug
-    Platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.1.0alpha
-    compiler: cygwin
+# 
+#   # works well
+#   - PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.1.0alpha
+#     compiler: cygwin
 
 #   # works
 #   - PlatformToolset: v142
@@ -52,17 +52,17 @@ environment:
 #     rversion: 4.1.0alpha
 #     compiler: msys2
 
-#   # works
-#   - pg: REL_13_0 # static commit - from git
-#     PlatformToolset: v142
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.0.5
-#     compiler: msys2
-#     MSYSTEM: MINGW64
-#     #
-#     githubcache: true
+  # works
+  - pg: REL_13_0 # static commit - from git
+    PlatformToolset: v142
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.0.5
+    compiler: msys2
+    MSYSTEM: MINGW64
+    #
+    githubcache: true
 #
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v142
@@ -346,6 +346,14 @@ matrix:
   # plr will be compiled with "-ggdb -O0".  Also, if PostgreSQL happens 
   # to also be compiled, then it will compile 
   # with the options "--enable-debug --enable-cassert".
+
+  # Not all APPVEYOR_BUILD_WORKER_IMAGE\PlatformToolset pairs work for every matrix.
+
+  # Msvc doing (PostgreSQL and) plr builds require an 
+  # exact APPVEYOR_BUILD_WORKER_IMAGE\PlatformToolset per PostgreSQL version.
+
+  # msys2 and cygwin builds, should be done on the 
+  # latest available APPVEYOR_BUILD_WORKER_IMAGE\PlatformToolset.
 
   # Notice
   # 1. The very first creation of the tag: 0.0.0.0.0.GITHUBCACHE,
