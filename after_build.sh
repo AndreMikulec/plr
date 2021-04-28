@@ -21,10 +21,14 @@ then
   if [ "${compiler}" == "cygwin" ]
   then
     # command will automatically pre-prepend A DIRECTORY (strange!)
-    # e.g. 
-    appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+    # e.g.
+    pushd ${APPVEYOR_BUILD_FOLDER}
+    echo appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+         appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+    popd
   else
-    appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+    echo appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+         appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
   fi
   #
   cd ${APPVEYOR_BUILD_FOLDER} 
@@ -108,16 +112,20 @@ ls -alrt ${APPVEYOR_BUILD_FOLDER}/${zip}
 echo BEGIN plr ZIP LISTING
 7z l     ${APPVEYOR_BUILD_FOLDER}/${zip}
 echo END   plr ZIP LISTING
-echo BEGIN plr zip CREATION
+echo END plr zip CREATION
 
 
 if [ "${compiler}" == "cygwin" ]
 then
   # command will automatically pre-prepend A DIRECTORY (strange!)
   # e.g. 
-  appveyor PushArtifact ${zip}
+  pushd ${APPVEYOR_BUILD_FOLDER}
+  echo appveyor PushArtifact ${zip}
+       appveyor PushArtifact ${zip}
+  popd
 else
-  appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
+  echo appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
+       appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
 fi
 
 # must stop, else Appveyor job will hang.

@@ -20,7 +20,7 @@ environment:
 
   matrix:
 
-  # works
+  # works well
   - PlatformToolset: v142
     Configuration: Debug
     Platform: x86
@@ -44,8 +44,9 @@ environment:
 #     rversion: 4.1.0alpha
 #     compiler: msys2
 
+  # works well
   - PlatformToolset: v142
-    Configuration: Release
+    Configuration: Debug
     Platform: x86
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     rversion: 4.1.0alpha
