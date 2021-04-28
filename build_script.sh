@@ -57,6 +57,9 @@ then
   echo "END   POSTGRESQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
 fi
 
+
+
+
 # put this in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
 # but psql is already in the path
 if [ -f "${pgroot}/bin/psql" ]
@@ -142,6 +145,41 @@ then
 else
   psql -d postgres -c 'SELECT version();'
 fi
+
+pg_ctl -D ${PGDATA} -l logfile stop
+
+#
+# not yet tried/tested in cygwin
+#                                                                                                                     # cygwin case
+if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
+then
+  echo BEGIN pg zip CREATION
+  cd ${pgroot}
+  ls -alrt  ${APPVEYOR_BUILD_FOLDER}
+  7z a -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip *
+  7z l      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+  ls -alrt  ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+  #
+  if [ "${compiler}" == "cygwin" ]
+  then
+    # command will automatically pre-prepend A DIRECTORY (strange!)
+    # e.g.
+    pushd ${APPVEYOR_BUILD_FOLDER}
+    echo appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+         appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+    popd
+  else
+    echo appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+         appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+  fi
+  #
+  cd ${APPVEYOR_BUILD_FOLDER} 
+  echo END   pg zip CREATION
+fi
+
+
+# do again
+pg_ctl -D ${PGDATA} -l logfile start
 
 
 # -O0 because of the many macros

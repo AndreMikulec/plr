@@ -6,34 +6,6 @@ cd "$(dirname "$0")"
 # set -v -x -e
 set -e
 
-#
-# not yet tried/tested in cygwin
-#                                                                                                                     # cygwin case
-if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
-then
-  echo BEGIN pg zip CREATION
-  cd ${pgroot}
-  ls -alrt  ${APPVEYOR_BUILD_FOLDER}
-  7z a -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip *
-  7z l      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-  ls -alrt  ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-  #
-  if [ "${compiler}" == "cygwin" ]
-  then
-    # command will automatically pre-prepend A DIRECTORY (strange!)
-    # e.g.
-    pushd ${APPVEYOR_BUILD_FOLDER}
-    echo appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-         appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-    popd
-  else
-    echo appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-         appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-  fi
-  #
-  cd ${APPVEYOR_BUILD_FOLDER} 
-  echo END   pg zip CREATION
-fi
 
 # put this in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
 # but psql is already in the path

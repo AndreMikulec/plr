@@ -28,21 +28,21 @@ environment:
   # collect2: error: ld returned 1 exit status
   # make: *** [/cygdrive/c/PGINSTALL/lib/postgresql/pgxs/src/makefiles/../../src/Makefile.shlib:346: plr.dll] Error 
   #
-#   - pg: REL_13_0 # static commit - from git
-#     PlatformToolset: v142
-#     Configuration: Debug
-#     Platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     compiler: cygwin
-#     #
-#     githubcache: true
-
-  # works well
-  - PlatformToolset: v142
+  - pg: REL_13_0 # static commit - from git
+    PlatformToolset: v142
     Configuration: Debug
     Platform: x86
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     compiler: cygwin
+    #
+    githubcache: true
+
+#   # works well
+#   - PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     compiler: cygwin
 
 #   # works
 #   - PlatformToolset: v142
@@ -51,13 +51,13 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     compiler: cygwin
 
-  # works
-  - PlatformToolset: v142
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.1.0alpha
-    compiler: msys2
+#   # works
+#   - PlatformToolset: v142
+#     Configuration: Release
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.1.0alpha
+#     compiler: msys2
 
 #   # works well
 #   - PlatformToolset: v142
@@ -66,18 +66,18 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.1.0alpha
 #     compiler: msys2
-# 
-  # works well
-  - pg: REL_13_0 # static commit - from git
-    PlatformToolset: v142
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.0.5
-    compiler: msys2
-    #
-    githubcache: true
-#
+
+#   # works well
+#   - pg: REL_13_0 # static commit - from git
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5
+#     compiler: msys2
+#     #
+#     githubcache: true
+
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v142
 #     Configuration: Debug
