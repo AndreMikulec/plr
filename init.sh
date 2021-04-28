@@ -9,7 +9,7 @@ export R_HOME=$(cygpath "${R_HOME}")
 #
 # "pgsource" variable
 # is only used about a custom PostgreSQL build (not an MSYS2 or CYGWIN already compiled binary)
-#
+# 
 
 if [ ! "${pg}" == "none" ]
 then
