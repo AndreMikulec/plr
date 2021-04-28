@@ -16,26 +16,27 @@ environment:
   #
   # CYG_MIRROR: http://cygwin.mirror.rafal.ca/
   CYG_MIRROR: https://mirrors.kernel.org/sourceware/cygwin/
+  # Here, slashes can also be facing right.
   CYG_CACHE: C:\cygwin\var\cache\setup
 
   matrix:
 
-#   # trying to compile PostgreSQL in cygwin
-#   - pg: REL_13_0 # static commit - from git
-#     PlatformToolset: v142
-#     Configuration: Debug
-#     Platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     compiler: cygwin
-#     #
-#     githubcache: true
-
-  # works well
-  - PlatformToolset: v142
+  # trying to compile PostgreSQL in cygwin
+  - pg: REL_13_0 # static commit - from git
+    PlatformToolset: v142
     Configuration: Debug
     Platform: x86
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     compiler: cygwin
+    #
+    githubcache: true
+
+#   # works well
+#   - PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     compiler: cygwin
 
 #   # works
 #   - PlatformToolset: v142
