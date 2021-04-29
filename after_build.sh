@@ -3,37 +3,10 @@ cd "$(dirname "$0")"
 
 . ./init.sh
 
+logok "BEGIN after_build.sh"
+
 # set -v -x -e
 set -e
-
-#
-# not yet tried/tested in cygwin
-#                                                                                                                     # cygwin case
-if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
-then
-  echo BEGIN pg zip CREATION
-  cd ${pgroot}
-  ls -alrt  ${APPVEYOR_BUILD_FOLDER}
-  7z a -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip *
-  7z l      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-  ls -alrt  ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-  #
-  if [ "${compiler}" == "cygwin" ]
-  then
-    # command will automatically pre-prepend A DIRECTORY (strange!)
-    # e.g.
-    pushd ${APPVEYOR_BUILD_FOLDER}
-    echo appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-         appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-    popd
-  else
-    echo appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-         appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-  fi
-  #
-  cd ${APPVEYOR_BUILD_FOLDER} 
-  echo END   pg zip CREATION
-fi
 
 # put this in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
 # but psql is already in the path
@@ -71,24 +44,24 @@ export server_version_num=$(cat ${APPVEYOR_BUILD_FOLDER}/server_version_num.txt)
 # also works
 # export A_VAR=$(echo -n $(sed -r 's/\s+//g' a_version.txt))
 
-echo server_version_num ${server_version_num}
-
-echo pg ${pg}
+loginfo "server_version_num ${server_version_num}"
+loginfo "OLD pgversion ${pgversion}"
+loginfo "OLD pg ${pg}"
 #
 # override - msys2 and cygwin binary case
 if [ "${pg}" == "none" ]
   then
   export pg=$(postgres -V | grep -oP '(?<=\) ).*$')
-  echo pg ${pg}
-  if [ ${server_version_num} -lt 100000 ]
+  loginfo "NEW pg ${pg}"
+  if [ ${server_version_num} -gt 999999 ]
   then
-    export pgversion=$(echo ${pg} | grep -oP '^\d+[.]\d+')
-  else
     export pgversion=$(echo ${pg} | grep -oP '^\d+')
+  else
+    export pgversion=$(echo ${pg} | grep -oP '^\d+[.]\d+')
   fi
-  echo pgversion ${pgversion}
+  loginfo "NEW pgversion ${pgversion}"
 fi
-echo pgversion ${pgversion}
+loginfo "OLD or NEW pgversion ${pgversion}"
 
 pg_config | grep "^PKGLIBDIR\|^SHAREDIR" | sed "s/ = /=/" | sed s"/^/export /" > newvars.sh
 . ./newvars.sh
@@ -102,17 +75,17 @@ cp ${SHAREDIR}/extension/plr.control  tmp/share/extension
 cp ${SHAREDIR}/extension/plr-*.sql    tmp/share/extension
 
 export zip=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${Platform}-${Configuration}-${compiler}.zip
-echo ${zip}
+loginfo "${zip}"
 
 echo ${APPVEYOR_BUILD_FOLDER}
 
-echo BEGIN plr zip CREATION
+loginfo "BEGIN plr zip CREATION"
 7z a -r  ${APPVEYOR_BUILD_FOLDER}/${zip} ./tmp/*
 ls -alrt ${APPVEYOR_BUILD_FOLDER}/${zip}
-echo BEGIN plr ZIP LISTING
+loginfo "BEGIN plr ZIP LISTING"
 7z l     ${APPVEYOR_BUILD_FOLDER}/${zip}
-echo END   plr ZIP LISTING
-echo END plr zip CREATION
+loginfo "END   plr ZIP LISTING"
+loginfo "END plr zip CREATION"
 
 
 if [ "${compiler}" == "cygwin" ]
@@ -120,22 +93,22 @@ then
   # command will automatically pre-prepend A DIRECTORY (strange!)
   # e.g. 
   pushd ${APPVEYOR_BUILD_FOLDER}
-  echo appveyor PushArtifact ${zip}
-       appveyor PushArtifact ${zip}
+  loginfo "appveyor PushArtifact ${zip}"
+           appveyor PushArtifact ${zip}
   popd
   #
   # BAD PUSH-ARTIFACT - DEFINITELY A BUG
   #
-  # echo appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
-  #      appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
+  # loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}"
+  #          appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
   #
   # appveyor PushArtifact /cygdrive/c/projects/plr/plr-761a5fbc-pg12-R4.1.0alpha-x86-Debug-cygwin.zip
   # File not found: C:\projects\plr\cygdrive\c\projects\plr\plr-761a5fbc-pg12-R4.1.0alpha-x86-Debug-cygwin.zip
   # Command exited with code 2
   # 
 else
-  echo appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
-       appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
+  loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}"
+           appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
 fi
 
 # must stop, else Appveyor job will hang.
@@ -143,3 +116,5 @@ pg_ctl -D ${PGDATA} -l logfile stop
 
 # set +v +x +e
 set +e
+
+logok "END   after_build.sh"

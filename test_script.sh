@@ -3,6 +3,8 @@ cd "$(dirname "$0")"
 
 . ./init.sh
 
+logok "BEGIN test_script.sh"
+
 # set -v -x -e
 set -e
 
@@ -24,9 +26,21 @@ then
   export PATH=${pgroot}/sbin:${PATH}
 fi
 
+loginfo "BEGIN verified that PLR has linked to the correct postgreSQL"
+loginfo "which psql : $(which psql)"
+loginfo "which pg_ctl: $(which pg_ctl)"
+loginfo "which initdb: $(which initdb)"
+loginfo "which postgres: $(which postgres)"
+loginfo "which pg_config: $(which pg_config)"
+logok   "pg_config . . ."
+pg_config
+loginfo "END   verified that PLR has linked to the correct postgreSQL"
+
 pg_ctl -D ${PGDATA} -l logfile start
 
+loginfo "BEGIN plr INSTALLCHECK"
 USE_PGXS=1 make installcheck || (cat regression.diffs && false)
+loginfo "END plr INSTALLCHECK"
 
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
@@ -36,3 +50,5 @@ pg_ctl -D ${PGDATA} -l logfile stop
 
 # set +v +x +e
 set +e
+
+logok "END   test_script.sh"

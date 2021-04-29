@@ -1,10 +1,46 @@
 
 cd "$(dirname "$0")"
 
+# mypaint/windows/msys2-build.sh
+# https://github.com/mypaint/mypaint/blob/4141a6414b77dcf3e3e62961f99b91d466c6fb52/windows/msys2-build.sh
+#
+# ANSI control codes
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+loginfo() {
+  # set +v +x
+  echo -ne "${CYAN}"
+  echo -n "$@"
+  echo -e "${NC}"
+  # set -v -x
+}
+
+logok() {
+  # set +v +x
+  echo -ne "${GREEN}"
+  echo -n "$@"
+  echo -e "${NC}"
+  # set -v -x
+}
+
+logerr() {
+  # set +v +x
+  echo -ne "${RED}ERROR: "
+  echo -n "$@"
+  echo -e "${NC}"
+  # set -v -x
+}
+
+logok "BEGIN init.sh"
+
 # pwd
 # /c/projects/plr
 
 export R_HOME=$(cygpath "${R_HOME}")
+loginfo "R_HOME ${R_HOME}"
 
 #
 # "pgsource" variable
@@ -14,6 +50,7 @@ export R_HOME=$(cygpath "${R_HOME}")
 if [ ! "${pg}" == "none" ]
 then
   export pgsource=$(cygpath "c:\projects\postgresql")
+  loginfo "pgsource ${pgsource}"
 fi
 
 export APPVEYOR_BUILD_FOLDER=$(cygpath "${APPVEYOR_BUILD_FOLDER}")
@@ -36,7 +73,7 @@ else
     export pgroot=/usr
   fi
 fi
-echo pgroot $pgroot
+loginfo "pgroot $pgroot"
 
 # e.g., in the users home directory
 export TZ=UTC
@@ -61,8 +98,11 @@ export      PGLOG=${PGAPPDIR}/log.txt
 # R in msys2 does sub architectures
 if [ "${compiler}" == "msys2" ]
 then
-  export PATH=${R_HOME}/bin${R_ARCH}:$PATH
+  export PATH=${R_HOME}/bin${R_ARCH}:${PATH}
 else 
   # cygwin does-not-do R sub architectures
-  export PATH=${R_HOME}/bin:$PATH
+  export PATH=${R_HOME}/bin:${PATH}
 fi
+loginfo "R_HOME is in the PATH $(echo ${PATH})"
+
+logok "END   init.sh"

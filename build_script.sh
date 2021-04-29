@@ -3,12 +3,15 @@ cd "$(dirname "$0")"
 
 . ./init.sh
 
+logok "BEGIN build_script.sh"
+
 # set -v -x -e
 set -e
 
 # which R msys2 and cygwin
 # /c/RINSTALL/bin/x64/R
 # /usr/bin/R
+loginfo "which R $(which R)"
 
 # just needed for the "make"
 #
@@ -23,10 +26,10 @@ export PATH=${PATH}:$(echo $(cygpath "c:\\${betterperl}\c\bin"))
 
 if [ "${pggithubbincacheextracted}" == "false" ] && [ ! "${pg}" == "none" ]
 then
-  echo "BEGIN POSTGRESQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
+  loginfo "BEGIN PostgreSQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
   if [ ! -f "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip" ]
   then
-    echo "BEGIN POSTGRESQL CONFIGURE"
+    loginfo "BEGIN PostgreSQL CONFIGURE"
     cd ${pgsource}
     if [ "${Configuration}" == "Release" ]
     then
@@ -36,26 +39,27 @@ then
     then
       ./configure --enable-depend --disable-rpath --enable-debug --enable-cassert --prefix=${pgroot}
     fi
-    echo "END   POSTGRESQL CONFIGURE"
-    echo "BEGIN POSTGRESQL BUILD"
+    loginfo "END   PostgreSQL CONFIGURE"
+    loginfo "BEGIN PostgreSQL BUILD"
     make
-    echo "END   POSTGRESQL BUILD"
-    echo "BEGIN POSTGRESQL INSTALL"
+    loginfo "END   PostgreSQL BUILD"
+    loginfo "BEGIN PostgreSQL INSTALL"
     make install
-    echo "END   POSTGRESQL INSTALL"
+    loginfo "END   PostgreSQL INSTALL"
     cd ${APPVEYOR_BUILD_FOLDER}
-    echo "END   POSTGRESQL BUILD + INSTALL"
+    loginfo "END   PostgreSQL BUILD + INSTALL"
   else
-    echo "BEGIN zip EXTRACTION"
+    loginfo "BEGIN zip EXTRACTION"
     cd ${pgroot}
     7z l "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
     7z x "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
     ls -alrt ${pgroot}
     cd ${APPVEYOR_BUILD_FOLDER}
-    echo "END   zip EXTRACTION"
+    loginfo "END   zip EXTRACTION"
   fi
-  echo "END   POSTGRESQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
+  loginfo "END   PostgreSQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
 fi
+
 
 # put this in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
 # but psql is already in the path
@@ -75,11 +79,12 @@ then
   export PATH=${pgroot}/sbin:${PATH}
 fi
 
-# # later I get this information from pgconfig PKGLIBDIR SHAREDIR
-# # therefore, I do not need this variable "dirpostgresql" anymore
+# # Later I get this information from pgconfig variables PKGLIBDIR SHAREDIR.
+# # Therefore, I do not need this variable "dirpostgresql" anymore.
 # 
-# # help determine where to extract the plr files
-# # /postgresql, if the plr files are found in the
+# # helps determine where to extract the plr files . .
+# #
+# # Uses the "/postgresql" directory if the plr files are found in the
 # # default cygwin-package-management shared install folders
 # #
 # if [ -d "${pgroot}/share/postgresql" ]
@@ -92,14 +97,19 @@ fi
 # psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
 #
 
-# # echo BEGIN MY ENV VARIABLES
+# # loginfo "BEGIN MY ENV VARIABLES"
 # export
-# # echo END MY ENV VARIABLES
+# # loginfo "END MY ENV VARIABLES"
 # 
-# # echo BEGIN MY pg_config
-# which pg_config
-# pg_config
-# # echo END MY pg_config
+loginfo "BEGIN verify that PLR will link to the correct PostgreSQL"
+loginfo "which psql : $(which psql)"
+loginfo "which pg_ctl: $(which pg_ctl)"
+loginfo "which initdb: $(which initdb)"
+loginfo "which postgres: $(which postgres)"
+loginfo "which pg_config: $(which pg_config)"
+logok   "pg_config . . ."
+pg_config
+loginfo "END   verify that PLR will link to the correct PostgreSQL"
 # 
 # ls -alrt /usr/sbin
 # ls -alrt ${pgroot}/sbin
@@ -143,6 +153,42 @@ else
   psql -d postgres -c 'SELECT version();'
 fi
 
+pg_ctl -D ${PGDATA} -l logfile stop
+
+#
+# not yet tried/tested in cygwin
+#                                                                                                                     # cygwin case
+if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
+then
+  loginfo "BEGIN pg zip CREATION"
+  cd ${pgroot}
+  ls -alrt  ${APPVEYOR_BUILD_FOLDER}
+  loginfo                           "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
+  7z a -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip *
+  7z l      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+  ls -alrt  ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+  #
+  if [ "${compiler}" == "cygwin" ]
+  then
+    # command will automatically pre-prepend A DIRECTORY (strange!)
+    # e.g.
+    pushd ${APPVEYOR_BUILD_FOLDER}
+    loginfo "appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
+             appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+    popd
+  else
+    loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
+             appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+  fi
+  #
+  cd ${APPVEYOR_BUILD_FOLDER} 
+  loginfo "END   pg zip CREATION"
+fi
+
+
+# do again
+pg_ctl -D ${PGDATA} -l logfile start
+
 
 # -O0 because of the many macros
 #
@@ -153,8 +199,12 @@ then
   echo ""                             >> Makefile
 fi
 
+loginfo "BEGIN plr BUILDING"
 USE_PGXS=1 make
+loginfo "END   plr BUILDING"
+loginfo "BEGIN plr INSTALLING"
 USE_PGXS=1 make install
+loginfo "END   plr INSTALLING"
 
 if [ "${compiler}" == "msys2" ]
 then
@@ -189,3 +239,6 @@ pg_ctl -D ${PGDATA} -l logfile stop
 
 # set +v +x +e
 set +e
+
+logok "BEGIN build_script.sh"
+
