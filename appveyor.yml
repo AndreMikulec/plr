@@ -21,13 +21,7 @@ environment:
 
   matrix:
 
-  # trying to compile PostgreSQL in cygwin
-  #
-  # plr attempted build . . .
-  # cannot find -lpostgres
-  # collect2: error: ld returned 1 exit status
-  # make: *** [/cygdrive/c/PGINSTALL/lib/postgresql/pgxs/src/makefiles/../../src/Makefile.shlib:346: plr.dll] Error
-  #
+  # works
   - pg: REL_13_0 # static commit - from git
     PlatformToolset: v142
     Configuration: Debug
@@ -67,16 +61,16 @@ environment:
 #     rversion: 4.1.0alpha
 #     compiler: msys2
 
-#   # works well
-#   - pg: REL_13_0 # static commit - from git
-#     PlatformToolset: v142
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.0.5
-#     compiler: msys2
-#     #
-#     githubcache: true
+  # works
+  - pg: REL_13_0 # static commit - from git
+    PlatformToolset: v142
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.1.0alpha
+    compiler: msys2
+    #
+    githubcache: true
 
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v142
@@ -158,15 +152,15 @@ environment:
 # #     githubcache: true
 #
 #
-#   - pg: REL_13_0  # tag - static commit - from git
-#     PlatformToolset: v141
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.1.0alpha
-#     compiler: msvc
-#     #
-#     githubcache: true
+  - pg: REL_13_0  # tag - static commit - from git
+    PlatformToolset: v141
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.1.0alpha
+    compiler: msvc
+    #
+    githubcache: true
 #
 #   - pg: REL_13_0  # tag - static commit - from git
 #     PlatformToolset: v141
@@ -645,8 +639,17 @@ for:
     only:
       - compiler: cygwin
 
+  # mileage from cygwin 32bit will vary
+  # https://cran.r-project.org/doc/manuals/r-release/R-admin.html#Cygwin
+
   init:
   - echo compiler cygwin init
+  - systeminfo
+  # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
+  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
+  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
+  # Make %x64% available for caching
+  # a variable used in the Appveyor cach area must be defined in the init
   - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
   - ps: |
       # Set-PSDebug -Trace 2
@@ -917,6 +920,12 @@ for:
 
   init:
   - echo compiler msys2 init
+  - systeminfo
+  # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
+  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
+  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
+  # Make %x64% available for caching
+  # a variable used in the Appveyor cach area must be defined in the init
   - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
   - ps: |
       # Set-PSDebug -Trace 2
@@ -1159,8 +1168,14 @@ for:
   # ProgramFiles=C:\Program Files
   # ProgramFiles(x86)=C:\Program Files (x86)
   #
-  init: # Make %x64% available for caching
-        # a variable used in the Appveyor cach area must be defined in the init
+  init:
+  - echo compiler msvc init
+  - systeminfo
+  # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
+  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
+  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
+  # Make %x64% available for caching
+  # a variable used in the Appveyor cache area must be defined in the init
   - ps: |
       if ("$env:Platform" -eq "x64") {
         $env:pf = "$env:ProgramFiles"
@@ -1185,6 +1200,7 @@ for:
   - if not defined pghint      set pghint=none
 
   install:
+  - echo compiler msvc install
   #
   # FUTURE: bleeding edge versions of R for Windows (non-cygwin)
   # https://cran.r-project.org/bin/windows/base/R-devel-win.exe
@@ -1367,7 +1383,6 @@ for:
         popd
       }
 
-
   #
   # PostgreSQL from source code: git, tag, or commit
   #
@@ -1422,7 +1437,6 @@ for:
       echo End performing patching on-the-fly
     )
 
-
   #
   # PostgreSQL from source code: git, tag, or commit
   #
@@ -1465,7 +1479,6 @@ for:
         $env:dll="c:\projects\postgresql\$env:Configuration\plr\plr.dll"
       }
 
-
   # PostgreSQL from Appveyor or an EnterpriseDB already-compiled-binary.
   - ps: |
       # Set-PSDebug -Trace 2
@@ -1499,14 +1512,12 @@ for:
         }
       }
 
-
-
-
   # msbuild: reads the environment variable Platform. The Platform value can be either Win32 xor x64.
   # xor
   # msbuild: can read /p:platform=Value. The Value can be either Win32 xor x64.
   #
   build_script:
+  - echo compiler msvc build_script
   - if %Platform%==x86 set CPlatform=Win32
   - if %Platform%==x64 set CPlatform=x64
   #
@@ -1598,6 +1609,7 @@ for:
       }
 
   test_script:
+  - echo compiler msvc test_script
   - path %pgroot%\bin;%PATH%
   - which postgres
   # From source code, but at this point in time,

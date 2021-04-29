@@ -39,6 +39,8 @@ logok "BEGIN init.sh"
 # pwd
 # /c/projects/plr
 
+loginfo "uname -a $(uname -a)"
+
 export R_HOME=$(cygpath "${R_HOME}")
 loginfo "R_HOME ${R_HOME}"
 
