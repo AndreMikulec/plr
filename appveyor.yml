@@ -16,22 +16,22 @@ environment:
   #
   # CYG_MIRROR: http://cygwin.mirror.rafal.ca/
   CYG_MIRROR: https://mirrors.kernel.org/sourceware/cygwin/
-  # Here, slashes can also be facing right.
+  # Here, slashes can also be pointing right.
   CYG_CACHE: C:\cygwin\var\cache\setup
 
   matrix:
 
-  # works
-  - pg: REL_13_0 # static commit - from git
-    PlatformToolset: v142
-    Configuration: Debug
-    Platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    compiler: cygwin
-    #
-    githubcache: true
+#   # works
+#   - pg: REL_13_0 # static commit - from git
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     compiler: cygwin
+#     #
+#     githubcache: true
 
-#   # works well
+#   # works
 #   - PlatformToolset: v142
 #     Configuration: Debug
 #     Platform: x86
@@ -61,16 +61,16 @@ environment:
 #     rversion: 4.1.0alpha
 #     compiler: msys2
 
-  # works
-  - pg: REL_13_0 # static commit - from git
-    PlatformToolset: v142
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.1.0alpha
-    compiler: msys2
-    #
-    githubcache: true
+#   # works
+#   - pg: REL_13_0 # static commit - from git
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.1.0alpha
+#     compiler: msys2
+#     #
+#     githubcache: true
 
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v142
@@ -152,15 +152,15 @@ environment:
 # #     githubcache: true
 #
 #
-  - pg: REL_13_0  # tag - static commit - from git
-    PlatformToolset: v141
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.1.0alpha
-    compiler: msvc
-    #
-    githubcache: true
+#   - pg: REL_13_0  # tag - static commit - from git
+#     PlatformToolset: v141
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.1.0alpha
+#     compiler: msvc
+#     #
+#     githubcache: true
 #
 #   - pg: REL_13_0  # tag - static commit - from git
 #     PlatformToolset: v141
@@ -185,15 +185,15 @@ environment:
 # # older versions #
 #
 #
-#   - pg: REL_12_0  # tag - static commit - from git
-#     PlatformToolset: v141
-#     Configuration: Release
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
-#     compiler: msvc
-#     #
-#     githubcache: true
+  - pg: REL_12_0  # tag - static commit - from git
+    PlatformToolset: v141
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+    compiler: msvc
+    #
+    githubcache: true
 #
 #
 #   - pg: 12.5-1 # from Appveyor
@@ -312,11 +312,12 @@ environment:
 #     rversion: 3.6.0
 #     compiler: msvc
 
-matrix:
-  allow_failures:
-    # - pg: master
-    - compiler: cygwin
-      Platform: x86
+# # (currently), I have zero(0) failures
+# matrix:
+#   allow_failures:
+#     # - pg: master
+#     # - compiler: cygwin
+#     #   Platform: x86
 
 ### Documentation Begins ###
 
@@ -1390,10 +1391,24 @@ for:
   #
   - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
         echo Begin performing patching on-the-fly &
+        pushd "C:\projects\postgresql" &
+        copy "src\tools\msvc\Mkvcbuild.pm" "src\tools\msvc\Mkvcbuild.pm.old" &
+        copy "src\tools\msvc\vcregress.pl" "src\tools\msvc\vcregress.pl.old" &
+        popd &
         echo Begin patching &
         echo "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
              "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
         echo End patching &
+        pushd "C:\projects\postgresql" &
+        git diff --no-index "src\tools\msvc\Mkvcbuild.pm.old" "src\tools\msvc\Mkvcbuild.pm" --output=%APPVEYOR_BUILD_FOLDER%\Mkvcbuild.pm.diff &
+        sed -i "s/Mkvcbuild.pm.old/Mkvcbuild.pm/g" %APPVEYOR_BUILD_FOLDER%\Mkvcbuild.pm.diff &
+        git diff --no-index "src\tools\msvc\vcregress.pl.old" "src\tools\msvc\vcregress.pl" --output=%APPVEYOR_BUILD_FOLDER%\vcregress.pl.diff &
+        sed -i "s/vcregress.pl.old/vcregress.pl/g" %APPVEYOR_BUILD_FOLDER%\vcregress.pl.diff &
+        popd &
+        type %APPVEYOR_BUILD_FOLDER%\Mkvcbuild.pm.diff %APPVEYOR_BUILD_FOLDER%\vcregress.pl.diff > %APPVEYOR_BUILD_FOLDER%\msvc.diff &
+        echo type Begin Display %APPVEYOR_BUILD_FOLDER%\msvc.diff &
+             type               %APPVEYOR_BUILD_FOLDER%\msvc.diff &
+        echo type End   Display %APPVEYOR_BUILD_FOLDER%\msvc.diff &
         echo Begin display of Mkvcbuild.pm &
         type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm &
         echo End display of Mkvcbuild.pm &
