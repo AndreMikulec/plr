@@ -1400,15 +1400,15 @@ for:
              "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
         echo End patching &
         pushd "C:\projects\postgresql" &
-        git diff --no-index "src\tools\msvc\Mkvcbuild.pm.old" "src\tools\msvc\Mkvcbuild.pm" --output=%APPVEYOR_BUILD_FOLDER%\Mkvcbuild.pm.diff &
+        git diff --no-index "src/tools/msvc/Mkvcbuild.pm.old" "src/tools/msvc/Mkvcbuild.pm" --output=%APPVEYOR_BUILD_FOLDER%\Mkvcbuild.pm.diff &
         sed -i "s/Mkvcbuild.pm.old/Mkvcbuild.pm/g" %APPVEYOR_BUILD_FOLDER%\Mkvcbuild.pm.diff &
-        git diff --no-index "src\tools\msvc\vcregress.pl.old" "src\tools\msvc\vcregress.pl" --output=%APPVEYOR_BUILD_FOLDER%\vcregress.pl.diff &
+        git diff --no-index "src/tools/msvc/vcregress.pl.old" "src/tools/msvc/vcregress.pl" --output=%APPVEYOR_BUILD_FOLDER%\vcregress.pl.diff &
         sed -i "s/vcregress.pl.old/vcregress.pl/g" %APPVEYOR_BUILD_FOLDER%\vcregress.pl.diff &
         popd &
         type %APPVEYOR_BUILD_FOLDER%\Mkvcbuild.pm.diff %APPVEYOR_BUILD_FOLDER%\vcregress.pl.diff > %APPVEYOR_BUILD_FOLDER%\msvc.diff &
-        echo type Begin Display %APPVEYOR_BUILD_FOLDER%\msvc.diff &
-             type               %APPVEYOR_BUILD_FOLDER%\msvc.diff &
-        echo type End   Display %APPVEYOR_BUILD_FOLDER%\msvc.diff &
+        echo Begin Display %APPVEYOR_BUILD_FOLDER%\msvc.diff &
+             type          %APPVEYOR_BUILD_FOLDER%\msvc.diff &
+        echo End   Display %APPVEYOR_BUILD_FOLDER%\msvc.diff &
         echo Begin display of Mkvcbuild.pm &
         type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm &
         echo End display of Mkvcbuild.pm &
