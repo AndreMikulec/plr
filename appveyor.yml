@@ -1406,9 +1406,9 @@ for:
         sed -i "s/vcregress.pl.old/vcregress.pl/g" %APPVEYOR_BUILD_FOLDER%\vcregress.pl.diff &
         popd &
         type %APPVEYOR_BUILD_FOLDER%\Mkvcbuild.pm.diff %APPVEYOR_BUILD_FOLDER%\vcregress.pl.diff > %APPVEYOR_BUILD_FOLDER%\msvc.diff &
-        echo Begin Display %APPVEYOR_BUILD_FOLDER%\msvc.diff &
+        echo **** Begin Display %APPVEYOR_BUILD_FOLDER%\msvc.diff **** &
              type          %APPVEYOR_BUILD_FOLDER%\msvc.diff &
-        echo End   Display %APPVEYOR_BUILD_FOLDER%\msvc.diff &
+        echo **** End   Display %APPVEYOR_BUILD_FOLDER%\msvc.diff **** &
         echo Begin display of Mkvcbuild.pm &
         type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm &
         echo End display of Mkvcbuild.pm &
