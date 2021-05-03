@@ -1578,11 +1578,11 @@ SELECT test_create_procedure_transaction();
 (1 row)
 
 SELECT * FROM test1;
- val 
------
-   0
-   2
-   4
-   8
+ a | b 
+---+---
+ 0 | 
+ 2 | 
+ 4 | 
+ 8 | 
 (4 rows)
 
