@@ -234,10 +234,16 @@ PG_FUNCTION_INFO_V1(plr_call_handler);
 Datum
 plr_call_handler(PG_FUNCTION_ARGS)
 {
+
+	bool		nonatomic;
 	Datum			retval;
 
 	/* save caller's context */
 	plr_caller_context = CurrentMemoryContext;
+
+	nonatomic = fcinfo->context &&
+		IsA(fcinfo->context, CallContext) &&
+		!castNode(CallContext, fcinfo->context)->atomic;
 
 	if (SPI_connect_ext(nonatomic ? SPI_OPT_NONATOMIC : 0) != SPI_OK_CONNECT)
 		elog(ERROR, "SPI_connect failed");
