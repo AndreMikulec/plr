@@ -7,11 +7,15 @@ AS $$
   version_11plus  <- pg.spi.exec("select current_setting('server_version_num')::integer >= 110000;")
   if(version_11plus[[1]])
   {
-    for(i in 0:9){
+    for(i in 0:9)
+    {
       pg.spi.exec(paste("INSERT INTO test1 (a) VALUES (", i, ")"))
-      if (i %% 2 == 0) {
+      if (i %% 2 == 0) 
+      {
         pg.spi.commit()
-      } else {
+      } 
+      else 
+      {
         pg.spi.rollback()
       }
     }
