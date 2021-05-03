@@ -121,6 +121,12 @@ int R_SignalHandlers = 1;  /* Exposed in R_interface.h */
 			"pg.spi.lastoid <-function() " \
 			"{.Call(\"plr_SPI_lastoid\")}"
 #endif
+#define SPI_COMMIT_CMD \
+			"pg.spi.commit <-function() " \
+			"{.Call(\"plr_SPI_commit\")}"
+#define SPI_ROLLBACK_CMD \
+			"pg.spi.rollback <-function() " \
+			"{.Call(\"plr_SPI_rollback\")}"
 #define SPI_DBDRIVER_CMD \
 			"dbDriver <-function(db_name)\n" \
 			"{return(NA)}"
@@ -233,7 +239,7 @@ plr_call_handler(PG_FUNCTION_ARGS)
 	/* save caller's context */
 	plr_caller_context = CurrentMemoryContext;
 
-	if (SPI_connect() != SPI_OK_CONNECT)
+	if (SPI_connect_ext(nonatomic ? SPI_OPT_NONATOMIC : 0) != SPI_OK_CONNECT)
 		elog(ERROR, "SPI_connect failed");
 	plr_SPI_context = CurrentMemoryContext;
 	MemoryContextSwitchTo(plr_caller_context);
@@ -573,6 +579,8 @@ plr_load_builtins(Oid langOid)
 #if CATALOG_VERSION_NO < 201811201
 		SPI_LASTOID_CMD,
 #endif
+		SPI_COMMIT_CMD,
+		SPI_ROLLBACK_CMD,
 		SPI_DBDRIVER_CMD,
 		SPI_DBCONN_CMD,
 		SPI_DBSENDQUERY_CMD,

@@ -830,3 +830,28 @@ rsupport_error_callback(void *arg)
 		errcontext("In R support function %s", (char *) arg);
 }
 
+/*
+ * plr_SPI_commit - commit transaction and start a new one.
+ */
+SEXP
+plr_SPI_commit(void)
+{
+	SPI_commit();
+	SPI_start_transaction();
+
+	return NULL;
+}
+
+/*
+ * plr_SPI_rollback - abort transaction and start a new one.
+ */
+SEXP
+plr_SPI_rollback(void)
+{
+	SPI_rollback();
+	SPI_start_transaction();
+
+	return NULL;
+}
+
+

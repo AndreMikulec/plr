@@ -552,6 +552,8 @@ PGDLLEXPORT SEXP plr_SPI_cursor_fetch(SEXP cursor_in,SEXP forward_in, SEXP rows_
 PGDLLEXPORT void plr_SPI_cursor_close(SEXP cursor_in);
 PGDLLEXPORT void plr_SPI_cursor_move(SEXP cursor_in, SEXP forward_in, SEXP rows_in);
 PGDLLEXPORT SEXP plr_SPI_lastoid(void);
+PGDLLEXPORT SEXP plr_SPI_commit(void);
+PGDLLEXPORT SEXP plr_SPI_rollback(void);
 PGDLLEXPORT void throw_r_error(const char **msg);
 
 /* Postgres callable functions useful in conjunction with PL/R */
