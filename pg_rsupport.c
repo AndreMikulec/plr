@@ -830,6 +830,7 @@ rsupport_error_callback(void *arg)
 		errcontext("In R support function %s", (char *) arg);
 }
 
+#if PG_VERSION_NUM >= 110000
 /*
  * plr_SPI_commit - commit transaction and start a new one.
  */
@@ -853,5 +854,5 @@ plr_SPI_rollback(void)
 
 	return NULL;
 }
-
+#endif
 
