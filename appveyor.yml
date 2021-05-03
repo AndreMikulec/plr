@@ -125,6 +125,8 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.0.5
     compiler: msvc
+    #
+    githubcache: true
 
 #
 #   - pg: REL_13_STABLE  # branch - non-static commit - from git
