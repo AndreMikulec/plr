@@ -117,16 +117,16 @@ environment:
 
 #   # note
 #   # many master commits are dirty: and will not compile
-# 
-#   - pg: master # branch - non-static commit - from git
-#     PlatformToolset: v141
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.1.0beta
-#     compiler: msvc
-#     #
-#     githubcache: true
+#
+  - pg: master # branch - non-static commit - from git
+    PlatformToolset: v141
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.1.0beta
+    compiler: msvc
+    #
+    githubcache: true
 
 #   - pg: REL_13_STABLE  # branch - non-static commit - from git
 #     PlatformToolset: v141
@@ -216,6 +216,15 @@ environment:
 #     compiler: msvc
 #
 #
+
+  - pg: 11.11-1 # from Appveyor
+    PlatformToolset: v141
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+    compiler: msvc
+
 #   - pg: 11.11-1 # from Appveyor
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -240,7 +249,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #     compiler: msvc
-# 
+#
 #   - pg: 10.16-1 # from Appveyor
 #     PlatformToolset: v120
 #     Configuration: Debug
