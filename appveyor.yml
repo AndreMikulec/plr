@@ -665,8 +665,8 @@ for:
   - echo compiler cygwin init
   - systeminfo
   # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
-  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
-  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
   # Make %x64% available for caching
   # a variable used in the Appveyor cach area must be defined in the init
   - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
@@ -941,8 +941,8 @@ for:
   - echo compiler msys2 init
   - systeminfo
   # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
-  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
-  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
   # Make %x64% available for caching
   # a variable used in the Appveyor cach area must be defined in the init
   - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
@@ -1191,8 +1191,8 @@ for:
   - echo compiler msvc init
   - systeminfo
   # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
-  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
-  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
   # Make %x64% available for caching
   # a variable used in the Appveyor cache area must be defined in the init
   - ps: |
