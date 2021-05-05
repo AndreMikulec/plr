@@ -1225,6 +1225,11 @@ for:
   # https://cran.r-project.org/bin/windows/base/R-devel-win.exe
   # https://cran.r-project.org/bin/windows/base/rdevel.html
   #
+  # R release dates are here
+  # https://developer.r-project.org/
+  #
+  # R "MSYS2" compiled R binaries location: https://ftp.opencpu.org/
+  #
   # https://cran.r-project.org/bin/windows/base/R-4.0.5patched-win.exe
   # sometimes
   # https://cran.r-project.org/bin/windows/base/R-4.1.0alpha-win.exe
