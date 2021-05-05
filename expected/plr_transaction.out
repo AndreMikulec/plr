@@ -36,7 +36,6 @@ SELECT test_create_procedure_transaction();
  
 (1 row)
 
-
 \o out.txt
 SELECT current_setting('server_version_num')::integer server_version_num;
 \o
@@ -52,6 +51,7 @@ SELECT * FROM test1;
  0 | 
  2 | 
  4 | 
+ 6 | 
  8 | 
-(4 rows)
+(5 rows)
 

@@ -26,6 +26,7 @@ $BODY$
     pg.spi.exec("INSERT INTO test1 (a) VALUES (0);")
     pg.spi.exec("INSERT INTO test1 (a) VALUES (2);")
     pg.spi.exec("INSERT INTO test1 (a) VALUES (4);")
+    pg.spi.exec("INSERT INTO test1 (a) VALUES (6);")
     pg.spi.exec("INSERT INTO test1 (a) VALUES (8);")
   }
 $BODY$
