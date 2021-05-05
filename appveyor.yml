@@ -118,14 +118,16 @@ environment:
 #   # note
 #   # many master commits are dirty: and will not compile
 #
-#   - pg: master # branch - non-static commit - from git
-#     PlatformToolset: v141
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
-#     compiler: msvc
-#
+  - pg: master # branch - non-static commit - from git
+    PlatformToolset: v141
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.1.0beta
+    compiler: msvc
+    #
+    githubcache: true
+
 #   - pg: REL_13_STABLE  # branch - non-static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -185,15 +187,15 @@ environment:
 # # older versions #
 #
 #
-  - pg: REL_12_0  # tag - static commit - from git
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.5
-    compiler: msvc
-    #
-    githubcache: true
+#   - pg: REL_12_0  # tag - static commit - from git
+#     PlatformToolset: v141
+#     Configuration: Release
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.5
+#     compiler: msvc
+#     #
+#     githubcache: true
 #
 #
 #   - pg: 12.5-1 # from Appveyor
@@ -214,6 +216,15 @@ environment:
 #     compiler: msvc
 #
 #
+
+  - pg: 11.11-1 # from Appveyor
+    PlatformToolset: v141
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+    compiler: msvc
+
 #   - pg: 11.11-1 # from Appveyor
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -223,6 +234,14 @@ environment:
 #     compiler: msvc
 #
 #
+  - pg: 10.16-1 # from Appveyor
+    PlatformToolset: v120
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 4.0.5
+    compiler: msvc
+
 #   - pg: 10.16-1 # from Appveyor
 #     PlatformToolset: v120
 #     Configuration: Release
@@ -230,7 +249,6 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #     compiler: msvc
-#
 #
 #   - pg: 10.16-1 # from Appveyor
 #     PlatformToolset: v120
@@ -647,8 +665,8 @@ for:
   - echo compiler cygwin init
   - systeminfo
   # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
-  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
-  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
   # Make %x64% available for caching
   # a variable used in the Appveyor cach area must be defined in the init
   - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
@@ -923,8 +941,8 @@ for:
   - echo compiler msys2 init
   - systeminfo
   # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
-  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
-  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
   # Make %x64% available for caching
   # a variable used in the Appveyor cach area must be defined in the init
   - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
@@ -1173,8 +1191,8 @@ for:
   - echo compiler msvc init
   - systeminfo
   # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
-  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
-  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
   # Make %x64% available for caching
   # a variable used in the Appveyor cache area must be defined in the init
   - ps: |
@@ -1718,7 +1736,7 @@ for:
       $env:Outcome="Passed"
       $elapsed=(Measure-Command {
         pg_regress "$env:psqlopt=$env:pgroot\bin" --dbname=pl_regression plr `
-          bad_fun opt_window do out_args 2>&1 |
+          bad_fun opt_window do out_args plr_transaction 2>&1 |
           %{ if ($_ -is [System.Management.Automation.ErrorRecord]) { $_.Exception.Message } else { $_ } } |
             Out-Default
         if ($LASTEXITCODE -ne 0) {
