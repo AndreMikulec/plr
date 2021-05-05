@@ -118,15 +118,15 @@ environment:
 #   # note
 #   # many master commits are dirty: and will not compile
 # 
-  - pg: master # branch - non-static commit - from git
-    PlatformToolset: v141
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.1.0beta
-    compiler: msvc
-    #
-    githubcache: true
+#   - pg: master # branch - non-static commit - from git
+#     PlatformToolset: v141
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.1.0beta
+#     compiler: msvc
+#     #
+#     githubcache: true
 
 #   - pg: REL_13_STABLE  # branch - non-static commit - from git
 #     PlatformToolset: v141
@@ -175,13 +175,13 @@ environment:
 #     githubcache: true
 #
 #
-  - pg: 13.1-1 # from EnterpriseDB
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.5
-    compiler: msvc
+#   - pg: 13.1-1 # from EnterpriseDB
+#     PlatformToolset: v141
+#     Configuration: Release
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.5
+#     compiler: msvc
 #
 #
 # # older versions #
@@ -216,13 +216,13 @@ environment:
 #     compiler: msvc
 #
 #
-  - pg: 11.11-1 # from Appveyor
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 3.6.0
-    compiler: msvc
+#   - pg: 11.11-1 # from Appveyor
+#     PlatformToolset: v141
+#     Configuration: Release
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 3.6.0
+#     compiler: msvc
 #
 #
   - pg: 10.16-1 # from Appveyor
@@ -656,8 +656,8 @@ for:
   - echo compiler cygwin init
   - systeminfo
   # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
-  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
-  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
   # Make %x64% available for caching
   # a variable used in the Appveyor cach area must be defined in the init
   - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
@@ -932,8 +932,8 @@ for:
   - echo compiler msys2 init
   - systeminfo
   # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
-  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
-  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
   # Make %x64% available for caching
   # a variable used in the Appveyor cach area must be defined in the init
   - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
@@ -1182,8 +1182,8 @@ for:
   - echo compiler msvc init
   - systeminfo
   # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
-  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
-  - '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId'
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion'
   # Make %x64% available for caching
   # a variable used in the Appveyor cache area must be defined in the init
   - ps: |
