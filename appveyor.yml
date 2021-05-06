@@ -1058,7 +1058,8 @@ for:
       }
       if ((-not (Test-Path "R-${env:rversion}-win.zip")) -and (-not ("${env:rlinkbinoldurl}" -eq "none"))) {
         # my custom build .exe in a zip file
-        curl -o "R-${env:rversion}-win.zip" -v -L "${env:rversionurl}"
+        # PowerShell 4.0, an Alias
+        curl -o "R-${env:rversion}-win.zip" -v "${env:rversionurl}"
         7z e    "R-${env:rversion}-win.zip" "R-${env:rversion}-win.exe"
       }
   #
@@ -1316,7 +1317,7 @@ for:
       }
       if ((-not (Test-Path "R-${env:rversion}-win.zip")) -and (-not ("${env:rlinkbinoldurl}" -eq "none"))) {
         # my custom build .exe in a zip file
-        curl -o "R-${env:rversion}-win.zip" -v -L "${env:rversionurl}"
+        curl -o "R-${env:rversion}-win.zip" -v "${env:rversionurl}"
         7z e    "R-${env:rversion}-win.zip" "R-${env:rversion}-win.exe"
       }
   #
