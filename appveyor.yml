@@ -1057,6 +1057,10 @@ for:
         curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
       }
       if ((-not (Test-Path "R-${env:rversion}-win.zip")) -and (-not ("${env:rlinkbinoldurl}" -eq "none"))) {
+        # custom R ignores the cache - CONSIDER INSTEAD - CLEAR THE CACHE
+        if (Test-Path "R-${env:rversion}-win.exe") {
+          del "R-${env:rversion}-win.exe"
+        }
         # my custom build .exe in a zip file
         # PowerShell 4.0, an Alias
         curl -o "R-${env:rversion}-win.zip" -v "${env:rversionurl}"
@@ -1316,7 +1320,12 @@ for:
         curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
       }
       if ((-not (Test-Path "R-${env:rversion}-win.zip")) -and (-not ("${env:rlinkbinoldurl}" -eq "none"))) {
+        # custom R ignores the cache - CONSIDER INSTEAD - CLEAR THE CACHE
+        if (Test-Path "R-${env:rversion}-win.exe") {
+          del "R-${env:rversion}-win.exe"
+        }
         # my custom build .exe in a zip file
+        # PowerShell 4.0, an Alias
         curl -o "R-${env:rversion}-win.zip" -v "${env:rversionurl}"
         7z e    "R-${env:rversion}-win.zip" "R-${env:rversion}-win.exe"
       }
