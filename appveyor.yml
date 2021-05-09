@@ -415,9 +415,15 @@ environment:
   # If compiling on msvc, these are the configurations "Release" and "Debug".
 
   # If compiling on msys2 or cygwin, if "Debug" is chosen, then
-  # plr will be compiled with "-ggdb -O0".  Also, if PostgreSQL happens
+  # plr will be compiled with super debug features to be able to debug macros.  
+  # Also, if PostgreSQL happens
   # to also be compiled, then it will compile
-  # with the options "--enable-debug --enable-cassert".
+  # with the super debug features for the same reasons.
+  #
+  # see
+  #  ./configure --enable-cassert --enable-debug CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer"
+  # in
+  # https://wiki.postgresql.org/wiki/Developer_FAQ#What_debugging_features_are_available.3F
 
   # Not all APPVEYOR_BUILD_WORKER_IMAGE\PlatformToolset pairs work for every matrix.
 
@@ -445,6 +451,10 @@ environment:
   # From the downloaded .zip file, 7z will try to extract this exact file name "R-${env:rversion}-win.exe"
   #
   # Typically, my custom builds (.zip files) are located at "https://github.com/AndreMikulec/plr/releases"
+  #
+  # HARD Note, if "rlinkbinoldurl" is not none and "R-${env:rversion}-win.exe" is successfully downloaded,
+  # then this OVERWRITES the cache.  Also, this processes lazily LEAVES this file in the cache.
+  # To clear the ENTIRE cache, then An Appveyor REST method would be needed. See the Appveyor docs.
 
   # begin - Microsoft Visual C++ msvc
 
@@ -1665,6 +1675,7 @@ for:
   - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%Platform%-%Configuration%-%compiler%.zip
   - 7z a -r %zip% .\tmp\* > nul
   - dir "%zip%"
+  - echo appveyor PushArtifact "%zip%"
   - appveyor PushArtifact "%zip%"
 
   # #
@@ -1720,6 +1731,29 @@ for:
   # "%pgroot%\bin\postgres.exe" SHOULD BE THERE - missing should NOT happen
   - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" (
       7z a -r "%pgzip%"  "%pgroot%\*" > nul &
+      appveyor PushArtifact "%pgzip%"
+    )
+  # pg can get very big if the compiler is msys2 (or maybe cygwin?)
+  # using these flags (super debug):
+  #   ./configure --enable-cassert --enable-debug CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer"
+  #
+  # Therefore, only push Some artifacts (that are not too big.)
+  # Appveyor will OFTEN die, if the artifact is TOO BIG: e.g. "super debug" msys2 NEAR 1GB in size.
+  #
+  # Temporary Patch.  I really need a method to manage (if possible), a "msys2 Configuration SuperDebug"
+  #
+  #  msys2 SuperDebug (flag "-g3" to debug macros)
+  #  ./configure --enable-cassert --enable-debug CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer"
+  #
+  #  msys2 RegularDebug (prob not useful - too many MACROS)
+  #  ./configure --enable-cassert --enable-debug
+  #
+  # Always push "pg Configuration Release"
+  - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pgzip%" if "%Configuration%"=="Release" (
+      appveyor PushArtifact "%pgzip%"
+    )
+  # always push "pg compiler msvc"
+  - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pgzip%" if "%compiler%"=="msvc" (
       appveyor PushArtifact "%pgzip%"
     )
   # what did I 7z up?
@@ -1856,11 +1890,17 @@ artifacts:
 
 
 deploy:
+
+  #
+  # always try to deploy here
+  # I think that Github can [often] handle the "msys2 SuperDebug of size 1GB"
+  #
   - provider: GitHub
     release: 0.0.0.0.0.GITHUBCACHE
     draft: false
     prerelease: false
-    artifact: pg_zip
+    # smaller plr before larger pg
+    artifact: plr_zip, pg_zip
     auth_token:
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
     on:
@@ -1882,9 +1922,11 @@ deploy:
       APPVEYOR_REPO_TAG: true
 
   #
-  # To deploy, the following must have happened.
+  # To try to deploy to sourceforge, the following must have happened.
   # Requesting a new shell for "andremikulec" and waiting for it to start.
   # queued... creating... starting...
+  #
+  # smaller plr should always arrive there
   #
   - provider: FTP
     host: frs.sourceforge.net
@@ -1893,7 +1935,40 @@ deploy:
     username: andremikulec,andremikulec.u
     password:
       secure: 4gk4GyW4O5RooiOyGeRdoA==
-    artifact: pg_zip, plr_zip
+    artifact: plr_zip
     folder: /home/frs/project/andremikulec
     application:
     active_mode: false
+
+  - provider: FTP
+    host: frs.sourceforge.net
+    protocol: sftp
+    # https://sourceforge.net/projects/andremikulec/files/
+    username: andremikulec,andremikulec.u
+    password:
+      secure: 4gk4GyW4O5RooiOyGeRdoA==
+    artifact: pg_zip
+    folder: /home/frs/project/andremikulec
+    application:
+    active_mode: false
+    on:
+      Configuration: Release
+
+#   #
+#   # if a msys2 SuperDebug 1GB in size, this can be slow and EXPECT to fail.
+#   #
+#   - provider: FTP
+#     host: frs.sourceforge.net
+#     protocol: sftp
+#     # https://sourceforge.net/projects/andremikulec/files/
+#     username: andremikulec,andremikulec.u
+#     password:
+#       secure: 4gk4GyW4O5RooiOyGeRdoA==
+#     # smaller plr before larger pg
+#     artifact: plr_zip, pg_zip
+#     folder: /home/frs/project/andremikulec
+#     application:
+#     active_mode: false
+#     on:
+#       Configuration: Debug
+#       compiler: msvc, cygwin
