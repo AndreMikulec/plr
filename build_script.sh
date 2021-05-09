@@ -37,7 +37,7 @@ then
     fi
     if [ "${Configuration}" == "Debug" ]
     then
-      ./configure --enable-depend --disable-rpath --enable-debug --enable-cassert --prefix=${pgroot}
+      ./configure --enable-depend --disable-rpath --enable-debug --enable-cassert CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer" --prefix=${pgroot}
     fi
     loginfo "END   PostgreSQL CONFIGURE"
     loginfo "BEGIN PostgreSQL BUILD"
@@ -195,7 +195,7 @@ pg_ctl -D ${PGDATA} -l logfile start
 if [ "${Configuration}" = "Debug" ]
 then
   echo ""                             >> Makefile
-  echo "override CFLAGS += -ggdb -O0" >> Makefile
+  echo "override CFLAGS += -ggdb -Og -g3 -fno-omit-frame-pointer" >> Makefile
   echo ""                             >> Makefile
 fi
 

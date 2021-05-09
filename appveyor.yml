@@ -61,6 +61,32 @@ environment:
 #     rversion: 4.1.0alpha
 #     compiler: msys2
 
+#   - pg: 38f36aad # static commit - from git
+#     #   GUC description improvements for clarity # 5/5/2021
+#     #
+#     pghint: commit
+#     #
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5patched
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     compiler: msys2
+#     #
+#     githubcache: true
+# 
+#   - pg: REL_13_0 # static commit - from git
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5patched
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     compiler: msys2
+#     #
+#     githubcache: true
+
 #   # works
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v142
@@ -118,12 +144,59 @@ environment:
 #   # note
 #   # many master commits are dirty: and will not compile
 #
-  - pg: master # branch - non-static commit - from git
-    PlatformToolset: v141
+#   - pg: master # branch - non-static commit - from git
+#     PlatformToolset: v141
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.1.0beta
+#     compiler: msvc
+#     #
+#     githubcache: true
+
+#   - pg: master # branch - non-static commit - from git
+#     PlatformToolset: v141
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.1.0beta
+#     compiler: msvc
+#     #
+#     githubcache: true
+
+  - pg: 38f36aad # static commit - from git
+    #   GUC description improvements for clarity # 5/5/2021
+    #
+    pghint: commit
+    #
+    PlatformToolset: v142
     Configuration: Debug
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.1.0beta
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.0.5patched
+    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+    compiler: msvc
+    #
+    githubcache: true
+    
+  - pg: REL_13_0 # static commit - from git
+    PlatformToolset: v142
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.0.5patched
+    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+    compiler: msvc
+    #
+    githubcache: true
+    
+  - pg: REL_13_0 # static commit - from git
+    PlatformToolset: v142
+    Configuration: Debug
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.0.5patched
+    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
     compiler: msvc
     #
     githubcache: true
@@ -153,7 +226,6 @@ environment:
 # #     #
 # #     githubcache: true
 #
-#
 #   - pg: REL_13_0  # tag - static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -164,6 +236,33 @@ environment:
 #     #
 #     githubcache: true
 #
+
+#   - pg: 38f36aad # static commit - from git
+#     #   GUC description improvements for clarity # 5/5/2021
+#     #
+#     pghint: commit
+#     #
+#     PlatformToolset: v141
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.5patched
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     compiler: msvc
+#     #
+#     githubcache: true
+# 
+#   - pg: REL_13_0 # static commit - from git
+#     PlatformToolset: v141
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.5patched
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     compiler: msvc
+#     #
+#     githubcache: true
+
 #   - pg: REL_13_0  # tag - static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -173,7 +272,6 @@ environment:
 #     compiler: msvc
 #     #
 #     githubcache: true
-#
 #
 #   - pg: 13.1-1 # from EnterpriseDB
 #     PlatformToolset: v141
@@ -186,7 +284,6 @@ environment:
 #
 # # older versions #
 #
-#
 #   - pg: REL_12_0  # tag - static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -197,7 +294,6 @@ environment:
 #     #
 #     githubcache: true
 #
-#
 #   - pg: 12.5-1 # from Appveyor
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -205,7 +301,6 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.0.5
 #     compiler: msvc
-#
 #
 #   - pg: 12.5-1 # from Appveyor
 #     PlatformToolset: v141
@@ -215,15 +310,13 @@ environment:
 #     rversion: 3.6.0
 #     compiler: msvc
 #
-#
-
-  - pg: 11.11-1 # from Appveyor
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.5
-    compiler: msvc
+#   - pg: 11.11-1 # from Appveyor
+#     PlatformToolset: v141
+#     Configuration: Release
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.5
+#     compiler: msvc
 
 #   - pg: 11.11-1 # from Appveyor
 #     PlatformToolset: v141
@@ -233,15 +326,14 @@ environment:
 #     rversion: 3.6.0
 #     compiler: msvc
 #
+#   - pg: 10.16-1 # from Appveyor
+#     PlatformToolset: v120
+#     Configuration: Release
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#     rversion: 4.0.5
+#     compiler: msvc
 #
-  - pg: 10.16-1 # from Appveyor
-    PlatformToolset: v120
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    rversion: 4.0.5
-    compiler: msvc
-
 #   - pg: 10.16-1 # from Appveyor
 #     PlatformToolset: v120
 #     Configuration: Release
@@ -258,7 +350,6 @@ environment:
 #     rversion: 3.6.0
 #     compiler: msvc
 #
-#
 #   - pg: 10.16-1 # from EnterpriseDB
 #     PlatformToolset: v120
 #     Configuration: Release
@@ -267,7 +358,6 @@ environment:
 #     rversion: 3.6.0
 #     compiler: msvc
 #
-#
 #   - pg: 10.16-1 # from EnterpriseDB
 #     PlatformToolset: v120
 #     Configuration: Debug
@@ -275,7 +365,6 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #     compiler: msvc
-#
 #
 #   - pg: 9.6.21-1 # from Appveyor
 #     PlatformToolset: v120
@@ -285,7 +374,6 @@ environment:
 #     rversion: 3.6.0
 #     compiler: msvc
 #
-#
 #   - pg: 9.6.21-1 # from EnterpriseDB
 #     PlatformToolset: v120
 #     Configuration: Release
@@ -293,7 +381,6 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #     compiler: msvc
-#
 #
 #   - pg: 9.5.25-1 # from Appveyor
 #     PlatformToolset: v120
@@ -303,7 +390,6 @@ environment:
 #     rversion: 3.6.0
 #     compiler: msvc
 #
-#
 #   - pg: 9.5.25-1 # from EnterpriseDB
 #     PlatformToolset: v120
 #     Configuration: Release
@@ -312,7 +398,6 @@ environment:
 #     rversion: 3.6.0
 #     compiler: msvc
 #
-#
 #   - pg: 9.4.4-3 # from Appveyor
 #     PlatformToolset: v120
 #     Configuration: Release
@@ -320,7 +405,6 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 3.6.0
 #     compiler: msvc
-#
 #
 #   - pg: 9.4.4-3 # from EnterpriseDB
 #     PlatformToolset: v120
@@ -368,9 +452,15 @@ environment:
   # If compiling on msvc, these are the configurations "Release" and "Debug".
 
   # If compiling on msys2 or cygwin, if "Debug" is chosen, then
-  # plr will be compiled with "-ggdb -O0".  Also, if PostgreSQL happens
+  # plr will be compiled with super debug features to be able to debug macros.  
+  # Also, if PostgreSQL happens
   # to also be compiled, then it will compile
-  # with the options "--enable-debug --enable-cassert".
+  # with the super debug features for the same reasons.
+  #
+  # see
+  #  ./configure --enable-cassert --enable-debug CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer"
+  # in
+  # https://wiki.postgresql.org/wiki/Developer_FAQ#What_debugging_features_are_available.3F
 
   # Not all APPVEYOR_BUILD_WORKER_IMAGE\PlatformToolset pairs work for every matrix.
 
@@ -390,7 +480,20 @@ environment:
   #    "Win32" xor "x64".
   #    The file Solutions.pm is used by perl to generate project files.
 
-  # begin - Microsoft Visual C++
+  # begin - Microsoft Visual C++ msvc and msys2
+
+  # If a matrix entry has defined "rlinkbinoldurl" then get a custom built specific
+  # .zip file containing and installer exe file from the provided URL "rlinkbinoldurl"
+  # Note, the "rversion" must be correct.
+  # From the downloaded .zip file, 7z will try to extract this exact file name "R-${env:rversion}-win.exe"
+  #
+  # Typically, my custom builds (.zip files) are located at "https://github.com/AndreMikulec/plr/releases"
+  #
+  # HARD Note, if "rlinkbinoldurl" is not none and "R-${env:rversion}-win.exe" is successfully downloaded,
+  # then this OVERWRITES the cache.  Also, this processes lazily LEAVES this file in the cache.
+  # To clear the ENTIRE cache, then An Appveyor REST method would be needed. See the Appveyor docs.
+
+  # begin - Microsoft Visual C++ msvc
 
   # pg - should be a specific already-compiled-binary version
   # from https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
@@ -705,11 +808,13 @@ for:
       ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
   #
   # possible user provided in the matrix
+  # (for now, keep this area to be the same as "msys2" and NOT ALL "msys2" FEATURES are implemented)
   #
   - if not defined githubcache     set githubcache=false
   - if not defined pghint          set pghint=none
   - if not defined pg              set pg=none
   - if not defined pglinkbinoldurl set pglinkbinoldurl=none
+  - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
 
   install:
   - echo compiler cygwin install
@@ -720,18 +825,7 @@ for:
       ${env:PATH} = "${env:CYG_ROOT}\bin;${env:PATH}"
 
 #   # uses cygwin R
-#   # - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
-#   - ps: |
-#       # Set-PSDebug -Trace 2
-#       ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
-#       # special named version(s)
-#       if("${env:rversion}" -match "beta|alpha|devel|patched") {
-#         ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
-#       }
-#       if (-not (Test-Path "R-${env:rversion}-win.exe")) {
-#         curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
-#       }
-#   #
+#   # DOWNLOAD . . .
 #   - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
 
   # From the version
@@ -983,6 +1077,7 @@ for:
   - if not defined pghint          set pghint=none
   - if not defined pg              set pg=none
   - if not defined pglinkbinoldurl set pglinkbinoldurl=none
+  - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
 
   install:
   - echo compiler msys2 install
@@ -993,13 +1088,30 @@ for:
   # - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
   - ps: |
       # Set-PSDebug -Trace 2
+      # default
       ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
       # special named version(s)
-      if("${env:rversion}" -match "beta|alpha|devel|patched") {
-        ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
+      if("${env:rlinkbinoldurl}" -eq "none") {
+        if("${env:rversion}" -match "beta|alpha|devel|patched") {
+          ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
+        }
+      } else {
+          # my custom build .exe in a zip file
+          ${env:rversionurl} = ${env:rlinkbinoldurl}
       }
-      if (-not (Test-Path "R-${env:rversion}-win.exe")) {
+      #
+      if ((-not (Test-Path "R-${env:rversion}-win.exe")) -and ("${env:rlinkbinoldurl}" -eq "none")) {
         curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
+      }
+      if ((-not (Test-Path "R-${env:rversion}-win.zip")) -and (-not ("${env:rlinkbinoldurl}" -eq "none"))) {
+        # custom R ignores the cache - CONSIDER INSTEAD - CLEAR THE CACHE
+        if (Test-Path "R-${env:rversion}-win.exe") {
+          del "R-${env:rversion}-win.exe"
+        }
+        # my custom build .exe in a zip file
+        # PowerShell 4.0, an Alias
+        curl -o "R-${env:rversion}-win.zip" -v "${env:rversionurl}"
+        7z e    "R-${env:rversion}-win.zip" "R-${env:rversion}-win.exe"
       }
   #
   - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
@@ -1217,6 +1329,7 @@ for:
   #
   - if not defined githubcache set githubcache=false
   - if not defined pghint      set pghint=none
+  - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
 
   install:
   - echo compiler msvc install
@@ -1238,13 +1351,30 @@ for:
   # - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
   - ps: |
       # Set-PSDebug -Trace 2
+      # default
       ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
       # special named version(s)
-      if("${env:rversion}" -match "beta|alpha|devel|patched") {
-        ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
+      if("${env:rlinkbinoldurl}" -eq "none") {
+        if("${env:rversion}" -match "beta|alpha|devel|patched") {
+          ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
+        }
+      } else {
+          # my custom build .exe in a zip file
+          ${env:rversionurl} = ${env:rlinkbinoldurl}
       }
-      if (-not (Test-Path "R-${env:rversion}-win.exe.zip")) {
+      #
+      if ((-not (Test-Path "R-${env:rversion}-win.exe")) -and ("${env:rlinkbinoldurl}" -eq "none")) {
         curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
+      }
+      if ((-not (Test-Path "R-${env:rversion}-win.zip")) -and (-not ("${env:rlinkbinoldurl}" -eq "none"))) {
+        # custom R ignores the cache - CONSIDER INSTEAD - CLEAR THE CACHE
+        if (Test-Path "R-${env:rversion}-win.exe") {
+          del "R-${env:rversion}-win.exe"
+        }
+        # my custom build .exe in a zip file
+        # PowerShell 4.0, an Alias
+        curl -o "R-${env:rversion}-win.zip" -v "${env:rversionurl}"
+        7z e    "R-${env:rversion}-win.zip" "R-${env:rversion}-win.exe"
       }
   #
   - R-%rversion%-win.exe /VERYSILENT
@@ -1582,6 +1712,7 @@ for:
   - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%Platform%-%Configuration%-%compiler%.zip
   - 7z a -r %zip% .\tmp\* > nul
   - dir "%zip%"
+  - echo appveyor PushArtifact "%zip%"
   - appveyor PushArtifact "%zip%"
 
   # #
@@ -1637,6 +1768,29 @@ for:
   # "%pgroot%\bin\postgres.exe" SHOULD BE THERE - missing should NOT happen
   - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" (
       7z a -r "%pgzip%"  "%pgroot%\*" > nul &
+      appveyor PushArtifact "%pgzip%"
+    )
+  # pg can get very big if the compiler is msys2 (or maybe cygwin?)
+  # using these flags (super debug):
+  #   ./configure --enable-cassert --enable-debug CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer"
+  #
+  # Therefore, only push Some artifacts (that are not too big.)
+  # Appveyor will OFTEN die, if the artifact is TOO BIG: e.g. "super debug" msys2 NEAR 1GB in size.
+  #
+  # Temporary Patch.  I really need a method to manage (if possible), a "msys2 Configuration SuperDebug"
+  #
+  #  msys2 SuperDebug (flag "-g3" to debug macros)
+  #  ./configure --enable-cassert --enable-debug CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer"
+  #
+  #  msys2 RegularDebug (prob not useful - too many MACROS)
+  #  ./configure --enable-cassert --enable-debug
+  #
+  # Always push "pg Configuration Release"
+  - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pgzip%" if "%Configuration%"=="Release" (
+      appveyor PushArtifact "%pgzip%"
+    )
+  # always push "pg compiler msvc"
+  - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pgzip%" if "%compiler%"=="msvc" (
       appveyor PushArtifact "%pgzip%"
     )
   # what did I 7z up?
@@ -1773,11 +1927,17 @@ artifacts:
 
 
 deploy:
+
+  #
+  # always try to deploy here
+  # I think that Github can [often] handle the "msys2 SuperDebug of size 1GB"
+  #
   - provider: GitHub
     release: 0.0.0.0.0.GITHUBCACHE
     draft: false
     prerelease: false
-    artifact: pg_zip
+    # smaller plr before larger pg
+    artifact: plr_zip, pg_zip
     auth_token:
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
     on:
@@ -1799,9 +1959,11 @@ deploy:
       APPVEYOR_REPO_TAG: true
 
   #
-  # To deploy, the following must have happened.
+  # To try to deploy to sourceforge, the following must have happened.
   # Requesting a new shell for "andremikulec" and waiting for it to start.
   # queued... creating... starting...
+  #
+  # smaller plr should always arrive there
   #
   - provider: FTP
     host: frs.sourceforge.net
@@ -1810,7 +1972,55 @@ deploy:
     username: andremikulec,andremikulec.u
     password:
       secure: 4gk4GyW4O5RooiOyGeRdoA==
-    artifact: pg_zip, plr_zip
+    artifact: plr_zip
     folder: /home/frs/project/andremikulec
     application:
     active_mode: false
+
+  - provider: FTP
+    host: frs.sourceforge.net
+    protocol: sftp
+    # https://sourceforge.net/projects/andremikulec/files/
+    username: andremikulec,andremikulec.u
+    password:
+      secure: 4gk4GyW4O5RooiOyGeRdoA==
+    artifact: pg_zip
+    folder: /home/frs/project/andremikulec
+    application:
+    active_mode: false
+    on:
+      Configuration: Release
+
+  - provider: FTP
+    host: frs.sourceforge.net
+    protocol: sftp
+    # https://sourceforge.net/projects/andremikulec/files/
+    username: andremikulec,andremikulec.u
+    password:
+      secure: 4gk4GyW4O5RooiOyGeRdoA==
+    artifact: pg_zip
+    folder: /home/frs/project/andremikulec
+    application:
+    active_mode: false
+    on:
+      Configuration: Debug
+      compiler: msvc
+
+#   #
+#   # if a msys2 SuperDebug 1GB in size, this can be slow and EXPECT to fail.
+#   #
+#   - provider: FTP
+#     host: frs.sourceforge.net
+#     protocol: sftp
+#     # https://sourceforge.net/projects/andremikulec/files/
+#     username: andremikulec,andremikulec.u
+#     password:
+#       secure: 4gk4GyW4O5RooiOyGeRdoA==
+#     # smaller plr before larger pg
+#     artifact: plr_zip, pg_zip
+#     folder: /home/frs/project/andremikulec
+#     application:
+#     active_mode: false
+#     on:
+#       Configuration: Debug
+#       compiler: msys2, cygwin
