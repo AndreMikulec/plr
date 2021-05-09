@@ -61,31 +61,31 @@ environment:
 #     rversion: 4.1.0alpha
 #     compiler: msys2
 
-  - pg: 38f36aad # static commit - from git
-    #   GUC description improvements for clarity # 5/5/2021
-    #
-    pghint: commit
-    #
-    PlatformToolset: v142
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.0.5patched
-    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
-    compiler: msys2
-    #
-    githubcache: true
-
-  - pg: REL_13_0 # static commit - from git
-    PlatformToolset: v142
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.0.5patched
-    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
-    compiler: msys2
-    #
-    githubcache: true
+#   - pg: 38f36aad # static commit - from git
+#     #   GUC description improvements for clarity # 5/5/2021
+#     #
+#     pghint: commit
+#     #
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5patched
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     compiler: msys2
+#     #
+#     githubcache: true
+# 
+#   - pg: REL_13_0 # static commit - from git
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5patched
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     compiler: msys2
+#     #
+#     githubcache: true
 
 #   # works
 #   - pg: REL_13_0 # static commit - from git
@@ -164,6 +164,43 @@ environment:
 #     #
 #     githubcache: true
 
+  - pg: 38f36aad # static commit - from git
+    #   GUC description improvements for clarity # 5/5/2021
+    #
+    pghint: commit
+    #
+    PlatformToolset: v142
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.0.5patched
+    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+    compiler: msvc
+    #
+    githubcache: true
+    
+  - pg: REL_13_0 # static commit - from git
+    PlatformToolset: v142
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.0.5patched
+    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+    compiler: msvc
+    #
+    githubcache: true
+    
+  - pg: REL_13_0 # static commit - from git
+    PlatformToolset: v142
+    Configuration: Debug
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.0.5patched
+    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+    compiler: msvc
+    #
+    githubcache: true
+
 #   - pg: REL_13_STABLE  # branch - non-static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -200,31 +237,31 @@ environment:
 #     githubcache: true
 #
 
-  - pg: 38f36aad # static commit - from git
-    #   GUC description improvements for clarity # 5/5/2021
-    #
-    pghint: commit
-    #
-    PlatformToolset: v141
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.5patched
-    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
-    compiler: msvc
-    #
-    githubcache: true
-
-  - pg: REL_13_0 # static commit - from git
-    PlatformToolset: v141
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.5patched
-    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
-    compiler: msvc
-    #
-    githubcache: true
+#   - pg: 38f36aad # static commit - from git
+#     #   GUC description improvements for clarity # 5/5/2021
+#     #
+#     pghint: commit
+#     #
+#     PlatformToolset: v141
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.5patched
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     compiler: msvc
+#     #
+#     githubcache: true
+# 
+#   - pg: REL_13_0 # static commit - from git
+#     PlatformToolset: v141
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.0.5patched
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     compiler: msvc
+#     #
+#     githubcache: true
 
 #   - pg: REL_13_0  # tag - static commit - from git
 #     PlatformToolset: v141
