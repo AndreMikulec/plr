@@ -1991,6 +1991,21 @@ deploy:
     on:
       Configuration: Release
 
+  - provider: FTP
+    host: frs.sourceforge.net
+    protocol: sftp
+    # https://sourceforge.net/projects/andremikulec/files/
+    username: andremikulec,andremikulec.u
+    password:
+      secure: 4gk4GyW4O5RooiOyGeRdoA==
+    artifact: pg_zip
+    folder: /home/frs/project/andremikulec
+    application:
+    active_mode: false
+    on:
+      Configuration: Debug
+      compiler: msvc
+
 #   #
 #   # if a msys2 SuperDebug 1GB in size, this can be slow and EXPECT to fail.
 #   #
@@ -2008,4 +2023,4 @@ deploy:
 #     active_mode: false
 #     on:
 #       Configuration: Debug
-#       compiler: msvc, cygwin
+#       compiler: msys2, cygwin
