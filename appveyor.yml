@@ -1939,8 +1939,7 @@ deploy:
     release: 0.0.0.0.0.GITHUBCACHE
     draft: false
     prerelease: false
-    # smaller plr before larger pg
-    artifact: plr_zip, pg_zip
+    artifact: pg_zip
     auth_token:
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
     on:
