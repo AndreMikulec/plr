@@ -11,9 +11,16 @@
 # Appevor run result
 # https://ci.appveyor.com/project/AndreMikulec/plr/builds/38431791/job/ah2pwypilr2rf40l?fullLog=true
 
+# Required get the environment variable - postgresrcroot
+#
+# e.g. set postgresrcroot=C:\projects\postgresql
+#
+postgresrcroot <- Sys.getenv("postgresrcroot")
+postgresrcroot <- normalizePath(postgresrcroot, winslash="/", mustWork = T)
 
 
-Mkvcbuild.pm.Lines <- readLines("C:/projects/postgresql/src/tools/msvc/Mkvcbuild.pm")
+MkvcbuildPathFile <- paste0(postgresrcroot, "/src/tools/msvc/Mkvcbuild.pm")
+Mkvcbuild.pm.Lines <- readLines(MkvcbuildPathFile)
 
 insContribExcludesArray <- function(lines) {
 
@@ -135,11 +142,11 @@ Mkvcbuild.pm.Lines <- addGenerateContribSqlFilesCode(Mkvcbuild.pm.Lines)
 
 
 
-cat(file = "C:/projects/postgresql/src/tools/msvc/Mkvcbuild.pm", Mkvcbuild.pm.Lines, sep = "\n")
+cat(file = MkvcbuildPathFile, Mkvcbuild.pm.Lines, sep = "\n")
 
 
-
-vcregress.pl.Lines <- readLines("C:/projects/postgresql/src/tools/msvc/vcregress.pl")
+vcregressPathFile <- paste0(postgresrcroot, "/src/tools/msvc/vcregress.pl")
+vcregress.pl.Lines <- readLines(vcregressPathFile)
 
 modifySubContribCheck <- function(lines) {
 
@@ -181,5 +188,5 @@ modifySubContribCheck <- function(lines) {
 vcregress.pl.Lines <- modifySubContribCheck(vcregress.pl.Lines)
 
 
-cat(file = "C:/projects/postgresql/src/tools/msvc/vcregress.pl", vcregress.pl.Lines, sep = "\n")
+cat(file = vcregressPathFile, vcregress.pl.Lines, sep = "\n")
 
