@@ -164,21 +164,21 @@ environment:
 #     #
 #     githubcache: true
 
-  - pg: 38f36aad # static commit - from git
-    #   GUC description improvements for clarity # 5/5/2021
-    #
-    pghint: commit
-    #
-    PlatformToolset: v142
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.0.5patched
-    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
-    compiler: msvc
-    #
-    githubcache: true
-    
+#   - pg: 38f36aad # static commit - from git
+#     #   GUC description improvements for clarity # 5/5/2021
+#     #
+#     pghint: commit
+#     #
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5patched
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     compiler: msvc
+#     #
+#     githubcache: true
+#     
   - pg: REL_13_0 # static commit - from git
     PlatformToolset: v142
     Configuration: Debug
@@ -189,17 +189,17 @@ environment:
     compiler: msvc
     #
     githubcache: true
-    
-  - pg: REL_13_0 # static commit - from git
-    PlatformToolset: v142
-    Configuration: Debug
-    Platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.0.5patched
-    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
-    compiler: msvc
-    #
-    githubcache: true
+#     
+#   - pg: REL_13_0 # static commit - from git
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5patched
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     compiler: msvc
+#     #
+#     githubcache: true
 
 #   - pg: REL_13_STABLE  # branch - non-static commit - from git
 #     PlatformToolset: v141
@@ -1541,6 +1541,9 @@ for:
   # PostgreSQL from source code: git, tag, or commit
   #
   # dynamically patch, so that a separate msvc.diff file does not have to be used
+  #
+  # Required for msvc.diff.R
+  - set postgresrcroot=C:\projects\postgresql
   #
   - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
         echo Begin performing patching on-the-fly &
