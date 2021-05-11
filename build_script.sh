@@ -155,10 +155,11 @@ fi
 
 pg_ctl -D ${PGDATA} -l logfile stop
 
+
 #
 # not yet tried/tested in cygwin
-#                                                                                                                     # cygwin case
-if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
+#                                                                                                                                                                   # cygwin case
+if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && [ "${Configuration}" == "Release" ]  && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
 then
   loginfo "BEGIN pg zip CREATION"
   cd ${pgroot}
@@ -167,14 +168,6 @@ then
   7z a -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip *
   7z l      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
   ls -alrt  ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-  #
-  # split big msvc, cygwin pg Debug
-  #
-  if [ "${Configuration}" == "Debug" ]
-  then
-    7z a -v48m -r ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip *
-    ls            ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.* | tr '' '\n' | wc -l > ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
-  fi
   #
   if [ "${compiler}" == "cygwin" ]
   then

@@ -1025,7 +1025,6 @@ for:
   test_script:
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
 
-
 -
   matrix:
     only:
