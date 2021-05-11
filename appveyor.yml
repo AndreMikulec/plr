@@ -75,7 +75,7 @@ environment:
     compiler: msys2
     #
     githubcache: true
-# 
+#
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v142
 #     Configuration: Debug
@@ -178,7 +178,7 @@ environment:
 #     compiler: msvc
 #     #
 #     githubcache: true
-#     
+#
   - pg: REL_13_0 # static commit - from git
     PlatformToolset: v142
     Configuration: Debug
@@ -189,7 +189,7 @@ environment:
     compiler: msvc
     #
     githubcache: true
-#     
+#
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v142
 #     Configuration: Debug
@@ -251,7 +251,7 @@ environment:
 #     compiler: msvc
 #     #
 #     githubcache: true
-# 
+#
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -452,7 +452,7 @@ environment:
   # If compiling on msvc, these are the configurations "Release" and "Debug".
 
   # If compiling on msys2 or cygwin, if "Debug" is chosen, then
-  # plr will be compiled with super debug features to be able to debug macros.  
+  # plr will be compiled with super debug features to be able to debug macros.
   # Also, if PostgreSQL happens
   # to also be compiled, then it will compile
   # with the super debug features for the same reasons.
@@ -1926,13 +1926,36 @@ deploy:
     password:
       secure: 4gk4GyW4O5RooiOyGeRdoA==
     # smaller smaller before larger
+    # msys2 pg Debug
+    #   succesfully - Collecting artifacts... Uploading artifacts... to Appveyor Job Artifacts
     artifact: pg_acnt, pg_azip
     folder: /home/frs/project/andremikulec
     application:
     active_mode: false
     on:
       Configuration: Debug
-      compiler: msys2, cygwin
+      compiler: msys2
+  # note, compiler: msys2, cygwin is mis-interpreted as "msys2, cygwin"
+  # therefore, "msys2, cygwin" is not a usable option
+
+  - provider: FTP
+    host: frs.sourceforge.net
+    protocol: sftp
+    # https://sourceforge.net/projects/andremikulec/files/
+    username: andremikulec,andremikulec.u
+    password:
+      secure: 4gk4GyW4O5RooiOyGeRdoA==
+    # smaller smaller before larger
+    # msys2 pg Debug
+    #   succesfully - Collecting artifacts... Uploading artifacts... to Appveyor Job Artifacts
+    artifact: pg_acnt, pg_azip
+    folder: /home/frs/project/andremikulec
+    application:
+    active_mode: false
+    on:
+      Configuration: Debug
+      compiler: cygwin
+
 
     # did not make died on 2nd 50MB segment
 #   - provider: GitHub

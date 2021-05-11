@@ -166,10 +166,12 @@ pg_ctl -D ${PGDATA} -l logfile stop
 if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && [ "${Configuration}" == "Debug" ]  && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
 then
   loginfo "BEGIN pg azip CREATION"
+  cd ${pgroot}
   7z a -v48m -r ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip *
   ls            ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.* | tr '' '\n' | wc -l > ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
   ls            ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.*
   cat           ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
+  cd ${APPVEYOR_BUILD_FOLDER}
   loginfo "END   pg azip CREATION"
 fi
 
