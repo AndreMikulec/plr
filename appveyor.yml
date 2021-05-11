@@ -1770,30 +1770,12 @@ for:
   #
   # "%pgroot%\bin\postgres.exe" SHOULD BE THERE - missing should NOT happen
   - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" (
-      7z a -r "%pgzip%"  "%pgroot%\*" > nul &
-      appveyor PushArtifact "%pgzip%"
+      7z a -r "%pgzip%"  "%pgroot%\*" > nul
     )
-  # pg can get very big if the compiler is msys2 (or maybe cygwin?)
-  # using these flags (super debug):
-  #   ./configure --enable-cassert --enable-debug CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer"
   #
-  # Therefore, only push Some artifacts (that are not too big.)
-  # Appveyor will OFTEN die, if the artifact is TOO BIG: e.g. "super debug" msys2 NEAR 1GB in size.
+  # Therefore, always push "msvc" artifacts (because they are not too big.)
   #
-  # Temporary Patch.  I really need a method to manage (if possible), a "msys2 Configuration SuperDebug"
-  #
-  #  msys2 SuperDebug (flag "-g3" to debug macros)
-  #  ./configure --enable-cassert --enable-debug CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer"
-  #
-  #  msys2 RegularDebug (prob not useful - too many MACROS)
-  #  ./configure --enable-cassert --enable-debug
-  #
-  # Always push "pg Configuration Release"
-  - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pgzip%" if "%Configuration%"=="Release" (
-      appveyor PushArtifact "%pgzip%"
-    )
-  # always push "pg compiler msvc"
-  - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pgzip%" if "%compiler%"=="msvc" (
+  - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pgzip%" (
       appveyor PushArtifact "%pgzip%"
     )
   # what did I 7z up?
