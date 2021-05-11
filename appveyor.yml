@@ -1915,18 +1915,38 @@ artifacts:
 
 deploy:
 
-  - provider: GitHub
-    release: 0.0.0.0.0.GITHUBCACHE
-    draft: false
-    prerelease: false
+  #
+  # if a msys2 pg SuperDebug 1GB in size
+  #
+  - provider: FTP
+    host: frs.sourceforge.net
+    protocol: sftp
+    # https://sourceforge.net/projects/andremikulec/files/
+    username: andremikulec,andremikulec.u
+    password:
+      secure: 4gk4GyW4O5RooiOyGeRdoA==
     # smaller smaller before larger
     artifact: pg_acnt, pg_azip
-    auth_token:
-      secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
+    folder: /home/frs/project/andremikulec
+    application:
+    active_mode: false
     on:
-      pggithubbincachefound: false
-      # non - "branch, tag, or commit" will still be expected "false" ( githubcache != true )
-      # and never find a pg-*.zip to deploy - and that is OK.
+      Configuration: Debug
+      compiler: msys2, cygwin
+
+    # did not make died on 2nd 50MB segment
+#   - provider: GitHub
+#     release: 0.0.0.0.0.GITHUBCACHE
+#     draft: false
+#     prerelease: false
+#     # smaller smaller before larger
+#     artifact: pg_acnt, pg_azip
+#     auth_token:
+#       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
+#     on:
+#       pggithubbincachefound: false
+#       # non - "branch, tag, or commit" will still be expected "false" ( githubcache != true )
+#       # and never find a pg-*.zip to deploy - and that is OK.
 
   #
   # always try to deploy here
@@ -2005,26 +2025,6 @@ deploy:
     on:
       Configuration: Debug
       compiler: msvc
-
-  #
-  # if a msys2 pg SuperDebug 1GB in size
-  #
-  - provider: FTP
-    host: frs.sourceforge.net
-    protocol: sftp
-    # https://sourceforge.net/projects/andremikulec/files/
-    username: andremikulec,andremikulec.u
-    password:
-      secure: 4gk4GyW4O5RooiOyGeRdoA==
-    # smaller smaller before larger
-    artifact: pg_acnt, pg_azip
-    folder: /home/frs/project/andremikulec
-    application:
-    active_mode: false
-    on:
-      Configuration: Debug
-      compiler: msys2, cygwin
-
 
 #   #
 #   # if a msys2 pg SuperDebug 1GB in size, this can be slow and EXPECT to fail.
