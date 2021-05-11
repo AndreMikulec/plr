@@ -1773,7 +1773,7 @@ for:
       7z a -r "%pgzip%"  "%pgroot%\*" > nul
     )
   #
-  # Therefore, always push "msvc" artifacts (because they are not too big.)
+  # Often push "msvc pg" artifacts (because they are not too big.)
   #
   - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pgzip%" (
       appveyor PushArtifact "%pgzip%"
