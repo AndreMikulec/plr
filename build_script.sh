@@ -168,6 +168,14 @@ then
   7z l      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
   ls -alrt  ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
   #
+  # split big msvc, cygwin pg Debug
+  #
+  if [ "${Configuration}" == "Debug" ]
+  then
+    7z a -v48m -r ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip *
+    ls            ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.* | tr '' '\n' | wc -l > ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
+  fi
+  #
   if [ "${compiler}" == "cygwin" ]
   then
     # command will automatically pre-prepend A DIRECTORY (strange!)
