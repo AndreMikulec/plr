@@ -1823,7 +1823,7 @@ for:
   # load new environment variable(s) e.g. "server_version_num" into the current Windows
   - for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\server_version_num.txt) do (set server_version_num=%%i)
   - type %APPVEYOR_BUILD_FOLDER%\server_version_num.txt
-  - echo %server_version_num%
+  - echo server_version_num %server_version_num%
 
   # # HAD ALREADY BEEN FIXED IN . . .
   # # https://github.com/postgres-plr/plr/commit/1ba43857fe7d79629e1c6dda7e47f75f0581c115

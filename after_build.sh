@@ -40,6 +40,7 @@ fi
 #
 ./server_version_num.sh
 export server_version_num=$(cat ${APPVEYOR_BUILD_FOLDER}/server_version_num.txt)
+loginfo "server_version_num ${server_version_num}"
 #
 # also works
 # export A_VAR=$(echo -n $(sed -r 's/\s+//g' a_version.txt))
