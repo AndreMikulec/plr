@@ -239,17 +239,18 @@ then
   loginfo "BEGIN pg azip CREATION"
   cd ${pgroot}
   7z a -v96m -r ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip *
-  ls -alrt      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip
+  loginfo "BEGIN list of azip splits"
+  ls -alrt      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.*
+  loginfo "END   list of azip splits"
+  loginfo "BEGIN list first azip split"
   7z l          ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.001
+  loginfo "END   list first azip split"
   # This does not work. I get a strange symbol in the .actn file. I do not know why.
                           ls -l ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.* | wc -l  > ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
   export num_azip_files=$(ls -l ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.* | wc -l)
   loginfo "num_azip_files ${num_azip_files}"
   echo cat      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
   cat           ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
-  loginfo "BEGIN list of azip splits"
-  ls -alrt      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.*
-  loginfo "END   list of azip splits"
   # if just one azip file, then it is just a regular zip file - BUT may be SUPER_COMPRESSED
   #   and then just rename it to a .zip file
   if [ ${num_azip_files} -eq 1 ]
