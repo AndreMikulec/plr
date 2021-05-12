@@ -77,10 +77,18 @@ else
 fi
 loginfo "pgroot $pgroot"
 
-# e.g., in the users home directory
+# proper for "initdb" - see the PostgreSQL docs
 export TZ=UTC
-export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
-# cygwin override
+
+# e.g., in the users home directory
+
+# msys2 case
+if [ "${compiler}" == "msys2" ]
+then
+     export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
+fi
+#
+# cygwin case
 if [ "${compiler}" == "cygwin" ]
 then
   if [ "${Platform}" == "x64" ]
@@ -90,10 +98,17 @@ then
     export PGAPPDIR=/cygdrive/c/cygwin${HOME}${pgroot}/postgresql/Data
   fi
 fi
+#
+# add OTHER cases HERE: future arm* (guessing now)
+if [ "${PGAPPDIR}" == "" ]
+then
+    export PGAPPDIR="$HOME"${pgroot}/postgresql/Data
+fi
+
 export     PGDATA=${PGAPPDIR}
 export      PGLOG=${PGAPPDIR}/log.txt
 
-#
+# R.dll in the PATH
 # not required in compilation
 #     required in "CREATE EXTENSION plr;" and regression tests
 

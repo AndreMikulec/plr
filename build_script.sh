@@ -128,7 +128,7 @@ if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty initdb --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
 else
-  initdb --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
+                         initdb --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
 fi
 
 # Success. You can now start the database server using:
@@ -150,7 +150,7 @@ if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'SELECT version();'
 else
-  psql -d postgres -c 'SELECT version();'
+                         psql -d postgres -c 'SELECT version();'
 fi
 
 pg_ctl -D ${PGDATA} -l logfile stop
@@ -236,28 +236,28 @@ if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'CREATE EXTENSION plr;'
 else
-  psql -d postgres -c 'CREATE EXTENSION plr;'
+                         psql -d postgres -c 'CREATE EXTENSION plr;'
 fi
 
 if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'SELECT plr_version();'
 else
-  psql -d postgres -c 'SELECT plr_version();'
+                         psql -d postgres -c 'SELECT plr_version();'
 fi
 
 if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'SELECT   r_version();'
 else
-  psql -d postgres -c 'SELECT   r_version();'
+                         psql -d postgres -c 'SELECT   r_version();'
 fi
 
 if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'DROP EXTENSION plr;'
 else
-  psql -d postgres -c 'DROP EXTENSION plr;'
+                         psql -d postgres -c 'DROP EXTENSION plr;'
 fi
 
 # must stop, else Appveyor job will hang.
