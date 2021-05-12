@@ -1920,8 +1920,6 @@ deploy:
   # therefore, "msys2, cygwin" is not a usable deployment filter option
 
   #
-  # FTP pre-loads first as an Artifact?  Therefore, better performance.
-  #
   # To try to deploy to sourceforge, the following must have happened.
   # Requesting a new shell for "andremikulec" and waiting for it to start.
   # queued... creating... starting...
