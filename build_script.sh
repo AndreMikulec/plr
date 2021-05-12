@@ -186,12 +186,17 @@ then
       # workaround of an Appveyor-using-cygwin bug - command will automatically pre-prepend A DIRECTORY (strange!)
       # e.g.
       pushd ${APPVEYOR_BUILD_FOLDER}
+      #
       # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
+      #
       # loginfo "appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
       #          appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
       popd
-    else
+  # bash if-then-else-fi # inside bodies can not be empty
+  # else
+      #
       # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
+      #
       # loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
       #          appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
     fi
@@ -207,8 +212,8 @@ fi
 # this is a "bug (or resource limitation) workaround"
 #
 #
-# split big msvc, cygwin: pg Debug (sometimes 7z a is large and making a 1GB file from 3.5GB)
-#                                             7z a -v96m - (seems) always compresses) 
+# split big msys2, cygwin: pg Debug (sometimes 7z a is large and making a 1GB file from 3.5GB)
+#                                              7z a -v96m - (seems) always compresses) 
 #                                                          into a .azip.001 file
 # after, one may manually recreate the ONE .azip file (and it is just a .zip file)
 #   
@@ -251,7 +256,9 @@ then
   then 
     mv ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.001 ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
   fi
+  #
   # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
+  #
   cd ${APPVEYOR_BUILD_FOLDER}
   loginfo "END   pg azip CREATION"
 fi
