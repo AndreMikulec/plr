@@ -216,13 +216,13 @@ fi
 pg_ctl -D ${PGDATA} -l logfile start
 
 
-# -O0 because of the many macros
+# -g3 because of the many macros
 #
 if [ "${Configuration}" = "Debug" ]
 then
-  echo ""                             >> Makefile
+  echo ""                                                         >> Makefile
   echo "override CFLAGS += -ggdb -Og -g3 -fno-omit-frame-pointer" >> Makefile
-  echo ""                             >> Makefile
+  echo ""                                                         >> Makefile
 fi
 
 loginfo "BEGIN plr BUILDING"
