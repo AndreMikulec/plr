@@ -158,19 +158,32 @@ pg_ctl -D ${PGDATA} -l logfile stop
 
 
 #
-# split big msvc, cygwin: pg Debug (sometimes 7z a       -         fails to compress)
-#                                             7z a -v48m - (seems) always   compresses)
-# 
 # this is a "bug (or resource limitation) workaround"
-# also, not-1-GB-size files, deploy successfully to sourceforge
+#
+#
+# split big msvc, cygwin: pg Debug (sometimes 7z a       -         fails to compress) making a 1GB file
+#                                             7z a -v96m - (seems) always   compresses) 
+#                                                          into .azip.001 .azip.002 etc
+# after, one may manually recreate the ONE .azip file (and it is just a .zip file)
+#   
+# one can re-construct (and ask to override if necessary) file.azip
+#   7z x file.azip.001 -tsplit
+# note, the original .azip.00# files remain behind 
+#
+# next, rename .azip to .zip 
+#       manually re-upload the .zip file to 0.0.0.0.0.GITHUBCACHE
+#
+# Note, not-1-GB-size files, deploy successfully to sourceforge (and that is good)
+# Works well with "-v48m". 
+# Below is "-v96m" and I am optimistic, that "-v96m" is hopefully still good.
 #
 # not yet tried/tested in cygwin
 #                                                                                                                                                                # cygwin case
-if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && [ "${Configuration}" == "Debug" ]  && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
+if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
 then
   loginfo "BEGIN pg azip CREATION"
   cd ${pgroot}
-  7z a -v48m -r ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip *
+  7z a -v96m -r ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip *
   ls -l         ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.* | wc -l > ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
   echo cat      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
   cat           ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
@@ -184,7 +197,7 @@ fi
 #
 # not yet tried/tested in cygwin
 #                                                                                                                                                                   # cygwin case
-if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && [ "${Configuration}" == "Release" ]  && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
+if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
 then
   loginfo "BEGIN pg zip CREATION"
   cd ${pgroot}
@@ -193,18 +206,29 @@ then
   7z a -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip *
   7z l      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
   ls -alrt  ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-  #
-  if [ "${compiler}" == "cygwin" ]
+  export   pg_zip_size=$(find "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip" -printf "%s")
+  loginfo "pg_zip_size $pg_zip_size" 
+  #                       96m
+  if [ ${pg_zip_size} -gt 100663296 ] 
   then
-    # command will automatically pre-prepend A DIRECTORY (strange!)
-    # e.g.
-    pushd ${APPVEYOR_BUILD_FOLDER}
-    loginfo "appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
-             appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-    popd
-  else
-    loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
-             appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+    rm -f    ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+    loginfo "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip is TOO BIG so removed."
+  fi
+  #
+  if [ -f "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip" ]
+  then
+    if [ "${compiler}" == "cygwin" ]
+    then
+      # workaround of an Appveyor-using-cygwin bug - command will automatically pre-prepend A DIRECTORY (strange!)
+      # e.g.
+      pushd ${APPVEYOR_BUILD_FOLDER}
+      loginfo "appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
+               appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+      popd
+    else
+      loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
+               appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+    fi
   fi
   #
   cd ${APPVEYOR_BUILD_FOLDER} 
