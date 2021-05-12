@@ -158,7 +158,8 @@ pg_ctl -D ${PGDATA} -l logfile stop
 
 
 #
-# split big msvc, cygwin pg Debug
+# split big msvc, cygwin: pg Debug (sometimes 7z a       -         fails to compress)
+#                                             7z a -v48m - (seems) always   compresses)
 #
 #
 # not yet tried/tested in cygwin
@@ -168,9 +169,12 @@ then
   loginfo "BEGIN pg azip CREATION"
   cd ${pgroot}
   7z a -v48m -r ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip *
-  ls            ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.* | tr '' '\n' | wc -l > ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
-  ls            ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.*
+  ls -l         ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.* | wc -l > ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
+  echo cat      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
   cat           ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
+  loginfo "BEGIN list of azip splits"
+  ls -alrt      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.*
+  loginfo "END   list of azip splits"
   cd ${APPVEYOR_BUILD_FOLDER}
   loginfo "END   pg azip CREATION"
 fi
