@@ -160,7 +160,9 @@ pg_ctl -D ${PGDATA} -l logfile stop
 #
 # split big msvc, cygwin: pg Debug (sometimes 7z a       -         fails to compress)
 #                                             7z a -v48m - (seems) always   compresses)
-#
+# 
+# this is a "bug (or resource limitation) workaround"
+# also, not-1-GB-size files, deploy successfully to sourceforge
 #
 # not yet tried/tested in cygwin
 #                                                                                                                                                                # cygwin case
