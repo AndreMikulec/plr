@@ -128,7 +128,7 @@ if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty initdb --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
 else
-  initdb --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
+                         initdb --pgdata="${PGDATA}" --auth=trust --encoding=utf8 --locale=C
 fi
 
 # Success. You can now start the database server using:
@@ -150,35 +150,56 @@ if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'SELECT version();'
 else
-  psql -d postgres -c 'SELECT version();'
+                         psql -d postgres -c 'SELECT version();'
 fi
 
 pg_ctl -D ${PGDATA} -l logfile stop
 
+
+
+
 #
 # not yet tried/tested in cygwin
-#                                                                                                                     # cygwin case
+#                                                                                                                           # cygwin case
 if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
 then
   loginfo "BEGIN pg zip CREATION"
   cd ${pgroot}
-  ls -alrt  ${APPVEYOR_BUILD_FOLDER}
+  ls -alrt
   loginfo                           "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
   7z a -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip *
   7z l      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
   ls -alrt  ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-  #
-  if [ "${compiler}" == "cygwin" ]
+  export   pg_zip_size=$(find "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip" -printf "%s")
+  loginfo "pg_zip_size $pg_zip_size" 
+  #                       96m
+  if [ ${pg_zip_size} -gt 100663296 ] 
   then
-    # command will automatically pre-prepend A DIRECTORY (strange!)
-    # e.g.
-    pushd ${APPVEYOR_BUILD_FOLDER}
-    loginfo "appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
-             appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-    popd
-  else
-    loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
-             appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+    rm -f    ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+    loginfo "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip is TOO BIG so removed."
+  fi
+  #
+  if [ -f "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip" ]
+  then
+    if [ "${compiler}" == "cygwin" ]
+    then
+      # workaround of an Appveyor-using-cygwin bug - command will automatically pre-prepend A DIRECTORY (strange!)
+      # e.g.
+      pushd ${APPVEYOR_BUILD_FOLDER}
+      #
+      # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
+      #
+      # loginfo "appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
+      #          appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+      popd
+  # bash if-then-else-fi # inside bodies can not be empty
+  # else
+      #
+      # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
+      #
+      # loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
+      #          appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+    fi
   fi
   #
   cd ${APPVEYOR_BUILD_FOLDER} 
@@ -186,17 +207,76 @@ then
 fi
 
 
+
+#
+# this is a "bug (or resource limitation) workaround"
+#
+#
+# split big msys2, cygwin: pg Debug (sometimes 7z a is large and making a 1GB file from 3.5GB)
+#                                              7z a -v96m - (seems) always compresses) 
+#                                                          into a .azip.001 file
+# after, one may manually recreate the ONE .azip file (and it is just a .zip file)
+#   
+# one can re-construct (and ask to override if necessary) file.azip
+#   7z x file.azip.001 -tsplit
+# note, the original .azip.00# files remain behind 
+#
+# next, rename .azip to .zip 
+#       manually re-upload the .zip file to 0.0.0.0.0.GITHUBCACHE
+#
+# Note, not-1-GB-size files, deploy successfully to sourceforge (and that is good)
+# Works well with "-v48m". 
+# Below is "-v96m" and I am optimistic, that "-v96m" is hopefully still good.
+#
+# Note, for some strange reason, if only ONE .azip file (.azip.001) is created
+# then the result MAY become SUPER_COMPRESSED 70x (to 44M).  This is WEIRD.
+# I CAN NOT reapeat this locally.
+#
+# not yet tried/tested in cygwin
+#                                                                                                                           # cygwin case
+if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
+then
+  loginfo "BEGIN pg azip CREATION"
+  cd ${pgroot}
+  7z a -v96m -r ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip *
+  loginfo "BEGIN list of azip splits"
+  ls -alrt      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.*
+  loginfo "END   list of azip splits"
+  loginfo "BEGIN list first azip split"
+  7z l          ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.001
+  loginfo "END   list first azip split"
+  # This does not work. I get a strange symbol in the .actn file. I do not know why.
+                          ls -l ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.* | wc -l  > ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
+  export num_azip_files=$(ls -l ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.* | wc -l)
+  loginfo "num_azip_files ${num_azip_files}"
+  echo cat      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
+  cat           ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
+  # if just one azip file, then it is just a regular zip file - BUT may be SUPER_COMPRESSED
+  #   and then just rename it to a .zip file
+  if [ ${num_azip_files} -eq 1 ]
+  then 
+    mv ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.001 ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+  fi
+  #
+  # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
+  #
+  cd ${APPVEYOR_BUILD_FOLDER}
+  loginfo "END   pg azip CREATION"
+fi
+
+
+
 # do again
 pg_ctl -D ${PGDATA} -l logfile start
 
 
-# -O0 because of the many macros
+# -g3 because of the many macros
 #
 if [ "${Configuration}" = "Debug" ]
 then
-  echo ""                             >> Makefile
+  echo ""                                                         >> Makefile
   echo "override CFLAGS += -ggdb -Og -g3 -fno-omit-frame-pointer" >> Makefile
-  echo ""                             >> Makefile
+  echo ""                                                         >> Makefile
 fi
 
 loginfo "BEGIN plr BUILDING"
@@ -210,28 +290,28 @@ if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'CREATE EXTENSION plr;'
 else
-  psql -d postgres -c 'CREATE EXTENSION plr;'
+                         psql -d postgres -c 'CREATE EXTENSION plr;'
 fi
 
 if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'SELECT plr_version();'
 else
-  psql -d postgres -c 'SELECT plr_version();'
+                         psql -d postgres -c 'SELECT plr_version();'
 fi
 
 if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'SELECT   r_version();'
 else
-  psql -d postgres -c 'SELECT   r_version();'
+                         psql -d postgres -c 'SELECT   r_version();'
 fi
 
 if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'DROP EXTENSION plr;'
 else
-  psql -d postgres -c 'DROP EXTENSION plr;'
+                         psql -d postgres -c 'DROP EXTENSION plr;'
 fi
 
 # must stop, else Appveyor job will hang.

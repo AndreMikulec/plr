@@ -30,9 +30,9 @@ pg_ctl -D ${PGDATA} -l logfile start
 
 if [ "${compiler}" == "msys2" ]
 then
-  winpty -Xallow-non-tty psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=${APPVEYOR_BUILD_FOLDER}/$server_version_num.txt
+  winpty -Xallow-non-tty psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;" --output=${APPVEYOR_BUILD_FOLDER}/server_version_num.txt
 else
-  psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=${APPVEYOR_BUILD_FOLDER}/server_version_num.txt
+                         psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;" --output=${APPVEYOR_BUILD_FOLDER}/server_version_num.txt
 fi
 
 
@@ -40,6 +40,7 @@ fi
 #
 ./server_version_num.sh
 export server_version_num=$(cat ${APPVEYOR_BUILD_FOLDER}/server_version_num.txt)
+loginfo "server_version_num ${server_version_num}"
 #
 # also works
 # export A_VAR=$(echo -n $(sed -r 's/\s+//g' a_version.txt))

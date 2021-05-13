@@ -61,21 +61,21 @@ environment:
 #     rversion: 4.1.0alpha
 #     compiler: msys2
 
-#   - pg: 38f36aad # static commit - from git
-#     #   GUC description improvements for clarity # 5/5/2021
-#     #
-#     pghint: commit
-#     #
-#     PlatformToolset: v142
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.0.5patched
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
-#     compiler: msys2
-#     #
-#     githubcache: true
-# 
+  - pg: 38f36aad # static commit - from git
+    #   GUC description improvements for clarity # 5/5/2021
+    #
+    pghint: commit
+    #
+    PlatformToolset: v142
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.0.5patched
+    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+    compiler: msys2
+    #
+    githubcache: true
+#
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v142
 #     Configuration: Debug
@@ -178,7 +178,7 @@ environment:
 #     compiler: msvc
 #     #
 #     githubcache: true
-#     
+#
   - pg: REL_13_0 # static commit - from git
     PlatformToolset: v142
     Configuration: Debug
@@ -189,7 +189,7 @@ environment:
     compiler: msvc
     #
     githubcache: true
-#     
+#
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v142
 #     Configuration: Debug
@@ -251,7 +251,7 @@ environment:
 #     compiler: msvc
 #     #
 #     githubcache: true
-# 
+#
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -452,7 +452,7 @@ environment:
   # If compiling on msvc, these are the configurations "Release" and "Debug".
 
   # If compiling on msys2 or cygwin, if "Debug" is chosen, then
-  # plr will be compiled with super debug features to be able to debug macros.  
+  # plr will be compiled with super debug features to be able to debug macros.
   # Also, if PostgreSQL happens
   # to also be compiled, then it will compile
   # with the super debug features for the same reasons.
@@ -1024,7 +1024,6 @@ for:
 
   test_script:
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
-
 
 -
   matrix:
@@ -1770,30 +1769,12 @@ for:
   #
   # "%pgroot%\bin\postgres.exe" SHOULD BE THERE - missing should NOT happen
   - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" (
-      7z a -r "%pgzip%"  "%pgroot%\*" > nul &
-      appveyor PushArtifact "%pgzip%"
+      7z a -r "%pgzip%"  "%pgroot%\*" > nul
     )
-  # pg can get very big if the compiler is msys2 (or maybe cygwin?)
-  # using these flags (super debug):
-  #   ./configure --enable-cassert --enable-debug CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer"
   #
-  # Therefore, only push Some artifacts (that are not too big.)
-  # Appveyor will OFTEN die, if the artifact is TOO BIG: e.g. "super debug" msys2 NEAR 1GB in size.
+  # Often push "msvc pg" artifacts (because they are not too big.)
   #
-  # Temporary Patch.  I really need a method to manage (if possible), a "msys2 Configuration SuperDebug"
-  #
-  #  msys2 SuperDebug (flag "-g3" to debug macros)
-  #  ./configure --enable-cassert --enable-debug CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer"
-  #
-  #  msys2 RegularDebug (prob not useful - too many MACROS)
-  #  ./configure --enable-cassert --enable-debug
-  #
-  # Always push "pg Configuration Release"
-  - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pgzip%" if "%Configuration%"=="Release" (
-      appveyor PushArtifact "%pgzip%"
-    )
-  # always push "pg compiler msvc"
-  - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pgzip%" if "%compiler%"=="msvc" (
+  - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pgzip%" (
       appveyor PushArtifact "%pgzip%"
     )
   # what did I 7z up?
@@ -1836,12 +1817,13 @@ for:
   # I can not use "$env:pgversion" because a branch, tag, or commit
   # name (e.g.) "master" can not (always) be (easily) compared.
   #
-  - psql --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;"  --output=server_version_num.txt
-  # also used in compiler - msys2
+  # also used in compiler - msys2 and cygwin
+  - psql --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;" --output=%APPVEYOR_BUILD_FOLDER%\server_version_num.txt
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/server_version_num.sh"
-  - for /f "delims=" %%i in (server_version_num.txt) do (set server_version_num=%%i)
-  - type  server_version_num.txt
-  - echo %server_version_num%
+  # load new environment variable(s) e.g. "server_version_num" into the current Windows
+  - for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\server_version_num.txt) do (set server_version_num=%%i)
+  - type %APPVEYOR_BUILD_FOLDER%\server_version_num.txt
+  - echo server_version_num %server_version_num%
 
   # # HAD ALREADY BEEN FIXED IN . . .
   # # https://github.com/postgres-plr/plr/commit/1ba43857fe7d79629e1c6dda7e47f75f0581c115
@@ -1927,13 +1909,62 @@ artifacts:
   name: plr_zip
 - path: 'pg-*.zip'
   name: pg_zip
-
+- path: 'pg-*.acnt'
+  name: pg_acnt
+- path: 'pg-*.azip.*'
+  name: pg_azip
 
 deploy:
 
+  # note, "deploy - on" "compiler: msys2, cygwin" is mis-interpreted as "msys2, cygwin"
+  # therefore, "msys2, cygwin" is not a usable deployment filter option
+
+  #
+  # To try to deploy to sourceforge, the following must have happened.
+  # Requesting a new shell for "andremikulec" and waiting for it to start.
+  # queued... creating... starting...
+  #
+  
+  - provider: FTP
+    host: frs.sourceforge.net
+    protocol: sftp
+    # https://sourceforge.net/projects/andremikulec/files/
+    username: andremikulec,andremikulec.u
+    password:
+      secure: 4gk4GyW4O5RooiOyGeRdoA==
+    artifact: plr_zip
+    folder: /home/frs/project/andremikulec
+    application:
+    active_mode: false
+
+  - provider: FTP
+    host: frs.sourceforge.net
+    protocol: sftp
+    # https://sourceforge.net/projects/andremikulec/files/
+    username: andremikulec,andremikulec.u
+    password:
+      secure: 4gk4GyW4O5RooiOyGeRdoA==
+    # smaller smaller before larger
+    #   succesfully - Collecting artifacts... Uploading artifacts... to Appveyor Job Artifacts
+    artifact: pg_acnt, pg_azip
+    folder: /home/frs/project/andremikulec
+    application:
+    active_mode: false
+
+  - provider: FTP
+    host: frs.sourceforge.net
+    protocol: sftp
+    # https://sourceforge.net/projects/andremikulec/files/
+    username: andremikulec,andremikulec.u
+    password:
+      secure: 4gk4GyW4O5RooiOyGeRdoA==
+    artifact: pg_zip
+    folder: /home/frs/project/andremikulec
+    application:
+    active_mode: false
+
   #
   # always try to deploy here
-  # I think that Github can [often] handle the "msys2 SuperDebug of size 1GB"
   #
   - provider: GitHub
     release: 0.0.0.0.0.GITHUBCACHE
@@ -1942,10 +1973,8 @@ deploy:
     artifact: pg_zip
     auth_token:
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
-    on:
-      pggithubbincachefound: false
-      # non - "branch, tag, or commit" will still be expected "false" ( githubcache != true )
-      # and never find a pg-*.zip to deploy - and that is OK.
+    # non - "branch, tag, or commit" will still be expected "false" ( githubcache != true )
+    # and never find a pg-*.zip to deploy - and that is OK.
 
   #
   # second, last of Github deployments, to try to appear as "latest"
@@ -1960,69 +1989,3 @@ deploy:
     on:
       APPVEYOR_REPO_TAG: true
 
-  #
-  # To try to deploy to sourceforge, the following must have happened.
-  # Requesting a new shell for "andremikulec" and waiting for it to start.
-  # queued... creating... starting...
-  #
-  # smaller plr should always arrive there
-  #
-  - provider: FTP
-    host: frs.sourceforge.net
-    protocol: sftp
-    # https://sourceforge.net/projects/andremikulec/files/
-    username: andremikulec,andremikulec.u
-    password:
-      secure: 4gk4GyW4O5RooiOyGeRdoA==
-    artifact: plr_zip
-    folder: /home/frs/project/andremikulec
-    application:
-    active_mode: false
-
-  - provider: FTP
-    host: frs.sourceforge.net
-    protocol: sftp
-    # https://sourceforge.net/projects/andremikulec/files/
-    username: andremikulec,andremikulec.u
-    password:
-      secure: 4gk4GyW4O5RooiOyGeRdoA==
-    artifact: pg_zip
-    folder: /home/frs/project/andremikulec
-    application:
-    active_mode: false
-    on:
-      Configuration: Release
-
-  - provider: FTP
-    host: frs.sourceforge.net
-    protocol: sftp
-    # https://sourceforge.net/projects/andremikulec/files/
-    username: andremikulec,andremikulec.u
-    password:
-      secure: 4gk4GyW4O5RooiOyGeRdoA==
-    artifact: pg_zip
-    folder: /home/frs/project/andremikulec
-    application:
-    active_mode: false
-    on:
-      Configuration: Debug
-      compiler: msvc
-
-#   #
-#   # if a msys2 SuperDebug 1GB in size, this can be slow and EXPECT to fail.
-#   #
-#   - provider: FTP
-#     host: frs.sourceforge.net
-#     protocol: sftp
-#     # https://sourceforge.net/projects/andremikulec/files/
-#     username: andremikulec,andremikulec.u
-#     password:
-#       secure: 4gk4GyW4O5RooiOyGeRdoA==
-#     # smaller plr before larger pg
-#     artifact: plr_zip, pg_zip
-#     folder: /home/frs/project/andremikulec
-#     application:
-#     active_mode: false
-#     on:
-#       Configuration: Debug
-#       compiler: msys2, cygwin
