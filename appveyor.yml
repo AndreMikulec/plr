@@ -1541,7 +1541,7 @@ for:
   #
   # dynamically patch, so that a separate msvc.diff file does not have to be used
   #
-  # Required for msvc.diff.R
+  # Required "postgresrcroot" for msvc.diff.R and Solution.pm.R
   - set postgresrcroot=C:\projects\postgresql
   #
   - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (

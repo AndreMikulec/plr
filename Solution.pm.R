@@ -2,8 +2,15 @@
 CPlatform <- tail(commandArgs(),1)
 writeLines(paste0("CPlatform is ", CPlatform))
 
+# Required get the environment variable - postgresrcroot
+#
+# e.g. set postgresrcroot=C:\projects\postgresql
+#
+postgresrcroot <- Sys.getenv("postgresrcroot")
+postgresrcroot <- normalizePath(postgresrcroot, winslash="/", mustWork = T)
 
-Solution.pm.Lines <- readLines("C:/projects/postgresql/src/tools/msvc/Solution.pm")
+SolutionPathFile <- paste0(postgresrcroot, "/src/tools/msvc/Solution.pm")
+Solution.pm.Lines <- readLines(SolutionPathFile)
 
 modifySubDeterminePlatform <- function(lines, CPlatform) {
 
@@ -78,5 +85,4 @@ modifySubDeterminePlatform <- function(lines, CPlatform) {
 # part of sub DeterminePlatform - reduce concern to only "CPlatform"
 Solution.pm.Lines <- modifySubDeterminePlatform(Solution.pm.Lines, CPlatform = CPlatform )
 
-
-cat(file = "C:/projects/postgresql/src/tools/msvc/Solution.pm", Solution.pm.Lines, sep = "\n")
+cat(file = SolutionPathFile, Solution.pm.Lines, sep = "\n")
