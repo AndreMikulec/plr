@@ -66,6 +66,20 @@ static Datum r_get_tuple(SEXP rval, plr_function *function, FunctionCallInfo fci
 
 extern char *last_R_error_msg;
 
+/* 
+   This used to define _BSD_SOURCE to make declarations of isfinite
+   and isnan visible in glibc.  But that was deprecated in glibc 2.20,
+   and --std=c99 suffices nowadays.
+*/
+
+#include <R_ext/libextern.h>
+#ifdef  __cplusplus
+extern "C" {
+#else
+/* needed for isnan and isfinite, neither of which are used under C++ */
+# include <math.h>
+#endif
+
 /* ISNAN(): True for *both* NA and NaN.
    NOTE: some systems do not return 1 for TRUE.
    Also note that C++ math headers specifically undefine
