@@ -66,24 +66,6 @@ static Datum r_get_tuple(SEXP rval, plr_function *function, FunctionCallInfo fci
 
 extern char *last_R_error_msg;
 
-/* 
-   This used to define _BSD_SOURCE to make declarations of isfinite
-   and isnan visible in glibc.  But that was deprecated in glibc 2.20,
-   and --std=c99 suffices nowadays.
-*/
-
-#include <R_ext/Arith.h>
-
-/* ISNAN uses isnan, which is undefined by C++ headers 
-   This workaround is called only when ISNAN() is used
-   in a user code in a file with __cplusplus defined */
-#ifdef __cplusplus
-int R_isnancpp(double x)
-{
-   return (isnan(x) != 0);
-}
-#endif
-
 /*
  * given a scalar pg value, convert to a one row R vector
  */
