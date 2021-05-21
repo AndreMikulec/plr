@@ -66,6 +66,15 @@ static Datum r_get_tuple(SEXP rval, plr_function *function, FunctionCallInfo fci
 
 extern char *last_R_error_msg;
 
+/* ISNAN uses isnan, which is undefined by C++ headers 
+   This workaround is called only when ISNAN() is used
+   in a user code in a file with __cplusplus defined */
+
+int R_isnancpp(double x)
+{
+   return (isnan(x) != 0);
+}
+
 /*
  * given a scalar pg value, convert to a one row R vector
  */
