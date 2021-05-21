@@ -66,14 +66,28 @@ static Datum r_get_tuple(SEXP rval, plr_function *function, FunctionCallInfo fci
 
 extern char *last_R_error_msg;
 
+/* ISNAN(): True for *both* NA and NaN.
+   NOTE: some systems do not return 1 for TRUE.
+   Also note that C++ math headers specifically undefine
+   isnan if it is a macro (it is on macOS and in C99),
+   hence the workaround.  This code also appears in Rmath.h
+*/
+#ifdef __cplusplus
+  int R_isnancpp(double); /* in arithmetic.c */
+#  define ISNAN(x)     R_isnancpp(x)
+#else
+#  define ISNAN(x)     (isnan(x)!=0)
+#endif
+
 /* ISNAN uses isnan, which is undefined by C++ headers 
    This workaround is called only when ISNAN() is used
    in a user code in a file with __cplusplus defined */
-
+#ifdef __cplusplus
 int R_isnancpp(double x)
 {
    return (isnan(x) != 0);
 }
+#endif
 
 /*
  * given a scalar pg value, convert to a one row R vector
