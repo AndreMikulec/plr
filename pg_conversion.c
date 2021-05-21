@@ -72,26 +72,7 @@ extern char *last_R_error_msg;
    and --std=c99 suffices nowadays.
 */
 
-#include <R_ext/libextern.h>
-#ifdef  __cplusplus
-extern "C" {
-#else
-/* needed for isnan and isfinite, neither of which are used under C++ */
-# include <math.h>
-#endif
-
-/* ISNAN(): True for *both* NA and NaN.
-   NOTE: some systems do not return 1 for TRUE.
-   Also note that C++ math headers specifically undefine
-   isnan if it is a macro (it is on macOS and in C99),
-   hence the workaround.  This code also appears in Rmath.h
-*/
-#ifdef __cplusplus
-  int R_isnancpp(double); /* in arithmetic.c */
-#  define ISNAN(x)     R_isnancpp(x)
-#else
-#  define ISNAN(x)     (isnan(x)!=0)
-#endif
+#include <R_ext/Arith.h>
 
 /* ISNAN uses isnan, which is undefined by C++ headers 
    This workaround is called only when ISNAN() is used
