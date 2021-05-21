@@ -61,20 +61,20 @@ environment:
 #     rversion: 4.1.0alpha
 #     compiler: msys2
 
-  - pg: 38f36aad # static commit - from git
-    #   GUC description improvements for clarity # 5/5/2021
-    #
-    pghint: commit
-    #
-    PlatformToolset: v142
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.0.5patched
-    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
-    compiler: msys2
-    #
-    githubcache: true
+#   - pg: 38f36aad # static commit - from git
+#     #   GUC description improvements for clarity # 5/5/2021
+#     #
+#     pghint: commit
+#     #
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5patched
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     compiler: msys2
+#     #
+#     githubcache: true
 #
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v142
@@ -142,28 +142,63 @@ environment:
 # # classic msvc # #
 
 #   # note
-#   # many master commits are dirty: and will not compile
+#   # master commits - gap before REL_xy_0 - may often not compile
+#   #                                        because of plr internal version checks
+#                                            using server_version_num
+
+#   - pg: master # branch - non-static commit - from git
+#     PlatformToolset: v141
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.1.0beta
+#     compiler: msvc
+#     #
+#     githubcache: true
+
+#   - pg: master # branch - non-static commit - from git
+#     PlatformToolset: v141
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.1.0beta
+#     compiler: msvc
+#     #
+#     githubcache: true
+
+    # Nothing special - just the master HEAD at this time - MAY 20 2021
+    # f21fada
+    # Avoid detoasting failure after COMMIT inside a plpgsql FOR loop.
+    # Tom Lane
+    #
+  - pg: f21fada # static commit - from git
+    #
+    pghint: commit
+    #
+    PlatformToolset: v141
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+    compiler: msvc
+    #
+    githubcache: true
+
+  - pg: f21fada # static commit - from git
+    #
+    pghint: commit
+    #
+    PlatformToolset: v141
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.1.0
+    compiler: msvc
+    #
+    githubcache: true
+
+#   Visual Studio 2019 and msvc (did this ever compile?)
 #
-#   - pg: master # branch - non-static commit - from git
-#     PlatformToolset: v141
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.1.0beta
-#     compiler: msvc
-#     #
-#     githubcache: true
-
-#   - pg: master # branch - non-static commit - from git
-#     PlatformToolset: v141
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.1.0beta
-#     compiler: msvc
-#     #
-#     githubcache: true
-
 #   - pg: 38f36aad # static commit - from git
 #     #   GUC description improvements for clarity # 5/5/2021
 #     #
@@ -179,16 +214,37 @@ environment:
 #     #
 #     githubcache: true
 #
+#   - pg: REL_13_0 # static commit - from git
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     rversion: 4.0.5patched
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     compiler: msvc
+#     #
+#     githubcache: true
+
   - pg: REL_13_0 # static commit - from git
-    PlatformToolset: v142
-    Configuration: Debug
+    PlatformToolset: v141
+    Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.0.5patched
-    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.1.0
     compiler: msvc
     #
     githubcache: true
+
+  - pg: REL_13_0 # static commit - from git
+    PlatformToolset: v141
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.0.5
+    compiler: msvc
+    #
+    githubcache: true
+
 #
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v142
@@ -1924,7 +1980,7 @@ deploy:
   # Requesting a new shell for "andremikulec" and waiting for it to start.
   # queued... creating... starting...
   #
-  
+
   - provider: FTP
     host: frs.sourceforge.net
     protocol: sftp
