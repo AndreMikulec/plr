@@ -206,66 +206,6 @@ then
   loginfo "END   pg zip CREATION"
 fi
 
-
-
-#
-# this is a "bug (or resource limitation) workaround"
-#
-#
-# split big msys2, cygwin: pg Debug (sometimes 7z a is large and making a 1GB file from 3.5GB)
-#                                              7z a -v96m - (seems) always compresses) 
-#                                                          into a .azip.001 file
-# after, one may manually recreate the ONE .azip file (and it is just a .zip file)
-#   
-# one can re-construct (and ask to override if necessary) file.azip
-#   7z x file.azip.001 -tsplit
-# note, the original .azip.00# files remain behind 
-#
-# next, rename .azip to .zip 
-#       manually re-upload the .zip file to 0.0.0.0.0.GITHUBCACHE
-#
-# Note, not-1-GB-size files, deploy successfully to sourceforge (and that is good)
-# Works well with "-v48m". 
-# Below is "-v96m" and I am optimistic, that "-v96m" is hopefully still good.
-#
-# Note, for some strange reason, if only ONE .azip file (.azip.001) is created
-# then the result MAY become SUPER_COMPRESSED 70x (to 44M).  This is WEIRD.
-# I CAN NOT reapeat this locally.
-#
-# not yet tried/tested in cygwin
-#                                                                                                                           # cygwin case
-if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
-then
-  loginfo "BEGIN pg azip CREATION"
-  cd ${pgroot}
-  7z a -v96m -r ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip *
-  loginfo "BEGIN list of azip splits"
-  ls -alrt      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.*
-  loginfo "END   list of azip splits"
-  loginfo "BEGIN list first azip split"
-  7z l          ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.001
-  loginfo "END   list first azip split"
-  # This does not work. I get a strange symbol in the .actn file. I do not know why.
-                          ls -l ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.* | wc -l  > ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
-  export num_azip_files=$(ls -l ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.* | wc -l)
-  loginfo "num_azip_files ${num_azip_files}"
-  echo cat      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
-  cat           ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.acnt
-  # if just one azip file, then it is just a regular zip file - BUT may be SUPER_COMPRESSED
-  #   and then just rename it to a .zip file
-  if [ ${num_azip_files} -eq 1 ]
-  then 
-    mv ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.azip.001 ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-  fi
-  #
-  # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
-  #
-  cd ${APPVEYOR_BUILD_FOLDER}
-  loginfo "END   pg azip CREATION"
-fi
-
-
-
 # do again
 pg_ctl -D ${PGDATA} -l logfile start
 
