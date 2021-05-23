@@ -81,6 +81,8 @@ loginfo "${zip}"
 echo ${APPVEYOR_BUILD_FOLDER}
 
 loginfo "BEGIN plr zip CREATION"
+cp       ${APPVEYOR_BUILD_FOLDER}/LICENSE ${APPVEYOR_BUILD_FOLDER}/PLR_LICENSE
+7z a     ${APPVEYOR_BUILD_FOLDER}/${zip} PLR_LICENSE
 7z a -r  ${APPVEYOR_BUILD_FOLDER}/${zip} ./tmp/*
 ls -alrt ${APPVEYOR_BUILD_FOLDER}/${zip}
 loginfo "BEGIN plr ZIP LISTING"
