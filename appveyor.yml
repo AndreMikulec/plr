@@ -104,7 +104,8 @@ environment:
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.1.0
+    # internal file name must match
+    rversion: R-4.1.0patched
     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z
     compiler: msys2
     #
