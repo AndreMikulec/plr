@@ -300,6 +300,18 @@ else
                          psql -d postgres -c 'SELECT plr_version();'
 fi
 
+
+# How to escape single quotes within single quoted strings
+# 2009 - MULTIPLE SOLUTIONS
+# https://stackoverflow.com/questions/1250079/how-to-escape-single-quotes-within-single-quoted-strings
+
+if [ "${compiler}" == "msys2" ]
+then
+  winpty -Xallow-non-tty psql -d postgres -c 'SELECT * FROM pg_available_extensions WHERE name = '\''plr'\'';'
+else
+                         psql -d postgres -c 'SELECT * FROM pg_available_extensions WHERE name = '\''plr'\'';'
+fi
+
 if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'SELECT   r_version();'
