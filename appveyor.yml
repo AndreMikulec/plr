@@ -82,7 +82,7 @@ environment:
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.1.0
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z
 #     compiler: msys2
 #     #
 #     githubcache: true
@@ -93,7 +93,7 @@ environment:
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #     rversion: 4.1.0
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z
 #     compiler: msys2
 #     #
 #     githubcache: true
@@ -105,6 +105,7 @@ environment:
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     rversion: 4.1.0
+    rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z
     compiler: msys2
     #
     githubcache: true
@@ -216,7 +217,7 @@ environment:
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.0
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0_80317_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z
 #     compiler: msvc
 #     #
 #     githubcache: true
@@ -227,7 +228,7 @@ environment:
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.0
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.1.0_80317_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z
 #     compiler: msvc
 #     #
 #     githubcache: true
@@ -249,7 +250,7 @@ environment:
 #     Platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.0
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0_80317_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z
 #     compiler: msvc
 #     #
 #     githubcache: true
@@ -300,7 +301,7 @@ environment:
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.0
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-450-master_r-patched_R-4.1.0_80317_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z
 #     compiler: msvc
 #     #
 #     githubcache: true
@@ -311,7 +312,7 @@ environment:
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.0
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0_80317_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z
 #     compiler: msvc
 #     #
 #     githubcache: true
