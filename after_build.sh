@@ -75,6 +75,12 @@ mkdir -p                              tmp/share/extension
 cp ${SHAREDIR}/extension/plr.control  tmp/share/extension
 cp ${SHAREDIR}/extension/plr--*.sql   tmp/share/extension
 
+if ([ "${rversion}" == "" ] || [ "${rversion}" == "none" ])
+then
+  # later(now) - dynamically determing the R version
+  export rversion=$(Rscript --vanilla -e 'cat(paste0(R.version$major,'\''.'\'',R.version$minor))' 2>/dev/null)
+fi
+
 export var7z=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${Platform}-${Configuration}-${compiler}.7z
 loginfo "${var7z}"
 
