@@ -27,7 +27,7 @@ export PATH=${PATH}:$(echo $(cygpath "c:\\${betterperl}\c\bin"))
 if [ "${pggithubbincacheextracted}" == "false" ] && [ ! "${pg}" == "none" ]
 then
   loginfo "BEGIN PostgreSQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
-  if [ ! -f "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip" ]
+  if [ ! -f "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" ]
   then
     loginfo "BEGIN PostgreSQL CONFIGURE"
     cd ${pgsource}
@@ -49,13 +49,13 @@ then
     cd ${APPVEYOR_BUILD_FOLDER}
     loginfo "END   PostgreSQL BUILD + INSTALL"
   else
-    loginfo "BEGIN zip EXTRACTION"
+    loginfo "BEGIN 7z EXTRACTION"
     cd ${pgroot}
-    7z l "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
-    7z x "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
+    7z l "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+    7z x "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
     ls -alrt ${pgroot}
     cd ${APPVEYOR_BUILD_FOLDER}
-    loginfo "END   zip EXTRACTION"
+    loginfo "END   7z EXTRACTION"
   fi
   loginfo "END   PostgreSQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
 fi
@@ -163,23 +163,23 @@ pg_ctl -D ${PGDATA} -l logfile stop
 #                                                                                                                           # cygwin case
 if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
 then
-  loginfo "BEGIN pg zip CREATION"
+  loginfo "BEGIN pg 7z CREATION"
   cd ${pgroot}
   ls -alrt
-  loginfo                           "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
-  7z a -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip *
-  7z l      ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-  ls -alrt  ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-  export   pg_zip_size=$(find "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip" -printf "%s")
-  loginfo "pg_zip_size $pg_zip_size" 
+  loginfo                                            "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+  7z a -t7z -mmt24 -mx7 -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z *
+  7z l                       ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+  ls -alrt                   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+  export  pg_7z_size=$(find "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" -printf "%s")
+  loginfo "pg_7z_size $pg_7z_size" 
   #                       96m
-  if [ ${pg_zip_size} -gt 100663296 ] 
+  if [ ${pg_7z_size} -gt 100663296 ] 
   then
-    rm -f    ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
-    loginfo "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip is TOO BIG so removed."
+    rm -f    ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+    loginfo "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z is TOO BIG so removed."
   fi
   #
-  if [ -f "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip" ]
+  if [ -f "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" ]
   then
     if [ "${compiler}" == "cygwin" ]
     then
@@ -189,21 +189,21 @@ then
       #
       # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
       #
-      # loginfo "appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
-      #          appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+      # loginfo "appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+      #          appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
       popd
   # bash if-then-else-fi # inside bodies can not be empty
   # else
       #
       # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
       #
-      # loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip"
-      #          appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.zip
+      # loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+      #          appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
     fi
   fi
   #
   cd ${APPVEYOR_BUILD_FOLDER} 
-  loginfo "END   pg zip CREATION"
+  loginfo "END   pg 7z CREATION"
 fi
 
 # do again

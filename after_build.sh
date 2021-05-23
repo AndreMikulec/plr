@@ -73,22 +73,20 @@ mkdir -p                              tmp/lib
 cp ${PKGLIBDIR}/plr.dll               tmp/lib
 mkdir -p                              tmp/share/extension
 cp ${SHAREDIR}/extension/plr.control  tmp/share/extension
-cp ${SHAREDIR}/extension/plr-*.sql    tmp/share/extension
+cp ${SHAREDIR}/extension/plr--*.sql   tmp/share/extension
 
-export zip=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${Platform}-${Configuration}-${compiler}.zip
-loginfo "${zip}"
+export var7z=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${Platform}-${Configuration}-${compiler}.7z
+loginfo "${var7z}"
 
 echo ${APPVEYOR_BUILD_FOLDER}
 
-loginfo "BEGIN plr zip CREATION"
-cp       ${APPVEYOR_BUILD_FOLDER}/LICENSE ${APPVEYOR_BUILD_FOLDER}/PLR_LICENSE
-7z a     ${APPVEYOR_BUILD_FOLDER}/${zip} PLR_LICENSE
-7z a -r  ${APPVEYOR_BUILD_FOLDER}/${zip} ./tmp/*
-ls -alrt ${APPVEYOR_BUILD_FOLDER}/${zip}
-loginfo "BEGIN plr ZIP LISTING"
-7z l     ${APPVEYOR_BUILD_FOLDER}/${zip}
-loginfo "END   plr ZIP LISTING"
-loginfo "END plr zip CREATION"
+loginfo "BEGIN plr 7z CREATION"
+7z a -t7z -mmt24 -mx7 -r  ${APPVEYOR_BUILD_FOLDER}/${var7z} ./tmp/*
+ls -alrt                  ${APPVEYOR_BUILD_FOLDER}/${var7z}
+loginfo "BEGIN plr 7z LISTING"
+7z l                      ${APPVEYOR_BUILD_FOLDER}/${var7z}
+loginfo "END   plr 7z LISTING"
+loginfo "END plr 7z CREATION"
 
 
 if [ "${compiler}" == "cygwin" ]
@@ -96,22 +94,22 @@ then
   # command will automatically pre-prepend A DIRECTORY (strange!)
   # e.g. 
   pushd ${APPVEYOR_BUILD_FOLDER}
-  loginfo "appveyor PushArtifact ${zip}"
-           appveyor PushArtifact ${zip}
+  loginfo "appveyor PushArtifact ${var7z}"
+           appveyor PushArtifact ${var7z}
   popd
   #
   # BAD PUSH-ARTIFACT - DEFINITELY A BUG
   #
-  # loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}"
-  #          appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
+  # loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${var7z}"
+  #          appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${var7z}
   #
-  # appveyor PushArtifact /cygdrive/c/projects/plr/plr-761a5fbc-pg12-R4.1.0alpha-x86-Debug-cygwin.zip
-  # File not found: C:\projects\plr\cygdrive\c\projects\plr\plr-761a5fbc-pg12-R4.1.0alpha-x86-Debug-cygwin.zip
+  # appveyor PushArtifact /cygdrive/c/projects/plr/plr-761a5fbc-pg12-R4.1.0alpha-x86-Debug-cygwin.7z
+  # File not found: C:\projects\plr\cygdrive\c\projects\plr\plr-761a5fbc-pg12-R4.1.0alpha-x86-Debug-cygwin.7z
   # Command exited with code 2
   # 
 else
-  loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}"
-           appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${zip}
+  loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${var7z}"
+           appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${var7z}
 fi
 
 # must stop, else Appveyor job will hang.

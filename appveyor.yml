@@ -21,6 +21,16 @@ environment:
 
   matrix:
 
+  # works
+  - pg: REL_13_0 # static commit - from git
+    PlatformToolset: v142
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    compiler: cygwin
+    #
+    githubcache: true
+
 #   # works
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v142
@@ -50,7 +60,7 @@ environment:
 #     Configuration: Release
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.1.0alpha
+#     rversion: 4.1.0
 #     compiler: msys2
 
 #   # works well
@@ -58,7 +68,7 @@ environment:
 #     Configuration: Debug
 #     Platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.1.0alpha
+#     rversion: 4.1.0
 #     compiler: msys2
 
 #   - pg: 38f36aad # static commit - from git
@@ -70,8 +80,8 @@ environment:
 #     Configuration: Debug
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.0.5patched
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     rversion: 4.1.0
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z
 #     compiler: msys2
 #     #
 #     githubcache: true
@@ -81,11 +91,22 @@ environment:
 #     Configuration: Debug
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.0.5patched
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     rversion: 4.1.0
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z
 #     compiler: msys2
 #     #
 #     githubcache: true
+
+  # works
+  - pg: REL_13_0 # static commit - from git
+    PlatformToolset: v142
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    rversion: 4.1.0
+    compiler: msys2
+    #
+    githubcache: true
 
 #   # works
 #   - pg: REL_13_0 # static commit - from git
@@ -93,7 +114,7 @@ environment:
 #     Configuration: Debug
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.1.0alpha
+#     rversion: 4.1.0
 #     compiler: msys2
 #     #
 #     githubcache: true
@@ -103,12 +124,12 @@ environment:
 #     Configuration: Debug
 #     Platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.0.5
+#     rversion: 4.1.0
 #     compiler: msys2
 #     #
 #     githubcache: true
 
-#   # should work
+#   # works
 #   - pg: 5cbfce562f7cd2aab0cdc4694ce298ec3567930e # static commit - from git
 #     #
 #     pghint: commit
@@ -117,7 +138,7 @@ environment:
 #     Configuration: Debug
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.0.5
+#     rversion: 4.1.0
 #     compiler: msys2
 #     #
 #     githubcache: true
@@ -127,7 +148,7 @@ environment:
 #     Configuration: Debug
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.0.5
+#     rversion: 4.1.0
 #     compiler: msys2
 #     pglinkbinoldurl: http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-postgresql-12.4-1-any.pkg.tar.zst
 #
@@ -136,7 +157,7 @@ environment:
 #     Configuration: Release
 #     Platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.0.5
+#     rversion: 4.1.0
 #     compiler: msys2
 
 # # classic msvc # #
@@ -151,7 +172,7 @@ environment:
 #     Configuration: Debug
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.1.0beta
+#     rversion: 4.1.0
 #     compiler: msvc
 #     #
 #     githubcache: true
@@ -161,73 +182,58 @@ environment:
 #     Configuration: Debug
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.1.0beta
+#     rversion: 4.1.0
 #     compiler: msvc
 #     #
 #     githubcache: true
 
-    # Nothing special - just the master HEAD at this time - MAY 20 2021
-    # f21fada
-    # Avoid detoasting failure after COMMIT inside a plpgsql FOR loop.
-    # Tom Lane
-    #
-  - pg: f21fada # static commit - from git
-    #
-    pghint: commit
-    #
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.5
-    compiler: msvc
-    #
-    githubcache: true
+#     # Nothing special - just the master HEAD at this time - MAY 20 2021
+#     # f21fada
+#     # Avoid detoasting failure after COMMIT inside a plpgsql FOR loop.
+#     # Tom Lane
+#     #
+#   - pg: f21fada # static commit - from git
+#     #
+#     pghint: commit
+#     #
+#     PlatformToolset: v141
+#     Configuration: Release
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.1.0
+#     compiler: msvc
+#     #
+#     githubcache: true
 
-  - pg: f21fada # static commit - from git
-    #
-    pghint: commit
-    #
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.1.0
-    compiler: msvc
-    #
-    githubcache: true
-
-#   Visual Studio 2019 and msvc (did this ever compile?)
-#
 #   - pg: 38f36aad # static commit - from git
 #     #   GUC description improvements for clarity # 5/5/2021
 #     #
 #     pghint: commit
 #     #
-#     PlatformToolset: v142
+#     PlatformToolset: v141
 #     Configuration: Debug
 #     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.0.5patched
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.1.0
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0_80317_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z
 #     compiler: msvc
 #     #
 #     githubcache: true
 #
 #   - pg: REL_13_0 # static commit - from git
-#     PlatformToolset: v142
+#     PlatformToolset: v141
 #     Configuration: Debug
 #     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.0.5patched
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.1.0
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.1.0_80317_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z
 #     compiler: msvc
 #     #
 #     githubcache: true
 
   - pg: REL_13_0 # static commit - from git
     PlatformToolset: v141
-    Configuration: Release
+    Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.1.0
@@ -235,24 +241,14 @@ environment:
     #
     githubcache: true
 
-  - pg: REL_13_0 # static commit - from git
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.0.5
-    compiler: msvc
-    #
-    githubcache: true
-
 #
 #   - pg: REL_13_0 # static commit - from git
-#     PlatformToolset: v142
+#     PlatformToolset: v141
 #     Configuration: Debug
 #     Platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.0.5patched
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: 4.1.0
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0_80317_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z
 #     compiler: msvc
 #     #
 #     githubcache: true
@@ -262,7 +258,7 @@ environment:
 #     Configuration: Debug
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
+#     rversion: 4.1.0
 #     compiler: msvc
 #
 #
@@ -277,7 +273,7 @@ environment:
 # #     Configuration: Debug
 # #     Platform: x64
 # #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-# #     rversion: 4.0.5
+# #     rversion: 4.1.0
 # #     compiler: msvc
 # #     #
 # #     githubcache: true
@@ -287,7 +283,7 @@ environment:
 #     Configuration: Debug
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.1.0alpha
+#     rversion: 4.1.0
 #     compiler: msvc
 #     #
 #     githubcache: true
@@ -302,8 +298,8 @@ environment:
 #     Configuration: Debug
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5patched
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     rversion: 4.1.0
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-450-master_r-patched_R-4.1.0_80317_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z
 #     compiler: msvc
 #     #
 #     githubcache: true
@@ -313,8 +309,8 @@ environment:
 #     Configuration: Debug
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5patched
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip/r-base_0.1.0-49-master_r-patched_R-4.0.5patched_80182_Generic_Debug.zip
+#     rversion: 4.1.0
+#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0_80317_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80317_Generic_Debug.7z
 #     compiler: msvc
 #     #
 #     githubcache: true
@@ -324,7 +320,7 @@ environment:
 #     Configuration: Release
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
+#     rversion: 4.1.0
 #     compiler: msvc
 #     #
 #     githubcache: true
@@ -334,7 +330,7 @@ environment:
 #     Configuration: Release
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
+#     rversion: 4.1.0
 #     compiler: msvc
 #
 #
@@ -345,7 +341,7 @@ environment:
 #     Configuration: Release
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
+#     rversion: 4.1.0
 #     compiler: msvc
 #     #
 #     githubcache: true
@@ -355,7 +351,7 @@ environment:
 #     Configuration: Release
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
+#     rversion: 4.1.0
 #     compiler: msvc
 #
 #   - pg: 12.5-1 # from Appveyor
@@ -371,7 +367,7 @@ environment:
 #     Configuration: Release
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-#     rversion: 4.0.5
+#     rversion: 4.1.0
 #     compiler: msvc
 
 #   - pg: 11.11-1 # from Appveyor
@@ -387,7 +383,7 @@ environment:
 #     Configuration: Release
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#     rversion: 4.0.5
+#     rversion: 4.1.0
 #     compiler: msvc
 #
 #   - pg: 10.16-1 # from Appveyor
@@ -539,11 +535,11 @@ environment:
   # begin - Microsoft Visual C++ msvc and msys2
 
   # If a matrix entry has defined "rlinkbinoldurl" then get a custom built specific
-  # .zip file containing and installer exe file from the provided URL "rlinkbinoldurl"
+  # .7z file containing and installer exe file from the provided URL "rlinkbinoldurl"
   # Note, the "rversion" must be correct.
-  # From the downloaded .zip file, 7z will try to extract this exact file name "R-${env:rversion}-win.exe"
+  # From the downloaded .7z file, 7z will try to extract this exact file name "R-${env:rversion}-win.exe"
   #
-  # Typically, my custom builds (.zip files) are located at "https://github.com/AndreMikulec/plr/releases"
+  # Typically, my custom builds (.7z files) are located at "https://github.com/AndreMikulec/plr/releases"
   #
   # HARD Note, if "rlinkbinoldurl" is not none and "R-${env:rversion}-win.exe" is successfully downloaded,
   # then this OVERWRITES the cache.  Also, this processes lazily LEAVES this file in the cache.
@@ -928,22 +924,22 @@ for:
   #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
   #   pg already-compiled-binaries.
   #
-  - set pgzip=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.zip
-  - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pgzip%
+  - set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
+  - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pg7z%
   #
   # note: using Windows instead of Powershell
   # I could not get the Invoke-??? . . . I would silently run (and die), I would not get error feedback.
   #
-  - if "%githubcache%"=="true" if not exist "%pgzip%"  (
+  - if "%githubcache%"=="true" if not exist "%pg7z%"  (
       bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
       for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i)
     )
-  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" curl -o "%pgzip%" -L "%pggithubbincacheurl%"
-  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if exist "%pgzip%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false)
+  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" curl -o "%pg7z%" -L "%pggithubbincacheurl%"
+  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if exist "%pg7z%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false)
   - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if "%pggithubbincachefound%"=="true" (
         mkdir            "%pgroot%" &
-        7z x "%pgzip%" "-o%pgroot%" &
-        dir "%pgroot%" &
+        7z x "%pg7z%"  "-o%pgroot%" &
+        dir              "%pgroot%" &
         if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
     )
   #                            cygwin: executable IS STILL postgres.exe (not postgres)
@@ -1151,22 +1147,22 @@ for:
           ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
         }
       } else {
-          # my custom build .exe in a zip file
+          # my custom build .exe in a .7z file
           ${env:rversionurl} = ${env:rlinkbinoldurl}
       }
       #
       if ((-not (Test-Path "R-${env:rversion}-win.exe")) -and ("${env:rlinkbinoldurl}" -eq "none")) {
         curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
       }
-      if ((-not (Test-Path "R-${env:rversion}-win.zip")) -and (-not ("${env:rlinkbinoldurl}" -eq "none"))) {
+      if ((-not (Test-Path "R-${env:rversion}-win.7z")) -and (-not ("${env:rlinkbinoldurl}" -eq "none"))) {
         # custom R ignores the cache - CONSIDER INSTEAD - CLEAR THE CACHE
         if (Test-Path "R-${env:rversion}-win.exe") {
-          del "R-${env:rversion}-win.exe"
+          del         "R-${env:rversion}-win.exe"
         }
-        # my custom build .exe in a zip file
+        # my custom build .exe in a 7z file
         # PowerShell 4.0, an Alias
-        curl -o "R-${env:rversion}-win.zip" -v "${env:rversionurl}"
-        7z e    "R-${env:rversion}-win.zip" "R-${env:rversion}-win.exe"
+        curl -o "R-${env:rversion}-win.7z" -v "${env:rversionurl}"
+        7z e    "R-${env:rversion}-win.7z" "R-${env:rversion}-win.exe"
       }
   #
   - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
@@ -1215,22 +1211,22 @@ for:
   #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
   #   pg already-compiled-binaries.
   #
-  - set pgzip=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.zip
-  - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pgzip%
+  - set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
+  - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pg7z%
   #
   # note: using Windows instead of Powershell
   # I could not get the Invoke-??? . . . I would silently run (and die), I would not get error feedback.
   #
-  - if "%githubcache%"=="true" if not exist "%pgzip%"  (
+  - if "%githubcache%"=="true" if not exist "%pg7z%"  (
       bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
       for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i)
     )
-  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" curl -o "%pgzip%" -L "%pggithubbincacheurl%"
-  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if exist "%pgzip%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false)
+  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" curl -o "%pg7z%" -L "%pggithubbincacheurl%"
+  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if exist "%pg7z%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false)
   - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if "%pggithubbincachefound%"=="true" (
         mkdir            "%pgroot%" &
-        7z x "%pgzip%" "-o%pgroot%" &
-        dir "%pgroot%" &
+        7z x "%pg7z%"  "-o%pgroot%" &
+        dir              "%pgroot%" &
         if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
     )
   #                            msys2: executable IS STILL postgres.exe (not postgres)
@@ -1398,9 +1394,9 @@ for:
   #
   # R "MSYS2" compiled R binaries location: https://ftp.opencpu.org/
   #
-  # https://cran.r-project.org/bin/windows/base/R-4.0.5patched-win.exe
+  # https://cran.r-project.org/bin/windows/base/R-4.1.0patched-win.exe
   # sometimes
-  # https://cran.r-project.org/bin/windows/base/R-4.1.0alpha-win.exe
+  # https://cran.r-project.org/bin/windows/base/R-4.1.#alpha-win.exe
   # https://cran.r-project.org/bin/windows/base/rpatched.html
   #
   # - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
@@ -1414,22 +1410,22 @@ for:
           ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
         }
       } else {
-          # my custom build .exe in a zip file
+          # my custom build .exe in a 7z file
           ${env:rversionurl} = ${env:rlinkbinoldurl}
       }
       #
       if ((-not (Test-Path "R-${env:rversion}-win.exe")) -and ("${env:rlinkbinoldurl}" -eq "none")) {
         curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
       }
-      if ((-not (Test-Path "R-${env:rversion}-win.zip")) -and (-not ("${env:rlinkbinoldurl}" -eq "none"))) {
+      if ((-not (Test-Path "R-${env:rversion}-win.7z")) -and (-not ("${env:rlinkbinoldurl}" -eq "none"))) {
         # custom R ignores the cache - CONSIDER INSTEAD - CLEAR THE CACHE
         if (Test-Path "R-${env:rversion}-win.exe") {
-          del "R-${env:rversion}-win.exe"
+          del         "R-${env:rversion}-win.exe"
         }
-        # my custom build .exe in a zip file
+        # my custom build .exe in a 7z file
         # PowerShell 4.0, an Alias
-        curl -o "R-${env:rversion}-win.zip" -v "${env:rversionurl}"
-        7z e    "R-${env:rversion}-win.zip" "R-${env:rversion}-win.exe"
+        curl -o "R-${env:rversion}-win.7z" -v "${env:rversionurl}"
+        7z e    "R-${env:rversion}-win.7z" "R-${env:rversion}-win.exe"
       }
   #
   - R-%rversion%-win.exe /VERYSILENT
@@ -1478,22 +1474,22 @@ for:
   #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
   #   pg already-compiled-binaries.
   #
-  - set pgzip=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.zip
-  - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pgzip%
+  - set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
+  - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pg7z%
   #
   # note: using Windows instead of Powershell
   # I could not get the Invoke-??? . . . I would silently run (and die), I would not get error feedback.
   #
-  - if "%githubcache%"=="true" if not exist "%pgzip%"  (
+  - if "%githubcache%"=="true" if not exist "%pg7z%"  (
       bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
       for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i)
     )
-  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" curl -o "%pgzip%" -L "%pggithubbincacheurl%"
-  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if exist "%pgzip%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false)
+  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" curl -o "%pg7z%" -L "%pggithubbincacheurl%"
+  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if exist "%pg7z%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false)
   - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if "%pggithubbincachefound%"=="true" (
         mkdir            "%pgroot%" &
-        7z x "%pgzip%" "-o%pgroot%" &
-        dir "%pgroot%" &
+        7z x "%pg7z%"  "-o%pgroot%" &
+        dir              "%pgroot%" &
         if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
     )
   # user provided (if any), in the matrix
@@ -1767,11 +1763,11 @@ for:
   - copy %dll% tmp\lib
   - copy %dll:.dll=.pdb% tmp\symbols
   - dir tmp
-  - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%Platform%-%Configuration%-%compiler%.zip
-  - 7z a -r %zip% .\tmp\* > nul
-  - dir "%zip%"
-  - echo appveyor PushArtifact "%zip%"
-  - appveyor PushArtifact "%zip%"
+  - set var7z=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%Platform%-%Configuration%-%compiler%.7z
+  - 7z a -t7z -mmt24 -mx7 -r %var7z% .\tmp\* > nul
+  - dir "%var7z%"
+  - echo appveyor PushArtifact "%var7z%"
+  -      appveyor PushArtifact "%var7z%"
 
   # #
   # - echo BEGIN TRY TO FIND BUILT FILES LOCATION: postgres.exe and plr.dll
@@ -1814,7 +1810,7 @@ for:
 
   #
   # same as above (repeated here)
-  - set pgzip=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.zip
+  - set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
   #
   # Zipping must be performed here, after "perl install.pl".
   # pg has been installed inside %pgroot% == %pf%\PostgreSQL\%pgversion% (see above).
@@ -1825,19 +1821,19 @@ for:
   #
   # "%pgroot%\bin\postgres.exe" SHOULD BE THERE - missing should NOT happen
   - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" (
-      7z a -r "%pgzip%"  "%pgroot%\*" > nul
+      7z a -t7z -mmt24 -mx7 -r "%pg7z%"  "%pgroot%\*" > nul
     )
   #
   # Often push "msvc pg" artifacts (because they are not too big.)
   #
-  - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pgzip%" (
-      appveyor PushArtifact "%pgzip%"
+  - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pg7z%" (
+      appveyor PushArtifact "%pg7z%"
     )
   # what did I 7z up?
   - ps: |
       # Set-PSDebug -Trace 2
       if ( ("$env:githubcache" -eq "true") -and ("$env:pggithubbincachefound" -eq "false") -and (Test-Path "$env:pgroot\bin\postgres.exe") ) {
-        7z l "$env:pgzip"
+        7z l "$env:pg7z"
       }
 
   test_script:
@@ -1855,14 +1851,14 @@ for:
         pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
       } else {
         Add-AppveyorMessage "Copying the extension files to the PostgreSQL directories." -Category Information
-        7z x "$env:zip" "-o$env:pgroot"
+        7z x "$env:var7z" "-o$env:pgroot"
       }
       #
       # If the pg is from the already-compiled-binary 0.0.0.0.0.GITHUBCACHE,
       # then, add the "plr" to be (eventually) regression tested.
       #
       if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
-        7z x "$env:zip" "-o$env:pgroot"
+        7z x "$env:var7z" "-o$env:pgroot"
       }
 
   - appveyor AddMessage "Starting the database server." -Category Information
@@ -1880,50 +1876,6 @@ for:
   - for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\server_version_num.txt) do (set server_version_num=%%i)
   - type %APPVEYOR_BUILD_FOLDER%\server_version_num.txt
   - echo server_version_num %server_version_num%
-
-  # # HAD ALREADY BEEN FIXED IN . . .
-  # # https://github.com/postgres-plr/plr/commit/1ba43857fe7d79629e1c6dda7e47f75f0581c115
-  # #
-  # Author:			Dave Cramer <davecramer@gmail.com>
-  # Date:			(4/12/2021 7:37:38 AM)
-  # Committer:		GitHub <noreply@github.com>
-  # Commit hash:	1ba43857fe7d79629e1c6dda7e47f75f0581c115
-  # Child:			5722598a
-  # Parent:			9e72c5d9
-  # Update for PostgreSQL >= 14 (#88)
-  #
-  # * Update msvc.diff for master.
-  # hex_decode has been removed in 14 in favour of pg_hex_decode, adjust code to call new function for versions greater than or equal to 14.0
-  #
-  # * use PGERROR, PGWARNING where defined
-  # Contained in branches:
-  # master
-  # master_msys2_simplest_test_installcheck
-  # Contained in no tag
-  #
-  # Derives from tag: REL8_4_1 + 4 commits
-  #
-  #   # testing
-  #   #
-  #   #
-  #   # hopefull a temporary patch - on Windows(msvc)
-  #   # So the reason master is failing is because for some reason the error is
-  #   #   now returning a warning on windows but not on linux
-  #   # https://github.com/postgres-plr/plr/issues/89
-  #   - ps: |
-  #       Set-PSDebug -Trace 2
-  #       if (("$env:pgversion" -eq "master") -and ([double]"$env:server_version_num" -ge 140000.0)) {
-  #         echo "BEGIN change expected\bad_fun.out from ERROR to WARNING"
-  #         echo "PRINTING expected\bad_fun.out"
-  #         type "expected\bad_fun.out"
-  #         # should have returned ERROR - but windows(msvc) returns WARNING(wrong)
-  #         # forcing a regression test to pass
-  #         sed -i "s/ERROR/WARNING/" "expected\bad_fun.out"
-  #         echo "PRINTING expected\bad_fun.out"
-  #         type "expected\bad_fun.out"
-  #         echo "END change expected\bad_fun.out from ERROR to WARNING"
-  #       }
-  #
   - ps: |
       # Set-PSDebug -Trace 2
       Add-AppveyorTest Regression -Framework pg_regress -FileName sql\ -Outcome Running
@@ -1961,14 +1913,10 @@ cache:
 
 
 artifacts:
-- path: 'plr-*.zip'
-  name: plr_zip
-- path: 'pg-*.zip'
-  name: pg_zip
-- path: 'pg-*.acnt'
-  name: pg_acnt
-- path: 'pg-*.azip.*'
-  name: pg_azip
+- path: 'plr-*.7z'
+  name: plr_7z
+- path: 'pg-*.7z'
+  name: pg_7z
 
 deploy:
 
@@ -1988,7 +1936,7 @@ deploy:
     username: andremikulec,andremikulec.u
     password:
       secure: 4gk4GyW4O5RooiOyGeRdoA==
-    artifact: plr_zip
+    artifact: plr_7z
     folder: /home/frs/project/andremikulec
     application:
     active_mode: false
@@ -2000,21 +1948,7 @@ deploy:
     username: andremikulec,andremikulec.u
     password:
       secure: 4gk4GyW4O5RooiOyGeRdoA==
-    # smaller smaller before larger
-    #   succesfully - Collecting artifacts... Uploading artifacts... to Appveyor Job Artifacts
-    artifact: pg_acnt, pg_azip
-    folder: /home/frs/project/andremikulec
-    application:
-    active_mode: false
-
-  - provider: FTP
-    host: frs.sourceforge.net
-    protocol: sftp
-    # https://sourceforge.net/projects/andremikulec/files/
-    username: andremikulec,andremikulec.u
-    password:
-      secure: 4gk4GyW4O5RooiOyGeRdoA==
-    artifact: pg_zip
+    artifact: pg_7z
     folder: /home/frs/project/andremikulec
     application:
     active_mode: false
@@ -2026,11 +1960,11 @@ deploy:
     release: 0.0.0.0.0.GITHUBCACHE
     draft: false
     prerelease: false
-    artifact: pg_zip
+    artifact: pg_7z
     auth_token:
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
     # non - "branch, tag, or commit" will still be expected "false" ( githubcache != true )
-    # and never find a pg-*.zip to deploy - and that is OK.
+    # and never find a pg-*.7z to deploy - and that is OK.
 
   #
   # second, last of Github deployments, to try to appear as "latest"
@@ -2039,7 +1973,7 @@ deploy:
     release: $(APPVEYOR_REPO_TAG_NAME)
     draft: false
     prerelease: false
-    artifact: plr_zip
+    artifact: plr_7z
     auth_token:
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
     on:
