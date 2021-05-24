@@ -52,7 +52,9 @@ install:
 # R in the path is not required: msvc compilation
 # R in the path is required: find the Rscript, 
 #   CREATE EXTENSION plr, and regression tests
+- tree "%R_HOME%"
 - setx /M PATH "%R_HOME%\bin\%rbin%;%PATH%"
+- set PATH=%R_HOME%\bin\%rbin%;%PATH%
 # Environment variable "postgresrcroot" is required for msvc.diff.R
 - set postgresrcroot=C:\projects\postgresql
 - Rscript --vanilla "%APPVEYOR_BUILD_FOLDER%\msvc.diff.R"
