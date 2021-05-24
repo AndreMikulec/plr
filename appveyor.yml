@@ -49,6 +49,12 @@ install:
 - SET R_HOME=%ProgramFiles%\R\R-%rversion%
 - set RBIN=%PLATFORM:x86=i386%
 - SET sed=C:\msys64\usr\bin\sed
+# Environment variable "postgresrcroot" is required for msvc.diff.R
+- set postgresrcroot=C:\projects\postgresql
+# R in the path is not required: msvc compilation
+# R in the path is required: find the Rscript, 
+#   CREATE EXTENSION plr, and regression tests
+- setx /M PATH "%R_HOME%\bin\%rbin%;%PATH%"
 - ps: |
     if ("$env:pg" -eq "master") {
       $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
@@ -57,7 +63,7 @@ install:
       lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
       pushd c:\projects\postgresql
       cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
-      patch -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
+      Rscript --vanilla "${env:APPVEYOR_BUILD_FOLDER}\msvc.diff.R"
       perl contrib\plr\buildsetup.pl
       popd
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
@@ -117,9 +123,7 @@ test_script:
       7z x "$env:zip" "-o$env:pgroot"
     }
 - appveyor AddMessage "Starting the database server." -Category Information
-- setx /M PATH "%R_HOME%\bin\%RBIN%;%PATH%"
 - net start postgresql%x64%-%pgversion%
-
 - ps: |
     Add-AppveyorTest Regression -Framework pg_regress -FileName sql\ -Outcome Running
     if (("9.3", "9.4").Contains("$env:pgversion")) {
