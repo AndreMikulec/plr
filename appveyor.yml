@@ -49,12 +49,13 @@ install:
 - SET R_HOME=%ProgramFiles%\R\R-%rversion%
 - set RBIN=%PLATFORM:x86=i386%
 - SET sed=C:\msys64\usr\bin\sed
-# Environment variable "postgresrcroot" is required for msvc.diff.R
-- set postgresrcroot=C:\projects\postgresql
 # R in the path is not required: msvc compilation
 # R in the path is required: find the Rscript, 
 #   CREATE EXTENSION plr, and regression tests
 - setx /M PATH "%R_HOME%\bin\%rbin%;%PATH%"
+# Environment variable "postgresrcroot" is required for msvc.diff.R
+- set postgresrcroot=C:\projects\postgresql
+- Rscript --vanilla "%APPVEYOR_BUILD_FOLDER%\msvc.diff.R"
 - ps: |
     if ("$env:pg" -eq "master") {
       $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
@@ -63,7 +64,6 @@ install:
       lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
       pushd c:\projects\postgresql
       cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
-      Rscript --vanilla "${env:APPVEYOR_BUILD_FOLDER}\msvc.diff.R"
       perl contrib\plr\buildsetup.pl
       popd
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
