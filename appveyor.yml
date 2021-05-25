@@ -8,27 +8,27 @@ environment:
   rversion: 4.1.0
   matrix:
 
-  - pg: master
-    PlatformToolset: v141
-    configuration: Debug
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#   - pg: master
+#     PlatformToolset: v141
+#     configuration: Debug
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
   - pg: REL_13_0
     PlatformToolset: v141
     configuration: Release
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-  - pg: REL_12_0
-    PlatformToolset: v141
-    configuration: Release
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#   - pg: REL_12_0
+#     PlatformToolset: v141
+#     configuration: Release
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
-  - pg: 9.6.13-1
-    PlatformToolset: v120
-  - pg: 11.11-2
-    PlatformToolset: v140
-  - pg: 12.6-2
-    PlatformToolset: v141
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#   - pg: 9.6.13-1
+#     PlatformToolset: v120
+#   - pg: 11.11-2
+#     PlatformToolset: v140
+#   - pg: 12.6-2
+#     PlatformToolset: v141
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
   - pg: 13.2-2
     PlatformToolset: v141
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
@@ -132,7 +132,7 @@ after_build:
 - set zip=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%PLATFORM%-%CONFIGURATION%.zip
 - 7z a -r %zip% .\tmp\* > nul
 - ps: |
-    if ("$env:pg" -eq "master") {
+    if ("$env:pg" -notmatch "[.]") {
       pushd c:\projects\postgresql\src\tools\msvc
       perl install.pl "$env:pgroot"
       popd
@@ -141,7 +141,7 @@ after_build:
 test_script:
 - path %pgroot%\bin;%PATH%
 - ps: |
-    if ("$env:pg" -eq "master") {
+    if ("$env:pg" -notmatch "[.]") {
       Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
       initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
       pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
