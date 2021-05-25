@@ -5,14 +5,23 @@ clone_depth: 1
 environment:
   PGUSER: postgres
   PGPASSWORD: Password12!
-  rversion: 3.6.0
+  rversion: 4.1.0
   matrix:
+
   - pg: master
     PlatformToolset: v141
     configuration: Debug
-#try version 4
-    rversion: 4.1.0
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+
+  - pg: REL_13_0
+    PlatformToolset: v141
+    configuration: Release
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  - pg: REL_12_0
+    PlatformToolset: v141
+    configuration: Release
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+
   - pg: 9.6.13-1
     PlatformToolset: v120
   - pg: 11.11-2
@@ -23,7 +32,7 @@ environment:
   - pg: 13.2-2
     PlatformToolset: v141
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-  
+
 matrix:
   allow_failures:
     - pg: master
@@ -41,8 +50,11 @@ install:
 #- if not exist Rtools35.exe appveyor downloadfile https://cran.r-project.org/bin/windows/Rtools/Rtools35.exe
 #- Rtools35.exe /VERYSILENT
 - Set mingw=C:\msys64\mingw
-# http://www.databasesoup.com/2016/05/changing-postgresql-version-numbering.html
-- for /f "tokens=1 delims=-" %%A in ("%pg%") do set pgversion=%%~nA
+#
+# From the EnterpriseDB version name,
+# if any, strip off the: right-most part dot, then numbers, then one hyphen, then numbers.
+- ps: $env:pgversion = $env:pg -replace "[.]\d+-\d+$", ""
+#
 - echo pgversion=%pgversion%
 - set pgroot=%pf%\PostgreSQL\%pgversion%
 - echo %pgroot%
@@ -55,9 +67,25 @@ install:
 # environment variable "postgresrcroot" is required for msvc.diff.R
 - set postgresrcroot=C:\projects\postgresql
 - ps: |
-    if ("$env:pg" -eq "master") {
+    # notmatch - if no "dot is found" in pg name, then pg is a: git: branch, tag, or commit.
+    if ("${env:pg}" -notmatch "[.]") {
       $env:Path += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
-      git clone -q --depth 1 https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+      git config --global advice.detachedHead false
+      #
+      # git commit
+      #
+      if(("${env:pg}" -cmatch  "^[a-z0-9]+$") -and ("${env:pghint}" -eq "commit")) {
+        git clone -q  https://git.postgresql.org/git/postgresql.git  c:\projects\postgresql
+        pushd c:\projects\postgresql
+        git checkout -q  ${env:pg} -b ${env:pg}
+        popd
+      #
+      # git branch or tag(detached head)
+      # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
+      #
+      } else {
+        git clone -q --depth 1 --branch ${env:pg} https://git.postgresql.org/git/postgresql.git  c:\projects\postgresql
+      }
       gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:PLATFORM.def" 2> $null
       lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
       pushd c:\projects\postgresql
