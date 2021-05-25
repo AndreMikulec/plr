@@ -199,7 +199,9 @@ R_HOME=C:\Progra~1\R\R-4.1.0
 Path=%PATH%;%R_HOME%\x64\bin
 ```
 
-In a Windows environment (in detail), with a PL/R compiled 
+#### Detailed Windows Environment
+
+In a Windows environment, with a PL/R compiled
 using Microsoft Visual Studio [https://github.com/postgres-plr/plr/releases/latest](https://github.com/postgres-plr/plr/releases/latest),
 with a PostgreSQL compiled 
 with Microsoft Visual Studio [https://www.enterprisedb.com/downloads/postgres-postgresql-downloads](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads),
@@ -208,10 +210,11 @@ from [https://cran.r-project.org/bin/windows/base/](https://cran.r-project.org/b
 do the following.
 
 
-First, Second, Third, and Fourth:
 
 
-First, download and install PostgreSQL compiled with Microsoft Visual Studio 
+#### First:
+
+Download and install PostgreSQL compiled with Microsoft Visual Studio
 [https://www.enterprisedb.com/downloads/postgres-postgresql-downloads](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
 Download PL/R compiled using Microsoft Visual Studio 
 [https://github.com/postgres-plr/plr/releases/latest](https://github.com/postgres-plr/plr/releases/latest)
@@ -227,17 +230,23 @@ then from the unzipped PL/R folder, place the following
 
 
 
-Second, install R with the feature checked [x] "Save version number in registry"." 
+#### Second:
+
+Install R with the feature checked [x] "Save version number in registry"."
 See the "Tip" item below.
 
-Second-alternately, still acquire R from the same location
+### Alternately:
+
+Acquire R from the same location
 and choose [ ] "Save version number in registry".
 At a Command Prompt run (and may have to be an Administrator Command Prompt)
 and using wherever your path to R may be, do:
 ```
 setx R_HOME "C:\Program Files\R\R-4.1.0" /M
 ```
-Second-alternately-again, still acquire R from the same location
+### Optionally:
+
+Acquire R from the same location
 and choose [ ] "Save version number in registry".
 Choose Control Panel -> System -> advanced system settings -> Environment Variables button.
 In the "System variables" area, create the System Variable, called R_HOME.
@@ -255,7 +264,9 @@ HINT:  R_HOME must be defined in the environment of the user that starts the pos
 ```
 
 
-Third, put the R.dll in your PATH. This is required, so do the following:
+### Third:
+
+Put the R.dll in your PATH. This is required, so do the following:
 Control Panel -> System -> Advanced System Settings -> Environment Variables button
 In the "System variables" area, choose the System Variable, called "Path".
 Click on the Edit button.
@@ -269,7 +280,9 @@ A 32bit compiled PL/R can only run with a 32bit compiled PostgreSQL.
 The last 32bit PostgreSQL was version ten(10) from  [https://www.enterprisedb.com/downloads/postgres-postgresql-downloads](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads).
 Of course, you, yourself, may yourself, compile a 32bit PostgreSQL using Microsoft Visual Studio.
 
-Fourth, bounce the PostgreSQL cluster, do:
+### Fourth:
+
+Restart the PostgreSQL cluster, do:
 
 At a Command Prompt run (and you may have to be in an Administrator Command Prompt):
 Use the service name of whatever service your PostgreSQL is running under.
@@ -292,14 +305,13 @@ Find postgresql-x64-13 (or whatever service your PostgreSQL is running under).
 Right click and choose "Start"
 
 
-
 **Tip** R headers are required. Download and install R prior to building PL/R. R must have been built
 with the `--enable-R-shlib` option when it was configured, in order for the libR shared object library
 to be available.
 
 **Tip:** Additionally, libR must be findable by your runtime linker. On Linux, this involves adding an entry
 in /etc/ld.so.conf for the location of libR (typically $R_HOME/bin or $R_HOME/lib), and then running
-ldconfig. Refer toman ldconfigor its equivalent for your system.
+ldconfig. Refer to `man ldconfig` or its equivalent for your system.
 
 **Tip:** R_HOME must be defined in the environment of the user under which PostgreSQL is started,
 before the postmaster is started. Otherwise PL/R will refuse to load. See plr_environ(), which allows
@@ -314,26 +326,8 @@ there is no need to set R_HOME on this platform. Be careful removing older versi
 away InstallPath entry away from HKLM\SOFTWARE\R-core\R a.k.a. Computer\HKEY_LOCAL_MACHINE\SOFTWARE\R-core\R.
 
 
+### Creating the PLR Extension
 
-### In PostgreSQL, Creating the PLR Extension
-
-
-You can use `plr.sql` (which is created in contrib/plr) to create the language and support functions
-in your database of choice:
-
-```bash
-psql mydatabase < plr.sql
-```
-
-Alternatively you can create the language manually using SQL commands:
-
-```postgresql
-CREATE FUNCTION plr_call_handler() RETURNS language_handler AS
-'$libdir/plr'
-LANGUAGE C;
-
-CREATE LANGUAGE plr HANDLER plr_call_handler;
-```
 
 As of PostgreSQL 9.1 you can use the new ```CREATE EXTENSION``` command:
 
@@ -580,7 +574,7 @@ The argument values supplied to a PL/R function’s script are the input argumen
 | ------------------------------- | ------- |
 | boolean | logical |
 | int2,int4 | integer |
-| int8,float4,float8,cash,numeric | numeric |
+| int8,float4,float8,money,numeric | numeric |
 | bytea | object |
 | everything else | character |
 
@@ -744,8 +738,8 @@ Execute an SQL query given as a string. An error in the query causes an error to
 the command’s return value is the number of rows processed for `INSERT` ,`UPDATE`, or `DELETE`
 statements, or zero if the query is a utility statement. If the query is a `SELECT` statement, the values of
 the selected columns are placed in an R data.frame with the target column names used as the frame
-column names. However, non-numeric columns are **not** converted to factors. If you want all non-
-numeric columns converted to factors, a convenience function `pg.spi.factor` (described below)
+column names. However, non-numeric columns are **not** converted to factors. If you want all non-numeric
+columns converted to factors, a convenience function `pg.spi.factor` (described below)
 is provided.
 
 If a field of a SELECT result is NULL, the target variable for it is set to `NA`. For example:
@@ -784,11 +778,13 @@ available for use:
 
 ```postgresql
 SELECT load_r_typenames();
-```
+
+
 load_r_typenames
 ------------------
 OK
 (1 row)
+```
 
 Another support function,`r_typenames()` may be used to list the predefined Global variables:
 
@@ -818,7 +814,7 @@ pg.spi.execp. See `spi_execp` for an example.
 
 `pg.spi.execp(external pointer saved_plan, variable listvalue_list)`
 
-Execute a query previously prepared with pg.spi.prepare.saved_plan is the external pointer
+Execute a query previously prepared with `pg.spi.prepare.saved_plan` is the external pointer
 returned by `pg.spi.prepare`. If the query references arguments, a `value_list` must be supplied:
 this is an R list of actual values for the plan arguments. It must be the same length as the argument
 type_vector previously given to pg.spi.prepare. Pass `NA` for `value_list` if the query has
