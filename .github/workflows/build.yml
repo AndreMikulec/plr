@@ -1,8 +1,13 @@
 name: plr CI
 on: [push, pull_request]
+  paths:
+  # event does not run when includes an .md file or its subdirectories
+  - '!**/*.md'
 jobs:
   master:
     runs-on: ubuntu-latest
+    # just check the latest commit
+    if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[skip actions]' && !contains(github.event.head_commit.message, '[skip github actions]')"
     steps:
       - name: Echo site details
         run: echo building master
@@ -45,6 +50,8 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    # just check the latest commit
+    if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[skip actions]' && !contains(github.event.head_commit.message, '[skip github actions]')"
     env:
       PG: ${{ matrix.pg }}
     strategy:
