@@ -1,4 +1,5 @@
 name: plr CI
+on:
   push:
     paths-ignore:
     # When using the push and pull_request events, 
