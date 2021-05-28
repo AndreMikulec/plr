@@ -1,5 +1,5 @@
 name: plr CI
-on: [push, pull_request]
+on:
   push:
     paths-ignore:
     # When using the push and pull_request events, 
@@ -13,7 +13,7 @@ jobs:
   master:
     runs-on: ubuntu-latest
     # just check the latest commit
-    if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[skip actions]' && !contains(github.event.head_commit.message, '[skip github actions]')"
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Echo site details
         run: echo building master
@@ -57,7 +57,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     # just check the latest commit
-    if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[skip actions]' && !contains(github.event.head_commit.message, '[skip github actions]')"
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     env:
       PG: ${{ matrix.pg }}
     strategy:
