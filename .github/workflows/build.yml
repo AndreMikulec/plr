@@ -15,7 +15,6 @@ jobs:
     # just check the latest commit
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     if: "!contains(github.event.head_commit.message, '[skip actions]')"
-    if: "!contains(github.event.head_commit.message, '[skip github actions]')"
     steps:
       - name: Echo site details
         run: echo building master
@@ -61,7 +60,6 @@ jobs:
     # just check the latest commit
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     if: "!contains(github.event.head_commit.message, '[skip actions]')"
-    if: "!contains(github.event.head_commit.message, '[skip github actions]')"
     env:
       PG: ${{ matrix.pg }}
     strategy:
