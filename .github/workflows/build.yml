@@ -1,8 +1,8 @@
 name: plr CI
 on: [push, pull_request]
-  paths-ignore:
-  # event does not run when includes an .md file or its subdirectories
-  - '**/*.md'
+paths-ignore:
+# event does not run when includes an .md file or its subdirectories
+- '**/*.md'
 jobs:
   master:
     runs-on: ubuntu-latest
