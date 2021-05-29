@@ -10,12 +10,6 @@ skip_commits:
 image: Visual Studio 2015
 clone_depth: 1
 
-# Skipping commits affecting specific files (GitHub only).
-skip_commits:
-  files:
-    - '**/*.md'
-  message: /\[skip ci]/
-
 environment:
   # Always Try to save
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
