@@ -78,6 +78,7 @@ cp ${SHAREDIR}/extension/plr--*.sql   tmp/share/extension
 if ([ "${rversion}" == "" ] || [ "${rversion}" == "none" ])
 then
   # later(now) - dynamically determing the R version
+  #
   # Tomas Kalibera custom build may contain spaces 
   # so gsub replaces spaces with underscores
   # 

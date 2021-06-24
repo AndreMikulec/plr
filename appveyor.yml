@@ -41,13 +41,36 @@ environment:
   # SEEN JUN 24 2021
   #
 
+  #
+  # get the internal R version
+  #
+  # Installation and R call
+  # R call: # gsub(' ', replacement = '_', x = paste0(R.version$major,'.',R.version$minor,tolower(R.version$status)))
+  #
+  # Thomas K
+  #
+  # R for Windows 4.2.0 Pre-release-UCRT3
+  # gsub result: 4.2.0under_development_(unstable)
+  # C:\Program Files\R\R-devel # rversion is "devel"
+  #
+  # Jeremy O (Other typical)
+  #
+  # R for Windows 4.1.0
+  # gsub result: 4.1.0
+  # C:\Program Files\R\R-4.1.0 # rversion is "4.1.0"
+  #
+  # R for Windows 4.1.0 Patched
+  # gsub result: 4.1.0patched
+  # C:\Program Files\R\R-4.1.0patched # rversion is "4.1.0patched"
+
   - pg: REL_13_0 # static commit - from git
     PlatformToolset: v141
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     # internal file name must match
-    rversion:    # 4.2.0pre-winutf8-ucrt3-devel-win-dbg-80545-4517-458
+    rversion: devel
+    rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80545-4517-458
     rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
     compiler: msvc
     #
@@ -58,8 +81,9 @@ environment:
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    # internal file name must match
-    rversion:   #  4.2.0pre-winutf8-ucrt3-devel-win-dbg-80545-4517-458
+    # msys2 - internal file name must match
+    rversion: devel
+    rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80545-4517-458
     rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
     compiler: msys2
     #
