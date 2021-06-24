@@ -240,6 +240,13 @@ else
                          psql -d postgres -c 'SELECT plr_version();'
 fi
 
+# R 4.2.+ (on Windows utf8) sanity check
+if [ "${compiler}" == "msys2" ]
+then
+  winpty -Xallow-non-tty psql -d postgres -c '\l template[01]'
+else
+                         psql -d postgres -c '\l template[01]'
+fi
 
 # How to escape single quotes within single quoted strings
 # 2009 - MULTIPLE SOLUTIONS

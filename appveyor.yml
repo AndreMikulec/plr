@@ -1874,6 +1874,9 @@ for:
   # I can not use "$env:pgversion" because a branch, tag, or commit
   # name (e.g.) "master" can not (always) be (easily) compared.
   #
+  # R 4.2.+ (on Windows utf8) sanity check
+  - psql -c "\l template[01]"
+  #
   # also used in compiler - msys2 and cygwin
   - psql --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;" --output=%APPVEYOR_BUILD_FOLDER%\server_version_num.txt
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/server_version_num.sh"
