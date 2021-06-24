@@ -27,11 +27,13 @@ environment:
   # References(near the bottom) -> Downloads
   # https://developer.r-project.org/Blog/public/2021/03/12/windows/utf-8-toolchain-and-cran-package-checks/index.html
   #
+  # VERY VERY VOLITILE
   # R-devel-win-80545-4517-4589.exe	2021-06-23 10:05	74M
-  # https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-80545-4517-4589.exe
+  # https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-80553-4517-4605.exe
   #
+  # VERY VERY VOLITILE
   # R-devel-win-dbg-80545-4517-4589.exe	2021-06-23 10:47	81M
-  # https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80545-4517-4589.exe
+  # https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
   #
   # gcc10_ucrt3_4517.txz	2021-03-25 22:28	889M
   # https://www.r-project.org/nosvn/winutf8/ucrt3/gcc10_ucrt3_4517.txz
@@ -44,8 +46,9 @@ environment:
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.2.0pre-winutf8-ucrt3-devel-win-dbg-80545-4517-458
-    rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80545-4517-4589.exe
+    # internal file name must match
+    rversion:    # 4.2.0pre-winutf8-ucrt3-devel-win-dbg-80545-4517-458
+    rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
     compiler: msvc
     #
     githubcache: true
@@ -55,8 +58,9 @@ environment:
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    rversion: 4.2.0pre-winutf8-ucrt3-devel-win-dbg-80545-4517-458
-    rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80545-4517-4589.exe
+    # internal file name must match
+    rversion:   #  4.2.0pre-winutf8-ucrt3-devel-win-dbg-80545-4517-458
+    rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
     compiler: msys2
     #
     githubcache: true
@@ -137,16 +141,6 @@ environment:
 #     #
 #     githubcache: true
 #
-#   - pg: REL_13_0 # static commit - from git
-#     PlatformToolset: v142
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#     rversion: 4.1.0
-#     rlinkbinoldurl: https://github.com/AndreMikulec/r-base/releases/download/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z/r-base_0.1.0-50-master_r-patched_R-4.1.0patched_80357_Generic_Debug.7z
-#     compiler: msys2
-#     #
-#     githubcache: true
 
 #   # works
 #   - pg: REL_13_0 # static commit - from git
