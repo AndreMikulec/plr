@@ -69,7 +69,6 @@ environment:
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    # internal file name must match
     rversion: devel
     rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80545-4517-458
     rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
@@ -82,7 +81,7 @@ environment:
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    # msys2 - rversion name must match (HARD coded R install path location)
+    # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
     rversion: devel
     rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80545-4517-458
     rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
