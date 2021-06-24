@@ -2,8 +2,8 @@
 # Skipping commits affecting specific files (GitHub and Bitbucket only).
 skip_commits:
   files:
-    # skipping AppVeyor build if, in the push’s head commit, all of the files 
-    # have the extension .md   
+    # skipping AppVeyor build if, in the push’s head commit, all of the files
+    # have the extension .md
     - '**/*.md'
 
 
@@ -1136,7 +1136,7 @@ for:
   - if not defined pglinkbinoldurl set pglinkbinoldurl=none
   - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
   - if not defined rversionurl set rversionurl=https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
-  
+
   install:
   - echo compiler msys2 install
   - ps: |
@@ -1146,28 +1146,31 @@ for:
   # - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
   - ps: |
       # Set-PSDebug -Trace 2
-      # special named version(s)
+      # default
+      # special named R version(s)
       if("${env:rlinkbinoldurl}" -eq "none") {
         if("${env:rversion}" -match "beta|alpha|devel|patched") {
           ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
         }
       } else {
-          # my custom build .exe in a .7z file
+          # R general download (or a specific custom build)
           ${env:rversionurl} = ${env:rlinkbinoldurl}
       }
-      #
-      if ((-not (Test-Path "R-${env:rversion}-win.exe")) -and ("${env:rlinkbinoldurl}" -eq "none")) {
-        curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
+      # .7z .zip .exe
+      ${env:rversionurl_download_ext} = [System.IO.Path]::GetExtension(${env:rversionurl})
+
+      # .7z .zip .exe # too many variants: not worth the time/code/headache/caching effort
+      if (Test-Path "R-${env:rversion}-win.exe") {
+        del         "R-${env:rversion}-win.exe"
       }
-      if ((-not (Test-Path "R-${env:rversion}-win.7z")) -and (-not ("${env:rlinkbinoldurl}" -eq "none"))) {
-        # custom R ignores the cache - CONSIDER INSTEAD - CLEAR THE CACHE
-        if (Test-Path "R-${env:rversion}-win.exe") {
-          del         "R-${env:rversion}-win.exe"
-        }
-        # my custom build .exe in a 7z file
-        # PowerShell 4.0, an Alias
-        curl -o "R-${env:rversion}-win.7z" -v "${env:rversionurl}"
-        7z e    "R-${env:rversion}-win.7z" "R-${env:rversion}-win.exe"
+      #
+      # any download
+      # PowerShell 4.0, an Alias of "curl"
+      if(-not ("${env:rversionurl_download_ext}" -eq ".exe")) {
+        curl -o "R-${env:rversion}-win${env:rversionurl_download_ext}" -v "${env:rversionurl}"
+        7z e    "R-${env:rversion}-win${env:rversionurl_download_ext}" "R-${env:rversion}-win.exe"
+      } else {
+        curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
       }
   #
   - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
@@ -1408,28 +1411,31 @@ for:
   # - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
   - ps: |
       # Set-PSDebug -Trace 2
-      # special named version(s)
+      # default
+      # special named R version(s)
       if("${env:rlinkbinoldurl}" -eq "none") {
         if("${env:rversion}" -match "beta|alpha|devel|patched") {
           ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
         }
       } else {
-          # my custom build .exe in a 7z file
+          # R general download (or a specific custom build)
           ${env:rversionurl} = ${env:rlinkbinoldurl}
       }
-      #
-      if ((-not (Test-Path "R-${env:rversion}-win.exe")) -and ("${env:rlinkbinoldurl}" -eq "none")) {
-        curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
+      # .7z .zip .exe
+      ${env:rversionurl_download_ext} = [System.IO.Path]::GetExtension(${env:rversionurl})
+
+      # .7z .zip .exe # too many variants: not worth the time/code/headache/caching effort
+      if (Test-Path "R-${env:rversion}-win.exe") {
+        del         "R-${env:rversion}-win.exe"
       }
-      if ((-not (Test-Path "R-${env:rversion}-win.7z")) -and (-not ("${env:rlinkbinoldurl}" -eq "none"))) {
-        # custom R ignores the cache - CONSIDER INSTEAD - CLEAR THE CACHE
-        if (Test-Path "R-${env:rversion}-win.exe") {
-          del         "R-${env:rversion}-win.exe"
-        }
-        # my custom build .exe in a 7z file
-        # PowerShell 4.0, an Alias
-        curl -o "R-${env:rversion}-win.7z" -v "${env:rversionurl}"
-        7z e    "R-${env:rversion}-win.7z" "R-${env:rversion}-win.exe"
+      #
+      # any download
+      # PowerShell 4.0, an Alias of "curl"
+      if(-not ("${env:rversionurl_download_ext}" -eq ".exe")) {
+        curl -o "R-${env:rversion}-win${env:rversionurl_download_ext}" -v "${env:rversionurl}"
+        7z e    "R-${env:rversion}-win${env:rversionurl_download_ext}" "R-${env:rversion}-win.exe"
+      } else {
+        curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
       }
   #
   - R-%rversion%-win.exe /VERYSILENT
