@@ -82,7 +82,7 @@ environment:
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    # msys2 - internal file name must match (HARD coded R install path location)
+    # msys2 - rversion name must match (HARD coded R install path location)
     rversion: devel
     rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80545-4517-458
     rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
@@ -931,6 +931,7 @@ for:
   - if not defined pglinkbinoldurl set pglinkbinoldurl=none
   # not (yet) used in compiler cygwin
   # - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
+  - if not defined rversion_more set rversion_more=-nodetails
 
   install:
   - echo compiler cygwin install
@@ -1193,6 +1194,7 @@ for:
   - if not defined pglinkbinoldurl set pglinkbinoldurl=none
   - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
   - if not defined rversionurl set rversionurl=https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
+  - if not defined rversion_more set rversion_more=-nodetails
 
   install:
   - echo compiler msys2 install
@@ -1447,6 +1449,7 @@ for:
   - if not defined pghint      set pghint=none
   - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
   - if not defined rversionurl set rversionurl=https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
+  - if not defined rversion_more set rversion_more=-nodetails
 
   install:
   - echo compiler msvc install
