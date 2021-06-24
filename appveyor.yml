@@ -6,7 +6,6 @@ skip_commits:
     # have the extension .md
     - '**/*.md'
 
-
 image: Visual Studio 2015
 clone_depth: 1
 
@@ -26,6 +25,9 @@ environment:
   # Pre-R 4.2.+ sanity check
   # References(near the bottom) -> Downloads
   # https://developer.r-project.org/Blog/public/2021/03/12/windows/utf-8-toolchain-and-cran-package-checks/index.html
+  #
+  # Refresh this Page Often
+  # https://www.r-project.org/nosvn/winutf8/ucrt3/
   #
   # VERY VERY VOLITILE
   # R-devel-win-80545-4517-4589.exe	2021-06-23 10:05	74M
@@ -70,7 +72,7 @@ environment:
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: devel
-    rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80545-4517-458
+    rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80553-4517-458
     rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
     compiler: msvc
     #
@@ -83,7 +85,7 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
     rversion: devel
-    rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80545-4517-458
+    rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80553-4517-458
     rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
     compiler: msys2
     #
@@ -98,7 +100,7 @@ environment:
 #     compiler: msvc
 #     #
 #     githubcache: true
-# 
+#
 #   # works
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v142
