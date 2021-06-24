@@ -43,6 +43,7 @@ environment:
 
   #
   # get the internal R version
+  # compiler msys2 uses the HARD coded R install path location - SET R_HOME=%ProgramFiles%\R\R-%rversion%
   #
   # Installation and R call
   # R call: # gsub(' ', replacement = '_', x = paste0(R.version$major,'.',R.version$minor,tolower(R.version$status)))
@@ -81,7 +82,7 @@ environment:
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    # msys2 - internal file name must match
+    # msys2 - internal file name must match (HARD coded R install path location)
     rversion: devel
     rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80545-4517-458
     rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
