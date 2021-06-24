@@ -872,7 +872,8 @@ for:
   - if not defined pghint          set pghint=none
   - if not defined pg              set pg=none
   - if not defined pglinkbinoldurl set pglinkbinoldurl=none
-  - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
+  # not (yet) used in compiler cygwin
+  # - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
 
   install:
   - echo compiler cygwin install
@@ -1134,7 +1135,8 @@ for:
   - if not defined pg              set pg=none
   - if not defined pglinkbinoldurl set pglinkbinoldurl=none
   - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
-
+  - if not defined rversionurl set rversionurl=https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
+  
   install:
   - echo compiler msys2 install
   - ps: |
@@ -1144,8 +1146,6 @@ for:
   # - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
   - ps: |
       # Set-PSDebug -Trace 2
-      # default
-      ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
       # special named version(s)
       if("${env:rlinkbinoldurl}" -eq "none") {
         if("${env:rversion}" -match "beta|alpha|devel|patched") {
@@ -1386,6 +1386,7 @@ for:
   - if not defined githubcache set githubcache=false
   - if not defined pghint      set pghint=none
   - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
+  - if not defined rversionurl set rversionurl=https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
 
   install:
   - echo compiler msvc install
@@ -1407,8 +1408,6 @@ for:
   # - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
   - ps: |
       # Set-PSDebug -Trace 2
-      # default
-      ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
       # special named version(s)
       if("${env:rlinkbinoldurl}" -eq "none") {
         if("${env:rversion}" -match "beta|alpha|devel|patched") {
