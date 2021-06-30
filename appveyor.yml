@@ -66,30 +66,55 @@ environment:
   # gsub result: 4.1.0patched
   # C:\Program Files\R\R-4.1.0patched # rversion is "4.1.0patched"
 
-  - pg: REL_13_0 # static commit - from git
+  - pg: REL_14_BETA2 # static commit - from git
     PlatformToolset: v141
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: devel
-    rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80553-4517-458
-    rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
+    rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80567-4617-4605
+    rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80567-4617-4605.exe
     compiler: msvc
     #
     githubcache: true
 
-  - pg: REL_13_0 # static commit - from git
+  - pg: REL_14_BETA2 # static commit - from git
     PlatformToolset: v142
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
     rversion: devel
-    rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80553-4517-458
-    rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
+    rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80567-4617-4605
+    rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80567-4617-4605.exe
     compiler: msys2
     #
     githubcache: true
+
+#   - pg: REL_14_BETA2 # static commit - from git
+#     PlatformToolset: v141
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#     rversion: devel
+#     rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80553-4517-458
+#     rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
+#     compiler: msvc
+#     #
+#     githubcache: true
+#
+#   - pg: REL_14_BETA2 # static commit - from git
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
+#     rversion: devel
+#     rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80553-4517-458
+#     rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
+#     compiler: msys2
+#     #
+#     githubcache: true
 
 #   - pg: REL_13_0 # static commit - from git
 #     PlatformToolset: v141
