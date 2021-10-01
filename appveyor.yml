@@ -13,6 +13,10 @@ environment:
     configuration: Debug
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
+  - pg: REL_14_0
+    PlatformToolset: v141
+    configuration: Release
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
   - pg: REL_13_0
     PlatformToolset: v141
     configuration: Release
