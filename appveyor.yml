@@ -72,8 +72,8 @@ environment:
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: devel
-    rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80998-4771-4775
-    rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80998-4771-4775.exe
+    rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80998-4771-4765
+    rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80998-4771-4765.exe
     compiler: msvc
     #
     githubcache: true
@@ -85,8 +85,8 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
     rversion: devel
-    rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80998-4771-4775
-    rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80998-4771-4775.exe
+    rversion_more: -4.2.0pre-winutf8-ucrt3-devel-win-dbg-80998-4771-4765
+    rlinkbinoldurl: https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80998-4771-4765.exe
     compiler: msys2
     #
     githubcache: true
