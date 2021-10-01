@@ -36,6 +36,10 @@ environment:
   - pg: 13.2-2
     PlatformToolset: v141
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  - pg: 14.0-1
+    PlatformToolset: v141
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+
 
 matrix:
   allow_failures:
