@@ -2117,7 +2117,7 @@ deploy:
     # https://sourceforge.net/projects/andremikulec/files/
     username: andremikulec,andremikulec.u
     password:
-      secure: 4gk4GyW4O5RooiOyGeRdoA==
+      secure: AZOInJ/FinCYx+tbyshJR5VWUISswlz5yiGDqfgEXLg=
     artifact: plr_7z
     folder: /home/frs/project/andremikulec
     application:
@@ -2129,7 +2129,7 @@ deploy:
     # https://sourceforge.net/projects/andremikulec/files/
     username: andremikulec,andremikulec.u
     password:
-      secure: 4gk4GyW4O5RooiOyGeRdoA==
+      secure: AZOInJ/FinCYx+tbyshJR5VWUISswlz5yiGDqfgEXLg=
     artifact: pg_7z
     folder: /home/frs/project/andremikulec
     application:
