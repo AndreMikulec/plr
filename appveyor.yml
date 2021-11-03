@@ -2144,7 +2144,7 @@ deploy:
     prerelease: false
     artifact: pg_7z
     auth_token:
-      secure: XoqPq5kr4U7RTttqemYnsoB1SC7lgafsIne5i4X6ero=
+      secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
     # non - "branch, tag, or commit" will still be expected "false" ( githubcache != true )
     # and never find a pg-*.7z to deploy - and that is OK.
 
@@ -2157,7 +2157,7 @@ deploy:
     prerelease: false
     artifact: plr_7z
     auth_token:
-      secure: XoqPq5kr4U7RTttqemYnsoB1SC7lgafsIne5i4X6ero=
+      secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
     on:
       APPVEYOR_REPO_TAG: true
 
