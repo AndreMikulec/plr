@@ -7,8 +7,6 @@ skip_commits:
     - '**/*.md'
 
 image: Visual Studio 2015
-configuration: Release
-platform: x64
 clone_depth: 1
 
 environment:
@@ -666,11 +664,6 @@ matrix:
   allow_failures:
     - pg: master
 
-init: # Make %x64% available for caching
-- ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-- if %PLATFORM%==x64 ( set pf=%ProgramFiles%&& set x64=-x64) else set pf=%ProgramFiles(x86)%
-- set exe=postgresql-%pg%-windows%x64%.exe
-- setx /m exe %exe%
 
 # # (currently), I have zero(0) failures
 # matrix:
@@ -1800,7 +1793,6 @@ for:
         foreach ($Row in $Table) { $Row.Name }
         popd
       }
-    }
 
   #
   # PostgreSQL from source code: git, tag, or commit
@@ -2132,10 +2124,6 @@ cache:
 # I think that I have the space
 - '%betterperl%.zip'
 
-build_script:
-- msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%CONFIGURATION% /p:platform=%PLATFORM%
-          %PROJ%
-          /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 artifacts:
 - path: 'plr-*.7z'
