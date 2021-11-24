@@ -2111,6 +2111,10 @@ for:
       }
 
 
+#on_failure:
+# - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+
 ### universal: cache, artifacts, and depoy ###
 
 
@@ -2187,4 +2191,5 @@ deploy:
       secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
     on:
       APPVEYOR_REPO_TAG: true
+
 
