@@ -659,6 +659,12 @@ environment:
 #     rversion: 3.6.0
 #     compiler: msvc
 
+# NOV 24 2021 - resume allow failures on pg: master
+matrix:
+  allow_failures:
+    - pg: master
+
+
 # # (currently), I have zero(0) failures
 # matrix:
 #   allow_failures:
