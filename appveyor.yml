@@ -1506,6 +1506,18 @@ for:
         popd
       }
 
+  # msys2
+  #
+  # Nov Dec 2021 Appveyor changed the PATH
+  # The [first] winpty.exe found is [the] "wrong [one]"
+  #
+  # Attempt to avoid the error:
+  #
+  # 1 [main] winpty (2980) C:\Program Files\Git\usr\bin\winpty.exe: *** fatal error - cygheap base mismatch detected
+  # This problem is probably due to using incompatible versions of the cygwin DLL
+  #
+  - bash --login -c "pacman --noconfirm -S --needed winpty"
+
   # PostgreSQL from an MSYS2 already-compiled-binary.
   - if "%pg%"=="none" (
       bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql"
