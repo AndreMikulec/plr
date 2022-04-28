@@ -71,7 +71,7 @@ environment:
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.1.2
+    rversion: 4.2.0
     compiler: msvc
     #
     githubcache: true
@@ -82,7 +82,7 @@ environment:
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
-    rversion: 4.1.2
+    rversion: 4.2.0
     compiler: msys2
     #
     githubcache: true
