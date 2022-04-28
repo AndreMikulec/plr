@@ -124,6 +124,24 @@ environment:
     rversion: 4.2.0
     compiler: msvc
 
+  - pg: REL_13_0 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R"
+    compiler: cygwin
+    #
+    githubcache: true
+
+  # from the pre-built pg from Cygwin 
+  - PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R"
+    compiler: cygwin
+
 #   - pg: REL_14_0 # static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
