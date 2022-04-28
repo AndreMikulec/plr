@@ -77,10 +77,10 @@ environment:
     githubcache: true
 
   - pg: master # branch - non-static commit - from git
-    PlatformToolset: v142
+    PlatformToolset: v143
     Configuration: Debug
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
     rversion: 4.2.0
     compiler: msys2
@@ -98,10 +98,10 @@ environment:
     githubcache: true
 
   - pg: REL_14_0 # static commit - from git
-    PlatformToolset: v142
+    PlatformToolset: v143
     Configuration: Debug
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
     rversion: 4.2.0
     compiler: msys2
