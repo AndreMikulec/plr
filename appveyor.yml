@@ -108,7 +108,15 @@ environment:
     #
     githubcache: true
 
-  - pg: 14.2-2 # from enterprisedb.com as of April 27 2022 
+  - pg: 14.2-2 # from pre-built pg from enterprisedb.com as of April 27 2022 
+    PlatformToolset: v141
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.2.0
+    compiler: msvc
+
+  - pg: 13.4 # from pre-built pg from Appveyor as of April 27 2022
     PlatformToolset: v141
     Configuration: Release
     Platform: x64
