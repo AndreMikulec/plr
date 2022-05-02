@@ -116,13 +116,26 @@ environment:
 ####    rversion: 4.2.0
 ####    compiler: msvc
 ####
-  - pg: 13.6-2 # from pre-built pg from Appveyor as of April 27 2022
+####
+
+####               # https://www.appveyor.com/docs/windows-images-software/#databases
+####               # should have been from Appveyor (BUT "NOT") - See the output: Downloading . . .
+####  - pg: 13.6-2 # from pre-built pg from Appveyor as of April 27 2022
+####    PlatformToolset: v141
+####    Configuration: Release
+####    Platform: x64
+####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+####    rversion: 4.2.0
+####    compiler: msvc
+    
+  - pg: 12.10-2 # from pre-built pg from Appveyor as of April 27 2022
     PlatformToolset: v141
     Configuration: Release
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.2.0
     compiler: msvc
+    
 ####
 ####  - pg: REL_13_0 # static commit - from git
 ####    PlatformToolset: v143
