@@ -66,69 +66,64 @@ environment:
   # gsub result: 4.1.0patched
   # C:\Program Files\R\R-4.1.0patched # rversion is "4.1.0patched"
 
-####  - pg: master # branch - non-static commit - from git
-####    PlatformToolset: v141
-####    Configuration: Debug
-####    Platform: x64
-####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-####    rversion: 4.2.0
-####    compiler: msvc
-####    #
-####    githubcache: true
-####
-####  - pg: master # branch - non-static commit - from git
-####    PlatformToolset: v143
-####    Configuration: Debug
-####    Platform: x64
-####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-####    # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
-####    rversion: 4.2.0
-####    compiler: msys2
-####    #
-####    githubcache: true
-####
-####  - pg: REL_14_0 # static commit - from git
-####    PlatformToolset: v141
-####    Configuration: Debug
-####    Platform: x64
-####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-####    rversion: 4.2.0
-####    compiler: msvc
-####    #
-####    githubcache: true
-####
-####  - pg: REL_14_0 # static commit - from git
-####    PlatformToolset: v143
-####    Configuration: Debug
-####    Platform: x64
-####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-####    # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
-####    rversion: 4.2.0
-####    compiler: msys2
-####    #
-####    githubcache: true
-####
-####  - pg: 14.2-2 # from pre-built pg from enterprisedb.com as of April 27 2022 
-####    PlatformToolset: v141
-####    Configuration: Release
-####    Platform: x64
-####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-####    rversion: 4.2.0
-####    compiler: msvc
-####
-####
+  - pg: master # branch - non-static commit - from git
+    PlatformToolset: v141
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.2.0
+    compiler: msvc
+    #
+    githubcache: true
 
-####               # https://www.appveyor.com/docs/windows-images-software/#databases
-####               # should have been from Appveyor (BUT "NOT") - See the output: Downloading . . .
-####  - pg: 13.6-2 # from pre-built pg from Appveyor as of April 27 2022
-####    PlatformToolset: v141
-####    Configuration: Release
-####    Platform: x64
-####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-####    rversion: 4.2.0
-####    compiler: msvc
-    
-  - pg: 12.10-2 # from pre-built pg from Appveyor as of April 27 2022
+  - pg: master # branch - non-static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
+    rversion: 4.2.0
+    compiler: msys2
+    #
+    githubcache: true
+
+  - pg: REL_14_0 # static commit - from git
+    PlatformToolset: v141
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.2.0
+    compiler: msvc
+    #
+    githubcache: true
+
+  - pg: REL_14_0 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
+    rversion: 4.2.0
+    compiler: msys2
+    #
+    githubcache: true
+
+  - pg: 14.2-2 # from pre-built pg from enterprisedb.com as of Mays 02 2022 
+    PlatformToolset: v141
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.2.0
+    compiler: msvc
+
+               # https://www.appveyor.com/docs/windows-images-software/#databases
+               # PostgreSQL 13.4 x64
+               # images: 2015, 2017, 2019, 2022
+               # should have been from Appveyor (BUT "NOT") - See the output:
+               # 
+               # Downloading postgresql-13.6-2-windows-x64.exe (310,626,864 bytes)...100%
+               # Directory C:\Program Files\PostgreSQL\13\bin does exist.
+  - pg: 13.6-2 # SHOULD HAVE BEEN (BUT NOT) pre-built pg from Appveyor as of Mays 02 2022
     PlatformToolset: v141
     Configuration: Release
     Platform: x64
@@ -136,24 +131,38 @@ environment:
     rversion: 4.2.0
     compiler: msvc
     
-####
-####  - pg: REL_13_0 # static commit - from git
-####    PlatformToolset: v143
-####    Configuration: Debug
-####    Platform: x64
-####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-####    # rversion - from the already compiled "Cygwin R"
-####    compiler: cygwin
-####    #
-####    githubcache: true
-####
-####  # from the pre-built pg from Cygwin 
-####  - PlatformToolset: v143
-####    Configuration: Debug
-####    Platform: x64
-####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-####    # rversion - from the already compiled "Cygwin R"
-####    compiler: cygwin
+                # https://www.appveyor.com/docs/windows-images-software/#databases
+                # PostgreSQL 12.8 x64
+                # PostgreSQL 13.4 x64
+                # images: 2015, 2017, 2019, 2022
+                # #
+                #
+                # Directory C:\Program Files\PostgreSQL\12\bin does exist.
+  - pg: 12.10-2 # from pre-built pg from Appveyor as of Mays 02 2022
+    PlatformToolset: v141
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.2.0
+    compiler: msvc
+    
+  - pg: REL_13_0 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R"
+    compiler: cygwin
+    #
+    githubcache: true
+
+  # from the pre-built pg from Cygwin 
+  - PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R"
+    compiler: cygwin
 
 #   - pg: REL_14_0 # static commit - from git
 #     PlatformToolset: v141
@@ -2255,7 +2264,7 @@ deploy:
     prerelease: false
     artifact: pg_7z
     auth_token:
-      secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
+      secure: O4OTdJVY47/Ju0HtC3lEUOtmgFrdOiNCZyHPHi3FPDdJUmnqdsDhPGtJi+j+cLgy
     # non - "branch, tag, or commit" will still be expected "false" ( githubcache != true )
     # and never find a pg-*.7z to deploy - and that is OK.
 
@@ -2268,7 +2277,7 @@ deploy:
     prerelease: false
     artifact: plr_7z
     auth_token:
-      secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
+      secure: O4OTdJVY47/Ju0HtC3lEUOtmgFrdOiNCZyHPHi3FPDdJUmnqdsDhPGtJi+j+cLgy
     on:
       APPVEYOR_REPO_TAG: true
 
