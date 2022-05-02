@@ -66,81 +66,81 @@ environment:
   # gsub result: 4.1.0patched
   # C:\Program Files\R\R-4.1.0patched # rversion is "4.1.0patched"
 
-  - pg: master # branch - non-static commit - from git
-    PlatformToolset: v141
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.2.0
-    compiler: msvc
-    #
-    githubcache: true
-
-  - pg: master # branch - non-static commit - from git
-    PlatformToolset: v143
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
-    rversion: 4.2.0
-    compiler: msys2
-    #
-    githubcache: true
-
-  - pg: REL_14_0 # static commit - from git
-    PlatformToolset: v141
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.2.0
-    compiler: msvc
-    #
-    githubcache: true
-
-  - pg: REL_14_0 # static commit - from git
-    PlatformToolset: v143
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
-    rversion: 4.2.0
-    compiler: msys2
-    #
-    githubcache: true
-
-  - pg: 14.2-2 # from pre-built pg from enterprisedb.com as of April 27 2022 
+####  - pg: master # branch - non-static commit - from git
+####    PlatformToolset: v141
+####    Configuration: Debug
+####    Platform: x64
+####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+####    rversion: 4.2.0
+####    compiler: msvc
+####    #
+####    githubcache: true
+####
+####  - pg: master # branch - non-static commit - from git
+####    PlatformToolset: v143
+####    Configuration: Debug
+####    Platform: x64
+####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+####    # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
+####    rversion: 4.2.0
+####    compiler: msys2
+####    #
+####    githubcache: true
+####
+####  - pg: REL_14_0 # static commit - from git
+####    PlatformToolset: v141
+####    Configuration: Debug
+####    Platform: x64
+####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+####    rversion: 4.2.0
+####    compiler: msvc
+####    #
+####    githubcache: true
+####
+####  - pg: REL_14_0 # static commit - from git
+####    PlatformToolset: v143
+####    Configuration: Debug
+####    Platform: x64
+####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+####    # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
+####    rversion: 4.2.0
+####    compiler: msys2
+####    #
+####    githubcache: true
+####
+####  - pg: 14.2-2 # from pre-built pg from enterprisedb.com as of April 27 2022 
+####    PlatformToolset: v141
+####    Configuration: Release
+####    Platform: x64
+####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+####    rversion: 4.2.0
+####    compiler: msvc
+####
+  - pg: 13.6-2 # from pre-built pg from Appveyor as of April 27 2022
     PlatformToolset: v141
     Configuration: Release
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.2.0
     compiler: msvc
-
-  - pg: 13.4 # from pre-built pg from Appveyor as of April 27 2022
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.2.0
-    compiler: msvc
-
-  - pg: REL_13_0 # static commit - from git
-    PlatformToolset: v143
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # rversion - from the already compiled "Cygwin R"
-    compiler: cygwin
-    #
-    githubcache: true
-
-  # from the pre-built pg from Cygwin 
-  - PlatformToolset: v143
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # rversion - from the already compiled "Cygwin R"
-    compiler: cygwin
+####
+####  - pg: REL_13_0 # static commit - from git
+####    PlatformToolset: v143
+####    Configuration: Debug
+####    Platform: x64
+####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+####    # rversion - from the already compiled "Cygwin R"
+####    compiler: cygwin
+####    #
+####    githubcache: true
+####
+####  # from the pre-built pg from Cygwin 
+####  - PlatformToolset: v143
+####    Configuration: Debug
+####    Platform: x64
+####    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+####    # rversion - from the already compiled "Cygwin R"
+####    compiler: cygwin
 
 #   - pg: REL_14_0 # static commit - from git
 #     PlatformToolset: v141
