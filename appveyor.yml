@@ -68,7 +68,7 @@ environment:
 
 ####  fail fastest is the first in order
 
-  - pg: REL_13_0 # static commit - from git
+  - pg: REL_13_0 # static commit - from git (MAY 2022 - WORKS)
     PlatformToolset: v143
     Configuration: Debug
     Platform: x64
@@ -76,7 +76,7 @@ environment:
     rversion: 4.2.0
     compiler: msvc
 
-  - pg: REL_13_0 # static commit - from git
+  - pg: REL_13_0 # static commit - from git (MAY 2022 - WORKS)
     PlatformToolset: v142
     Configuration: Debug
     Platform: x64
@@ -87,67 +87,67 @@ environment:
 
   - pg: 10.21-1
     PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022 (MAY 2022 - FAILED)
     rversion: 4.2.0
 
   - pg: 10.21-1
     PlatformToolset: v142
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 (MAY 2022 - FAILED)
     rversion: 4.2.0
 
   - pg: 10.21-1
     PlatformToolset: v141
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 (MAY 2022 - FAILED)
     rversion: 4.2.0
 
 
   - pg: 11.16-1
     PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022 (MAY 2022 - FAILED)
     rversion: 4.2.0
 
   - pg: 11.16-1
     PlatformToolset: v142
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 (MAY 2022 - FAILED)
     rversion: 4.2.0
 
 
   - pg: 12.11-1
     PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022 (MAY 2022 - FAILED)
     rversion: 4.2.0
 
   - pg: 12.11-1
     PlatformToolset: v142
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 (MAY 2022 - FAILED)
     rversion: 4.2.0
 
 
   - pg: 13.7-1
     PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022 (MAY 2022 - FAILED)
     rversion: 4.2.0
 
   - pg: 13.7-1
     PlatformToolset: v142
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 (MAY 2022 - FAILED)
     rversion: 4.2.0
 
 
   - pg: 14.3-1
     PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022 (MAY 2022 - FAILED)
     rversion: 4.2.0
 
   - pg: 14.3-1
     PlatformToolset: v142
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 (MAY 2022 - FAILED)
     rversion: 4.2.0
 
 
-####  fail fastest is the first in order (they were all successful)
+####  fail fastest is the first in order (MAY 2022 - ALL WORKED)
 #
-#   - pg: REL_14_0 # static commit - from git
+#   - pg: REL_14_0 # static commit - from git (MAY 2022 - WORKS)
 #     PlatformToolset: v143
 #     Configuration: Debug
 #     Platform: x64
@@ -155,7 +155,7 @@ environment:
 #     rversion: 4.2.0
 #     compiler: msvc
 #
-#   - pg: REL_14_0 # static commit - from git
+#   - pg: REL_14_0 # static commit - from git (MAY 2022 - WORKS)
 #     PlatformToolset: v142
 #     Configuration: Debug
 #     Platform: x64
@@ -164,7 +164,7 @@ environment:
 #     compiler: msvc
 #
 #
-#   - pg: REL_15_BETA1 # static commit - from git
+#   - pg: REL_15_BETA1 # static commit - from git (MAY 2022 - WORKS)
 #     PlatformToolset: v143
 #     Configuration: Debug
 #     Platform: x64
@@ -172,7 +172,7 @@ environment:
 #     rversion: 4.2.0
 #     compiler: msvc
 #
-#   - pg: REL_15_BETA1 # static commit - from git
+#   - pg: REL_15_BETA1 # static commit - from git (MAY 2022 - WORKS)
 #     PlatformToolset: v142
 #     Configuration: Debug
 #     Platform: x64
@@ -180,7 +180,7 @@ environment:
 #     rversion: 4.2.0
 #     compiler: msvc
 #
-#   - pg: REL_15_BETA1 # static commit - from git
+#   - pg: REL_15_BETA1 # static commit - from git (MAY 2022 - WORKS)
 #     PlatformToolset: v141
 #     Configuration: Debug
 #     Platform: x64
@@ -189,7 +189,7 @@ environment:
 #     compiler: msvc
 #
 #
-#   - pg: master # branch - non-static commit - from git
+#   - pg: master # branch - non-static commit - from git (MAY 2022 - WORKS)
 #     PlatformToolset: v143
 #     Configuration: Debug
 #     Platform: x64
@@ -197,7 +197,7 @@ environment:
 #     rversion: 4.2.0
 #     compiler: msvc
 #
-#   - pg: master # branch - non-static commit - from git
+#   - pg: master # branch - non-static commit - from git (MAY 2022 - WORKS)
 #     PlatformToolset: v142
 #     Configuration: Debug
 #     Platform: x64
@@ -205,7 +205,7 @@ environment:
 #     rversion: 4.2.0
 #     compiler: msvc
 #
-#   - pg: master # branch - non-static commit - from git
+#   - pg: master # branch - non-static commit - from git (MAY 2022 - WORKS)
 #     PlatformToolset: v141
 #     Configuration: Debug
 #     Platform: x64
