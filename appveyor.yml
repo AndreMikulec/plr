@@ -84,7 +84,7 @@ environment:
 ####    compiler: msvc
 ####
 ####
-####  - pg: REL_15_1 # static commit - from git
+####  - pg: REL_15_BETA1 # static commit - from git
 ####    PlatformToolset: v143
 ####    Configuration: Debug
 ####    Platform: x64
@@ -92,7 +92,7 @@ environment:
 ####    rversion: 4.2.0
 ####    compiler: msvc
 ####
-####  - pg: REL_15_1 # static commit - from git
+####  - pg: REL_15_BETA1 # static commit - from git
 ####    PlatformToolset: v143
 ####    Configuration: Debug
 ####    Platform: x64
@@ -236,13 +236,13 @@ environment:
 #     compiler: msvc
 #
 
-# ####  TEST fail fastest is the first in order (MAY 2022 - ??? - WORKED)
+# ####  TEST fail fastest is the first in order (MAY 2022 - 10.21-1_2022 - WORKED)
 
   - pg: 10.21-1
     PlatformToolset: v143
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022 # (MAY 2022 - WORKED)
     rversion: 4.2.0
     compiler: msvc
 
@@ -250,7 +250,7 @@ environment:
     PlatformToolset: v142
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 # (MAY 2022 - WORKED)
     rversion: 4.2.0
     compiler: msvc
 
@@ -258,7 +258,7 @@ environment:
     PlatformToolset: v141
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 # (MAY 2022 - WORKED)
     rversion: 4.2.0
     compiler: msvc
 
@@ -266,7 +266,7 @@ environment:
     PlatformToolset: v120
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015 # (MAY 2022 - WORKED)
     rversion: 4.2.0
     compiler: msvc
 
@@ -275,7 +275,7 @@ environment:
     PlatformToolset: v143
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022 # (MAY 2022 - WORKED)
     rversion: 4.2.0
     compiler: msvc
 
@@ -283,7 +283,7 @@ environment:
     PlatformToolset: v142
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 # (MAY 2022 - WORKED)
     rversion: 4.2.0
     compiler: msvc
 
@@ -291,7 +291,7 @@ environment:
     PlatformToolset: v141
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 # (MAY 2022 - NEVER TRIED)
     rversion: 4.2.0
     compiler: msvc
 
@@ -300,7 +300,7 @@ environment:
     PlatformToolset: v143
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022 # (MAY 2022 - NEVER TRIED)
     rversion: 4.2.0
     compiler: msvc
 
@@ -308,7 +308,7 @@ environment:
     PlatformToolset: v142
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 # (MAY 2022 - NEVER TRIED)
     rversion: 4.2.0
     compiler: msvc
 
@@ -316,7 +316,7 @@ environment:
     PlatformToolset: v141
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 # (MAY 2022 - NEVER TRIED)
     rversion: 4.2.0
     compiler: msvc
 
@@ -325,7 +325,7 @@ environment:
     PlatformToolset: v143
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022 # (MAY 2022 - NEVER TRIED)
     rversion: 4.2.0
     compiler: msvc
 
@@ -333,7 +333,7 @@ environment:
     PlatformToolset: v142
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 # (MAY 2022 - NEVER TRIED)
     rversion: 4.2.0
     compiler: msvc
 
@@ -341,7 +341,7 @@ environment:
     PlatformToolset: v141
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 # (MAY 2022 - NEVER TRIED)
     rversion: 4.2.0
     compiler: msvc
 
@@ -350,7 +350,7 @@ environment:
     PlatformToolset: v143
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022 # (MAY 2022 - NEVER TRIED)
     rversion: 4.2.0
     compiler: msvc
 
@@ -358,7 +358,7 @@ environment:
     PlatformToolset: v142
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 # (MAY 2022 - NEVER TRIED)
     rversion: 4.2.0
     compiler: msvc
 
@@ -366,7 +366,7 @@ environment:
     PlatformToolset: v141
     Configuration: Release
     Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 # (MAY 2022 - ???)
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 # (MAY 2022 - NEVER TRIED)
     rversion: 4.2.0
     compiler: msvc
 
