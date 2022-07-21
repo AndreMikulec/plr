@@ -85,7 +85,7 @@ environment:
     compiler: msvc
 
 
-  - pg: REL_15_BETA1 # static commit - from git
+  - pg: REL_15_BETA2 # static commit - from git
     PlatformToolset: v143
     Configuration: Debug
     Platform: x64
@@ -93,7 +93,7 @@ environment:
     rversion: 4.2.0
     compiler: msvc
 
-  - pg: REL_15_BETA1 # static commit - from git
+  - pg: REL_15_BETA2 # static commit - from git
     PlatformToolset: v143
     Configuration: Debug
     Platform: x64
