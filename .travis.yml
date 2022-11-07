@@ -4,11 +4,12 @@ os:
 language: c
 sudo : required 
 env:
+  - PG=15
+  - PG=14
+  - PG=13
   - PG=12
   - PG=11
   - PG=10
-  - PG=9.6
-  - PG=9.5
 
 before_script:
   # creates a diff of all commits and exits the build if it only includes markdown files
