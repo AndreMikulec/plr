@@ -66,6 +66,8 @@ environment:
   # gsub result: 4.1.0patched
   # C:\Program Files\R\R-4.1.0patched # rversion is "4.1.0patched"
 
+
+
 # ####  EARLY NOV 2022 build jobs
 
   - pg: master # branch - non-static commit - from git
