@@ -2939,11 +2939,11 @@ before_deploy:
     choco install -y winscp
     cd "%APPVEYOR_BUILD_FOLDER%"
     echo open sftp://andremikulec,andremikulec.u:%FTP_PSW%@frs.sourceforge.net/ -hostkey="acceptnew" > ftp.txt 2>&1 || date /t
-    forfiles /M plr-*.7z  /C "cmd /c echo put @file /home/frs/project/andremikulec/ >> ftp.txt"
-    forfiles /M pg-*.7z   /C "cmd /c echo put @file /home/frs/project/andremikulec/ >> ftp.txt"
+    forfiles /M plr-*.7z  /C "cmd /c echo put @file /home/frs/project/andremikulec/ >> ftp.txt" 2>nul || date /t
+    forfiles /M pg-*.7z   /C "cmd /c echo put @file /home/frs/project/andremikulec/ >> ftp.txt" 2>nul || date /t
     echo exit >> ftp.txt
     set PATH=C:\Program Files (x86)\WinSCP;%PATH%
-    winscp.com /script=ftp.txt
+    winscp.com /script=ftp.txt || date /t
 
 deploy:
 
