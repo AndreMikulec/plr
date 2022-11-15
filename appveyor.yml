@@ -2927,12 +2927,23 @@ cache:
 # I think that I have the space
 - '%betterperl%.zip'
 
-
 artifacts:
 - path: 'plr-*.7z'
   name: plr_7z
 - path: 'pg-*.7z'
   name: pg_7z
+
+before_deploy:
+
+- cmd: |
+    choco install -y winscp
+    cd "%APPVEYOR_BUILD_FOLDER%"
+    echo open sftp://andremikulec,andremikulec.u:%FTP_PSW%@frs.sourceforge.net/ -hostkey="acceptnew" > ftp.txt 2>&1 || date /t
+    forfiles /M plr-*.7z  /C "cmd /c echo put @file /home/frs/project/andremikulec/ >> ftp.txt"
+    forfiles /M pg-*.7z   /C "cmd /c echo put @file /home/frs/project/andremikulec/ >> ftp.txt"
+    echo exit >> ftp.txt
+    set PATH=C:\Program Files (x86)\WinSCP;%PATH%
+    winscp.com /script=ftp.txt
 
 deploy:
 
@@ -2945,29 +2956,29 @@ deploy:
   # queued... creating... starting...
   #
 
-  - provider: FTP
-    host: frs.sourceforge.net
-    protocol: sftp
-    # https://sourceforge.net/projects/andremikulec/files/
-    username: andremikulec,andremikulec.u
-    password:
-      secure: AZOInJ/FinCYx+tbyshJR5VWUISswlz5yiGDqfgEXLg=
-    artifact: plr_7z
-    folder: /home/frs/project/andremikulec
-    application:
-    active_mode: false
-
-  - provider: FTP
-    host: frs.sourceforge.net
-    protocol: sftp
-    # https://sourceforge.net/projects/andremikulec/files/
-    username: andremikulec,andremikulec.u
-    password:
-      secure: AZOInJ/FinCYx+tbyshJR5VWUISswlz5yiGDqfgEXLg=
-    artifact: pg_7z
-    folder: /home/frs/project/andremikulec
-    application:
-    active_mode: false
+#   - provider: FTP
+#     host: frs.sourceforge.net
+#     protocol: sftp
+#     # https://sourceforge.net/projects/andremikulec/files/
+#     username: andremikulec,andremikulec.u
+#     password:
+#       secure: AZOInJ/FinCYx+tbyshJR5VWUISswlz5yiGDqfgEXLg=
+#     artifact: plr_7z
+#     folder: /home/frs/project/andremikulec
+#     application:
+#     active_mode: false
+# 
+#   - provider: FTP
+#     host: frs.sourceforge.net
+#     protocol: sftp
+#     # https://sourceforge.net/projects/andremikulec/files/
+#     username: andremikulec,andremikulec.u
+#     password:
+#       secure: AZOInJ/FinCYx+tbyshJR5VWUISswlz5yiGDqfgEXLg=
+#     artifact: pg_7z
+#     folder: /home/frs/project/andremikulec
+#     application:
+#     active_mode: false
 
   #
   # always try to deploy here
