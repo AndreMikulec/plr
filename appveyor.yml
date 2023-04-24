@@ -203,6 +203,7 @@ environment:
 #     rversion: 4.1.3
 #     compiler: msvc
 
+
   - pg: master # branch - non-static commit - from git
     PlatformToolset: v143
     Configuration: Debug
