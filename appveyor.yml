@@ -2671,8 +2671,12 @@ for:
   - bash --login -c "pacman --noconfirm -Syuu"
   # just in case I need this
   - bash --login -c "pacman --noconfirm -S --needed mingw-w64-${OSBitVersion}-icu"
-  # just in case I need debug libraries
+  # just in case I need icu debug libraries
   - bash --login -c "pacman --noconfirm -S --needed mingw-w64-${OSBitVersion}-icu-debug-libs"
+  # just in case I need icu development
+  - bash --login -c "pacman --noconfirm -S --needed icu-devel"
+  # icu info
+  - bash --login -c "icu-config --ldflags"
   #
   # Nov Dec 2021 Appveyor changed the PATH
   # The [first] winpty.exe found is [the] "wrong [one]"
