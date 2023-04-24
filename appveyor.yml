@@ -212,14 +212,14 @@ environment:
     rversion: 4.3.0
     compiler: msys2
 
-  - pg: REL_15_2 # static commit - from git
-    PlatformToolset: v143
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
-    rversion: 4.3.0
-    compiler: msys2
+#   - pg: REL_15_2 # static commit - from git
+#     PlatformToolset: v143
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+#     # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
+#     rversion: 4.3.0
+#     compiler: msys2
 
 #   - pg: REL_15_2 # static commit - from git
 #     PlatformToolset: v143
@@ -2670,6 +2670,8 @@ for:
   - bash --login -c "pacman --noconfirm -Syuu"
   # just in case I need this
   - bash --login -c "pacman --noconfirm -S --needed mingw-w64-${OSBitVersion}-icu"
+  # just in case I need debug libraries
+  - bash --login -c "pacman --noconfirm -S --needed mingw-w64-${OSBitVersion}-icu-debug-libs"
   #
   # Nov Dec 2021 Appveyor changed the PATH
   # The [first] winpty.exe found is [the] "wrong [one]"
