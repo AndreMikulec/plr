@@ -203,8 +203,6 @@ environment:
     rversion: 4.1.3
     compiler: msvc
 
-
-
   - pg: master # branch - non-static commit - from git
     PlatformToolset: v143
     Configuration: Debug
@@ -223,7 +221,7 @@ environment:
     rversion: 4.3.0
     compiler: msys2
     #
-    githubcache: true
+    # githubcache: true
 
   - pg: REL_14_5 # static commit - from git
     PlatformToolset: v143
