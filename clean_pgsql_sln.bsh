@@ -2,6 +2,8 @@
 set -v -x -e
 # set -e
 
+find / -name 'pgsql.sln' -print 2>/dev/null
+
 export PGSLNLOCATION=/c/projects/postgresql/pgsql.sln
 echo PGSLNLOCATION: $PGSLNLOCATION
 
