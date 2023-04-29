@@ -3096,8 +3096,8 @@ for:
       }
 
   # duplicate 'plr' entry prevents building while msvc 2019 and greater
-  - echo REMOVE plr.vcxproj ENTRY from C:\projects\postgresql\pgsql.sln
-  - sed -i '/"plr", "plr[.]vcxproj"/,+1d' C:\projects\postgresql\pgsql.sln
+  - echo REMOVE plr ENTRY from C:\projects\postgresql\pgsql.sln
+  - sed -i '/"plr", "plr"/,+1d' C:\projects\postgresql\pgsql.sln
   - echo FILE C:\projects\postgresql\pgsql.sln
   - type C:\projects\postgresql\pgsql.sln
 
