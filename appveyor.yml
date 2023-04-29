@@ -69,13 +69,13 @@ environment:
 #       see the Visual Studio 2022 msvc and R 4.3.0 build failures
 # ####  LATE APR 2023 build jobs - jobs - Visual Studio 2022 - R 4.3.0
 
-#   - pg: 15.2-1
-#     PlatformToolset: v143
-#     Configuration: Release
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#     rversion: 4.3.0
-#     compiler: msvc
+  - pg: 15.2-1
+    PlatformToolset: v143
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.3.0
+    compiler: msvc
 
   - pg: REL_15_2 # static commit - from git
     PlatformToolset: v143
@@ -3097,7 +3097,7 @@ for:
 
   # duplicate 'plr' entry prevents building while msvc 2019 and greater
   - echo REMOVE plr ENTRY from C:\projects\postgresql\pgsql.sln
-  - sed -i '/"plr", "plr"/,+1d' C:\projects\postgresql\pgsql.sln
+  - bash 'C:\projects\plr\clean_pgsql_sln.bsh'
   - echo FILE C:\projects\postgresql\pgsql.sln
   - type C:\projects\postgresql\pgsql.sln
 
@@ -3148,7 +3148,7 @@ for:
   - REM verbosity levels: q[uiet], m[inimal](orig program), n[ormal] (default), d[etailed], and diag[nostic]
   - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%Configuration% /p:platform=%CPlatform%
             %proj%
-            /verbosity:quiet /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+            /std:c11 /verbosity:quiet /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 
   after_build:
