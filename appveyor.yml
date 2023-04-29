@@ -78,21 +78,21 @@ environment:
 #     compiler: msvc
 
 #   # PREVIOUS R RELEASE with Visual Studio 2022
-  - pg: REL_15_2 # static commit - from git
-    PlatformToolset: v143
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.2.3 
-    compiler: msvc
-
 #   - pg: REL_15_2 # static commit - from git
 #     PlatformToolset: v143
 #     Configuration: Debug
 #     Platform: x64
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#     rversion: 4.3.0
+#     rversion: 4.2.3 
 #     compiler: msvc
+
+  - pg: REL_15_2 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.3.0
+    compiler: msvc
 
 #   - pg: master # branch - non-static commit - from git
 #     PlatformToolset: v143
@@ -3165,7 +3165,7 @@ for:
   # note: build.pl is an alternative
   #
   - REM verbosity levels: q[uiet], m[inimal](orig program), n[ormal] (default), d[etailed], and diag[nostic]
-  - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%Configuration% /p:platform=%CPlatform%
+  - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%Configuration% /p:platform=%CPlatform% /p:std=c11
             %proj%
             /verbosity:quiet /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
