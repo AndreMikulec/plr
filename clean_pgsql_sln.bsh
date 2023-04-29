@@ -2,7 +2,7 @@
 set -v -x -e
 # set -e
 
-export PGSLNLOCATION=`cygpath C:\projects\postgresql\pgsql.sln`
+export PGSLNLOCATION=/c/projects/postgresql/pgsql.sln
 echo PGSLNLOCATION: $PGSLNLOCATION
 
 # GUID to later delete
