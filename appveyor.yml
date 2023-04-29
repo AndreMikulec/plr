@@ -3106,11 +3106,10 @@ for:
 
   #
   # Andre only when compiling pg from scratch
-  - echo CompilingPG %CompilingPG%
-  # if pg IS NOT begin created then pgsql.sln will not exist
+  # if pg IS NOT being compiled then pgsql.sln will not exist not being created
   #
   # duplicate 'plr' entry prevents building while msvc 2019 and greater
-
+  #
   - echo %pg% > pgName.txt
   - grep -cv "[.]" pgName.txt > pgToBuild.txt
   - for /f "delims=" %%i in (pgToBuild.txt) do (set pgToBuild=%%i)
