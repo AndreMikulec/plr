@@ -3097,7 +3097,7 @@ for:
 
   # duplicate 'plr' entry prevents building while msvc 2019 and greater
   - echo REMOVE plr ENTRY from C:\projects\postgresql\pgsql.sln
-  - bash 'C:\projects\plr\clean_pgsql_sln.bsh'
+  - bash -lc '/c/projects/plr/clean_pgsql_sln.bsh'
   - echo FILE C:\projects\postgresql\pgsql.sln
   - type C:\projects\postgresql\pgsql.sln
 
