@@ -3095,11 +3095,11 @@ for:
         $env:dll="c:\projects\postgresql\$env:Configuration\plr\plr.dll"
       }
 
-  # duplicate 'plr' entry prevents building while msvc 2019 and greater
-  - echo REMOVE plr ENTRY from C:\projects\postgresql\pgsql.sln
-  - bash -lc '/c/projects/plr/clean_pgsql_sln.bsh'
-  - echo FILE C:\projects\postgresql\pgsql.sln
-  - type C:\projects\postgresql\pgsql.sln
+#   # duplicate 'plr' entry prevents building while msvc 2019 and greater
+#   - echo REMOVE plr ENTRY from C:\projects\postgresql\pgsql.sln
+#   - bash -lc '/c/projects/plr/clean_pgsql_sln.bsh'
+#   - echo FILE C:\projects\postgresql\pgsql.sln
+#   - type C:\projects\postgresql\pgsql.sln
 
   # PostgreSQL from Appveyor or an EnterpriseDB already-compiled-binary.
   - ps: |
