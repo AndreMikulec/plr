@@ -3111,7 +3111,7 @@ for:
   #
   # duplicate 'plr' entry prevents building while msvc 2019 and greater
 
-  - type %pg% > pgName.txt
+  - echo %pg% > pgName.txt
   - grep -cv "[.]" pgName.txt > pgToBuild.txt
   - for /f "delims=" %%i in (pgToBuild.txt) do (set pgToBuild=%%i)
   - if "%pggithubbincacheextracted%"=="false" if "%pgToBuild%"=="1" (
