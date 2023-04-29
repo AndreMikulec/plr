@@ -3098,7 +3098,7 @@ for:
 
   #
   # Andre: only when compiling pg from scratch
-  - echo CompilingPG: %CompilingPG
+  - echo CompilingPG: %CompilingPG%
   # if pg IS NOT begin created then pgsql.sln will not exist
   #
   # duplicate 'plr' entry prevents building while msvc 2019 and greater
