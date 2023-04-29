@@ -69,13 +69,13 @@ environment:
 #       see the Visual Studio 2022 msvc and R 4.3.0 build failures
 # ####  LATE APR 2023 build jobs - jobs - Visual Studio 2022 - R 4.3.0
 
-  - pg: 15.2-1
-    PlatformToolset: v143
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.3.0
-    compiler: msvc
+#   - pg: 15.2-1
+#     PlatformToolset: v143
+#     Configuration: Release
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+#     rversion: 4.3.0
+#     compiler: msvc
 
   - pg: REL_15_2 # static commit - from git
     PlatformToolset: v143
@@ -3057,6 +3057,7 @@ for:
   - ps: |
       # Set-PSDebug -Trace 2
       if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
+        $env:CompilingPG = true
         gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:Platform.def" 2> $null
         lib "/def:R$env:Platform.def" "/out:R$env:Platform.lib" "/MACHINE:$env:Platform"
         pwd
@@ -3095,13 +3096,16 @@ for:
         $env:dll="c:\projects\postgresql\$env:Configuration\plr\plr.dll"
       }
 
+  #
+  # Andre: only when compiling pg from scratch
+  - echo CompilingPG: %CompilingPG
+  # if pg IS NOT begin created then pgsql.sln will not exist
+  #
   # duplicate 'plr' entry prevents building while msvc 2019 and greater
   - echo REMOVE plr ENTRY from C:\projects\postgresql\pgsql.sln
-  - move C:\projects\postgresql\pgsql.sln C:\projects\plr\pgsql.sln
   - bash -lc '/c/projects/plr/clean_pgsql_sln.bsh'
-  - move C:\projects\plr\pgsql.sln C:\projects\postgresql\pgsql.sln 
   - echo FILE C:\projects\postgresql\pgsql.sln
-  - type C:\projects\postgresql\pgsql.sln
+  - type      C:\projects\postgresql\pgsql.sln
 
   # PostgreSQL from Appveyor or an EnterpriseDB already-compiled-binary.
   - ps: |

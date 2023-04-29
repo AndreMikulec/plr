@@ -4,12 +4,10 @@ set -v -x -e
 
 pwd
 
-ls -alrt /c/projects/plr
-
-# some strange reason - I can not see here
+# ls -alrt /c/projects/plr
 # ls -alrt /c/projects/postgresql
 
-export PGSLNLOCATION=/c/projects/pgsql.sln
+export PGSLNLOCATION=/c/projects/postgresql/pgsql.sln
 echo PGSLNLOCATION: $PGSLNLOCATION
 
 # GUID to later delete
