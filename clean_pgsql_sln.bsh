@@ -1,9 +1,9 @@
 
-# set -v -x -e
-set -e
+set -v -x -e
+# set -e
 
 # GUID to later delete
-export BRACEDGUID=`cat 'C:\projects\postgresql\pgsql.sln' | grep '"plr", "plr"' | grep -Po '"{[0-9A-Z]+-[0-9A-Z]+-[0-9A-Z]+-[0-9A-Z]+-[0-9A-Z]+}"$' | grep -Po '{[0-9A-Z]+-[0-9A-Z]+-[0-9A-Z]+-[0-9A-Z]+-[0-9A-Z]+}'
+export BRACEDGUID=`cat 'C:\projects\postgresql\pgsql.sln' | grep '"plr", "plr"' | grep -Po '"{[0-9A-Z]+-[0-9A-Z]+-[0-9A-Z]+-[0-9A-Z]+-[0-9A-Z]+}"$' | grep -Po '{[0-9A-Z]+-[0-9A-Z]+-[0-9A-Z]+-[0-9A-Z]+-[0-9A-Z]+}'`
 
 echo From pgsql.sln the extra BRACEDGUID to Remove: $BRACEDGUID
   
@@ -13,5 +13,5 @@ sed -i "/= $BRACEDGUID/d" 'C:\projects\postgresql\pgsql.sln'
 # remove entry of Project line (and its GUID) and its EndProject line
 sed -i '/"plr", "plr"/,+1d' 'C:\projects\postgresql\pgsql.sln'
 
-# set +v +x +e
-set +e
+set +v +x +e
+# set +e
