@@ -3057,7 +3057,6 @@ for:
   - ps: |
       # Set-PSDebug -Trace 2
       if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
-        $env:CompilingPG = true
         gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:Platform.def" 2> $null
         lib "/def:R$env:Platform.def" "/out:R$env:Platform.lib" "/MACHINE:$env:Platform"
         pwd
@@ -3102,10 +3101,16 @@ for:
   # if pg IS NOT begin created then pgsql.sln will not exist
   #
   # duplicate 'plr' entry prevents building while msvc 2019 and greater
-  - echo REMOVE plr ENTRY from C:\projects\postgresql\pgsql.sln
-  - bash -lc '/c/projects/plr/clean_pgsql_sln.bsh'
-  - echo FILE C:\projects\postgresql\pgsql.sln
-  - type      C:\projects\postgresql\pgsql.sln
+
+  - type %pg% > pgName.txt
+  - grep -cv "[.]" pgName.txt > pgToBuild.txt
+  - for /f "delims=" %%i in (pgToBuild.txt) do (set pgToBuild=%%i)
+  - if "%pggithubbincacheextracted%"=="false" if "%pgToBuild%"=="1" (
+      echo REMOVE plr ENTRY from pgsql.sln &
+      bash -lc '/c/projects/plr/clean_pgsql_sln.bsh' &
+      echo FILE C:\projects\postgresql\pgsql.sln &
+      type      C:\projects\postgresql\pgsql.sln
+    )
 
   # PostgreSQL from Appveyor or an EnterpriseDB already-compiled-binary.
   - ps: |
