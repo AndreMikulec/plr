@@ -168,19 +168,6 @@ install:
       popd
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
       $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
-      
-      #
-      # Only when compiling pg from scratch.
-      # If pg is not being compiled then pgsql.sln will not exist and not have been created.
-      #
-      # The semi-duplicate extra 'plr' entry in the pgsql.sln file 
-      # prevents building if msvc is the version 2019 and greater.
-      #
-      echo REMOVE the semi-duplicate extra plr ENTRY from the file pgsql.sln
-      bash -lc '/c/projects/plr/clean_pgsql_sln.bsh'
-      echo FILE C:\projects\postgresql\pgsql.sln
-      type      C:\projects\postgresql\pgsql.sln
-      
     } else {
       $env:PROJ="plr.vcxproj"
       $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
@@ -192,6 +179,17 @@ install:
         Stop-Service "postgresql$env:x64-$env:pgversion"
       }
     }
+
+#
+# Only when compiling pg from scratch.
+# If pg is not being compiled then pgsql.sln will not exist and not have been created.
+#
+# The semi-duplicate extra 'plr' entry in the pgsql.sln file 
+# prevents building if Microsoft Visual Studio is the version 2019 and greater.
+#
+- bash -lc   '/c/projects/plr/clean_pgsql_sln.sh'
+- echo FILE   C:\projects\postgresql\pgsql.sln
+- type        C:\projects\postgresql\pgsql.sln
 
 #on_failure:
 # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
