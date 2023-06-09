@@ -10,86 +10,98 @@ environment:
 
   matrix:
 
-  - pg: master
-    PlatformToolset: v141
+#   - pg: master
+#     PlatformToolset: v141
+#     configuration: Debug
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+#     rversion: 4.2.1
+# 
+#   - pg: master
+#     PlatformToolset: v143
+#     configuration: Debug
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+#     rversion: 4.1.3
+
+  - pg: REL_16_BETA1
+    PlatformToolset: v143
     configuration: Debug
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.2.1
 
-  - pg: master
-    PlatformToolset: v141
-    configuration: Debug
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.1.3
+#   - pg:REL_16_BETA1
+#     PlatformToolset: v143
+#     configuration: Debug
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+#     rversion: 4.1.3
+# 
+#   - pg: REL_15_3
+#     PlatformToolset: v143
+#     configuration: Release
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+#     rversion: 4.2.1
+# 
+#   - pg: REL_15_3
+#     PlatformToolset: v143
+#     configuration: Release
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+#     rversion: 4.1.3
 
-  - pg: REL_15_0
-    PlatformToolset: v141
-    configuration: Release
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  - pg: 15.3-2
+    PlatformToolset: v143
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.2.1
 
-  - pg: REL_15_0
-    PlatformToolset: v141
-    configuration: Release
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  - pg: 15.3-2
+    PlatformToolset: v143
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.1.3
 
-  - pg: 15.0-1
-    PlatformToolset: v141
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  - pg: 14.8-2
+    PlatformToolset: v143
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.2.1
 
-  - pg: 15.0-1
-    PlatformToolset: v141
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  - pg: 14.8-2
+    PlatformToolset: v143
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.1.3
 
-  - pg: 14.5-1
-    PlatformToolset: v141
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  - pg: 13.11-2
+    PlatformToolset: v143
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.2.1
 
-  - pg: 14.5-1
-    PlatformToolset: v141
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  - pg: 13.11-2
+    PlatformToolset: v143
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.1.3
 
-  - pg: 13.8-1
-    PlatformToolset: v141
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  - pg: 12.15-2
+    PlatformToolset: v143
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.2.1
 
-  - pg: 13.8-1
-    PlatformToolset: v141
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  - pg: 12.15-2
+    PlatformToolset: v143
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.1.3
 
-  - pg: 12.12-1
-    PlatformToolset: v141
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.2.1
-
-  - pg: 12.12-1
-    PlatformToolset: v141
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.1.3
-
-  - pg: 11.17-1
+  - pg: 11.20-2
     PlatformToolset: v140
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.2.1
 
-  - pg: 11.17-1
+  - pg: 11.20-2
     PlatformToolset: v140
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.1.3
 
-  - pg: 10.22-1
+  - pg: 10.23-1
     PlatformToolset: v120
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     rversion: 4.2.1
 
-  - pg: 10.22-1
+  - pg: 10.23-1
     PlatformToolset: v120
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     rversion: 4.1.3
@@ -156,6 +168,19 @@ install:
       popd
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
       $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
+      
+      #
+      # Only when compiling pg from scratch.
+      # If pg is not being compiled then pgsql.sln will not exist and not have been created.
+      #
+      # The semi-duplicate (extra) 'plr' entry in the pgsql.sln file 
+      # prevents building if msvc is the version 2019 and greater.
+      #
+      echo REMOVE the semi-duplicate (extra) plr ENTRY from the file pgsql.sln
+      bash -lc '/c/projects/plr/clean_pgsql_sln.bsh'
+      echo FILE C:\projects\postgresql\pgsql.sln
+      type      C:\projects\postgresql\pgsql.sln
+      
     } else {
       $env:PROJ="plr.vcxproj"
       $env:dll="$($env:PLATFORM.replace('x86', '.'))\$env:CONFIGURATION\plr.dll"
