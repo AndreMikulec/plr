@@ -173,10 +173,10 @@ install:
       # Only when compiling pg from scratch.
       # If pg is not being compiled then pgsql.sln will not exist and not have been created.
       #
-      # The semi-duplicate (extra) 'plr' entry in the pgsql.sln file 
+      # The semi-duplicate extra 'plr' entry in the pgsql.sln file 
       # prevents building if msvc is the version 2019 and greater.
       #
-      echo REMOVE the semi-duplicate (extra) plr ENTRY from the file pgsql.sln
+      echo REMOVE the semi-duplicate extra plr ENTRY from the file pgsql.sln
       bash -lc '/c/projects/plr/clean_pgsql_sln.bsh'
       echo FILE C:\projects\postgresql\pgsql.sln
       type      C:\projects\postgresql\pgsql.sln
