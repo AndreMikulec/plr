@@ -21,30 +21,35 @@ environment:
 #     configuration: Debug
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
 #     rversion: 4.1.3
-
-  - pg: REL_16_BETA1
-    PlatformToolset: v143
-    configuration: Debug
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.2.1
-
+# 
+#   - pg: REL_16_BETA1
+#     PlatformToolset: v143
+#     configuration: Debug
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+#     rversion: 4.2.1
+# 
 #   - pg:REL_16_BETA1
 #     PlatformToolset: v143
 #     configuration: Debug
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
 #     rversion: 4.1.3
-# 
-#   - pg: REL_15_3
-#     PlatformToolset: v143
-#     configuration: Release
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#     rversion: 4.2.1
-# 
+
+  - pg: REL_15_3
+    PlatformToolset: v143
+    configuration: Release
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.2.1
+
 #   - pg: REL_15_3
 #     PlatformToolset: v143
 #     configuration: Release
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
 #     rversion: 4.1.3
+
+  - pg: 15.3-2
+    PlatformToolset: v141
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    rversion: 4.2.1
 
   - pg: 15.3-2
     PlatformToolset: v143
@@ -187,9 +192,9 @@ install:
 # The semi-duplicate extra 'plr' entry in the pgsql.sln file 
 # prevents building if Microsoft Visual Studio is the version 2019 and greater.
 #
-- bash -lc   '/c/projects/plr/clean_pgsql_sln.sh'
-- echo FILE   C:\projects\postgresql\pgsql.sln
-- type        C:\projects\postgresql\pgsql.sln
+- bash -lc '/c/projects/plr/clean_pgsql_sln.sh'
+- if exist C:\projects\postgresql\pgsql.sln echo FILE   C:\projects\postgresql\pgsql.sln
+- if exist C:\projects\postgresql\pgsql.sln type        C:\projects\postgresql\pgsql.sln
 
 #on_failure:
 # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
