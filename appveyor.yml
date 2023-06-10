@@ -33,7 +33,25 @@ init:
 - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
 # Make %x64% available for caching
 - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-- if %PLATFORM%==x64 ( set pf=%ProgramFiles%&& set x64=-x64) else set pf=%ProgramFiles(x86)%
+# a variable used in the Appveyor cache area must be defined in the init
+- ps: |
+    if ("$env:Platform" -eq "x64") {
+      $env:pf = "$env:ProgramFiles"
+      $env:x64 = "-x64"
+    } else {
+      $env:pf = "${env:ProgramFiles(x86)}"
+    }
+    $env:exe = "postgresql-$env:pg-windows$env:x64.exe"
+    [Environment]::SetEnvironmentVariable("exe", $env:exe, "Machine")
+
+    if ("${env:Platform}" -eq "x64") {
+      ${env:bit} = "64"
+    } else {
+      ${env:bit} = "32"
+    }
+    ${env:betterperl} = "strawberry${env:bit}"
+    ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
+
 - set exe=postgresql-%pg%-windows%x64%.exe
 - setx /m exe %exe%
 
@@ -55,6 +73,23 @@ install:
 - SET R_HOME=%ProgramFiles%\R\R-%rversion%
 - set RBIN=%PLATFORM:x86=i386%
 - SET sed=C:\msys64\usr\bin\sed
+
+# Appveyor specific: seems not required - with Appveyor - Strawberry perl is already in the path
+# ActiveState Perl is good, but Strawberry Perl is preferred
+#
+- ps: |
+    # Set-PSDebug -Trace 2
+    if (-not (Test-Path "${env:betterperl}.zip")) {
+      curl -o "${env:betterperl}.zip" -v "${env:betterperlurl}"
+    }
+    7z x    "${env:betterperl}.zip" "-oc:\${env:betterperl}"
+    # of needed to install pl/perl
+    ${env:PATH} = "c:\${env:betterperl}\perl\bin;${env:PATH}"
+    which perl
+    ${env:PATH} = "${env:PATH};c:\${env:betterperl}\c\bin"
+    which pexports
+
+
 # R in the path is not required: msvc compilation
 # R in the path is required: find Rscript
 - set PATH=%R_HOME%\bin\%rbin%;%PATH%
@@ -96,12 +131,14 @@ install:
       gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:PLATFORM.def" 2> $null
       lib "/def:R$env:PLATFORM.def" "/out:R$env:PLATFORM.lib" "/MACHINE:$env:PLATFORM"
       pushd c:\projects\postgresql
+      pwd
       cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
       Rscript --vanilla "${env:APPVEYOR_BUILD_FOLDER}\msvc.diff.R"
       perl contrib\plr\buildsetup.pl
       echo  "AFTER perl contrib\plr\buildsetup.pl CONTENTS OF C:\projects\postgresql\pgsql.sln"
       type  C:\projects\postgresql\pgsql.sln
       popd
+      pwd
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
       $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
     } else {
@@ -125,10 +162,10 @@ install:
 #
 - if exist C:\projects\postgresql\pgsql.sln if "%branchtagcommit%"=="yes" (
     echo REMOVE plr ENTRY from pgsql.sln &
-    echo FILE BEFORE C:\projects\postgresql\pgsql.sln &
+    echo FILE BEFORE clean_pgsql_sln.sh C:\projects\postgresql\pgsql.sln &
     type      C:\projects\postgresql\pgsql.sln &
     bash -lc '/c/projects/plr/clean_pgsql_sln.sh' &
-    echo FILE AFTER  C:\projects\postgresql\pgsql.sln &
+    echo FILE AFTER clean_pgsql_sln.sh C:\projects\postgresql\pgsql.sln &
     type      C:\projects\postgresql\pgsql.sln
   )
 
@@ -139,6 +176,7 @@ install:
 cache:
 - '%exe%'
 - R-%rversion%-win.exe
+- '%betterperl%.zip'
 
 build_script:
 - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%CONFIGURATION% /p:platform=%PLATFORM%
