@@ -3162,10 +3162,11 @@ for:
   #
   # duplicate 'plr' entry prevents building while msvc 2019 and greater
   #
-  - echo %pg% > pgName.txt
-  - grep -cv "[.]" pgName.txt > pgToBuild.txt
-  - for /f "delims=" %%i in (pgToBuild.txt) do (set pgToBuild=%%i)
-  - if "%pggithubbincacheextracted%"=="false" if "%pgToBuild%"=="1" (
+  ## - echo %pg% > pgName.txt
+  ## - grep -cv "[.]" pgName.txt > pgToBuild.txt
+  ## - for /f "delims=" %%i in (pgToBuild.txt) do (set pgToBuild=%%i)
+  ## - if "%pggithubbincacheextracted%"=="false" if "%pgToBuild%"=="1" (
+  - if exist C:\projects\postgresql\pgsql.sln if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
       echo REMOVE plr ENTRY from pgsql.sln &
       bash -lc '/c/projects/plr/clean_pgsql_sln.bsh' &
       echo FILE C:\projects\postgresql\pgsql.sln &
