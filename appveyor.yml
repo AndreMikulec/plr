@@ -115,7 +115,7 @@ install:
 # The semi-duplicate extra 'plr' entry in the pgsql.sln file 
 # prevents building if Microsoft Visual Studio is the version 2019 and greater.
 #
-- if exist C:\projects\postgresql\pgsql.sln if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
+- if exist C:\projects\postgresql\pgsql.sln if "%branchtagcommit%"=="yes" (
     echo REMOVE plr ENTRY from pgsql.sln &
     bash -lc '/c/projects/plr/clean_pgsql_sln.sh' &
     echo FILE C:\projects\postgresql\pgsql.sln &
