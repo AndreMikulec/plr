@@ -1,3 +1,4 @@
+image: Visual Studio 2015
 configuration: Release
 platform: x64
 clone_depth: 1
@@ -24,7 +25,13 @@ matrix:
   allow_failures:
     - pg: master
 
-init: # Make %x64% available for caching
+init: 
+- echo compiler msvc init
+- systeminfo
+# https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
+- if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
+- if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
+# Make %x64% available for caching
 - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 - if %PLATFORM%==x64 ( set pf=%ProgramFiles%&& set x64=-x64) else set pf=%ProgramFiles(x86)%
 - set exe=postgresql-%pg%-windows%x64%.exe
@@ -92,6 +99,8 @@ install:
       cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
       Rscript --vanilla "${env:APPVEYOR_BUILD_FOLDER}\msvc.diff.R"
       perl contrib\plr\buildsetup.pl
+      echo  "AFTER perl contrib\plr\buildsetup.pl CONTENTS OF C:\projects\postgresql\pgsql.sln"
+      type  C:\projects\postgresql\pgsql.sln
       popd
       $env:PROJ="C:\projects\postgresql\pgsql.sln"
       $env:dll="c:\projects\postgresql\$env:CONFIGURATION\plr\plr.dll"
