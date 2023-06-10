@@ -67,8 +67,7 @@ environment:
   # C:\Program Files\R\R-4.1.0patched # rversion is "4.1.0patched"
 
 
-# #
-
+#
 
   - pg: 15.3-2
     PlatformToolset: v143
@@ -88,35 +87,6 @@ environment:
     Platform: x64
 
 #
-
-  - pg: 15.3-2
-    PlatformToolset: v141
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.2.3
-    compiler: msvc
-    Configuration: Debug
-    Platform: x64
-
-  - pg: 15.3-2
-    PlatformToolset: v141
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.3.0
-    compiler: msvc
-    Configuration: Debug
-    Platform: x64
-
-  - pg: 15.3-2
-    PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.3.0
-    compiler: msvc
-    Configuration: Debug
-    Platform: x64
-
-# 
-
-##
-
 
 
 #       see the Visual Studio 2022 msvc and R 4.3.0 build failures
@@ -3158,18 +3128,15 @@ for:
       }
 
   #
-  # Andre only when compiling pg from scratch
-  # if pg IS NOT being compiled then pgsql.sln will not exist not being created
+  # Only when compiling pg from scratch.
+  # If pg is not being compiled then pgsql.sln will not exist and not have been created.
   #
-  # duplicate 'plr' entry prevents building while msvc 2019 and greater
+  # The semi-duplicate extra 'plr' entry in the pgsql.sln file 
+  # prevents building if Microsoft Visual Studio is the version 2019 and greater.
   #
-  ## - echo %pg% > pgName.txt
-  ## - grep -cv "[.]" pgName.txt > pgToBuild.txt
-  ## - for /f "delims=" %%i in (pgToBuild.txt) do (set pgToBuild=%%i)
-  ## - if "%pggithubbincacheextracted%"=="false" if "%pgToBuild%"=="1" (
   - if exist C:\projects\postgresql\pgsql.sln if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
       echo REMOVE plr ENTRY from pgsql.sln &
-      bash -lc '/c/projects/plr/clean_pgsql_sln.bsh' &
+      bash -lc '/c/projects/plr/clean_pgsql_sln.sh' &
       echo FILE C:\projects\postgresql\pgsql.sln &
       type      C:\projects\postgresql\pgsql.sln
     )
