@@ -70,6 +70,15 @@ environment:
 # # TRY msvc 2022 + pg bindings + re-try compile Previous_R_4.2.3_with_Visual_Studio_2022_TRY_and_WAIT_40_minutes
 
 # 
+  - pg: REL_15_3
+    PlatformToolset: v143
+    configuration: Debug
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.2.3
+    compiler: msvc
+    Configuration: Debug
+    Platform: x64
+#
 
   - pg: 15.3-2
     PlatformToolset: v141
@@ -107,15 +116,7 @@ environment:
 
 ##
 
-  - pg: REL_15_3
-    PlatformToolset: v143
-    configuration: Debug
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.2.3
-    compiler: msvc
-    Configuration: Debug
-    Platform: x64
-#
+
 
 #       see the Visual Studio 2022 msvc and R 4.3.0 build failures
 # ####  LATE APR 2023 build jobs - jobs - Visual Studio 2022 - R 4.3.0
