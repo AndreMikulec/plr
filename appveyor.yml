@@ -10,89 +10,24 @@ environment:
 
   matrix:
 
-  - pg: master
-    PlatformToolset: v141
-    configuration: Debug
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.2.3
-
-  - pg: REL_16_BETA1
-    PlatformToolset: v143
-    configuration: Debug
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.2.3
+  # ONLY R-4.3.1
 
   - pg: REL_15_3
     PlatformToolset: v143
     configuration: Debug
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.2.3
+    rversion: 4.3.1
 
   - pg: 15.3-2
     PlatformToolset: v143
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.2.3
-    
-  - pg: 15.3-2
-    PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.1.3
-
-  - pg: 14.8-2
-    PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.2.3
-
-  - pg: 14.8-2
-    PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.1.3
-
-  - pg: 13.11-2
-    PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.2.3
-
-  - pg: 13.11-2
-    PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.1.3
-
-  - pg: 12.15-2
-    PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.2.3
-
-  - pg: 12.15-2
-    PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.1.3
-
-  - pg: 11.20-2
-    PlatformToolset: v140
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.2.3
-
-  - pg: 11.20-2
-    PlatformToolset: v140
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.1.3
-
-  - pg: 10.23-1
-    PlatformToolset: v120
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    rversion: 4.2.3
-
-  - pg: 10.23-1
-    PlatformToolset: v120
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    rversion: 4.1.3
+    rversion: 4.3.1
 
 matrix:
   allow_failures:
     - pg: master
 
-init: 
+init:
 - echo compiler msvc init
 - systeminfo
 # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
@@ -224,7 +159,7 @@ install:
 # Only when compiling pg from scratch.
 # If pg is not being compiled then pgsql.sln will not exist and not have been created.
 #
-# The semi-duplicate extra 'plr' entry in the pgsql.sln file 
+# The semi-duplicate extra 'plr' entry in the pgsql.sln file
 # prevents building if Microsoft Visual Studio is the version 2019 and greater.
 #
 - if exist C:\projects\postgresql\pgsql.sln if "%branchtagcommit%"=="yes" (
@@ -246,6 +181,9 @@ cache:
 - '%betterperl%.zip'
 
 build_script:
+# ONLY R-4.3.1
+- set CL=/DR_LEGACY_RCOMPLEX /LTCG:OFF /DNO_STRICT
+#
 - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%CONFIGURATION% /p:platform=%PLATFORM%
           %PROJ%
           /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
