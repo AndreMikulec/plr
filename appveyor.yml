@@ -203,7 +203,7 @@ environment:
 #     rversion: 4.1.3
 #     compiler: msvc
 
-  - pg: REL_15_2 # static commit - from git
+  - pg: none
     PlatformToolset: v143
     Configuration: Debug
     Platform: x64
@@ -212,7 +212,7 @@ environment:
     rversion: 4.3.0
     compiler: msys2
 
-  - pg: master # branch - non-static commit - from git
+  - pg: REL_15_2 # static commit - from git
     PlatformToolset: v143
     Configuration: Debug
     Platform: x64
