@@ -76,7 +76,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.3.0
 #     compiler: msvc
-# 
+#
 #   - pg: master # branch - non-static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -84,8 +84,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: REL_15_2 # static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -93,7 +93,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.3.0
 #     compiler: msvc
-# 
+#
 #   - pg: 15.2-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -101,7 +101,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.3.0
 #     compiler: msvc
-# 
+#
 #   - pg: REL_15_2 # static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -109,7 +109,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
+#
 #   - pg: 15.2-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -117,8 +117,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: 14.7-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -126,7 +126,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.3.0
 #     compiler: msvc
-# 
+#
 #   - pg: 14.7-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -134,8 +134,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: 13.10-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -143,7 +143,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.3.0
 #     compiler: msvc
-# 
+#
 #   - pg: 13.10-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -151,8 +151,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: 12.14-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -160,7 +160,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.3.0
 #     compiler: msvc
-# 
+#
 #   - pg: 12.14-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -168,8 +168,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: 11.19-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -177,7 +177,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.3.0
 #     compiler: msvc
-# 
+#
 #   - pg: 11.19-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -185,8 +185,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: 10.23-1
 #     PlatformToolset: v120
 #     Configuration: Release
@@ -194,7 +194,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 4.3.0
 #     compiler: msvc
-# 
+#
 #   - pg: 10.23-1
 #     PlatformToolset: v120
 #     Configuration: Release
@@ -203,13 +203,21 @@ environment:
 #     rversion: 4.1.3
 #     compiler: msvc
 
-  - pg: REL_15_2 # static commit - from git
+  - pg: 15.3-2
     PlatformToolset: v143
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.3.0
-    compiler: msys2
+    rversion: 4.2.3
+    compiler: msvc
+
+  - pg: REL_15_3 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.2.3
+    compiler: msvc
     #
     githubcache: true
 
@@ -218,21 +226,47 @@ environment:
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.3.0
+    rversion: 4.3.1
+    compiler: msys2
+    #
+    githubcache: true
+
+  - pg: REL_16_BETA1 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.3.1
     compiler: msys2
     #
     githubcache: true
     buildpgthenstop: true
 
-  - pg: REL_15_3 # static commit - from git
+  - pg: REL_16_BETA1 # static commit - from git
     PlatformToolset: v143
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.3.0
+    rversion: 4.3.1
     compiler: msys2
     #
     githubcache: true
+
+  - pg: none # pg is installed on MSYS2 and the pg binaries are used
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.3.1
+    compiler: msys2
+
+  - pg: master # non-static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.3.1
+    compiler: msys2
 
 #   - pg: none
 #     PlatformToolset: v143
@@ -272,7 +306,7 @@ environment:
 #     compiler: cygwin
 #     #
 #     githubcache: true
-# 
+#
 #   # from the pre-built pg from Cygwin
 #   - PlatformToolset: v143
 #     Configuration: Debug
@@ -284,7 +318,7 @@ environment:
 
 
 # # ####  MID MAR 2023 build jobs
-# 
+#
 #   - pg: master # branch - non-static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -292,7 +326,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.2.3
 #     compiler: msvc
-# 
+#
 #   - pg: master # branch - non-static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -300,8 +334,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: REL_15_2 # static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -309,7 +343,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.2.3
 #     compiler: msvc
-# 
+#
 #   - pg: 15.2-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -317,7 +351,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.2.3
 #     compiler: msvc
-# 
+#
 #   - pg: REL_15_2 # static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -325,7 +359,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
+#
 #   - pg: 15.2-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -333,8 +367,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: 14.7-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -342,7 +376,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.2.3
 #     compiler: msvc
-# 
+#
 #   - pg: 14.7-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -350,8 +384,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: 13.10-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -359,7 +393,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.2.3
 #     compiler: msvc
-# 
+#
 #   - pg: 13.10-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -367,8 +401,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: 12.14-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -376,7 +410,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.2.3
 #     compiler: msvc
-# 
+#
 #   - pg: 12.14-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -384,8 +418,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: 11.19-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -393,7 +427,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.2.3
 #     compiler: msvc
-# 
+#
 #   - pg: 11.19-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -401,8 +435,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: 10.23-1
 #     PlatformToolset: v120
 #     Configuration: Release
@@ -410,7 +444,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 4.2.3
 #     compiler: msvc
-# 
+#
 #   - pg: 10.23-1
 #     PlatformToolset: v120
 #     Configuration: Release
@@ -418,9 +452,9 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
-# 
+#
+#
+#
 #   - pg: master # branch - non-static commit - from git
 #     PlatformToolset: v143
 #     Configuration: Debug
@@ -429,7 +463,7 @@ environment:
 #     # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
 #     rversion: 4.2.3
 #     compiler: msys2
-# 
+#
 #   - pg: REL_15_2 # static commit - from git
 #     PlatformToolset: v143
 #     Configuration: Debug
@@ -440,9 +474,9 @@ environment:
 #     compiler: msys2
 #     #
 #     githubcache: true
-# 
-# 
-# 
+#
+#
+#
 #   - pg: REL_14_0 # static commit - from git
 #     PlatformToolset: v143
 #     Configuration: Debug
@@ -452,7 +486,7 @@ environment:
 #     compiler: cygwin
 #     #
 #     githubcache: true
-# 
+#
 #   # from the pre-built pg from Cygwin
 #   - PlatformToolset: v143
 #     Configuration: Debug
@@ -466,7 +500,7 @@ environment:
 
 
 # ####  EARLY NOV 2022 build jobs
-# 
+#
 #   - pg: master # branch - non-static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -474,7 +508,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.2.2
 #     compiler: msvc
-# 
+#
 #   - pg: master # branch - non-static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -482,8 +516,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: REL_15_0 # static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -491,7 +525,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.2.2
 #     compiler: msvc
-# 
+#
 #   - pg: 15.0-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -499,7 +533,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.2.2
 #     compiler: msvc
-# 
+#
 #   - pg: REL_15_0 # static commit - from git
 #     PlatformToolset: v141
 #     Configuration: Debug
@@ -507,7 +541,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
+#
 #   - pg: 15.0-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -515,8 +549,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: 14.5-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -524,7 +558,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.2.2
 #     compiler: msvc
-# 
+#
 #   - pg: 14.5-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -532,8 +566,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: 13.8-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -541,7 +575,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.2.2
 #     compiler: msvc
-# 
+#
 #   - pg: 13.8-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -549,8 +583,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: 12.12-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -558,7 +592,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.2.2
 #     compiler: msvc
-# 
+#
 #   - pg: 12.12-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -566,8 +600,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: 11.17-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -575,7 +609,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.2.2
 #     compiler: msvc
-# 
+#
 #   - pg: 11.17-1
 #     PlatformToolset: v141
 #     Configuration: Release
@@ -583,8 +617,8 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
+#
+#
 #   - pg: 10.22-1
 #     PlatformToolset: v120
 #     Configuration: Release
@@ -592,7 +626,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 4.2.2
 #     compiler: msvc
-# 
+#
 #   - pg: 10.22-1
 #     PlatformToolset: v120
 #     Configuration: Release
@@ -600,9 +634,9 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 #     rversion: 4.1.3
 #     compiler: msvc
-# 
-# 
-# 
+#
+#
+#
 #   - pg: master # branch - non-static commit - from git
 #     PlatformToolset: v143
 #     Configuration: Debug
@@ -611,7 +645,7 @@ environment:
 #     # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
 #     rversion: 4.2.2
 #     compiler: msys2
-# 
+#
 #   - pg: REL_15_0 # static commit - from git
 #     PlatformToolset: v143
 #     Configuration: Debug
@@ -622,9 +656,9 @@ environment:
 #     compiler: msys2
 #     #
 #     githubcache: true
-# 
-# 
-# 
+#
+#
+#
 #   - pg: REL_14_0 # static commit - from git
 #     PlatformToolset: v143
 #     Configuration: Debug
@@ -634,7 +668,7 @@ environment:
 #     compiler: cygwin
 #     #
 #     githubcache: true
-# 
+#
 #   # from the pre-built pg from Cygwin
 #   - PlatformToolset: v143
 #     Configuration: Debug
@@ -642,7 +676,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
 #     # rversion - from the already compiled "Cygwin R"
 #     compiler: cygwin
-# 
+#
 
 
 # # ####  EARLY SEP 2022 build jobs
@@ -1860,7 +1894,7 @@ matrix:
 #     # - compiler: cygwin
 #     #   Platform: x86
 
-### Documentation Begins ###
+  # Documentation Begins #
 
   # matrix-Notice
   # EnterpriseDB does not have PostgreSQL x86 platform binaries
@@ -2265,9 +2299,8 @@ for:
       ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
       ${env:PATH} = "${env:CYG_ROOT}\bin;${env:PATH}"
 
-#   # uses cygwin R
-#   # DOWNLOAD . . .
-#   - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
+    # uses cygwin R . .
+    # Do not download R from https://cran.r-project.org/bin/windows/base/
 
   # From the version
   - ps: |
@@ -2453,17 +2486,18 @@ for:
   ### - if "%pg%"=="none" ( )
   - setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
 
-  build_script:
-  # override
+ build_script:
+   # override
   - set R_HOME=%CYG_ROOT%\lib\R
-  #
-  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
+  - if     "%buildpgthenstop%"=="true" bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/buildpgthenstop_script.sh"
+  - if not "%buildpgthenstop%"=="true" bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
   after_build:
-  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/after_build.sh"
+  - if not "%buildpgthenstop%"=="true" bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/after_build.sh"
 
   test_script:
-  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
+  - if not "%buildpgthenstop%"=="true" bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
+
 
 -
   matrix:
@@ -2482,14 +2516,12 @@ for:
   - ps: |
       # Set-PSDebug -Trace 2
 
-      if ("${env:compiler}" -eq "msys2") {
-        if ("${env:Platform}" -eq "x64") {
-          ${env:MSYSTEM} = "MINGW64"
-          ${env:OSBitVersion} = "x86_64"
-        } else {
-          ${env:MSYSTEM} = "MINGW32"
-          ${env:OSBitVersion} = "i686"
-        }
+      if ("${env:Platform}" -eq "x64") {
+        ${env:MSYSTEM} = "MINGW64"
+        ${env:OSBitVersion} = "x86_64"
+      } else {
+        ${env:MSYSTEM} = "MINGW32"
+        ${env:OSBitVersion} = "i686"
       }
 
       if ("${env:MSYSTEM}" -eq "MINGW64") {
@@ -2847,7 +2879,7 @@ for:
         curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
       }
   #
-  - R-%rversion%-win.exe /VERYSILENT
+  - R-%rversion%-win.exe /VERYSILENT /NOICONS /TASKS=
   #
 
   - set mingw=C:\msys64\mingw
@@ -2970,7 +3002,7 @@ for:
   - ps: |
       # Set-PSDebug -Trace 2
       # notmatch - if no "dot is found" in pg name, then pg is a: git: branch, tag, or commit.
-      if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:pg}" -notmatch "[.]")) {
+      if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:branchtagcommit}" -eq "yes")) {
         git config --global advice.detachedHead false
         $env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
         #
@@ -3083,7 +3115,7 @@ for:
   #
   - ps: |
       # Set-PSDebug -Trace 2
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
+      if (("$env:pggithubbincacheextracted" -eq "false") -and ("${env:branchtagcommit}" -eq "yes")) {
         gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:Platform.def" 2> $null
         lib "/def:R$env:Platform.def" "/out:R$env:Platform.lib" "/MACHINE:$env:Platform"
         pwd
@@ -3120,10 +3152,27 @@ for:
         $env:dll="c:\projects\postgresql\$env:Configuration\plr\plr.dll"
       }
 
+  #
+  # Only when compiling pg from scratch.
+  # If pg is not being compiled then pgsql.sln will not exist and not have been created.
+  #
+  # The semi-duplicate extra 'plr' entry in the pgsql.sln file
+  # prevents building if Microsoft Visual Studio is the version 2019 and greater.
+  #
+  - if exist C:\projects\postgresql\pgsql.sln if "%branchtagcommit%"=="yes" (
+      echo REMOVE plr ENTRY from pgsql.sln &
+      echo FILE BEFORE clean_pgsql_sln.sh C:\projects\postgresql\pgsql.sln &
+      type      C:\projects\postgresql\pgsql.sln &
+      bash -lc '/c/projects/plr/clean_pgsql_sln.sh' &
+      echo FILE AFTER clean_pgsql_sln.sh C:\projects\postgresql\pgsql.sln &
+      type      C:\projects\postgresql\pgsql.sln
+    )
+
+
   # PostgreSQL from Appveyor or an EnterpriseDB already-compiled-binary.
   - ps: |
       # Set-PSDebug -Trace 2
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
+      if (("$env:pggithubbincacheextracted" -eq "false") -and ("${env:branchtagcommit}" -eq "no")) {
         $env:proj="plr.vcxproj"
         $env:dll="$($env:Platform.replace('x86', '.'))\$env:Configuration\plr.dll"
         if (-not (Test-Path "$env:pgroot\bin")) {
@@ -3205,7 +3254,7 @@ for:
   #
   - ps: |
       # Set-PSDebug -Trace 2
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
+      if (("$env:pggithubbincacheextracted" -eq "false") -and ("${env:branchtagcommit}" -eq "yes")) {
         pushd c:\projects\postgresql\src\tools\msvc
         pwd
         echo "Files . . ."
@@ -3264,7 +3313,7 @@ for:
   #   see above - perl install.pl
   - ps: |
       # Set-PSDebug -Trace 2
-      if ("$env:pg" -notmatch "[.]") {
+      if ("${env:branchtagcommit}" -eq "yes") {
         Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
         initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
         pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
@@ -3330,11 +3379,10 @@ for:
 
 ### universal: cache, artifacts, and depoy ###
 
-
 cache:
 # PostgreSQL
 - '%exe%'
-# I think that I have the space
+- 'R-%rversion%-win.exe'
 - '%betterperl%.zip'
 
 artifacts:
@@ -3342,6 +3390,8 @@ artifacts:
   name: plr_7z
 - path: 'pg-*.7z'
   name: pg_7z
+
+# Begin Andre Sourceforge Deploy
 
 before_deploy:
 
@@ -3355,7 +3405,11 @@ before_deploy:
     set PATH=C:\Program Files (x86)\WinSCP;%PATH%
     winscp.com /script=ftp.txt || date /t
 
+# End Andre Sourceforge Deploy
+
 deploy:
+
+  # Begin Andre Github Deploy
 
   # note, "deploy - on" "compiler: msys2, cygwin" is mis-interpreted as "msys2, cygwin"
   # therefore, "msys2, cygwin" is not a usable deployment filter option
@@ -3377,7 +3431,7 @@ deploy:
 #     folder: /home/frs/project/andremikulec
 #     application:
 #     active_mode: false
-# 
+#
 #   - provider: FTP
 #     host: frs.sourceforge.net
 #     protocol: sftp
@@ -3416,4 +3470,17 @@ deploy:
     on:
       APPVEYOR_REPO_TAG: true
 
+  # End Andre Github Deploy
 
+  # Begin Kramer Deploy
+
+  - provider: GitHub
+    release: $(appveyor_repo_tag_name)
+    draft: false
+    prerelease: false
+    auth_token:
+       secure: sFXG3dBiC2S9bnHbDfg2fS0OdaxiSr6fGSlMQvQPb0lJGyKM3E5UZum4rik60zyi
+    on:
+       appveyor_repo_tag: true
+
+ # End Kramer Deploy

@@ -76,24 +76,27 @@ then
       # e.g.
       pushd ${APPVEYOR_BUILD_FOLDER}
       #
-      # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
+      # NOTE FTP Deploy will automatically PushArtifact.
+      # I am ALSO pushing the artifact here, in the case the build fails, and I never reach Deploy.
       #
-      # loginfo "appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-      #          appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+      loginfo "appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+               appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
       popd
   # bash if-then-else-fi # inside bodies can not be empty
   # else
       #
-      # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
+      # NOTE FTP Deploy will automatically PushArtifact.
+      # I am ALSO pushing the artifact here, in the case the build fails, and I never reach Deploy.
       #
-      # loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-      #          appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+      loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+      #        appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
     fi
   fi
   #
   cd ${APPVEYOR_BUILD_FOLDER} 
   loginfo "END   pg 7z CREATION"
 fi
+
 
 # set +v +x +e
 set +e
