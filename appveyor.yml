@@ -527,7 +527,9 @@ for:
       }
   # ANDRE NEW
   # do a system update and quit
-  - bash --login -c "set -e;set -x;set -v;pacman -Syu --noconfirm"
+  # https://www.msys2.org/docs/updating/
+  - bash --login -c "set -e;set -x;set -v;pacman -Suy --noconfirm"
+  - bash --login -c "set -e;set -x;set -v;pacman -Suy --noconfirm"
 
   # msys2
   #
