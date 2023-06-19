@@ -75,7 +75,7 @@ environment:
     PlatformToolset: v143
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.2.3
+    rversion: 4.3.1
     compiler: msys2
 
 #   # FAILED
