@@ -203,23 +203,45 @@ environment:
 #     rversion: 4.1.3
 #     compiler: msvc
 
-  - pg: none
-    PlatformToolset: v143
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
-    rversion: 4.3.0
-    compiler: msys2
-
   - pg: REL_15_2 # static commit - from git
     PlatformToolset: v143
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
     rversion: 4.3.0
     compiler: msys2
+    #
+    githubcache: true
+
+  - pg: REL_15_3 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.3.0
+    compiler: msys2
+    #
+    githubcache: true
+    buildpgthenstop: true
+
+  - pg: REL_15_3 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.3.0
+    compiler: msys2
+    #
+    githubcache: true
+
+#   - pg: none
+#     PlatformToolset: v143
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+#     # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
+#     rversion: 4.3.0
+#     compiler: msys2
 
 #   - pg: REL_15_2 # static commit - from git
 #     PlatformToolset: v143
@@ -2712,13 +2734,14 @@ for:
     )
 
   build_script:
-  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
+  - if     "%buildpgthenstop%"=="true" bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/buildpgthenstop_script.sh"
+  - if not "%buildpgthenstop%"=="true" bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
   after_build:
-  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/after_build.sh"
+  - if not "%buildpgthenstop%"=="true" bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/after_build.sh"
 
   test_script:
-  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
+  - if not "%buildpgthenstop%"=="true" bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
 
 
 -
