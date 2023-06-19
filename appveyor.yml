@@ -2486,8 +2486,8 @@ for:
   ### - if "%pg%"=="none" ( )
   - setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
 
- build_script:
-   # override
+  build_script:
+  # override
   - set R_HOME=%CYG_ROOT%\lib\R
   - if     "%buildpgthenstop%"=="true" bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/buildpgthenstop_script.sh"
   - if not "%buildpgthenstop%"=="true" bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
