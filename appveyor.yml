@@ -548,7 +548,7 @@ for:
 
   build_script:
   # ANDRE
-  set
+  - set
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
   after_build:
