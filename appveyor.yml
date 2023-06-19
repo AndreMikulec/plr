@@ -99,8 +99,8 @@ environment:
 #     compiler: msys2
 
   # githubcache true - release 0.0.0.0.0.GITHUBCACHE
-  # ANYTHING LESS THAN 40MB IS BAD - msys2 .7z
-  # ANYTHING LESS THAN 11MB IS BAD - msvc  .7z
+  # pg.7z - ANYTHING LESS THAN 40MB IS BAD - msys2 .7z
+  # pg.7z - ANYTHING LESS THAN 11MB IS BAD - msvc  .7z
 
   # bread and butter
 
@@ -3231,7 +3231,7 @@ for:
   - ps: |
       # Set-PSDebug -Trace 2
       # notmatch - if no "dot is found" in pg name, then pg is a: git: branch, tag, or commit.
-      if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:branchtagcommit}" -eq "yes")) {
+      if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:pg}" -notmatch "[.]")) {
         git config --global advice.detachedHead false
         $env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
         #
@@ -3344,7 +3344,7 @@ for:
   #
   - ps: |
       # Set-PSDebug -Trace 2
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("${env:branchtagcommit}" -eq "yes")) {
+      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
         gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:Platform.def" 2> $null
         lib "/def:R$env:Platform.def" "/out:R$env:Platform.lib" "/MACHINE:$env:Platform"
         pwd
@@ -3421,7 +3421,7 @@ for:
   # PostgreSQL from Appveyor or an EnterpriseDB already-compiled-binary.
   - ps: |
       # Set-PSDebug -Trace 2
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("${env:branchtagcommit}" -eq "no")) {
+      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
         $env:proj="plr.vcxproj"
         $env:dll="$($env:Platform.replace('x86', '.'))\$env:Configuration\plr.dll"
         if (-not (Test-Path "$env:pgroot\bin")) {
@@ -3503,7 +3503,7 @@ for:
   #
   - ps: |
       # Set-PSDebug -Trace 2
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("${env:branchtagcommit}" -eq "yes")) {
+      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
         pushd c:\projects\postgresql\src\tools\msvc
         pwd
         echo "Files . . ."
@@ -3543,15 +3543,15 @@ for:
   #
   # Often push "msvc pg" artifacts (because they are not too big.)
   #
-  #   - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pg7z%" (
-  #       appveyor PushArtifact "%pg7z%"
-  #     )
+  # - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pg7z%" (
+  #     appveyor PushArtifact "%pg7z%"
+  #   )
   # what did I 7z up?
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if ( ("$env:githubcache" -eq "true") -and ("$env:pggithubbincachefound" -eq "false") -and (Test-Path "$env:pgroot\bin\postgres.exe") ) {
-        7z l "$env:pg7z"
-      }
+  # - ps: |
+  #      # Set-PSDebug -Trace 2
+  #     if ( ("$env:githubcache" -eq "true") -and ("$env:pggithubbincachefound" -eq "false") -and (Test-Path "$env:pgroot\bin\postgres.exe") ) {
+  #        7z l "$env:pg7z"
+  #     }
 
   test_script:
   - echo compiler msvc test_script
@@ -3562,7 +3562,7 @@ for:
   #   see above - perl install.pl
   - ps: |
       # Set-PSDebug -Trace 2
-      if ("${env:branchtagcommit}" -eq "yes") {
+      if ("$env:pg" -notmatch "[.]") {
         Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
         initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
         pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
@@ -3622,7 +3622,6 @@ for:
       }
 
 
-
 #on_failure:
 # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
@@ -3632,7 +3631,7 @@ for:
 cache:
 # PostgreSQL
 # - '%exe%'
-# - 'R-%rversion%-win.exe'
+- 'R-%rversion%-win.exe'
 # - '%betterperl%.zip'
 
 artifacts:
