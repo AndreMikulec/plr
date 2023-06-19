@@ -204,7 +204,7 @@ environment:
 #     compiler: msvc
 
 
-  - pg: 15.2-2
+  - pg: 15.3-2
     PlatformToolset: v143
     Configuration: Debug
     Platform: x64
@@ -220,15 +220,15 @@ environment:
     rversion: 4.2.3
     compiler: msvc
 
-  - pg: REL_15_2 # static commit - from git
-    PlatformToolset: v143
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.3.1
-    compiler: msvc
-    #
-    githubcache: true
+#   - pg: REL_15_2 # static commit - from git
+#     PlatformToolset: v143
+#     Configuration: Debug
+#     Platform: x64
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+#     rversion: 4.3.1
+#     compiler: msvc
+#     #
+#     githubcache: true
 
   - pg: none # pg is installed on MSYS2 and the pg binaries are used
     PlatformToolset: v143
@@ -3206,13 +3206,32 @@ for:
   #
   # duplicate 'plr' entry prevents building while msvc 2019 and greater
   #
-  - echo %pg% > pgName.txt
-  - grep -cv "[.]" pgName.txt > pgToBuild.txt
-  - for /f "delims=" %%i in (pgToBuild.txt) do (set pgToBuild=%%i)
-  - if "%pggithubbincacheextracted%"=="false" if "%pgToBuild%"=="1" (
+#   - echo %pg% > pgName.txt
+#   - grep -cv "[.]" pgName.txt > pgToBuild.txt
+#   - for /f "delims=" %%i in (pgToBuild.txt) do (set pgToBuild=%%i)
+#   - if "%pggithubbincacheextracted%"=="false" if "%pgToBuild%"=="1" (
+#       echo REMOVE plr ENTRY from pgsql.sln &
+#       bash -lc '/c/projects/plr/clean_pgsql_sln.bsh' &
+#       echo FILE C:\projects\postgresql\pgsql.sln &
+#       type      C:\projects\postgresql\pgsql.sln
+#     )
+#     # 15.2-2   # stops the build
+#     # REL_15_2 # message /c/projects/plr/clean_pgsql_sln.bsh No such file or directory
+#     #          # build continues with pgsql.sln unmodified (with duplicates)
+
+  #
+  # Only when compiling pg from scratch.
+  # If pg is not being compiled then pgsql.sln will not exist and not have been created.
+  #
+  # The semi-duplicate extra 'plr' entry in the pgsql.sln file
+  # prevents building if Microsoft Visual Studio is the version 2019 and greater.
+  #
+  - if exist C:\projects\postgresql\pgsql.sln if "%branchtagcommit%"=="yes" (
       echo REMOVE plr ENTRY from pgsql.sln &
-      bash -lc '/c/projects/plr/clean_pgsql_sln.bsh' &
-      echo FILE C:\projects\postgresql\pgsql.sln &
+      echo FILE BEFORE clean_pgsql_sln.sh C:\projects\postgresql\pgsql.sln &
+      type      C:\projects\postgresql\pgsql.sln &
+      bash -lc '/c/projects/plr/clean_pgsql_sln.sh' &
+      echo FILE AFTER clean_pgsql_sln.sh C:\projects\postgresql\pgsql.sln &
       type      C:\projects\postgresql\pgsql.sln
     )
 
