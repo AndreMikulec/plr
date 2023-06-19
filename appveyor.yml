@@ -219,6 +219,16 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.2.3
     compiler: msvc
+    #
+    githubcache: true
+
+  - pg: REL_15_3 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.2.3
+    compiler: msvc
 
 #   - pg: REL_15_2 # static commit - from git
 #     PlatformToolset: v143
@@ -3048,7 +3058,7 @@ for:
   - ps: |
       # Set-PSDebug -Trace 2
       # notmatch - if no "dot is found" in pg name, then pg is a: git: branch, tag, or commit.
-      if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:pg}" -notmatch "[.]")) {
+      if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:branchtagcommit}" -eq "yes")) {
         git config --global advice.detachedHead false
         $env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
         #
@@ -3161,7 +3171,7 @@ for:
   #
   - ps: |
       # Set-PSDebug -Trace 2
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
+      if (("$env:pggithubbincacheextracted" -eq "false") -and ("${env:branchtagcommit}" -eq "yes")) {
         gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:Platform.def" 2> $null
         lib "/def:R$env:Platform.def" "/out:R$env:Platform.lib" "/MACHINE:$env:Platform"
         pwd
@@ -3238,7 +3248,7 @@ for:
   # PostgreSQL from Appveyor or an EnterpriseDB already-compiled-binary.
   - ps: |
       # Set-PSDebug -Trace 2
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
+      if (("$env:pggithubbincacheextracted" -eq "false") -and ("${env:branchtagcommit}" -eq "no")) {
         $env:proj="plr.vcxproj"
         $env:dll="$($env:Platform.replace('x86', '.'))\$env:Configuration\plr.dll"
         if (-not (Test-Path "$env:pgroot\bin")) {
@@ -3320,7 +3330,7 @@ for:
   #
   - ps: |
       # Set-PSDebug -Trace 2
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
+      if (("$env:pggithubbincacheextracted" -eq "false") -and ("${env:branchtagcommit}" -eq "yes")) {
         pushd c:\projects\postgresql\src\tools\msvc
         pwd
         echo "Files . . ."
@@ -3379,7 +3389,7 @@ for:
   #   see above - perl install.pl
   - ps: |
       # Set-PSDebug -Trace 2
-      if ("$env:pg" -notmatch "[.]") {
+      if ("${env:branchtagcommit}" -eq "yes") {
         Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
         initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
         pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
