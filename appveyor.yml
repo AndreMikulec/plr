@@ -90,7 +90,7 @@ environment:
     PlatformToolset: v143
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.3.1
-    pglinkbinoldurl https://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-postgresql-14.5-1-any.pkg.tar.zst
+    pglinkbinoldurl: https://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-postgresql-14.5-1-any.pkg.tar.zst
     compiler: msys2
     
   - pg: none # pg is installed on MSYS2 and the pg binaries are used
