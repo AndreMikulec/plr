@@ -213,14 +213,6 @@ environment:
     #
     githubcache: true
 
-  - pg: none # pg is installed on MSYS2 and the pg binaries are used
-    PlatformToolset: v143
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.3.1
-    compiler: msys2
-
   - pg: 15.3-2
     PlatformToolset: v143
     Configuration: Debug
@@ -228,6 +220,14 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.2.3
     compiler: msvc
+
+  - pg: none # pg is installed on MSYS2 and the pg binaries are used
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.2.3
+    compiler: msys2
 
   - pg: REL_15_3 # static commit - from git
     PlatformToolset: v143
@@ -2787,7 +2787,9 @@ for:
 
   # msys2
   # update all
-  - bash --login -c "pacman --noconfirm -Syuu"
+  - bash --login -c "pacman --noconfirm -Suy"
+  - bash --login -c "pacman --noconfirm -Suy"
+  #
   # just in case I need this
   # - bash --login -c "pacman --noconfirm -S --needed mingw-w64-${OSBitVersion}-icu"
   # just in case I need icu debug libraries
