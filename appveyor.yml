@@ -3631,9 +3631,9 @@ for:
 
 cache:
 # PostgreSQL
-- '%exe%'
-- 'R-%rversion%-win.exe'
-- '%betterperl%.zip'
+# - '%exe%'
+# - 'R-%rversion%-win.exe'
+# - '%betterperl%.zip'
 
 artifacts:
 - path: 'plr-*.7z'
