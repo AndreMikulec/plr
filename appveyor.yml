@@ -2904,7 +2904,7 @@ for:
         curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
       }
   #
-  - R-%rversion%-win.exe /VERYSILENT /NOICONS /TASKS=
+  - R-%rversion%-win.exe /VERYSILENT
   #
 
   - set mingw=C:\msys64\mingw
@@ -2936,9 +2936,7 @@ for:
   - ps: |
       # Set-PSDebug -Trace 2
       if (-not (Test-Path "${env:betterperl}.zip")) {
-        dir
         curl -o "${env:betterperl}.zip" -v "${env:betterperlurl}"
-        dir
       }
       7z x    "${env:betterperl}.zip" "-oc:\${env:betterperl}"
       # of needed to install pl/perl
@@ -3029,7 +3027,7 @@ for:
   - ps: |
       # Set-PSDebug -Trace 2
       # notmatch - if no "dot is found" in pg name, then pg is a: git: branch, tag, or commit.
-      if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:branchtagcommit}" -eq "yes")) {
+      if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:pg}" -notmatch "[.]")) {
         git config --global advice.detachedHead false
         $env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
         #
@@ -3142,7 +3140,7 @@ for:
   #
   - ps: |
       # Set-PSDebug -Trace 2
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("${env:branchtagcommit}" -eq "yes")) {
+      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
         gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:Platform.def" 2> $null
         lib "/def:R$env:Platform.def" "/out:R$env:Platform.lib" "/MACHINE:$env:Platform"
         pwd
@@ -3165,9 +3163,11 @@ for:
         echo "Files . . ."
         $Table = Get-ChildItem
         foreach ($Row in $Table) { $Row.Name }
+        echo "FILE C:\projects\postgresql\pgsql.sln"
         type C:\projects\postgresql\pgsql.sln
+        echo "FILE plr.vcxproj"
         type plr.vcxproj
-        # echo . . . COMPARING . . .
+        # echo ". . . COMPARING . . ."
         # type pgcrypto.vcxproj
         # type postgres.vcxproj
         popd
@@ -3180,26 +3180,25 @@ for:
       }
 
   #
-  # Only when compiling pg from scratch.
-  # If pg is not being compiled then pgsql.sln will not exist and not have been created.
+  # Andre only when compiling pg from scratch
+  # if pg IS NOT being compiled then pgsql.sln will not exist not being created
   #
-  # The semi-duplicate extra 'plr' entry in the pgsql.sln file
-  # prevents building if Microsoft Visual Studio is the version 2019 and greater.
+  # duplicate 'plr' entry prevents building while msvc 2019 and greater
   #
-  - if exist C:\projects\postgresql\pgsql.sln if "%branchtagcommit%"=="yes" (
+  - echo %pg% > pgName.txt
+  - grep -cv "[.]" pgName.txt > pgToBuild.txt
+  - for /f "delims=" %%i in (pgToBuild.txt) do (set pgToBuild=%%i)
+  - if "%pggithubbincacheextracted%"=="false" if "%pgToBuild%"=="1" (
       echo REMOVE plr ENTRY from pgsql.sln &
-      echo FILE BEFORE clean_pgsql_sln.sh C:\projects\postgresql\pgsql.sln &
-      type      C:\projects\postgresql\pgsql.sln &
-      bash -lc '/c/projects/plr/clean_pgsql_sln.sh' &
-      echo FILE AFTER clean_pgsql_sln.sh C:\projects\postgresql\pgsql.sln &
+      bash -lc '/c/projects/plr/clean_pgsql_sln.bsh' &
+      echo FILE C:\projects\postgresql\pgsql.sln &
       type      C:\projects\postgresql\pgsql.sln
     )
-
 
   # PostgreSQL from Appveyor or an EnterpriseDB already-compiled-binary.
   - ps: |
       # Set-PSDebug -Trace 2
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("${env:branchtagcommit}" -eq "no")) {
+      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
         $env:proj="plr.vcxproj"
         $env:dll="$($env:Platform.replace('x86', '.'))\$env:Configuration\plr.dll"
         if (-not (Test-Path "$env:pgroot\bin")) {
@@ -3281,7 +3280,7 @@ for:
   #
   - ps: |
       # Set-PSDebug -Trace 2
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("${env:branchtagcommit}" -eq "yes")) {
+      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
         pushd c:\projects\postgresql\src\tools\msvc
         pwd
         echo "Files . . ."
@@ -3340,7 +3339,7 @@ for:
   #   see above - perl install.pl
   - ps: |
       # Set-PSDebug -Trace 2
-      if ("${env:branchtagcommit}" -eq "yes") {
+      if ("$env:pg" -notmatch "[.]") {
         Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
         initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
         pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
@@ -3398,6 +3397,7 @@ for:
         type regression.diffs
         $host.SetShouldExit($LastExitCode)
       }
+
 
 
 #on_failure:
