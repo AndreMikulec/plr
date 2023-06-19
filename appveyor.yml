@@ -2617,7 +2617,9 @@ for:
   - ps: |
       # Set-PSDebug -Trace 2
       if (-not (Test-Path "${env:betterperl}.zip")) {
+        dir
         curl -o "${env:betterperl}.zip" -v "${env:betterperlurl}"
+        dir
       }
       7z x    "${env:betterperl}.zip" "-oc:\${env:betterperl}"
       # of needed to install pl/perl
