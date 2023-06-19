@@ -190,8 +190,8 @@ then
       # NOTE FTP Deploy will automatically PushArtifact.
       # I am ALSO pushing the artifact here, in the case the build fails, and I never reach Deploy.
       #
-      loginfo "appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-               appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+      # loginfo "appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+      #          appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
       popd
   # bash if-then-else-fi # inside bodies can not be empty
   # else
@@ -199,7 +199,7 @@ then
       # NOTE FTP Deploy will automatically PushArtifact.
       # I am ALSO pushing the artifact here, in the case the build fails, and I never reach Deploy.
       #
-      loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+      # loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
       #        appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
     fi
   fi

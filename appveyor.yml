@@ -3543,9 +3543,9 @@ for:
   #
   # Often push "msvc pg" artifacts (because they are not too big.)
   #
-  - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pg7z%" (
-      appveyor PushArtifact "%pg7z%"
-    )
+  #   - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pg7z%" (
+  #       appveyor PushArtifact "%pg7z%"
+  #     )
   # what did I 7z up?
   - ps: |
       # Set-PSDebug -Trace 2

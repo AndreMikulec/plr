@@ -115,8 +115,8 @@ then
   #
   # BAD PUSH-ARTIFACT - DEFINITELY A BUG
   #
-  # loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${var7z}"
-  #          appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${var7z}
+  loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${var7z}"
+           appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${var7z}
   #
   # appveyor PushArtifact /cygdrive/c/projects/plr/plr-761a5fbc-pg12-R4.1.0alpha-x86-Debug-cygwin.7z
   # File not found: C:\projects\plr\cygdrive\c\projects\plr\plr-761a5fbc-pg12-R4.1.0alpha-x86-Debug-cygwin.7z
