@@ -5,10 +5,8 @@ cd "$(dirname "$0")"
 
 logok "BEGIN build_script.sh"
 
-# set -v -x -e
+set -v -x -e
 set -e
-
-export
 
 # which R msys2 and cygwin
 # /c/RINSTALL/bin/x64/R
@@ -96,6 +94,10 @@ loginfo "END   verify that PLR will link to the correct PostgreSQL"
 # psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
 # psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
 #
+
+# ANDRE
+loginfo "which winpty: $(which winpty)"
+loginfo "which whoami: $(whoami)"
 
 if [ "${compiler}" == "msys2" ]
 then
@@ -198,7 +200,7 @@ fi
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
 
-# set +v +x +e
+set +v +x +e
 set +e
 
 # ANDRE FIXED FROM - BEGIN to END
