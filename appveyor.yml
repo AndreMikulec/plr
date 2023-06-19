@@ -107,7 +107,7 @@ environment:
     compiler: msys2
     #
     githubcache: true
-    buildpgthenstop
+    buildpgthenstop: true
 
   - pg: REL_16_BETA1
     PlatformToolset: v143
@@ -125,7 +125,7 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.2.3
     compiler: msvc
-    
+
   - pg: 15.3-2
     PlatformToolset: v143
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
@@ -338,7 +338,7 @@ environment:
 #     compiler: msvc
 #     #
 #     githubcache: true
-# 
+#
 #   - pg: 15.3-2
 #     PlatformToolset: v143
 #     Configuration: Debug
@@ -346,7 +346,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
 #     rversion: 4.2.3
 #     compiler: msvc
-# 
+#
 #   - pg: none # pg is installed on MSYS2 and the pg binaries are used
 #     PlatformToolset: v143
 #     Configuration: Debug
@@ -354,7 +354,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
 #     rversion: 4.2.3
 #     compiler: msys2
-# 
+#
 #   - pg: REL_15_3 # static commit - from git
 #     PlatformToolset: v143
 #     Configuration: Debug
@@ -386,7 +386,7 @@ environment:
 #     #
 #     githubcache: true
 
-#   
+#
 #
 #   - pg: 15.3-2
 #     PlatformToolset: v143
@@ -395,7 +395,7 @@ environment:
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
 #     rversion: 4.2.3
 #     compiler: msvc
-# 
+#
 #   - pg: REL_15_3 # static commit - from git
 #     PlatformToolset: v143
 #     Configuration: Debug
@@ -415,7 +415,7 @@ environment:
 #     compiler: msys2
 #     #
 #     githubcache: true
-# 
+#
 #   - pg: REL_16_BETA1 # static commit - from git
 #     PlatformToolset: v143
 #     Configuration: Debug
@@ -426,7 +426,7 @@ environment:
 #     #
 #     githubcache: true
 #     buildpgthenstop: true
-# 
+#
 #   - pg: REL_16_BETA1 # static commit - from git
 #     PlatformToolset: v143
 #     Configuration: Debug
