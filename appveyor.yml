@@ -2910,9 +2910,9 @@ for:
       }
 
   # msys2
-  # update all
-  - bash --login -c "pacman --noconfirm -Suy"
-  - bash --login -c "pacman --noconfirm -Suy"
+  # update all - skip - postgres and r are weakly and near nothing dependent on versions
+  # - bash --login -c "pacman --noconfirm -Suy"
+  # - bash --login -c "pacman --noconfirm -Suy"
   #
   # just in case I need this
   # - bash --login -c "pacman --noconfirm -S --needed mingw-w64-${OSBitVersion}-icu"
