@@ -3515,8 +3515,8 @@ for:
       echo End display of Solution.pm &
       echo End performing patching on-the-fly
     )
-   - echo pwd should be c:\projects\plr
-   - pwd
+  - echo pwd should be c:\projects\plr
+  - pwd
    
 
   #
