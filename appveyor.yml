@@ -2998,7 +2998,7 @@ for:
   # (Perhaps because, of "some" complexity)
 
   - ps: |
-      # Set-PSDebug -Trace 2
+      Set-PSDebug -Trace 2
       if (-not (Test-Path "${env:betterperl}.zip")) {
         dir
         curl -o "${env:betterperl}.zip" -v "${env:betterperlurl}"
@@ -3194,7 +3194,7 @@ for:
   # Make %x64% available for caching
   # a variable used in the Appveyor cache area must be defined in the init
   - ps: |
-      Set-PSDebug -Trace 2
+      # Set-PSDebug -Trace 2
       # Defaults
       if ("${env:Platform}"      -eq "") {${env:Platform}      = "x64"}
       if ("${env:Configuration}" -eq "") {${env:Configuration} = "Release"}
@@ -3242,7 +3242,7 @@ for:
   #
   # - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
   - ps: |
-      Set-PSDebug -Trace 2
+      # Set-PSDebug -Trace 2
       # default
       # special named R version(s)
       if("${env:rlinkbinoldurl}" -eq "none") {
@@ -3369,7 +3369,7 @@ for:
   # extraction from 0.0.0.0.0.GITHUBCACHE, if any old files
   #
   - ps: |
-      Set-PSDebug -Trace 2
+      # Set-PSDebug -Trace 2
       if (("${env:githubcache}" -eq "true") -and ("${env:pggithubbincacheextracted}" -eq "true")) {
         pushd "${env:pgroot}"
         del share\extension\plr--*.sql   2>null
@@ -3383,7 +3383,7 @@ for:
   # msbuild needs
   #
   - ps: |
-      Set-PSDebug -Trace 2
+      # Set-PSDebug -Trace 2
       if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
         $env:proj="plr.vcxproj"
         $env:dll="$($env:Platform.replace('x86', '.'))\$env:Configuration\plr.dll"
@@ -3395,7 +3395,9 @@ for:
       # This environment variable is use in a test that is used that is used in determining
       # whether or not to perform patching (see below).
       #
-      Set-PSDebug -Trace 2
+      # branchtagcommit verses EnterprpiseDB x.y-z
+      #
+      # Set-PSDebug -Trace 2
       if (("${env:pg}" -notmatch "[.]") -or ("${env:pghint}" -eq "commit")) {
         ${env:branchtagcommit} = "yes"
       } else {
@@ -3407,7 +3409,7 @@ for:
   # PostgreSQL from source code: git, tag, or commit
   #
   - ps: |
-      Set-PSDebug -Trace 2
+      # Set-PSDebug -Trace 2
       # notmatch - if no "dot is found" in pg name, then pg is a: git: branch, tag, or commit.
       if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:pg}" -notmatch "[.]")) {
         git config --global advice.detachedHead false
@@ -3526,34 +3528,28 @@ for:
   - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" popd
   - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" dir c:\projects\postgresql\contrib\plr
   - ps: |
-      Set-PSDebug -Trace 2
+      # Set-PSDebug -Trace 2
       if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
         gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:Platform.def" 2> $null
         lib "/def:R$env:Platform.def" "/out:R$env:Platform.lib" "/MACHINE:$env:Platform"
         dir
         pushd c:\projects\postgresql
-        dir
         #
         # patch already done - above - using msvc.diff.R
         # patch -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
         #
         # creates both plr.vcxproj and pgsql.sln
-        pwd
+
         perl contrib\plr\buildsetup.pl
-        pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
-        type C:\projects\postgresql\pgsql.sln
+        dir
+        type pgsql.sln
         type plr.vcxproj
         # echo . . . COMPARING . . .
         # type pgcrypto.vcxproj
         # type postgres.vcxproj
         popd
         pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
+        dir
         $env:proj="C:\projects\postgresql\pgsql.sln"
         $env:dll="c:\projects\postgresql\$env:Configuration\plr\plr.dll"
       }
@@ -3571,7 +3567,10 @@ for:
       grep --version &
       bash --login -c "set -e;set -x;set -v;pacman  -S sed --noconfirm" &
       which sed &
-      sed -- version &
+      sed -- version
+    )
+      
+  - if exist C:\projects\postgresql\pgsql.sln (
       echo REMOVE plr ENTRY from pgsql.sln &
       echo FILE BEFORE clean_pgsql_sln.sh C:\projects\postgresql\pgsql.sln &
       type      C:\projects\postgresql\pgsql.sln &
@@ -3579,7 +3578,6 @@ for:
       echo FILE AFTER clean_pgsql_sln.sh C:\projects\postgresql\pgsql.sln &
       type      C:\projects\postgresql\pgsql.sln
     )
-
 
   # PostgreSQL from Appveyor or an EnterpriseDB already-compiled-binary.
   - ps: |
