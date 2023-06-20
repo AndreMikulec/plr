@@ -103,7 +103,7 @@ environment:
   # pg.7z - ANYTHING LESS THAN 11MB IS BAD - msvc  .7z - Please delete
 
   # APPVEYOR_BUILD_WORKER_IMAGE Visual Studio 2017
-  # executable "sed" is defective (or lacks features)
+  # executable "grep" or "sed" is defective (or lacks features)
   # and clean_pgsql_sln.sh will
   # not properly clean a pgsql.sln file in the
   # situations where a pgsql.sln
