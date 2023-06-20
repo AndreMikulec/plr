@@ -3310,10 +3310,10 @@ for:
       } else {
         ${env:PATH} = "C:\msys32\usr\bin;${env:PATH}"
       }
-      
+
    # VS 2015 lib and gendef are placed and the end of the path
   - ps: $env:PATH += ";C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
-      
+
   - ps: |
       # of needed to install pl/perl
       ${env:PATH} = "c:\${env:betterperl}\perl\bin;${env:PATH}"
@@ -3521,7 +3521,7 @@ for:
   #
   # PostgreSQL from source code: git, tag, or commit
   #
- 
+
   # outside of powershell, create a Junction
   - pushd c:\projects\postgresql
   - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" cmd /c mklink /J contrib\plr %APPVEYOR_BUILD_FOLDER%
@@ -3561,17 +3561,13 @@ for:
   # The semi-duplicate extra 'plr' entry in the pgsql.sln file
   # prevents building if Microsoft Visual Studio is the version 2019 and greater.
   #
-  - if exist C:\projects\postgresql\pgsql.sln (
-      echo BEGIN UPDATE &
-      bash --login -c "set -e;set -x;set -v;pacman -S grep --noconfirm" &
-      which grep &
-      grep --version &
-      bash --login -c "set -e;set -x;set -v;pacman  -S sed --noconfirm" &
-      which sed &
-      sed -- version &
-      echo END UPDATE
-    )
-      
+  - if exist C:\projects\postgresql\pgsql.sln bash --login -c "set -e;set -x;set -v;pacman -S grep --noconfirm"
+  - if exist C:\projects\postgresql\pgsql.sln which grep
+  - if exist C:\projects\postgresql\pgsql.sln grep --version
+  - if exist C:\projects\postgresql\pgsql.sln bash --login -c "set -e;set -x;set -v;pacman -S  sed --noconfirm"
+  - if exist C:\projects\postgresql\pgsql.sln which sed
+  - if exist C:\projects\postgresql\pgsql.sln sed --version
+
   - if exist C:\projects\postgresql\pgsql.sln (
       echo REMOVE plr ENTRY from pgsql.sln &
       echo FILE BEFORE clean_pgsql_sln.sh C:\projects\postgresql\pgsql.sln &
