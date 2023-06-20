@@ -3439,14 +3439,10 @@ for:
           popd
           pwd
         }
-        pushd c:\projects\postgresql
-        pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
-        popd
       }
-
+  - echo pwd should be c:\projects\plr
+  - pwd
+   
   #
   # PostgreSQL from source code: git, tag, or commit
   #
@@ -3483,7 +3479,9 @@ for:
         echo End display of vcregress.pl &
         echo End performing patching on-the-fly
     )
-
+   - echo pwd should be c:\projects\plr
+   - pwd
+   
 
   #
   # PostgreSQL from source code: git, tag, or commit
@@ -3517,6 +3515,9 @@ for:
       echo End display of Solution.pm &
       echo End performing patching on-the-fly
     )
+   - echo pwd should be c:\projects\plr
+   - pwd
+   
 
   #
   # PostgreSQL from source code: git, tag, or commit
@@ -3525,8 +3526,12 @@ for:
   # outside of powershell, create a Junction
   - pushd c:\projects\postgresql
   - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" cmd /c mklink /J contrib\plr %APPVEYOR_BUILD_FOLDER%
-  - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" popd
   - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" dir c:\projects\postgresql\contrib\plr
+  - popd
+  #
+  - echo pwd should be c:\projects\plr
+  - pwd
+  
   - ps: |
       # Set-PSDebug -Trace 2
       if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
@@ -3544,15 +3549,14 @@ for:
         dir
         type pgsql.sln
         type plr.vcxproj
-        # echo . . . COMPARING . . .
-        # type pgcrypto.vcxproj
-        # type postgres.vcxproj
         popd
         pwd
         dir
         $env:proj="C:\projects\postgresql\pgsql.sln"
         $env:dll="c:\projects\postgresql\$env:Configuration\plr\plr.dll"
       }
+  - echo pwd should be c:\projects\plr
+  - pwd
 
   #
   # Only when compiling pg from scratch.
