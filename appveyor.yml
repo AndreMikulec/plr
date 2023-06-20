@@ -3294,8 +3294,6 @@ for:
   - set rbin=%Platform:x86=i386%
 
   - ps: |
-      # lib and gendef - old 2015 location seems to work fine
-      ${env:PATH} = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64;" + ${env:PATH}
       # On some newer Appveyor images "Git for Windows" slips in front of MSYS2
       if ("${env:Platform}" -eq "x64") {
         ${env:PATH} = "C:\msys64\usr\bin;${env:PATH}"
@@ -3406,6 +3404,7 @@ for:
       # notmatch - if no "dot is found" in pg name, then pg is a: git: branch, tag, or commit.
       if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:pg}" -notmatch "[.]")) {
         git config --global advice.detachedHead false
+        $env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
         #
         # git branch or commit - alphanumeric and all lowercase letters (slower download)
         #
