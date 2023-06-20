@@ -3562,12 +3562,14 @@ for:
   # prevents building if Microsoft Visual Studio is the version 2019 and greater.
   #
   - if exist C:\projects\postgresql\pgsql.sln (
+      echo BEGIN UPDATE &
       bash --login -c "set -e;set -x;set -v;pacman -S grep --noconfirm" &
       which grep &
       grep --version &
       bash --login -c "set -e;set -x;set -v;pacman  -S sed --noconfirm" &
       which sed &
-      sed -- version
+      sed -- version &
+      echo END UPDATE
     )
       
   - if exist C:\projects\postgresql\pgsql.sln (
