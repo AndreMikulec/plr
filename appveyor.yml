@@ -3318,7 +3318,8 @@ for:
       # of needed to install pl/perl
       ${env:PATH} = "c:\${env:betterperl}\perl\bin;${env:PATH}"
       ${env:PATH} = "${env:PATH};c:\${env:betterperl}\c\bin"
-
+  - which lib
+  - which gendef
   - which perl
   - which pexports
   - which grep
@@ -3395,13 +3396,12 @@ for:
       # whether or not to perform patching (see below).
       #
       Set-PSDebug -Trace 2
-      if ("${env:pg}" -notmatch "[.]") {
+      if (("${env:pg}" -notmatch "[.]") -or ("${env:pghint}" -eq "commit")) {
         ${env:branchtagcommit} = "yes"
       } else {
         ${env:branchtagcommit} = "no"
       }
       echo "branchtagcommit ${env:branchtagcommit}"
-
 
   #
   # PostgreSQL from source code: git, tag, or commit
@@ -3519,23 +3519,20 @@ for:
   #
   # PostgreSQL from source code: git, tag, or commit
   #
-  - which perl
-  - pwd
+ 
+  # outside of powershell, create a Junction
+  - pushd c:\projects\postgresql
+  - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" cmd /c mklink /J contrib\plr %APPVEYOR_BUILD_FOLDER%
+  - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" popd
+  - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" dir c:\projects\postgresql\contrib\plr
   - ps: |
       Set-PSDebug -Trace 2
       if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
         gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:Platform.def" 2> $null
         lib "/def:R$env:Platform.def" "/out:R$env:Platform.lib" "/MACHINE:$env:Platform"
-        pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
+        dir
         pushd c:\projects\postgresql
-        pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
-        cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
+        dir
         #
         # patch already done - above - using msvc.diff.R
         # patch -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
