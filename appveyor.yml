@@ -3526,7 +3526,6 @@ for:
   # outside of powershell, create a Junction
   - pushd c:\projects\postgresql
   - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" cmd /c mklink /J contrib\plr %APPVEYOR_BUILD_FOLDER%
-  - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" dir              contrib\plr
   - popd
   - echo pwd should be c\projects\plr
   - pwd
