@@ -3516,6 +3516,7 @@ for:
   #
   # PostgreSQL from source code: git, tag, or commit
   #
+  - which perl
   - ps: |
       Set-PSDebug -Trace 2
       if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
@@ -3536,6 +3537,7 @@ for:
         # patch -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
         #
         # creates both plr.vcxproj and pgsql.sln
+        pwd
         perl contrib\plr\buildsetup.pl
         pwd
         echo "Files . . ."
