@@ -3569,7 +3569,7 @@ for:
       bash --login -c "set -e;set -x;set -v;pacman -S grep --noconfirm" &
       which grep &
       grep --version &
-      bash --login -c "set -e;set -x;set -v;acman  -S sed --noconfirm" &
+      bash --login -c "set -e;set -x;set -v;pacman  -S sed --noconfirm" &
       which sed &
       sed -- version &
       echo REMOVE plr ENTRY from pgsql.sln &
