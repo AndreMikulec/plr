@@ -3194,6 +3194,7 @@ for:
   # Make %x64% available for caching
   # a variable used in the Appveyor cache area must be defined in the init
   - ps: |
+      Set-PSDebug -Trace 2
       # Defaults
       if ("${env:Platform}"      -eq "") {${env:Platform}      = "x64"}
       if ("${env:Configuration}" -eq "") {${env:Configuration} = "Release"}
@@ -3241,7 +3242,7 @@ for:
   #
   # - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
   - ps: |
-      # Set-PSDebug -Trace 2
+      Set-PSDebug -Trace 2
       # default
       # special named R version(s)
       if("${env:rlinkbinoldurl}" -eq "none") {
@@ -3294,6 +3295,7 @@ for:
   - set rbin=%Platform:x86=i386%
 
   - ps: |
+      Set-PSDebug -Trace 2
       # On some newer Appveyor images "Git for Windows" slips in front of MSYS2
       if ("${env:Platform}" -eq "x64") {
         ${env:PATH} = "C:\msys64\usr\bin;${env:PATH}"
@@ -3307,7 +3309,7 @@ for:
   # ActiveState Perl is good, but Strawberry Perl is preferred
   #
   - ps: |
-      # Set-PSDebug -Trace 2
+      Set-PSDebug -Trace 2
       if (-not (Test-Path "${env:betterperl}.zip")) {
         curl -o "${env:betterperl}.zip" -v "${env:betterperlurl}"
       }
@@ -3362,7 +3364,7 @@ for:
   # extraction from 0.0.0.0.0.GITHUBCACHE, if any old files
   #
   - ps: |
-      # Set-PSDebug -Trace 2
+      Set-PSDebug -Trace 2
       if (("${env:githubcache}" -eq "true") -and ("${env:pggithubbincacheextracted}" -eq "true")) {
         pushd "${env:pgroot}"
         del share\extension\plr--*.sql   2>null
@@ -3376,7 +3378,7 @@ for:
   # msbuild needs
   #
   - ps: |
-      # Set-PSDebug -Trace 2
+      Set-PSDebug -Trace 2
       if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
         $env:proj="plr.vcxproj"
         $env:dll="$($env:Platform.replace('x86', '.'))\$env:Configuration\plr.dll"
@@ -3388,6 +3390,7 @@ for:
       # This environment variable is use in a test that is used that is used in determining
       # whether or not to perform patching (see below).
       #
+      Set-PSDebug -Trace 2
       if ("${env:pg}" -notmatch "[.]") {
         ${env:branchtagcommit} = "yes"
       } else {
@@ -3400,7 +3403,7 @@ for:
   # PostgreSQL from source code: git, tag, or commit
   #
   - ps: |
-      # Set-PSDebug -Trace 2
+      Set-PSDebug -Trace 2
       # notmatch - if no "dot is found" in pg name, then pg is a: git: branch, tag, or commit.
       if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:pg}" -notmatch "[.]")) {
         git config --global advice.detachedHead false
@@ -3514,7 +3517,7 @@ for:
   # PostgreSQL from source code: git, tag, or commit
   #
   - ps: |
-      # Set-PSDebug -Trace 2
+      Set-PSDebug -Trace 2
       if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
         gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:Platform.def" 2> $null
         lib "/def:R$env:Platform.def" "/out:R$env:Platform.lib" "/MACHINE:$env:Platform"
