@@ -1,28 +1,28 @@
-image: Visual Studio 2015
-configuration: Release
-platform: x64
+image: Visual Studio 2022
+Configuration: Release
+Platform: x64
 clone_depth: 1
 
 environment:
+
+  APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z -m0=lzma -mx=9
 
   PGUSER: postgres
   PGPASSWORD: Password12!
 
   matrix:
 
-  - pg: none # pg is installed on MSYS2 and the (pg 15.1 Jun 2023) binaries are used
-    PlatformToolset: v143
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.3.1
-    compiler: msys2
-
   - pg: 15.3-2
     PlatformToolset: v143
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.2.3
     compiler: msvc
+
+  - pg: none # pg is installed on MSYS2 and the (pg 15.1 Jun 2023) binaries are used
+    PlatformToolset: v143
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.3.1
+    compiler: msys2
 
 #
 #   - pg: master
