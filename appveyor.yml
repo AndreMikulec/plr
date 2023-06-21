@@ -6,7 +6,7 @@ clone_depth: 1
 
 environment:
 
-  APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z -m0=lzma -mx=9
+  APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z -mmt24 -mx7 -r
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
 
   PGUSER: postgres
@@ -307,6 +307,8 @@ for:
 
   build_script:
 
+  - echo set
+  - set
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
   after_build:
@@ -314,13 +316,6 @@ for:
 
   test_script:
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
-
-
-
-
-
-
-
 
 -
   matrix:
