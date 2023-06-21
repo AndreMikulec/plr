@@ -117,6 +117,13 @@ pg_ctl -D ${PGDATA} -l logfile stop
 # leave it up
 pg_ctl -D ${PGDATA} -l logfile start
 
+# override PGUSER
+# In some disk_image\software combinations, in June 2023
+# this error will be seen
+# psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  role "postgres" does not exist
+#
+export PGUSER=$(whoami)
+
 if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'SELECT version();'
