@@ -100,7 +100,7 @@ loginfo "BEGIN plr 7z CREATION"
 ls -alrt                  ${APPVEYOR_BUILD_FOLDER}/${var7z}
 loginfo "BEGIN plr 7z LISTING"
 set +v +x +e
-7z l                      ${APPVEYOR_BUILD_FOLDER}/${var7z}
+# 7z l                      ${APPVEYOR_BUILD_FOLDER}/${var7z}
 set -v -x -e
 loginfo "END   plr 7z LISTING"
 loginfo "END plr 7z CREATION"
@@ -135,7 +135,7 @@ pg_ctl -D ${PGDATA} -l logfile stop
 #
 # not yet tried/tested in cygwin
 #                                                                      # cygwin case
-if [ -f "${pgroot}/bin/postgres" ] && [ ! "${pg}" == "none" ] || [ -f "${pgroot}/sbin/postgres" ] && [ ! "${pg}" == "none" ]
+if [ -f "${pgroot}/bin/postgres" ] && [ ! "${pgorig}" == "none" ] || [ -f "${pgroot}/sbin/postgres" ] && [ ! "${pgorig}" == "none" ]
 then
   loginfo "BEGIN pg 7z CREATION"
   cd ${pgroot}
@@ -143,7 +143,7 @@ then
   loginfo                                            "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
   7z a -t7z -mmt24 -mx7 -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z *
   set +v +x +e
-  7z l                       ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+  # 7z l                       ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
   set -v -x -e
   ls -alrt                   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
   export  pg_7z_size=$(find "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" -printf "%s")

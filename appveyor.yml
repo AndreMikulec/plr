@@ -197,6 +197,7 @@ for:
   # From the version
   - ps: |
       if("${env:pg}" -ne "none") {
+        ${env:pgorig}    = "none"
         ${env:pgversion} = ${env:pg}
       }
       # if pg equals "none" that is the  "msys2" binary case,

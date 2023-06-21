@@ -43,7 +43,7 @@ then
     loginfo "BEGIN 7z EXTRACTION"
     cd ${pgroot}
     set +v +x +e
-    7z l "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+    # 7z l "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
     set -v -x -e
     7z x "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
     ls -alrt ${pgroot}
