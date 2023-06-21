@@ -534,8 +534,8 @@ for:
 # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 cache:
-- '%exe%'
-- R-%rversion%-win.exe
+# - '%exe%'
+# - R-%rversion%-win.exe
 # - '%betterperl%.zip'
 # - 'pg-*.7z'
 
