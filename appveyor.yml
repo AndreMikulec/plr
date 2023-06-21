@@ -6,7 +6,7 @@ clone_depth: 1
 
 environment:
 
-  APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z -mmt24 -mx7 -r
+  APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z -m0=lzma -mx=9
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
 
   PGUSER: postgres
