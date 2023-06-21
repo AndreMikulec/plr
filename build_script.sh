@@ -8,6 +8,8 @@ logok "BEGIN build_script.sh"
 # set -v -x -e
 set -e
 
+export
+
 # which R msys2 and cygwin
 # /c/RINSTALL/bin/x64/R
 # /usr/bin/R

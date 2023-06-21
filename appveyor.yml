@@ -80,6 +80,15 @@ environment:
   # file exist (branch tag, commit - pghint = "commit")
   # in the situations when pg source code is used to build plr.
 
+  - pg: none # pg is installed on MSYS2 and the pg binaries are used
+    PlatformToolset: v143
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.3.1
+    compiler: msys2
+    
+
 # SUCCEED
 
 #   - pg: master # non-static commit - from git
@@ -108,19 +117,19 @@ environment:
 
 # Fail but should not
 
-  - pg: REL_15_3
-    PlatformToolset: v143
-    Configuration: Debug
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.2.3
-    compiler: msvc
-
-  - pg: 15.3-2 # pre-existing binary
-    PlatformToolset: v143
-    Configuration: Release
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.2.3
-    compiler: msvc
+#   - pg: REL_15_3
+#     PlatformToolset: v143
+#     Configuration: Debug
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+#     rversion: 4.2.3
+#     compiler: msvc
+# 
+#   - pg: 15.3-2 # pre-existing binary
+#     PlatformToolset: v143
+#     Configuration: Release
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+#     rversion: 4.2.3
+#     compiler: msvc
 
 #   - pg: 15.3-2
 #     PlatformToolset: v143
@@ -3153,6 +3162,7 @@ for:
     )
 
   build_script:
+  - set
   - if     "%buildpgthenstop%"=="true" bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/buildpgthenstop_script.sh"
   - if not "%buildpgthenstop%"=="true" bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
