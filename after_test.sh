@@ -3,7 +3,7 @@ cd "$(dirname "$0")"
 
 . ./init.sh
 
-logok "BEGIN after_build.sh"
+logok "BEGIN after_test.sh"
 
 set -v -x -e
 # set -e
@@ -135,4 +135,4 @@ pg_ctl -D ${PGDATA} -l logfile stop
 set +v +x +e
 # set +e
 
-logok "END   after_build.sh"
+logok "END   after_test.sh"

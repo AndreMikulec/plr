@@ -1,8 +1,7 @@
-image: Visual Studio 2022
+image: Visual Studio 2015
 configuration: Release
 platform: x64
 clone_depth: 1
-
 
 environment:
 
@@ -311,11 +310,11 @@ for:
   - set
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
-  after_build:
-  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/after_build.sh"
-
   test_script:
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
+  
+  after_test:
+  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/after_test.sh"
 
 -
   matrix:
