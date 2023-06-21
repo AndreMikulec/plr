@@ -197,9 +197,11 @@ for:
   # From the version
   - ps: |
       if("${env:pg}" -ne "none") {
-        ${env:pgorig}    = "none"
         ${env:pgversion} = ${env:pg}
+      } else {
+        ${env:pgorig}    = "none"
       }
+      
       # if pg equals "none" that is the  "msys2" binary case,
       # then later in the .sh scripts, "pgversion" will be determined by SQL
 
@@ -306,7 +308,6 @@ for:
     )
 
   build_script:
-
   - echo set
   - set
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
@@ -532,7 +533,7 @@ for:
 cache:
 - '%exe%'
 - R-%rversion%-win.exe
-- '%betterperl%.zip'
+# - '%betterperl%.zip'
 # - 'pg-*.7z'
 
 artifacts:
