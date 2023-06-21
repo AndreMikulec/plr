@@ -26,6 +26,11 @@ environment:
     rversion: 4.2.3
     compiler: msvc
 
+  - pg: REL_16_BETA1 # static commit from git
+    PlatformToolset: v143
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.3.1
+    compiler: msys2
 
 #
 #   - pg: master
@@ -160,8 +165,6 @@ for:
       ${env:rbinurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
       # "make installcheck" does not like spaces
       ${env:R_HOME} = "C:\RINSTALL"
-      #
-      # also see that each *.sh dot sources early ". ./init.sh"
 
       if ("${env:Platform}" -eq "x64") {
         ${env:bit} = "64"
@@ -170,6 +173,10 @@ for:
       }
       ${env:betterperl} = "strawberry${env:bit}"
       ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
+
+  # Nix does not like spaces
+  - ps: ${env:R_HOME} = "C:\RINSTALL"
+
   #
   # possible user provided in the matrix
   #
@@ -184,10 +191,8 @@ for:
   - echo %PATH%
 
   install:
-    - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
-    
-  # Nix does not like spaces
-  - set R_HOME=C:\RINSTALL
+  - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
+
   - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
 
   # From the version
@@ -201,8 +206,8 @@ for:
   #
   # only used about a custom PostgreSQL build (not an MSYS2 already compiled binary)
   #
-  # no quotes - IMPORTANT to pass to bash
-  - set pgroot=C:\PGINSTALL
+  # Nix does not like spaces
+  - ps: ${env:pgroot} = "C:\PGINSTALL"
   - mkdir "%pgroot%"
 
   - ps: |
@@ -214,12 +219,12 @@ for:
       }
       7z x    "${env:betterperl}.zip" "-oc:\${env:betterperl}"
       #
-      # Later, strawberry perl is put in front of the PATH 
+      # Later, strawberry perl is put in front of the PATH
       # in the called file build_script.sh.
       #
       # Environment variables (except PATH that is replaced)
       # are readable in the called bash scripts.
-      
+
   # if the need exists to build pg, then later, try to appveyor "cache"
   - set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
 
@@ -230,7 +235,8 @@ for:
       # Set-PSDebug -Trace 2
       if ("${env:pg}" -ne "none") {
         git config --global advice.detachedHead false
-        $env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
+        # VS Code 2015 works fine
+        $env:PATH += ";C:\msys${env:bit}\usr\bin;C:\msys${env:bit}\mingw${env:bit}\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
         #
         # git branch or commit - alphanumeric and all lowercase letters (slower download)
         #
@@ -258,10 +264,7 @@ for:
           pwd
         }
         pushd c:\projects\postgresql
-        pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
+        dir
         popd
       }
 
