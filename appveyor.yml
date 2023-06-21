@@ -225,9 +225,6 @@ for:
       # Environment variables (except PATH that is replaced)
       # are readable in the called bash scripts.
 
-  # if the need exists to build pg, then later, try to appveyor "cache"
-  - set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
-
   #
   # PostgreSQL from source code: git, tag, or commit
   #
