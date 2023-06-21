@@ -5,8 +5,8 @@ cd "$(dirname "$0")"
 
 logok "BEGIN build_script.sh"
 
-# set -v -x -e
-set -e
+set -v -x -e
+# set -e
 
 export
 
@@ -26,7 +26,7 @@ export PATH=$(echo $(cygpath "c:\\${betterperl}\perl\bin")):${PATH}
 export PATH=${PATH}:$(echo $(cygpath "c:\\${betterperl}\c\bin"))
 
 
-if [ "${pggithubbincacheextracted}" == "false" ] && [ ! "${pg}" == "none" ]
+if [ ! "${pg}" == "none" ]
 then
   loginfo "BEGIN PostgreSQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
   if [ ! -f "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" ]
@@ -81,26 +81,8 @@ then
   export PATH=${pgroot}/sbin:${PATH}
 fi
 
-# # Later I get this information from pgconfig variables PKGLIBDIR SHAREDIR.
-# # Therefore, I do not need this variable "dirpostgresql" anymore.
-# 
-# # helps determine where to extract the plr files . .
-# #
-# # Uses the "/postgresql" directory if the plr files are found in the
-# # default cygwin-package-management shared install folders
-# #
-# if [ -d "${pgroot}/share/postgresql" ]
-# then
-#   export dirpostgresql=/postgresql
-# fi
-
-# build from source
-# psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
-# psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
-#
-
 # # loginfo "BEGIN MY ENV VARIABLES"
-# export
+export
 # # loginfo "END MY ENV VARIABLES"
 # 
 loginfo "BEGIN verify that PLR will link to the correct PostgreSQL"
@@ -112,19 +94,6 @@ loginfo "which pg_config: $(which pg_config)"
 logok   "pg_config . . ."
 pg_config
 loginfo "END   verify that PLR will link to the correct PostgreSQL"
-# 
-# ls -alrt /usr/sbin
-# ls -alrt ${pgroot}/sbin
-# which postgres
-
-#
-# PostgreSQL on msys2 (maybe also cygwin?) does not use(read) PG* variables [always] [correctly] (strange!)
-# so, e.g. in psql, I do not rely on environment variables
-
-# build from source
-# psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
-# psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
-#
 
 if [ "${compiler}" == "msys2" ]
 then
@@ -158,12 +127,10 @@ fi
 pg_ctl -D ${PGDATA} -l logfile stop
 
 
-
-
 #
 # not yet tried/tested in cygwin
-#                                                                                                                           # cygwin case
-if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
+#                                     # cygwin case
+if [ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ]
 then
   loginfo "BEGIN pg 7z CREATION"
   cd ${pgroot}
@@ -280,8 +247,8 @@ fi
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
 
-# set +v +x +e
-set +e
+set +v +x +e
+# set +e
 
-logok "BEGIN build_script.sh"
+logok "END   build_script.sh"
 

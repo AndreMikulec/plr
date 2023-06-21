@@ -85,7 +85,7 @@ export TZ=UTC
 # msys2 case
 if [ "${compiler}" == "msys2" ]
 then
-     export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
+     export PGAPPDIR="C:/msys$bit$HOME"${pgroot}/postgresql/Data
 fi
 #
 # cygwin case

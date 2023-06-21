@@ -133,7 +133,194 @@ for:
 
   init:
   - echo compiler msys2 init
-  - appveyor exit 0
+  - systeminfo
+  # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
+  # Make %x64% available for caching
+  # a variable used in the Appveyor cach area must be defined in the init
+  - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
+  - ps: |
+      # Set-PSDebug -Trace 2
+
+      if ("${env:Platform}" -eq "x64") {
+        ${env:MSYSTEM} = "MINGW64"
+        ${env:OSBitVersion} = "x86_64"
+      } else {
+        ${env:MSYSTEM} = "MINGW32"
+        ${env:OSBitVersion} = "i686"
+      }
+
+      if ("${env:MSYSTEM}" -eq "MINGW64") {
+        ${env:R_ARCH} = "/x64"
+      } else {
+        ${env:R_ARCH} = "/i386"
+      }
+
+      ${env:rbinurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
+      # "make installcheck" does not like spaces
+      ${env:R_HOME} = "C:\RINSTALL"
+      #
+      # also see that each *.sh dot sources early ". ./init.sh"
+
+      if ("${env:Platform}" -eq "x64") {
+        ${env:bit} = "64"
+      } else {
+        ${env:bit} = "32"
+      }
+      ${env:betterperl} = "strawberry${env:bit}"
+      ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
+  #
+  # possible user provided in the matrix
+  #
+
+  - if not defined pghint          set pghint=none
+  - if not defined pg              set pg=none
+  - if not defined pglinkbinoldurl set pglinkbinoldurl=none
+  - if not defined rversionurl set rversionurl=https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
+
+  - ps: ${env:PATH} = "C:\msys${env:bit}\${env:MSYSTEM}\bin;C:\msys${env:bit}\usr\bin;${env:PATH}"
+  - echo PATH
+  - echo %PATH%
+
+  install:
+    - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
+    
+  # Nix does not like spaces
+  - set R_HOME=C:\RINSTALL
+  - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
+
+  # From the version
+  - ps: |
+      if("${env:pg}" -ne "none") {
+        ${env:pgversion} = ${env:pg}
+      }
+      # if pg equals "none" that is the  "msys2" binary case,
+      # then later in the .sh scripts, "pgversion" will be determined by SQL
+
+  #
+  # only used about a custom PostgreSQL build (not an MSYS2 already compiled binary)
+  #
+  # no quotes - IMPORTANT to pass to bash
+  - set pgroot=C:\PGINSTALL
+  - mkdir "%pgroot%"
+
+  - ps: |
+      # Set-PSDebug -Trace 2
+      if (-not (Test-Path "${env:betterperl}.zip")) {
+        dir
+        curl -o "${env:betterperl}.zip" -v "${env:betterperlurl}"
+        dir
+      }
+      7z x    "${env:betterperl}.zip" "-oc:\${env:betterperl}"
+      #
+      # Later, strawberry perl is put in front of the PATH 
+      # in the called file build_script.sh.
+      #
+      # Environment variables (except PATH that is replaced)
+      # are readable in the called bash scripts.
+      
+  # if the need exists to build pg, then later, try to appveyor "cache"
+  - set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
+
+  #
+  # PostgreSQL from source code: git, tag, or commit
+  #
+  - ps: |
+      # Set-PSDebug -Trace 2
+      if ("${env:pg}" -ne "none") {
+        git config --global advice.detachedHead false
+        $env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
+        #
+        # git branch or commit - alphanumeric and all lowercase letters (slower download)
+        #
+        if("${env:pghint}" -eq "commit") {
+          git clone -q                            https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+          pwd
+          pushd c:\projects\postgresql
+          pwd
+          git checkout -q                 ${env:pg} -b ${env:pg}
+          git branch
+          echo ${env:pg}
+          popd
+          pwd
+        #
+        # git branch or tag(detached head)
+        # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
+        #
+        } else {
+          git clone -q --depth 1 --branch ${env:pg} https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+          pushd c:\projects\postgresql
+          pwd
+          git branch
+          echo ${env:pg}
+          popd
+          pwd
+        }
+        pushd c:\projects\postgresql
+        pwd
+        echo "Files . . ."
+        $Table = Get-ChildItem
+        foreach ($Row in $Table) { $Row.Name }
+        popd
+      }
+
+  # msys2
+  #
+  # update all - skip - postgres and R are weakly and near nothing dependent on versions
+  # - bash --login -c "set -e;set -x;set -v;pacman -Suy --noconfirm"
+  # - bash --login -c "set -e;set -x;set -v;pacman -Suy --noconfirm"
+  #
+  # just in case I need this for some pg builds
+  # - bash --login -c "pacman --noconfirm -S --needed mingw-w64-${OSBitVersion}-icu"
+  # just in case I need icu debug libraries
+  # - bash --login -c "pacman --noconfirm -S --needed mingw-w64-${OSBitVersion}-icu-debug-libs"
+  # just in case I need icu development
+  # - bash --login -c "pacman --noconfirm -S --needed icu-devel"
+  # icu info
+  # - bash --login -c "icu-config --ldflags"
+  #
+  # Nov Dec 2021 Appveyor changed the PATH
+  # The [first] winpty.exe found is [the] "wrong [one]"
+  #
+  # Attempt to avoid the error:
+  #
+  # 1 [main] winpty (2980) C:\Program Files\Git\usr\bin\winpty.exe: *** fatal error - cygheap base mismatch detected
+  # This problem is probably due to using incompatible versions of the cygwin DLL
+  #
+  - bash --login -c "pacman --noconfirm -S --needed winpty"
+
+  # PostgreSQL from an MSYS2 already-compiled-binary.
+  - if "%pg%"=="none" (
+      bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql"
+    )
+
+  #
+  # How to obtain older versions of packages using MSYS2?
+  # 2015
+  # https://stackoverflow.com/questions/33969803/how-to-obtain-older-versions-of-packages-using-msys2
+  #
+  - if "%pg%"=="none" if not "%pglinkbinoldurl%"=="none" (
+      bash -login -c "curl   -o             install.pkg.tar.zst ${pglinkbinoldurl}" &
+      bash -login -c "pacman -U --noconfirm install.pkg.tar.zst"
+    )
+
+  build_script:
+
+  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
+
+  after_build:
+  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/after_build.sh"
+
+  test_script:
+  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
+
+
+
+
+
+
+
 
 -
   matrix:
@@ -173,10 +360,7 @@ for:
   install:
   - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
   - R-%rversion%-win.exe /VERYSILENT
-  # We could have used RTools many R users have, but let's use msys64 existing on Appveyor intead
-  #- if not exist Rtools35.exe appveyor downloadfile https://cran.r-project.org/bin/windows/Rtools/Rtools35.exe
-  #- Rtools35.exe /VERYSILENT
-  - Set mingw=C:\msys64\mingw
+
   #
   # From the EnterpriseDB version name,
   # if any, strip off the: right-most part dot, then numbers, then one hyphen, then numbers.
@@ -353,6 +537,7 @@ cache:
 - '%exe%'
 - R-%rversion%-win.exe
 - '%betterperl%.zip'
+- 'pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z'
 
 artifacts:
 - path: 'plr*.zip'
