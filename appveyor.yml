@@ -13,17 +13,17 @@ environment:
 
   matrix:
 
-  - pg: none # pg is installed on MSYS2 and the (pg 15.1 Jun 2023) binaries are used
-    PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.3.1
-    compiler: msys2
-
   - pg: 15.3-2
     PlatformToolset: v143
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.2.3
     compiler: msvc
+
+  - pg: none # pg is installed on MSYS2 and the (pg 15.1 Jun 2023) binaries are used
+    PlatformToolset: v143
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.3.1
+    compiler: msys2
 
   - pg: REL_16_BETA1 # static commit from git
     PlatformToolset: v143
@@ -533,7 +533,7 @@ cache:
 - '%exe%'
 - R-%rversion%-win.exe
 - '%betterperl%.zip'
-- 'pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z'
+# - 'pg-*.7z'
 
 artifacts:
 - path: 'plr*.7z'
