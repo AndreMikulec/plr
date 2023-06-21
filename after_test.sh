@@ -132,6 +132,58 @@ fi
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
 
+#
+# not yet tried/tested in cygwin
+#                                                                      # cygwin case
+if [ -f "${pgroot}/bin/postgres" ] && [ ! "${pg}" == "none" ] || [ -f "${pgroot}/sbin/postgres" ] && [ ! "${pg}" == "none" ]
+then
+  loginfo "BEGIN pg 7z CREATION"
+  cd ${pgroot}
+  ls -alrt
+  loginfo                                            "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+  7z a -t7z -mmt24 -mx7 -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z *
+  set +v +x +e
+  7z l                       ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+  set -v -x -e
+  ls -alrt                   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+  export  pg_7z_size=$(find "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" -printf "%s")
+  loginfo "pg_7z_size $pg_7z_size" 
+  #                       96m
+  if [ ${pg_7z_size} -gt 100663296 ] 
+  then
+    rm -f    ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+    loginfo "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z is TOO BIG so removed."
+  fi
+  #
+  if [ -f "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" ]
+  then
+    if [ "${compiler}" == "cygwin" ]
+    then
+      # workaround of an Appveyor-using-cygwin bug - command will automatically pre-prepend A DIRECTORY (strange!)
+      # e.g.
+      pushd ${APPVEYOR_BUILD_FOLDER}
+      #
+      # NOTE FTP Deploy will automatically PushArtifact.
+      # I am ALSO pushing the artifact here, in the case the build fails, and I never reach Deploy.
+      #
+      # loginfo "appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+      #          appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+      popd
+  # bash if-then-else-fi # inside bodies can not be empty
+  # else
+      #
+      # NOTE FTP Deploy will automatically PushArtifact.
+      # I am ALSO pushing the artifact here, in the case the build fails, and I never reach Deploy.
+      #
+      # loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+      #          appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+    fi
+  fi
+  #
+  cd ${APPVEYOR_BUILD_FOLDER} 
+  loginfo "END   pg 7z CREATION"
+fi
+
 set +v +x +e
 # set +e
 
