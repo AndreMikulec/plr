@@ -99,7 +99,9 @@ loginfo "BEGIN plr 7z CREATION"
 7z a -t7z -mmt24 -mx7 -r  ${APPVEYOR_BUILD_FOLDER}/${var7z} ./tmp/*
 ls -alrt                  ${APPVEYOR_BUILD_FOLDER}/${var7z}
 loginfo "BEGIN plr 7z LISTING"
+set +v +x +e
 7z l                      ${APPVEYOR_BUILD_FOLDER}/${var7z}
+set -v -x -e
 loginfo "END   plr 7z LISTING"
 loginfo "END plr 7z CREATION"
 
