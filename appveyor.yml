@@ -1,4 +1,4 @@
-image: Visual Studio 2022
+image: Visual Studio 2015
 configuration: Release
 platform: x64
 clone_depth: 1
@@ -15,8 +15,8 @@ environment:
   matrix:
 
   - pg: none # pg is installed on MSYS2 and the (pg 15.1 Jun 2023) binaries are used
-    PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    PlatformToolset: v141
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     rversion: 4.3.1
     compiler: msys2
 
