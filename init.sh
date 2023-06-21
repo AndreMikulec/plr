@@ -122,4 +122,24 @@ else
 fi
 loginfo "R_HOME is in the PATH $(echo ${PATH})"
 
+# just needed for the "make"
+#
+# so perl can use better regular expressions
+export PATH=$(echo $(cygpath "c:\\${betterperl}\perl\bin")):${PATH}
+#
+# also, so I need "pexports", that is needed when,
+# I try to use "postresql source code from git" to build postgres
+# ("pexports" is not needed when I use the "downloadable postgrsql" source code)
+export PATH=${PATH}:$(echo $(cygpath "c:\\${betterperl}\c\bin"))
+
+# e.g. using "msys2"
+# winpty -Xallow-non-tty psql -d postgres -c 'SELECT version();
+# override PGUSER
+# In some disk_image\software combinations, in June 2023
+# this error will be seen
+# psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  role "postgres" does not exist
+#
+export PGUSER=$(whoami)
+
+
 logok "END   init.sh"

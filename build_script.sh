@@ -15,17 +15,6 @@ export
 # /usr/bin/R
 loginfo "which R $(which R)"
 
-# just needed for the "make"
-#
-# so perl can use better regular expressions
-export PATH=$(echo $(cygpath "c:\\${betterperl}\perl\bin")):${PATH}
-#
-# also, so I need "pexports", that is needed when,
-# I try to use "postresql source code from git" to build postgres
-# ("pexports" is not needed when I use the "downloadable postgrsql" source code)
-export PATH=${PATH}:$(echo $(cygpath "c:\\${betterperl}\c\bin"))
-
-
 if [ ! "${pg}" == "none" ]
 then
   loginfo "BEGIN PostgreSQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
@@ -117,12 +106,6 @@ pg_ctl -D ${PGDATA} -l logfile stop
 # leave it up
 pg_ctl -D ${PGDATA} -l logfile start
 
-# override PGUSER
-# In some disk_image\software combinations, in June 2023
-# this error will be seen
-# psql: error: connection to server at "localhost" (::1), port 5432 failed: FATAL:  role "postgres" does not exist
-#
-export PGUSER=$(whoami)
 
 if [ "${compiler}" == "msys2" ]
 then
@@ -144,7 +127,9 @@ then
   ls -alrt
   loginfo                                            "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
   7z a -t7z -mmt24 -mx7 -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z *
+  set +v +x +e
   7z l                       ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+  set -v -x -e
   ls -alrt                   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
   export  pg_7z_size=$(find "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" -printf "%s")
   loginfo "pg_7z_size $pg_7z_size" 
