@@ -10,12 +10,6 @@ environment:
 
   matrix:
 
-  - pg: 15.3-2
-    PlatformToolset: v143
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.2.3
-    compiler: msvc
-
   - pg: none # pg is installed on MSYS2 and the (pg 15.1 Jun 2023) binaries are used
     PlatformToolset: v143
     Configuration: Release
@@ -23,6 +17,12 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
     rversion: 4.3.1
     compiler: msys2
+
+  - pg: 15.3-2
+    PlatformToolset: v143
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.2.3
+    compiler: msvc
 
 #
 #   - pg: master
@@ -130,6 +130,7 @@ for:
 
   init:
   - echo compiler msys2 init
+  - appveyor exit 0
 
 -
   matrix:
