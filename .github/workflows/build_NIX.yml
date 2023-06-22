@@ -1,0 +1,286 @@
+
+
+name: plr CI NIX
+  contents: write
+
+# IN DEVELOPMENT RIGHT NOW
+# on: [push, pull_request]
+
+jobs:
+
+  information_env:
+    name: Knowledge About env
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump github context global data
+        run:   export
+        shell: bash
+
+  information_github:
+    name: Knowledge About github
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump github context global data
+        run:   echo "$GITHUB_CONTEXT"
+        shell: bash
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+
+  information_ubuntu:
+    name: Knowledge About runner ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump runner context global data
+        run:   echo "$RUNNER_CONTEXT"
+        shell: bash
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+
+  build_NIX:
+  
+    name: ${{ matrix.os }} ${{ matrix.pg }} ${{ matrix.Platform}} ${{ matrix.Configuration }} ${{ matrix.rversion }} ${{ matrix.Compiler}}
+    needs: prereq_checks
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+    strategy:
+      # Disable fail-fast as we want results from all even if one fails.
+      fail-fast: false
+      matrix:
+        include:
+
+          - pg: repository
+            configuration: Debug
+            Platform: x64
+            os: windows-latest
+            rversion: 4.3.1
+            compiler: mingw64
+            
+          - pg: repository
+            configuration: Debug
+            Platform: x64
+            os: windows-latest
+            rversion: 4.3.1
+            compiler: mingw64
+            asset_extension: .7z
+
+          - pg: REL_15_3
+            Configuration: Debug
+            Platform: x64
+            os: windows-latest
+            rversion: 4.2.3
+            compiler: mingw64
+            asset_extension: .7z
+            
+          - pg: REL_15_3
+            Configuration: Debug
+            Platform: x64
+            os: windows-latest
+            rversion: 4.3.1
+            compiler: mingw64
+            asset_extension: .7z
+
+          - pg: REL_16_BETA1
+            Configuration: Debug
+            Platform: x64
+            os: windows-latest
+            rversion: 4.2.3
+            compiler: mingw64
+            asset_extension: .7z
+
+          - pg: REL_16_BETA1
+            Configuration: Debug
+            Platform: x64
+            os: windows-latest
+            rversion: 4.3.1
+            compiler: mingw64
+            asset_extension: .7z
+
+          - pg: master
+            configuration: Debug
+            Platform: x64
+            os: windows-latest
+            rversion: 4.2.3
+            compiler: mingw64
+            asset_extension: .7z
+
+          - pg: master
+            configuration: Debug
+            Platform: x64
+            os: windows-latest
+            rversion: 4.3.1
+            compiler: mingw64
+            asset_extension: .7z
+            
+          - pg: master
+            configuration: Debug
+            Platform: x64
+            os: windows-latest
+            rversion: 4.3.1
+            compiler: mingw64
+            asset_extension: .7z
+
+    steps:
+    
+      - name: Windows Software Install
+        if: matrix.os == 'windows-latest'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{matrix.compiler}}
+          update: true
+          # https://www.postgresql.org/docs/16/install-requirements.html
+          # https://www.postgresql.org/docs/16/git.html
+          # Is --without-icu ignored in pg 15 and lower? Yes, ignored.
+          install: >-
+            make
+            gcc
+            tar
+            gzip
+            readline
+            zlib
+            icu-devel
+            git
+            flex
+            bison
+            perl
+            curl
+            winpty
+            p7zip
+        
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Windows Set Same Locations GITHUB_WORKSPACE c\projects\plr c\projects\postgresql\contrib\plr
+        if: matrix.os == 'windows-latest'
+        # GITHUB_WORKSPACE
+        # /home/runner/work/my-repo-name/my-repo-name
+        # https://docs.github.com/en/actions/learn-github-actions/variables
+        run: |
+          # Appveyor Legacy
+          mkdir "c:\projects"
+          pushd "c:\projects"
+          cmd /c mklink /J  plr                  ${env:GITHUB_WORKSPACE}
+          popd
+          pushd c:\projects\postgresql
+          cmd /c mklink /J            contrib\plr ${env:GITHUB_WORKSPACE}
+          popd
+
+      - name: Windows Environment Variables and programs
+        if: matrix.os == 'windows-latest'
+        run: |
+          if("${env:compiler}" -eq "mingw64") { ${env:bit} = "64" } else { ${env:bit} = "32" }
+          ${env:PATH}="C:\msys${env:bit}\usr\bin;${env:PATH}"
+          
+          ${env:git} ="C:\msys${env:bit}\usr\bin\git.exe"
+          Start-Process -NoNewWindow -FilePath  "${env:git}" -ArgumentList "config" "--global" "core.autocrlf" "input"
+          #
+          ${env:curl} ="C:\msys${env:bit}\usr\bin\curl.exe"
+          ${env:bash} ="C:\msys${env:bit}\usr\bin\bash.exe";
+          
+      # need to set MORE environment variables
+      # LATER
+          
+      # need to curl R and install
+      # LATER ${env:curl}
+          
+      - name: Windows Environment Variables and programs
+        if: ${{ matrix.os == 'windows-latest' &&  matrix.pg == "repository" }}
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{matrix.compiler}}
+          install: postgresql
+        
+      - name: Windows Environment Variables and programs
+        if: matrix.os == 'windows-latest' &&  matrix.pg != "repository"
+        working-directory: projects\plr
+        run: |
+          echo Using Git 
+          echo Downloading pg source code
+          # LATER ${env:git}
+          
+      # Workflow syntax for GitHub Actions
+      # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_iddefaultsrun
+          
+      - name: Build Script
+        if: matrix.os == 'windows-latest'
+        working-directory: projects\plr
+        run: |
+          echo Building
+          Start-Process  -NoNewWindow -FilePath  "${env:bash}" -ArgumentList"-lc", "/c/projects/plr/build_script.sh"
+          
+      - name: Test Script
+        if: matrix.os == 'windows-latest'
+        working-directory: projects\plr
+        run: |
+          echo Testing
+          Start-Process  -NoNewWindow -FilePath  "${env:bash}" -ArgumentList"-lc", "/c/projects/plr/test_script.sh"
+  
+      - name: Windows Machine Make a dist directory
+        if: matrix.os == 'windows-latest
+        working-directory: projects\plr
+        run: |
+          mkdir ${{ github.event.repository.name }}_${{ matrix.os }}_${{ matrix.pg }}_${{ matrix.Platform}}_${{ matrix.Configuration }}_${{ matrix.rversion }}_${{ matrix.Compiler}}_dist
+  
+      - name: Windows Self Compressing Artifacts
+        if: matrix.os == 'windows-latest
+        working-directory: projects\plr
+        run: |
+          echo After Test
+          Start-Process  -NoNewWindow -FilePath  "${env:bash}" -ArgumentList"-lc", "/c/projects/plr/after_test.sh"
+      #
+      # Compress build for windows.  (Instead let 7z in "Windows Self Compressing Artifacts" compress using 7z)
+      # https://github.com/AndreMikulec/testapp/blob/f13d725a9fcfa5daff3d25ff00f9899b417cbc5d/.github/workflows/build_everything.yml#L207
+  
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}_${{ matrix.os }}_${{ matrix.pg }}_${{ matrix.Platform}}_${{ matrix.Configuration }}_${{ matrix.rversion }}_${{ matrix.Compiler}}
+          path: |
+            ${{ github.event.repository.name }}_${{ matrix.os }}_${{ matrix.pg }}_${{ matrix.Platform}}_${{ matrix.Configuration }}_${{ matrix.rversion }}_${{ matrix.Compiler}}_dist/
+            
+      - name: Release
+        if: github.ref_type == 'tag'
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          replacesArtifacts: true
+          commit: ${{ env.USER_SHA }}
+          tag: ${{ env.USER_GITHUB_REF_NAME }}
+          artifacts: "${{ github.event.repository.name }}_${{ matrix.os }}_${{ matrix.pg }}_${{ matrix.Platform}}_${{ matrix.Configuration }}_${{ matrix.rversion }}_${{ matrix.Compiler}}_dist/*.*"
+          token: ${{ secrets.ACTIONS_CREATE_RELEASE_REPO_SECRET }}
+        env:
+          USER_GITHUB_SHA: ${{ github.sha }}
+          USER_GITHUB_REF_NAME: ${{ github.ref_name }}
+   
+   
+      - name: Windows Machine Choco Install WinSCP
+        if: matrix.os == 'windows-latest
+        uses: crazy-max/ghaction-chocolatey@v2
+        with:
+          args: install -y winscp
+            
+       
+      # Download that ONE asset 
+      #
+      # FUTURE - Please REPLACE this WITH . . . cli.github.com
+      # and send ALL of the assets of a plr git commit to sourceforge
+      #
+      # https://winscp.net/eng/docs/scriptcommand_open
+      #
+      - name: Windows Machine WinSCP Send the Item to Sourceforge
+        if: ${{ matrix.os == 'windows-latest && github.ref_type == 'tag'}}
+        shell: cmd
+        working-directory: projects\plr
+        run: |
+          rem 
+          mkdir {{ github.event.repository.name }}_${{ matrix.os }}_${{ matrix.pg }}_${{ matrix.Platform}}_${{ matrix.Configuration }}_${{ matrix.rversion }}_${{ matrix.Compiler}}_dist
+          echo curl -L --ssl-no-revoke --output-dir "{{ github.event.repository.name }}_${{ matrix.os }}_${{ matrix.pg }}_${{ matrix.Platform}}_${{ matrix.Configuration }}_${{ matrix.rversion }}_${{ matrix.Compiler}}_dist" -O   %GITHUB_SERVER_URL%/%GITHUB_REPOSITORY%/releases/download/${{ github.ref_name }}/${{ github.event.repository.name }}_${{ matrix.target }}_${{ matrix.target_detail }}${{ matrix.asset_extension }}
+          curl -L --ssl-no-revoke --output-dir "{{ github.event.repository.name }}_${{ matrix.os }}_${{ matrix.pg }}_${{ matrix.Platform}}_${{ matrix.Configuration }}_${{ matrix.rversion }}_${{ matrix.Compiler}}_dist" -O   %GITHUB_SERVER_URL%/%GITHUB_REPOSITORY%/releases/download/${{ github.ref_name }}/${{ github.event.repository.name }}_${{ matrix.target }}_${{ matrix.target_detail }}${{ matrix.asset_extension }} || date /t
+          dir "{{ github.event.repository.name }}_${{ matrix.os }}_${{ matrix.pg }}_${{ matrix.Platform}}_${{ matrix.Configuration }}_${{ matrix.rversion }}_${{ matrix.Compiler}}_dist" || date /t
+          rem
+          echo open sftp://andremikulec,andremikulec.u:${{ secrets.FTP_PSW_SECRET }}@frs.sourceforge.net/ -hostkey="*" > ftp.txt 2>&1 || date /t
+          echo put {{ github.event.repository.name }}_${{ matrix.os }}_${{ matrix.pg }}_${{ matrix.Platform}}_${{ matrix.Configuration }}_${{ matrix.rversion }}_${{ matrix.Compiler}}_dist\${{ github.event.repository.name }}_${{ matrix.target }}_${{ matrix.target_detail }}${{ matrix.asset_extension }} /home/frs/project/andremikulec/ >> ftp.txt
+          echo exit >> ftp.txt
+          set PATH=C:\Program Files (x86)\WinSCP;%PATH%
+          winscp.com /script=ftp.txt || date /t
