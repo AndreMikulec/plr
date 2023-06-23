@@ -49,6 +49,20 @@ jobs:
       matrix:
         include:
 
+            # The matrix variable "pg" may be clue "repository", 
+            # Git branch, Git tag, Git commit("${env:pghint}" -eq "commit").
+            #
+            # If the matrix variable "pghint" is "commit" then pg is a commit and not a tag and not a branch.
+            
+            # If "pg" is "repository",then do not compile pg from source. 
+            # [Later, instead get the pg binaries from a repository.]
+            #
+            # The derived environment variable "pgversion" (the exact internal "pg version") 
+            # will be determined by SQL.
+            # This is used in the asset name.
+            
+            # If the matrix variable "compiler" is "mingw64" or "mingw32", then "Platform" is ignored.
+
           - pg: repository
             configuration: Debug
             Platform: x64
@@ -123,7 +137,7 @@ jobs:
     steps:
     
       - name: Windows Software Install
-        if: matrix.os == 'windows-latest'
+        if: ${{ matrix.os == 'windows-latest' && ( matrix.compiler == 'mingw64' ||  matrix.compiler == 'mingw32' ) }}
         uses: msys2/setup-msys2@v2
         with:
           msystem: ${{matrix.compiler}}
@@ -150,70 +164,141 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Windows Set Same Locations GITHUB_WORKSPACE c\projects\plr c\projects\postgresql\contrib\plr
+      - name: Windows Set Same Locations
         if: matrix.os == 'windows-latest'
+        working-directory: projects\plr
         # GITHUB_WORKSPACE
         # /home/runner/work/my-repo-name/my-repo-name
         # https://docs.github.com/en/actions/learn-github-actions/variables
         run: |
-          # Appveyor Legacy
+          #
+          # These locations are now exactly the same.
+          # GITHUB_WORKSPACE = c\projects\plr = c\projects\postgresql\contrib\plr
+          #
           mkdir "c:\projects"
           pushd "c:\projects"
-          cmd /c mklink /J  plr                  ${env:GITHUB_WORKSPACE}
+          cmd /c mklink /J  plr                   ${env:GITHUB_WORKSPACE}
           popd
-          pushd c:\projects\postgresql
+          pushd "c:\projects\postgresql"
           cmd /c mklink /J            contrib\plr ${env:GITHUB_WORKSPACE}
           popd
 
-      - name: Windows Environment Variables and programs
+      - name: Windows System
         if: matrix.os == 'windows-latest'
+        shell: cmd
         run: |
-          if("${env:compiler}" -eq "mingw64") { ${env:bit} = "64" } else { ${env:bit} = "32" }
-          ${env:PATH}="C:\msys${env:bit}\usr\bin;${env:PATH}"
-          
-          ${env:git} ="C:\msys${env:bit}\usr\bin\git.exe"
-          Start-Process -NoNewWindow -FilePath  "${env:git}" -ArgumentList "config" "--global" "core.autocrlf" "input"
-          #
-          ${env:curl} ="C:\msys${env:bit}\usr\bin\curl.exe"
-          ${env:bash} ="C:\msys${env:bit}\usr\bin\bash.exe";
-          
-      # need to set MORE environment variables
-      # LATER
-          
-      # need to curl R and install
-      # LATER ${env:curl}
-          
+          systeminfo
+
+      - name: Shortened Git Commit Environment Variable
+        if: matrix.os == 'windows-latest'
+        shell: cmd
+        run: |
+          # FIX_THIS - add this to the asset OUTPUT name
+          set USER_SHA=${{ env.USER_SHA }}
+          set gitrevshort=%USER_SHA:~0,8%
+
       - name: Windows Environment Variables and programs
-        if: ${{ matrix.os == 'windows-latest' &&  matrix.pg == "repository" }}
+        if: ${{ matrix.os == 'windows-latest' && ( matrix.compiler == 'mingw64' ||  matrix.compiler == 'mingw32' ) }}
+        run: |
+          # Used in the absolute path name of msys__
+          if("${{ matrix.compiler }}" -eq "mingw64") { ${env:bit} = "64" } else { ${env:bit} = "32" }
+          
+          # matrix varible compiler(mingw64) is input to msys2/setup-msys2.
+          # msys2/setup-msys2  then determines MSYSTEM.
+          # MSYSTEM is used in the absolute path of the msys2 binaries
+          #
+          # msys2 uses Github Action "" that already provides . .. 
+          # OSBitVersion can be used in an  msys2/setup-msys2 
+          # msys2 absolute binary name download.
+          # (currentlty not used.) - see docs - https://github.com/marketplace/actions/setup-msys2
+          #
+          # if ("${{ env:MSYSTEM }}" -eq "MINGW64"){ ${env:OSBitVersion} = "x86_64"} else { ${env:OSBitVersion} = "i686" }
+          
+          ${env:git}  = "C:\msys${env:bit}\usr\bin\git.exe"
+          ${env:curl} = "C:\msys${env:bit}\usr\bin\curl.exe"
+          ${env:bash} = "C:\msys${env:bit}\usr\bin\bash.exe";
+          
+          # Online location of the R installer exe.
+          ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/R-${{ matrix.rversion }}-win.exe"
+          
+          # After download of R, this is the R installation exe.
+          ${env:rinstexe} = "C:\projects\R-${{ matrix.rversion }}-win.exe"
+          
+          # "make installcheck" does not like spaces
+          ${env:R_HOME} = "C:\RINSTALL"
+
+          #Nix does not like spaces
+          ${env:pgroot} = "C:\PGINSTALL"
+          
+          # Used in the compilation of plr
+          if ("${env:MSYSTEM}" -eq "MINGW64") {${env:R_ARCH} = "/x64"} else {${env:R_ARCH} = "/i386"}
+          
+      - name: Download R and install R
+        if: ${{ matrix.os == 'windows-latest' && ( matrix.compiler == 'mingw64' ||  matrix.compiler == 'mingw32' ) }}
+        run: |
+          # Download R
+          if (-not (Test-Path "${env:rinstexe}")) {curl -o "${env:rinstexe}" -v "${env:rversionurl}"}
+          # Install R
+           Start-Process -NoNewWindow -FilePath  ""${env:rinstexe}" -ArgumentList "/VERYSILENT", "/DIR=${R_HOME}",  "/NOICONS", "/TASKS="
+          
+      - name: Downloading and Placing "pg" from the "repository" binaries
+        if: ${{ matrix.os == 'windows-latest' && ( matrix.compiler == 'mingw64' ||  matrix.compiler == 'mingw32' ) &&  matrix.pg == "repository" }}
         uses: msys2/setup-msys2@v2
         with:
           msystem: ${{matrix.compiler}}
           install: postgresql
         
-      - name: Windows Environment Variables and programs
-        if: matrix.os == 'windows-latest' &&  matrix.pg != "repository"
+      - name: Downloading "pg" source code
+        if: ${{ matrix.os == 'windows-latest' &&  matrix.pg != "repository" }}
         working-directory: projects\plr
         run: |
           echo Using Git 
           echo Downloading pg source code
-          # LATER ${env:git}
-          
+          #
+          # If one is not getting the pg from a repository, 
+          # then One must get pg from source [and then eventually compile pg into binaries]. 
+          #
+          Start-Process -NoNewWindow -FilePath  "${env:git}" -ArgumentList "config" "--global" "core.autocrlf" "input"
+          #
+          # git commit - alphanumeric and all lowercase letters (slower download)
+          #
+          if("${env:pghint}" -eq "commit") {
+            git clone -q                            https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+            pushd c:\projects\postgresql
+            git checkout -q               ${env:pg} -b ${env:pg}
+            git branch
+            echo ${env:pg}
+            popd
+          #
+          # git branch or tag(detached head)
+          # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
+          #
+          } else {
+            git clone -q --depth 1 --branch ${env:pg} https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+            pushd c:\projects\postgresql
+            git branch
+            echo ${env:pg}
+            popd
+          }
+          pushd c:\projects\postgresql
+          popd
+  
       # Workflow syntax for GitHub Actions
       # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_iddefaultsrun
           
       - name: Build Script
-        if: matrix.os == 'windows-latest'
+        if: ${{ matrix.os == 'windows-latest' && ( matrix.compiler == 'mingw64' ||  matrix.compiler == 'mingw32' ) }}
         working-directory: projects\plr
         run: |
           echo Building
-          Start-Process  -NoNewWindow -FilePath  "${env:bash}" -ArgumentList"-lc", "/c/projects/plr/build_script.sh"
+          Start-Process  -NoNewWindow -FilePath  "${env:bash}" -ArgumentList "-lc", "/c/projects/plr/build_script.sh"
           
       - name: Test Script
         if: matrix.os == 'windows-latest'
         working-directory: projects\plr
         run: |
           echo Testing
-          Start-Process  -NoNewWindow -FilePath  "${env:bash}" -ArgumentList"-lc", "/c/projects/plr/test_script.sh"
+          Start-Process  -NoNewWindow -FilePath  "${env:bash}" -ArgumentList "-lc", "/c/projects/plr/test_script.sh"
   
       - name: Windows Machine Make a dist directory
         if: matrix.os == 'windows-latest
@@ -231,7 +316,6 @@ jobs:
       # Compress build for windows.  (Instead let 7z in "Windows Self Compressing Artifacts" compress using 7z)
       # https://github.com/AndreMikulec/testapp/blob/f13d725a9fcfa5daff3d25ff00f9899b417cbc5d/.github/workflows/build_everything.yml#L207
   
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
