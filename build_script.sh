@@ -92,11 +92,6 @@ fi
 #   export dirpostgresql=/postgresql
 # fi
 
-# build from source
-# psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
-# psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
-#
-
 # # loginfo "BEGIN MY ENV VARIABLES"
 # export
 # # loginfo "END MY ENV VARIABLES"
@@ -118,11 +113,6 @@ loginfo "END   verify that PLR will link to the correct PostgreSQL"
 #
 # PostgreSQL on msys2 (maybe also cygwin?) does not use(read) PG* variables [always] [correctly] (strange!)
 # so, e.g. in psql, I do not rely on environment variables
-
-# build from source
-# psql: error: could not connect to server: FATAL:  role "appveyor" does not exist
-# psql: error: could not connect to server: FATAL:  database "appveyor" does not exist
-#
 
 if [ "${compiler}" == "msys2" ]
 then
@@ -146,6 +136,12 @@ pg_ctl -D ${PGDATA} -l logfile stop
 # leave it up
 pg_ctl -D ${PGDATA} -l logfile start
 
+
+# build from source - try to avoid this error
+# psql: error: could not connect to server: FATAL:  role "whoami" does not exist
+# psql: error: could not connect to server: FATAL:  database "whoami" does not exist
+export PGUSER=$(whoami)
+
 if [ "${compiler}" == "msys2" ]
 then
   winpty -Xallow-non-tty psql -d postgres -c 'SELECT version();'
@@ -154,8 +150,6 @@ else
 fi
 
 pg_ctl -D ${PGDATA} -l logfile stop
-
-
 
 
 #
