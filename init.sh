@@ -69,7 +69,7 @@ then
 else
   export pgroot=${MINGW_PREFIX}
   # cygwin override
-  if [ "${compiler}" == "cygwin" ]
+  if [ "${compiler_style}" == "mingw" ]
   then
     # override (not all executables use "/usr/bin": initdb, postgres, and pg_ctl are in "/usr/sbin")
     export pgroot=/usr
@@ -83,7 +83,7 @@ export TZ=UTC
 # e.g., in the users home directory
 
 # msys2 case
-if [ "${compiler}" == "msys2" ]
+if [ "${compiler_style}" == "mingw" ]
 then
      export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
 fi
@@ -113,7 +113,7 @@ export      PGLOG=${PGAPPDIR}/log.txt
 #     required in "CREATE EXTENSION plr;" and regression tests
 
 # R in msys2 does sub architectures
-if [ "${compiler}" == "msys2" ]
+if [ "${compiler_style}" == "mingw" ]
 then
   export PATH=${R_HOME}/bin${R_ARCH}:${PATH}
 else 

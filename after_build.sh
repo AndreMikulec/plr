@@ -28,7 +28,7 @@ fi
 
 pg_ctl -D ${PGDATA} -l logfile start
 
-if [ "${compiler}" == "msys2" ]
+if [ "${compiler_style}" == "mingw" ]
 then
   winpty -Xallow-non-tty psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;" --output=${GITHUB_WORKSPACE}/server_version_num.txt
 else
@@ -85,7 +85,7 @@ then
   export rversion=$(Rscript --vanilla -e 'cat(gsub('\'' '\'', replacement = '\''_'\'', x = paste0(R.version$major,'\''.'\'',R.version$minor,tolower(R.version$status))))' 2>/dev/null)
 fi
 
-export var7z=plr-${gitrevshort}-pg${pgversion}-R${rversion}${rversion_more}-${Platform}-${Configuration}-${compiler}.7z
+export var7z=plr-${gitrevshort}-pg${pgversion}-R${rversion}-${Platform}-${Configuration}-${compiler}.7z
 loginfo "${var7z}"
 
 echo ${GITHUB_WORKSPACE}
