@@ -50,7 +50,7 @@ loginfo "OLD pgversion ${pgversion}"
 loginfo "OLD pg ${pg}"
 #
 # override - msys2 and cygwin binary case
-if [ "${pg}" == "none" ]
+if [ "${pg}" == "repository" ]
   then
   export pg=$(postgres -V | grep -oP '(?<=\) ).*$')
   loginfo "NEW pg ${pg}"
@@ -75,7 +75,7 @@ mkdir -p                              tmp/share/extension
 cp ${SHAREDIR}/extension/plr.control  tmp/share/extension
 cp ${SHAREDIR}/extension/plr--*.sql   tmp/share/extension
 
-if ([ "${rversion}" == "" ] || [ "${rversion}" == "none" ])
+if [ "${rversion}" == "repository" ]
 then
   # later(now) - dynamically determing the R version
   #
@@ -94,7 +94,7 @@ loginfo "BEGIN plr 7z CREATION"
 7z a -t7z -mmt24 -mx7 -r  ${GITHUB_WORKSPACE}/${var7z} ./tmp/*
 ls -alrt                  ${GITHUB_WORKSPACE}/${var7z}
 loginfo "BEGIN plr 7z LISTING"
-7z l                      ${GITHUB_WORKSPACE}/${var7z}
+# 7z l                      ${GITHUB_WORKSPACE}/${var7z}
 loginfo "END   plr 7z LISTING"
 loginfo "END plr 7z CREATION"
 

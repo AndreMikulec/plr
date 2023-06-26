@@ -49,7 +49,7 @@ loginfo "R_HOME ${R_HOME}"
 # is only used about a custom PostgreSQL build (not an MSYS2 or CYGWIN already compiled binary)
 # 
 
-if [ ! "${pg}" == "none" ]
+if [ ! "${pg}" == "repository" ]
 then
   export pgsource=$(cygpath "c:\projects\postgresql")
   loginfo "pgsource ${pgsource}"
@@ -63,7 +63,7 @@ export GITHUB_WORKSPACE=$(cygpath "${GITHUB_WORKSPACE}")
 # echo ${MINGW_PREFIX}
 # /mingw64
 
-if [ ! "${pg}" == "none" ]
+if [ ! "${pg}" == "repository" ]
 then
   export pgroot=$(cygpath "${pgroot}")
 else

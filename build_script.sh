@@ -24,7 +24,7 @@ export PATH=$(echo $(cygpath "c:\\${betterperl}\perl\bin")):${PATH}
 export PATH=${PATH}:$(echo $(cygpath "c:\\${betterperl}\c\bin"))
 
 
-if [ "${pggithubbincacheextracted}" == "false" ] && [ ! "${pg}" == "none" ]
+if [ ! "${pg}" == "repository" ]
 then
   loginfo "BEGIN PostgreSQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
   if [ ! -f "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" ]
@@ -51,7 +51,7 @@ then
   else
     loginfo "BEGIN 7z EXTRACTION"
     cd ${pgroot}
-    7z l "${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+    # 7z l "${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
     7z x "${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
     ls -alrt ${pgroot}
     cd ${GITHUB_WORKSPACE}
