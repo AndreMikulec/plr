@@ -64,6 +64,12 @@ if [ "${pg}" == "repository" ]
 fi
 loginfo "OLD or NEW pgversion ${pgversion}"
 
+#
+# export pgversion
+#
+echo "pgversion=${pgversion}" >> ${GITHUB_ENV}
+
+
 pg_config | grep "^PKGLIBDIR\|^SHAREDIR" | sed "s/ = /=/" | sed s"/^/export /" > newvars.sh
 . ./newvars.sh
 

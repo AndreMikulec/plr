@@ -123,6 +123,7 @@ pg_ctl -D ${PGDATA} -l logfile start
 # build from source - try to avoid this error
 # psql: error: could not connect to server: FATAL:  role "whoami" does not exist
 # psql: error: could not connect to server: FATAL:  database "whoami" does not exist
+#
 export PGUSER=$(whoami)
 
 if [ "${compiler_style}" == "mingw" ]

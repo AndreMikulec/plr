@@ -48,7 +48,6 @@ loginfo "R_HOME ${R_HOME}"
 # "pgsource" variable
 # is only used about a custom PostgreSQL build (not a mingw or cygwin already compiled binary)
 #
-
 if [ ! "${pg}" == "repository" ]
 then
   export pgsource=$(cygpath "c:\projects\postgresql")
@@ -59,12 +58,20 @@ export GITHUB_WORKSPACE=$(cygpath "${GITHUB_WORKSPACE}")
 # echo $GITHUB_WORKSPACE
 # /c/projects/plr
 
+
+#
+# used later to export pgversion
+#
+export GITHUB_ENV=$(cygpath "${GITHUB_ENV}")
+# echo $GITHUB_ENV
+
 #
 # echo ${MINGW_PREFIX}
 # /mingw64
 
 if [ ! "${pg}" == "repository" ]
 then
+  # the place in the yaml where I told I want "pg" installed
   export pgroot=$(cygpath "${pgroot}")
 fi
 if [ "${pg}" == "repository" ] && [ "${compiler_style}" == "mingw" ]
@@ -76,9 +83,9 @@ then
   # override (not all executables use "/usr/bin": initdb, postgres, and pg_ctl are in "/usr/sbin")
   export pgroot=/usr
 fi
-
-
 loginfo "pgroot $pgroot"
+
+
 
 # proper for "initdb" - see the PostgreSQL docs
 export TZ=UTC
