@@ -67,12 +67,10 @@ if [ ! "${pg}" == "repository" ]
 then
   export pgroot=$(cygpath "${pgroot}")
 fi
-
 if [ "${pg}" == "repository" ] && [ "${compiler_style}" == "mingw" ]
 then
   export pgroot=${MINGW_PREFIX}
 fi
-
 if [ "${pg}" == "repository" ] && [ "${compiler_style}" == "cygwin" ]
 then
   # override (not all executables use "/usr/bin": initdb, postgres, and pg_ctl are in "/usr/sbin")
@@ -86,20 +84,16 @@ loginfo "pgroot $pgroot"
 export TZ=UTC
 
 # e.g., in the users home directory
-
 # mingw case
 if [ "${compiler_style}" == "mingw" ]
 then
-     export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
+  export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
 fi
-
 # cygwin case
-if [ "${compiler}" == "cygwin" ]
+if [ "${compiler_style}" == "cygwin" ]
 then
   export PGAPPDIR=/cygdrive/c/cygwin${bit}${HOME}${pgroot}/postgresql/Data
 fi
-
-
 #
 # add OTHER cases HERE: future arm* (guessing now)
 if [ "${PGAPPDIR}" == "" ]
