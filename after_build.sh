@@ -30,16 +30,16 @@ pg_ctl -D ${PGDATA} -l logfile start
 
 if [ "${compiler}" == "msys2" ]
 then
-  winpty -Xallow-non-tty psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;" --output=${APPVEYOR_BUILD_FOLDER}/server_version_num.txt
+  winpty -Xallow-non-tty psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;" --output=${GITHUB_WORKSPACE}/server_version_num.txt
 else
-                         psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;" --output=${APPVEYOR_BUILD_FOLDER}/server_version_num.txt
+                         psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;" --output=${GITHUB_WORKSPACE}/server_version_num.txt
 fi
 
 
 # also used in compiler - msvc
 #
 ./server_version_num.sh
-export server_version_num=$(cat ${APPVEYOR_BUILD_FOLDER}/server_version_num.txt)
+export server_version_num=$(cat ${GITHUB_WORKSPACE}/server_version_num.txt)
 loginfo "server_version_num ${server_version_num}"
 #
 # also works
@@ -88,13 +88,13 @@ fi
 export var7z=plr-${gitrevshort}-pg${pgversion}-R${rversion}${rversion_more}-${Platform}-${Configuration}-${compiler}.7z
 loginfo "${var7z}"
 
-echo ${APPVEYOR_BUILD_FOLDER}
+echo ${GITHUB_WORKSPACE}
 
 loginfo "BEGIN plr 7z CREATION"
-7z a -t7z -mmt24 -mx7 -r  ${APPVEYOR_BUILD_FOLDER}/${var7z} ./tmp/*
-ls -alrt                  ${APPVEYOR_BUILD_FOLDER}/${var7z}
+7z a -t7z -mmt24 -mx7 -r  ${GITHUB_WORKSPACE}/${var7z} ./tmp/*
+ls -alrt                  ${GITHUB_WORKSPACE}/${var7z}
 loginfo "BEGIN plr 7z LISTING"
-7z l                      ${APPVEYOR_BUILD_FOLDER}/${var7z}
+7z l                      ${GITHUB_WORKSPACE}/${var7z}
 loginfo "END   plr 7z LISTING"
 loginfo "END plr 7z CREATION"
 
@@ -103,26 +103,26 @@ if [ "${compiler}" == "cygwin" ]
 then
   # command will automatically pre-prepend A DIRECTORY (strange!)
   # e.g. 
-  pushd ${APPVEYOR_BUILD_FOLDER}
+  pushd ${GITHUB_WORKSPACE}
   loginfo "appveyor PushArtifact ${var7z}"
            appveyor PushArtifact ${var7z}
   popd
   #
   # BAD PUSH-ARTIFACT - DEFINITELY A BUG
   #
-  # loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${var7z}"
-  #          appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${var7z}
+  # loginfo "appveyor PushArtifact ${GITHUB_WORKSPACE}/${var7z}"
+  #          appveyor PushArtifact ${GITHUB_WORKSPACE}/${var7z}
   #
   # appveyor PushArtifact /cygdrive/c/projects/plr/plr-761a5fbc-pg12-R4.1.0alpha-x86-Debug-cygwin.7z
   # File not found: C:\projects\plr\cygdrive\c\projects\plr\plr-761a5fbc-pg12-R4.1.0alpha-x86-Debug-cygwin.7z
   # Command exited with code 2
   # 
 else
-  loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${var7z}"
-           appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/${var7z}
+  loginfo "appveyor PushArtifact ${GITHUB_WORKSPACE}/${var7z}"
+           appveyor PushArtifact ${GITHUB_WORKSPACE}/${var7z}
 fi
 
-# must stop, else Appveyor job will hang.
+# must stop, else the job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
 
 # set +v +x +e

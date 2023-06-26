@@ -46,15 +46,15 @@ then
     loginfo "BEGIN PostgreSQL INSTALL"
     make install
     loginfo "END   PostgreSQL INSTALL"
-    cd ${APPVEYOR_BUILD_FOLDER}
+    cd ${GITHUB_WORKSPACE}
     loginfo "END   PostgreSQL BUILD + INSTALL"
   else
     loginfo "BEGIN 7z EXTRACTION"
     cd ${pgroot}
-    7z l "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-    7z x "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+    7z l "${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+    7z x "${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
     ls -alrt ${pgroot}
-    cd ${APPVEYOR_BUILD_FOLDER}
+    cd ${GITHUB_WORKSPACE}
     loginfo "END   7z EXTRACTION"
   fi
   loginfo "END   PostgreSQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
@@ -167,25 +167,25 @@ then
   cd ${pgroot}
   ls -alrt
   loginfo                                            "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-  7z a -t7z -mmt24 -mx7 -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z *
-  7z l                       ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
-  ls -alrt                   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
-  export  pg_7z_size=$(find "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" -printf "%s")
+  7z a -t7z -mmt24 -mx7 -r   ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z *
+  7z l                       ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+  ls -alrt                   ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+  export  pg_7z_size=$(find "${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" -printf "%s")
   loginfo "pg_7z_size $pg_7z_size" 
   #                       96m
   if [ ${pg_7z_size} -gt 100663296 ] 
   then
-    rm -f    ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
-    loginfo "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z is TOO BIG so removed."
+    rm -f    ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+    loginfo "${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z is TOO BIG so removed."
   fi
   #
-  if [ -f "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" ]
+  if [ -f "${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" ]
   then
     if [ "${compiler}" == "cygwin" ]
     then
       # workaround of an Appveyor-using-cygwin bug - command will automatically pre-prepend A DIRECTORY (strange!)
       # e.g.
-      pushd ${APPVEYOR_BUILD_FOLDER}
+      pushd ${GITHUB_WORKSPACE}
       #
       # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
       #
@@ -197,12 +197,12 @@ then
       #
       # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
       #
-      # loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-      #          appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+      # loginfo "appveyor PushArtifact ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+      #          appveyor PushArtifact ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
     fi
   fi
   #
-  cd ${APPVEYOR_BUILD_FOLDER} 
+  cd ${GITHUB_WORKSPACE} 
   loginfo "END   pg 7z CREATION"
 fi
 

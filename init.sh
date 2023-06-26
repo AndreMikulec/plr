@@ -55,8 +55,8 @@ then
   loginfo "pgsource ${pgsource}"
 fi
 
-export APPVEYOR_BUILD_FOLDER=$(cygpath "${APPVEYOR_BUILD_FOLDER}")
-# echo $APPVEYOR_BUILD_FOLDER
+export GITHUB_WORKSPACE=$(cygpath "${GITHUB_WORKSPACE}")
+# echo $GITHUB_WORKSPACE
 # /c/projects/plr
 
 # 
