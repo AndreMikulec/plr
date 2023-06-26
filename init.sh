@@ -66,33 +66,6 @@ export GITHUB_WORKSPACE=$(cygpath "${GITHUB_WORKSPACE}")
 if [ ! "${pg}" == "repository" ]
 then
   export pgroot=$(cygpath "${pgroot}")
-else
-  export pgroot=${MINGW_PREFIX}
-  # cygwin override
-  if [ "${compiler_style}" == "cygwin" ]
-  then
-    # override (not all executables use "/usr/bin": initdb, postgres, and pg_ctl are in "/usr/sbin")
-    export pgroot=/usr
-  fi
-fi
-
-
-if [ ! "${pg}" == "repository" ] && [ 
-then
-  export pgroot=$(cygpath "${pgroot}")
-else
-  export pgroot=${MINGW_PREFIX}
-  # cygwin override
-  if [ "${compiler_style}" == "cygwin" ]
-  then
-    # override (not all executables use "/usr/bin": initdb, postgres, and pg_ctl are in "/usr/sbin")
-    export pgroot=/usr
-  fi
-fi
-
-if [ ! "${pg}" == "repository" ]
-then
-  export pgroot=$(cygpath "${pgroot}")
 fi
 
 if [ "${pg}" == "repository" ] && [ "${compiler_style}" == "mingw" ]
