@@ -47,7 +47,7 @@ loginfo "R_HOME ${R_HOME}"
 #
 # "pgsource" variable
 # is only used about a custom PostgreSQL build (not a mingw or cygwin already compiled binary)
-# 
+#
 
 if [ ! "${pg}" == "repository" ]
 then
@@ -59,7 +59,7 @@ export GITHUB_WORKSPACE=$(cygpath "${GITHUB_WORKSPACE}")
 # echo $GITHUB_WORKSPACE
 # /c/projects/plr
 
-# 
+#
 # echo ${MINGW_PREFIX}
 # /mingw64
 
@@ -69,12 +69,44 @@ then
 else
   export pgroot=${MINGW_PREFIX}
   # cygwin override
-  if [ "${compiler_style}" == "mingw" ]
+  if [ "${compiler_style}" == "cygwin" ]
   then
     # override (not all executables use "/usr/bin": initdb, postgres, and pg_ctl are in "/usr/sbin")
     export pgroot=/usr
   fi
 fi
+
+
+if [ ! "${pg}" == "repository" ] && [ 
+then
+  export pgroot=$(cygpath "${pgroot}")
+else
+  export pgroot=${MINGW_PREFIX}
+  # cygwin override
+  if [ "${compiler_style}" == "cygwin" ]
+  then
+    # override (not all executables use "/usr/bin": initdb, postgres, and pg_ctl are in "/usr/sbin")
+    export pgroot=/usr
+  fi
+fi
+
+if [ ! "${pg}" == "repository" ]
+then
+  export pgroot=$(cygpath "${pgroot}")
+fi
+
+if [ "${pg}" == "repository" ] && [ "${compiler_style}" == "mingw" ]
+then
+  export pgroot=${MINGW_PREFIX}
+fi
+
+if [ "${pg}" == "repository" ] && [ "${compiler_style}" == "cygwin" ]
+then
+  # override (not all executables use "/usr/bin": initdb, postgres, and pg_ctl are in "/usr/sbin")
+  export pgroot=/usr
+fi
+
+
 loginfo "pgroot $pgroot"
 
 # proper for "initdb" - see the PostgreSQL docs
