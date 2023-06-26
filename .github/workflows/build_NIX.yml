@@ -177,6 +177,7 @@ jobs:
 
       - name: Windows and Compiler Style CYGWIN Environment Variables and programs
       # 64 or 32 will be determined.
+      # 32 bit cygwin is considerted to b "no BIT"
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'cygwin' }}
         run: |
           if("${{ matrix.Platform }}" -eq "x64") { ${env:bit} = "64" }

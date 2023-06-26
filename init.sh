@@ -87,17 +87,14 @@ if [ "${compiler_style}" == "mingw" ]
 then
      export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
 fi
-#
+
 # cygwin case
 if [ "${compiler}" == "cygwin" ]
 then
-  if [ "${Platform}" == "x64" ]
-  then
-    export PGAPPDIR=/cygdrive/c/cygwin64${HOME}${pgroot}/postgresql/Data
-  else
-    export PGAPPDIR=/cygdrive/c/cygwin${HOME}${pgroot}/postgresql/Data
-  fi
+  export PGAPPDIR=/cygdrive/c/cygwin${bit}${HOME}${pgroot}/postgresql/Data
 fi
+
+
 #
 # add OTHER cases HERE: future arm* (guessing now)
 if [ "${PGAPPDIR}" == "" ]
