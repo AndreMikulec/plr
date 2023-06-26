@@ -8,7 +8,7 @@ logok "BEGIN after_build.sh"
 # set -v -x -e
 set -e
 
-# put this in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
+# put this in all non-init.sh scripts - pgroot is empty, if using a mingw binary
 # but psql is already in the path
 if [ -f "${pgroot}/bin/psql" ]
 then
@@ -49,7 +49,7 @@ loginfo "server_version_num ${server_version_num}"
 loginfo "OLD pgversion ${pgversion}"
 loginfo "OLD pg ${pg}"
 #
-# override - msys2 and cygwin binary case
+# override - mingw and cygwin binary case
 if [ "${pg}" == "repository" ]
   then
   export pg=$(postgres -V | grep -oP '(?<=\) ).*$')

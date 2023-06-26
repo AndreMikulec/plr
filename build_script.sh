@@ -45,7 +45,7 @@ then
 fi
 
 
-# put this in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
+# put this in all non-init.sh scripts - pgroot is empty, if using a mingw binary
 # but psql is already in the path
 if [ -f "${pgroot}/bin/psql" ]
 then
@@ -95,7 +95,7 @@ loginfo "END   verify that PLR will link to the correct PostgreSQL"
 # which postgres
 
 #
-# PostgreSQL on msys2 (maybe also cygwin?) does not use(read) PG* variables [always] [correctly] (strange!)
+# PostgreSQL on mingw (maybe also cygwin?) does not use(read) PG* variables [always] [correctly] (strange!)
 # so, e.g. in psql, I do not rely on environment variables
 
 if [ "${compiler_style}" == "mingw" ]

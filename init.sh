@@ -46,7 +46,7 @@ loginfo "R_HOME ${R_HOME}"
 
 #
 # "pgsource" variable
-# is only used about a custom PostgreSQL build (not an MSYS2 or CYGWIN already compiled binary)
+# is only used about a custom PostgreSQL build (not a mingw or cygwin already compiled binary)
 # 
 
 if [ ! "${pg}" == "repository" ]
@@ -82,7 +82,7 @@ export TZ=UTC
 
 # e.g., in the users home directory
 
-# msys2 case
+# mingw case
 if [ "${compiler_style}" == "mingw" ]
 then
      export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
@@ -109,11 +109,14 @@ export      PGLOG=${PGAPPDIR}/log.txt
 # not required in compilation
 #     required in "CREATE EXTENSION plr;" and regression tests
 
-# R in msys2 does sub architectures
+# R in mingw does sub architectures
 if [ "${compiler_style}" == "mingw" ]
 then
   export PATH=${R_HOME}/bin${R_ARCH}:${PATH}
-else 
+fi
+
+if [ "${compiler_style}" == "cygwin" ]
+then
   # cygwin does-not-do R sub architectures
   export PATH=${R_HOME}/bin:${PATH}
 fi
