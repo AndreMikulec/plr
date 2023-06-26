@@ -137,9 +137,9 @@ pg_ctl -D ${PGDATA} -l logfile stop
 
 
 #
-# not yet tried/tested in cygwin
-#                                                                                                                           # cygwin case
-if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
+#                                     # not yet tried/tested in cygwin
+#                                     # cygwin case
+if [ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ]
 then
   loginfo "BEGIN pg 7z CREATION"
   cd ${pgroot}
