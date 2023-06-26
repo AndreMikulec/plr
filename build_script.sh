@@ -160,9 +160,9 @@ then
   loginfo "BEGIN pg 7z CREATION"
   cd ${pgroot}
   ls -alrt
-  loginfo                                            "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+  loginfo                                       "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
   7z a -t7z -mmt24 -mx7 -r   ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z *
-  7z l                       ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+  # 7z l                       ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
   ls -alrt                   ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
   export  pg_7z_size=$(find "${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" -printf "%s")
   loginfo "pg_7z_size $pg_7z_size" 
@@ -171,29 +171,6 @@ then
   then
     rm -f    ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
     loginfo "${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z is TOO BIG so removed."
-  fi
-  #
-  if [ -f "${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" ]
-  then
-    if [ "${compiler}" == "cygwin" ]
-    then
-      # workaround of an Appveyor-using-cygwin bug - command will automatically pre-prepend A DIRECTORY (strange!)
-      # e.g.
-      pushd ${GITHUB_WORKSPACE}
-      #
-      # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
-      #
-      # loginfo "appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-      #          appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
-      popd
-  # bash if-then-else-fi # inside bodies can not be empty
-  # else
-      #
-      # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
-      #
-      # loginfo "appveyor PushArtifact ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-      #          appveyor PushArtifact ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
-    fi
   fi
   #
   cd ${GITHUB_WORKSPACE} 
