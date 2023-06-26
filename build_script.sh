@@ -11,7 +11,7 @@ set -e
 if [ ! "${pg}" == "repository" ]
 then
   loginfo "BEGIN PostgreSQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
-  if [ ! -f "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" ]
+  if [ ! -f "pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" ]
   then
     loginfo "BEGIN PostgreSQL CONFIGURE"
     cd ${pgsource}
@@ -35,8 +35,8 @@ then
   else
     loginfo "BEGIN 7z EXTRACTION"
     cd ${pgroot}
-    # 7z l "${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-    7z x "${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+    # 7z l "${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+    7z x "${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
     ls -alrt ${pgroot}
     cd ${GITHUB_WORKSPACE}
     loginfo "END   7z EXTRACTION"
@@ -144,17 +144,17 @@ then
   loginfo "BEGIN pg 7z CREATION"
   cd ${pgroot}
   ls -alrt
-  loginfo                                       "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-  7z a -t7z -mmt24 -mx7 -r   ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z *
-  # 7z l                       ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
-  ls -alrt                   ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
-  export  pg_7z_size=$(find "${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" -printf "%s")
+  loginfo                                       "pg-${os}-pg${pg}-${Platform}-${Configuration}-${compiler}.7z"
+  7z a -t7z -mmt24 -mx7 -r   ${GITHUB_WORKSPACE}/pg-${os}-pg${pg}-${Platform}-${Configuration}-${compiler}.7z *
+  # 7z l                       ${GITHUB_WORKSPACE}/pg-${os}-pg${pg}-${Platform}-${Configuration}-${compiler}.7z
+  ls -alrt                   ${GITHUB_WORKSPACE}/pg-${os}-pg${pg}-${Platform}-${Configuration}-${compiler}.7z
+  export  pg_7z_size=$(find "${GITHUB_WORKSPACE}/pg-${os}-pg${pg}-${Platform}-${Configuration}-${compiler}.7z" -printf "%s")
   loginfo "pg_7z_size $pg_7z_size" 
   #                       96m
   if [ ${pg_7z_size} -gt 100663296 ] 
   then
-    rm -f    ${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
-    loginfo "${GITHUB_WORKSPACE}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z is TOO BIG so removed."
+    rm -f    ${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+    loginfo "${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z is TOO BIG so removed."
   fi
   #
   cd ${GITHUB_WORKSPACE} 

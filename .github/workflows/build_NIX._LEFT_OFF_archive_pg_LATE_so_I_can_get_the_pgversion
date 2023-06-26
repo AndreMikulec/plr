@@ -38,19 +38,19 @@ jobs:
             # If the matrix variable "compiler" is "mingw64" or "mingw32", then "Platform" is ignored.
 
 #           - pg: repository
-#             configuration: Debug
+#             Configuration: Debug
 #             Platform: x64
 #             os: windows-latest
 #             rversion: 4.2.3
-#             compiler: mingw64
+
 
           - pg: repository
-            configuration: Debug
+            Configuration: Debug
             Platform: x64
             os: windows-latest
             rversion: 4.3.1
             compiler: mingw64
-            asset_extension: .7z
+
 
 #           - pg: REL_15_3
 #             Configuration: Debug
@@ -58,7 +58,7 @@ jobs:
 #             os: windows-latest
 #             rversion: 4.2.3
 #             compiler: mingw64
-#             asset_extension: .7z
+
 
           - pg: REL_15_3
             Configuration: Debug
@@ -66,7 +66,7 @@ jobs:
             os: windows-latest
             rversion: 4.3.1
             compiler: mingw64
-            asset_extension: .7z
+
 
 #           - pg: REL_16_BETA1
 #             Configuration: Debug
@@ -74,7 +74,7 @@ jobs:
 #             os: windows-latest
 #             rversion: 4.2.3
 #             compiler: mingw64
-#             asset_extension: .7z
+
 #
 #           - pg: REL_16_BETA1
 #             Configuration: Debug
@@ -82,31 +82,31 @@ jobs:
 #             os: windows-latest
 #             rversion: 4.3.1
 #             compiler: mingw64
-#             asset_extension: .7z
+
 #
 #           - pg: master
-#             configuration: Debug
+#             Configuration: Debug
 #             Platform: x64
 #             os: windows-latest
 #             rversion: 4.2.3
 #             compiler: mingw64
-#             asset_extension: .7z
+
 #
 #           - pg: master
-#             configuration: Debug
+#             Configuration: Debug
 #             Platform: x64
 #             os: windows-latest
 #             rversion: 4.3.1
 #             compiler: mingw64
-#             asset_extension: .7z
+
 #
 #           - pg: master
-#             configuration: Debug
+#             Configuration: Debug
 #             Platform: x64
 #             os: windows-latest
 #             rversion: 4.3.1
 #             compiler: mingw64
-#             asset_extension: .7z
+
 
     steps:
 
@@ -115,6 +115,12 @@ jobs:
         shell: cmd
         run: |
           systeminfo
+
+      - name: Windows Powershell add Functions
+        if: matrix.os == 'windows-latest'
+        run: |
+          Add-Content -Path $profile -Value "function Set-EnvVar {param(`$X)     Add-Content -Path `${env:GITHUB_ENV} -Value `"`$X`"}"
+          Add-Content -Path $profile -Value "function Start-App  {param(`$X,`$Y) Start-Process -NoNewWindow -FilePath `"`$X`" -ArgumentList `$Y }"
 
       - name: Windows Shortened Git Commit Environment Variable
         if: matrix.os == 'windows-latest'
@@ -140,12 +146,6 @@ jobs:
           export gitrevshort=${GITHUB_SHA:0:8}
           echo gitrevshort ${gitrevshort}
           echo "gitrevshort=%gitrevshort%" >> $GITHUB_ENV
-
-      - name: Windows Powershell add Functions
-        if: matrix.os == 'windows-latest'
-        run: |
-          Add-Content -Path $profile -Value "function Set-EnvVar {param(`$X)     Add-Content -Path `${env:GITHUB_ENV} -Value `"`$X`"}"
-          Add-Content -Path $profile -Value "function Start-App  {param(`$X,`$Y) Start-Process -NoNewWindow -FilePath `"`$X`" -ArgumentList `$Y }"
 
       - name: Windows Compiler Style Variables
         if: matrix.os == 'windows-latest'
@@ -217,7 +217,8 @@ jobs:
           # C\Program Files\Git\bin\bash.exe
           # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
           #
-          ${env:bash} = "C:\msys${env:bit}\usr\bin\bash.exe";
+          
+          ${env:bash} = "C:\msys${{ env.bit }}\usr\bin\bash.exe";
           Set-EnvVar "bash=${env:bash}"
 
           # matrix varible compiler(mingw64) is input to msys2/setup-msys2.
@@ -313,17 +314,19 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion != 'repository' }}
         run: |
           # Download R
-          if (-not (Test-Path "${env:rinstexe}")) {
-            Start-Process -NoNewWindow -FilePath "${env:curl}"  -ArgumentList "-v", "-o", "${env:rinstexe}", "${env:rversionurl}"
+          #
+          if (-not (Test-Path "${{ env.rinstexe }}")) {
+            Start-App "${{ env.curl }}"  "-v", "-o", "${{ env.rinstexe }}", "${{ env.rversionurl }}"
           }
           # Install R
-          Start-Process -NoNewWindow -FilePath  "${env:rinstexe}" -ArgumentList "/VERYSILENT", "/DIR=${R_HOME}",  "/NOICONS", "/TASKS="
+          Start-App "${{ env.rinstexe }}" "/VERYSILENT", "/DIR=${{ env.R_HOME }}",  "/NOICONS", "/TASKS="
+
 
       - name: Windows MINGW - Downloading and Placing "pg" from the "repository" binaries
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' && matrix.pg == "repository" }}
         uses: msys2/setup-msys2@v2
         with:
-          msystem: ${{matrix.compiler}}
+          msystem: ${{ matrix.compiler }}
           update: true
           install: postgresql
 
@@ -339,29 +342,30 @@ jobs:
           #
           git config --global advice.detachedHead false
           git config --global core.autocrlf
-
           #
           # git commit - alphanumeric and all lowercase letters (slower download)
           #
-          if("${env:pghint}" -eq "commit") {
-            git clone -q                         https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
-            pushd c:\projects\postgresql
-            ${env:git} checkout -q               ${env:pg} -b ${env:pg}
+          Set-EnvVar "pgsource=C:\projects\postgresql"
+          #
+          if("{{ matrix.pghint }}" -eq "commit") {
+            git clone -q                         https://git.postgresql.org/git/postgresql.git C:\projects\postgresql
+            pushd C:\projects\postgresql
+            git checkout -q                  ${{ matrix.pg }} -b ${{ matrix.pg }}
             git branch
-            echo ${env:pg}
+            echo ${{ matrix.pg }}
             popd
           #
           # git branch or tag(detached head)
           # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
           #
           } else {
-            git clone -q --depth 1 --branch      ${env:pg} https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
-            pushd c:\projects\postgresql
+            git clone -q --depth 1 --branch  ${{ matrix.pg }} https://git.postgresql.org/git/postgresql.git C:\projects\postgresql
+            pushd C:\projects\postgresql
             git branch
-            echo ${env:pg}
+            echo ${{ matrix.pg }}
             popd
           }
-          pushd c:\projects\postgresql
+          pushd C:\projects\postgresql
           popd
 
       - name: Windows Set Same Locations
@@ -377,7 +381,7 @@ jobs:
           pushd "c:\projects"
           cmd /c mklink /J   plr                    ${env:GITHUB_WORKSPACE}
           popd
-          pushd "c:\projects\postgresql"
+          pushd "C:\projects\postgresql"
           cmd /c mklink /J              contrib\plr ${env:GITHUB_WORKSPACE}
           popd
 
@@ -389,14 +393,55 @@ jobs:
         working-directory: projects\plr
         run: |
           echo Building
-          Start-App "${env:bash}" "-lc", "/c/projects/plr/build_script.sh"
+          # init
+          ${env:R_HOME} = "${{ env.R_HOME }}"
+          ${env:pg} = "${{ matrix.pg }}"
+          ${env:pgsource} = "${{ env.pgsource }}
+          ${env:compiler_style} = "${{ env.compiler_style }
+          ${env:R_ARCH} = "${{ env.R_ARCH }}"
+           # created "pgroot"
+           
+          # non-init
+          ${env:pg} = "${{ matrix.pg }}"
+          ${env:pgsource} = "${{ env.pgsource }}
+          ${env:compiler_style} = "${{ env.compiler_style }
+          # used "pgroot"
+          #
+          # if I want to save the compiled "pg" binaries
+          ${env:os}            = "${{ matrix.os }}"
+          ${env:pg       }     = "${{ matrix.pg }}"
+          ${env:Platform}      = "${{ matrix.Platform }}"
+          ${env:Configuration} = "${{ matrix.Configuration }}"
+          ${env:compiler}      = "${{ matrix.compiler }}"
+
+          Start-App "${{ env.bash }}" "-lc", "/c/projects/plr/build_script.sh"
 
       - name: Test Script
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) }}
         working-directory: projects\plr
         run: |
           echo Testing
-          Start-App "${env:bash}" "-lc", "/c/projects/plr/test_script.sh"
+          # init
+          # created "pgroot"
+          
+          # non-init
+          # used "pgroot"
+          ${env:compiler_style} = "${{ env.compiler_style }}"
+          ${env:pg} = "${{ matrix.pg }}
+          # created "pgversion"
+          ${env:rversion} = "${{ matrix.rversion }} # and dynamically found the correct version
+          
+          # saved compiled "plr"
+          ${env:gitrevshort} = "${{ env.gitrevshort }}"
+          ${env:os}            = "${{ matrix.os }}"
+          # pgversion
+          ${env:rversion}      = "${{ matrix.rversion }}"
+          ${env:Platform}      = "${{ matrix.Platform }}"
+          ${env:Configuration} = "${{ matrix.Configuration }}"
+          ${env:compiler}      = "${{ matrix.compiler }}"
+          
+          Start-App "${{ env.bash }}" "-lc", "/c/projects/plr/test_script.sh"
+          ${env:pgversion}     = "${{ env.pgversion }}"
 
       - name: Windows Machine Make a dist directory
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) }}
@@ -409,27 +454,34 @@ jobs:
         working-directory: projects\plr
         run: |
           echo After Test
-          Start-App "${env:bash}" "-lc", "/c/projects/plr/after_test.sh"
+          # init
+          # created "pgroot"
+          
+          # non-init
+          # used "pgroot"
+          
+          Start-App "${{ env.bash }}" "-lc", "/c/projects/plr/after_test.sh"
       #
       # Compress build for windows.  (Instead let 7z in "Windows Self Compressing Artifacts" compress using 7z)
       # https://github.com/AndreMikulec/testapp/blob/f13d725a9fcfa5daff3d25ff00f9899b417cbc5d/.github/workflows/build_everything.yml#L207
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-          name: ${{ github.event.repository.name }}_${{ matrix.os }}_${{ matrix.pg }}_${{ matrix.Platform}}_${{ matrix.Configuration }}_${{ matrix.rversion }}_${{ matrix.Compiler}}
+          name: plr-${{ env.gitrevshort }}-${{ matrix.os }}-pg${{ env.pgversion }}-R${{ matrix.rversion }}-${{ matrix.Platform }}-${{ matrix.Configuration }}-${{ matrix.compiler}}
           path: |
-            ${{ github.event.repository.name }}_${{ matrix.os }}_${{ matrix.pg }}_${{ matrix.Platform}}_${{ matrix.Configuration }}_${{ matrix.rversion }}_${{ matrix.Compiler}}_dist/
+            plr-${{ env.gitrevshort }}-${{ matrix.os }}-pg${{ env.pgversion }}-R${{ matrix.rversion }}-${{ matrix.Platform }}-${{ matrix.Configuration }}-${{ matrix.compiler}}.7z
 
+      # required permissions for the action specified (which is contents: write)
       - name: Release
         if: github.ref_type == 'tag'
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1.12.0
         with:
           allowUpdates: true
           replacesArtifacts: true
           commit: ${{ env.GITHUB_SHA }}
           tag: ${{ env.USER_GITHUB_REF_NAME }}
-          artifacts: "${{ github.event.repository.name }}_${{ matrix.os }}_${{ matrix.pg }}_${{ matrix.Platform}}_${{ matrix.Configuration }}_${{ matrix.rversion }}_${{ matrix.Compiler}}_dist/*.*"
+          artifacts: "plr-${{ env.gitrevshort }}-${{ matrix.os }}-pg${{ env.pgversion }}-R${{ matrix.rversion }}-${{ matrix.Platform }}-${{ matrix.Configuration }}-${{ matrix.compiler}}.7z"
           token: ${{ secrets.PLR_ACTIONS_CREATE_RELEASE_REPO_SECRET }}
         env:
           USER_GITHUB_SHA: ${{ github.sha }}

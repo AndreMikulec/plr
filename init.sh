@@ -50,7 +50,7 @@ loginfo "R_HOME ${R_HOME}"
 #
 if [ ! "${pg}" == "repository" ]
 then
-  export pgsource=$(cygpath "c:\projects\postgresql")
+  export pgsource=$(cygpath "${pgsource}")
   loginfo "pgsource ${pgsource}"
 fi
 
