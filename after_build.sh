@@ -98,30 +98,6 @@ loginfo "BEGIN plr 7z LISTING"
 loginfo "END   plr 7z LISTING"
 loginfo "END plr 7z CREATION"
 
-
-if [ "${compiler}" == "cygwin" ]
-then
-  # command will automatically pre-prepend A DIRECTORY (strange!)
-  # e.g. 
-  pushd ${GITHUB_WORKSPACE}
-  loginfo "appveyor PushArtifact ${var7z}"
-           appveyor PushArtifact ${var7z}
-  popd
-  #
-  # BAD PUSH-ARTIFACT - DEFINITELY A BUG
-  #
-  # loginfo "appveyor PushArtifact ${GITHUB_WORKSPACE}/${var7z}"
-  #          appveyor PushArtifact ${GITHUB_WORKSPACE}/${var7z}
-  #
-  # appveyor PushArtifact /cygdrive/c/projects/plr/plr-761a5fbc-pg12-R4.1.0alpha-x86-Debug-cygwin.7z
-  # File not found: C:\projects\plr\cygdrive\c\projects\plr\plr-761a5fbc-pg12-R4.1.0alpha-x86-Debug-cygwin.7z
-  # Command exited with code 2
-  # 
-else
-  loginfo "appveyor PushArtifact ${GITHUB_WORKSPACE}/${var7z}"
-           appveyor PushArtifact ${GITHUB_WORKSPACE}/${var7z}
-fi
-
 # must stop, else the job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
 
