@@ -121,7 +121,6 @@ loginfo "END   plr 7z LISTING"
 loginfo "END plr 7z CREATION"
 
 
-
 #
 #                                     # not yet tried/tested in cygwin
 #                                     # cygwin case
