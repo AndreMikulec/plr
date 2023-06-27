@@ -110,6 +110,7 @@ jobs:
 
     steps:
 
+
       - name: Windows System
         if: matrix.os == 'windows-latest'
         shell: cmd
@@ -203,7 +204,6 @@ jobs:
           #
           # ${env:git} = "C\Program Files\Git\bin\git.exe"
           # Set-EnvVar "git=${env:git}"
-
 
       - name: Windows and Compiler Style MINGW Environment Application Variables and programs
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }}
@@ -308,17 +308,39 @@ jobs:
             perl
             curl
             winpty
-            p7zip
+            p7zip   
+            tar
+            zstd
 
-      - name: Windows Download R and install R
+
+      # needs "tar" and "zstd"
+      #
+      # The cache is scoped to the key, version, and branch.
+      # The default branch cache is available to other branches.
+      # 
+      # Once the 10GB limit is reached, 
+      # older caches will be evicted based on when the cache was last accessed.
+      #
+      - name: Cache R-x.y.z Windows Installer Exe
         if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion != 'repository' }}
+        id: cache-R.windows.installer.exe
+        uses: actions/cache@v3.3.1
+        with:
+          path: R-${{ matrix.rversion }}-win.exe
+          key:  R-${{ matrix.rversion }}-win.exe
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
+
+      - name: Windows Download R-x.y.z Installer Exe
+        if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion != 'repository' && steps.cache-R.windows.installer.exe.outputs.cache-hit != 'true' }}
         run: |
-          # Download R
-          #
           if (-not (Test-Path "${{ env.rinstexe }}")) {
             Start-App "${{ env.curl }}"  "-v", "-o", "${{ env.rinstexe }}", "${{ env.rversionurl }}"
           }
-          # Install R
+          
+     - name: Windows Install R-x.y.z
+        if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion != 'repository' }}
+        run: |
           Start-App "${{ env.rinstexe }}" "/VERYSILENT", "/DIR=${{ env.R_HOME }}",  "/NOICONS", "/TASKS="
 
 
