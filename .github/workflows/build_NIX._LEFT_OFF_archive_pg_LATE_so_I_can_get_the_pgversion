@@ -460,7 +460,7 @@ jobs:
           # non-init
           # used "pgroot"
           
-          Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/after_test.sh'"
+          Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/archive_script.sh'"
       #
       # Compress build for windows.  (Instead let 7z in "Windows Self Compressing Artifacts" compress using 7z)
       # https://github.com/AndreMikulec/testapp/blob/f13d725a9fcfa5daff3d25ff00f9899b417cbc5d/.github/workflows/build_everything.yml#L207
