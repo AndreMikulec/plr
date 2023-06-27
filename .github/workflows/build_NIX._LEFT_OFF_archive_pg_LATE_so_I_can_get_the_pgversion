@@ -1,5 +1,8 @@
 
 env:
+  # Enabling runner diagnostic logging
+  ACTIONS_RUNNER_DEBUG: true
+  # Enabling step debug logging
   ACTIONS_STEP_DEBUG: true
 
 name: plr CI NIX
