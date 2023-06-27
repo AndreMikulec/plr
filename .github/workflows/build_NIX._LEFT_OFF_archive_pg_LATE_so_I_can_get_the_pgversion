@@ -290,13 +290,15 @@ jobs:
           #
           # Is "--without-icu" ignored in pg 15 and lower? Yes, ignored.
           #
-          # git  - after "icu-devel", "git" was removed - Instead, I will use "Git for Windows"
+          # git - after "icu-devel", "git" was removed - Instead, I will use "Git for Windows"
           #
           # NOTE
-          # 7zip 22.01
+          # 7zip 22.01 (JUN 2023)
           # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
           #
           # Also, I will still install MINGW p7zip.  I will be compressing from within the MINGW bash.
+          #
+          # Also, tar and zstd are needed for "actions/cache@v3.3.1"
           #
           install: >-
             make
@@ -314,7 +316,6 @@ jobs:
             p7zip   
             tar
             zstd
-
 
       # needs "tar" and "zstd"
       #
@@ -341,11 +342,10 @@ jobs:
             Start-App "${{ env.curl }}"  "-v", "-o", "${{ env.rinstexe }}", "${{ env.rversionurl }}"
           }
           
-     - name: Windows Install R-x.y.z
+      - name: Windows Install R-x.y.z
         if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion != 'repository' }}
         run: |
           Start-App "${{ env.rinstexe }}" "/VERYSILENT", "/DIR=${{ env.R_HOME }}",  "/NOICONS", "/TASKS="
-
 
       - name: Windows MINGW - Downloading and Placing "pg" from the "repository" binaries
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' && matrix.pg == "repository" }}
@@ -365,7 +365,9 @@ jobs:
           # If one is not getting the "pg" from a repository,
           # then One must get pg from source [and then eventually compile pg into binaries].
           #
+          # avoid an error
           git config --global advice.detachedHead false
+          # recommended - github.com/msys2/setup-msys2/tree/v2
           git config --global core.autocrlf
           #
           # git commit - alphanumeric and all lowercase letters (slower download)
@@ -412,6 +414,28 @@ jobs:
 
       # Workflow syntax for GitHub Actions
       # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_iddefaultsrun
+
+      - name: Windows MINGW - Testing MINGW shell
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' }}
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{ matrix.compiler }}
+          updated: true
+        shell: msys2 {0}
+        run: |
+          uname -a
+          whoami
+          
+      - name: Windows MINGW - Testing Powershell shell
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' }}
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{ matrix.compiler }}
+          updated: true
+        shell: msys2 {0}
+        run: |
+          msys2 -c 'uname -a'
+          whoami
 
       - name: Build Script
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) }}
