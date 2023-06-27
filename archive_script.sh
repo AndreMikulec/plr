@@ -104,8 +104,10 @@ then
 fi
 
 
-
 export var7z=plr-${gitrevshort}-${os}-pg${pgversion}-R${rversion}-${Platform}-${Configuration}-${compiler}.7z
+#
+echo "var7z=${var7z}" >> ${GITHUB_ENV}
+#
 loginfo "${var7z}"
 
 echo ${GITHUB_WORKSPACE}
@@ -127,6 +129,9 @@ if [ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ]
 then
   loginfo "BEGIN pg 7z CREATION"
   export varpg7z=pg-${os}-pg${pg}-${Platform}-${Configuration}-${compiler}.7z
+  #
+  echo "varpg7z=${varpg7z}" >> ${GITHUB_ENV}
+  #
   loginfo "${varpg7z}"
   cd ${pgroot}
   ls -alrt

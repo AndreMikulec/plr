@@ -519,6 +519,9 @@ jobs:
           ${env:pgroot}    = "${{ env.pgroot }}"
           ${env:rversion}  = "${{ env.rversion }}"
           ${env:pgversion} = "${{ env.pgversion }}"
+          ${env:var7z}     = "${{ env.var7z }}"
+          ${env:varpg7z}   = "${{ env.varpg7z }}"
+      
       #
       # Compress build for windows.  (Instead let 7z in "Windows Self Compressing Artifacts" compress using 7z)
       # https://github.com/AndreMikulec/testapp/blob/f13d725a9fcfa5daff3d25ff00f9899b417cbc5d/.github/workflows/build_everything.yml#L207
@@ -526,9 +529,9 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: plr-${{ env.gitrevshort }}-${{ matrix.os }}-pg${{ env.pgversion }}-R${{ matrix.rversion }}-${{ matrix.Platform }}-${{ matrix.Configuration }}-${{ matrix.compiler}}
+          name: ${{ env.var7z }}
           path: |
-            plr-${{ env.gitrevshort }}-${{ matrix.os }}-pg${{ env.pgversion }}-R${{ matrix.rversion }}-${{ matrix.Platform }}-${{ matrix.Configuration }}-${{ matrix.compiler}}.7z
+            ${{ env.var7z }}
 
       # required permissions for the action specified (which is contents: write)
       - name: Release
@@ -539,7 +542,7 @@ jobs:
           replacesArtifacts: true
           commit: ${{ env.GITHUB_SHA }}
           tag: ${{ env.USER_GITHUB_REF_NAME }}
-          artifacts: "plr-${{ env.gitrevshort }}-${{ matrix.os }}-pg${{ env.pgversion }}-R${{ matrix.rversion }}-${{ matrix.Platform }}-${{ matrix.Configuration }}-${{ matrix.compiler}}.7z"
+          artifacts: "${{ env.var7z }}"
           token: ${{ secrets.PLR_ACTIONS_CREATE_RELEASE_REPO_SECRET }}
         env:
           USER_GITHUB_SHA: ${{ github.sha }}
