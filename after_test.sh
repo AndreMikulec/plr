@@ -26,6 +26,7 @@ then
   export PATH=${pgroot}/sbin:${PATH}
 fi
 
+
 pg_ctl -D ${PGDATA} -l logfile start
 
 if [ "${compiler_style}" == "mingw" ]
@@ -34,6 +35,11 @@ then
 else
                          psql -d postgres --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;" --output=${GITHUB_WORKSPACE}/server_version_num.txt
 fi
+
+# done with "pg-online"
+# must stop, else the job will hang.
+pg_ctl -D ${PGDATA} -l logfile stop
+
 
 
 # also used in compiler - msvc
@@ -80,7 +86,7 @@ cp ${PKGLIBDIR}/plr.dll               tmp/lib
 mkdir -p                              tmp/share/extension
 cp ${SHAREDIR}/extension/plr.control  tmp/share/extension
 cp ${SHAREDIR}/extension/plr--*.sql   tmp/share/extension
-
+#
 if [ "${rversion}" == "repository" ]
 then
   # later(now) - dynamically determing the R version
@@ -89,7 +95,15 @@ then
   # so gsub replaces spaces with underscores
   # 
   export rversion=$(Rscript --vanilla -e 'cat(gsub('\'' '\'', replacement = '\''_'\'', x = paste0(R.version$major,'\''.'\'',R.version$minor,tolower(R.version$status))))' 2>/dev/null)
+
+  #
+  # export rversion
+  #
+  echo "rversion=${rversion}" >> ${GITHUB_ENV}
+
 fi
+
+
 
 export var7z=plr-${gitrevshort}-${os}-pg${pgversion}-R${rversion}-${Platform}-${Configuration}-${compiler}.7z
 loginfo "${var7z}"
@@ -104,8 +118,37 @@ loginfo "BEGIN plr 7z LISTING"
 loginfo "END   plr 7z LISTING"
 loginfo "END plr 7z CREATION"
 
-# must stop, else the job will hang.
-pg_ctl -D ${PGDATA} -l logfile stop
+
+
+#
+#                                     # not yet tried/tested in cygwin
+#                                     # cygwin case
+if [ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ]
+then
+  loginfo "BEGIN pg 7z CREATION"
+  export varpg7z=pg-${os}-pg${pg}-${Platform}-${Configuration}-${compiler}.7z
+  loginfo "${varpg7z}"
+  cd ${pgroot}
+  ls -alrt
+  
+  loginfo                                       "${varpg7z}"
+  7z a -t7z -mmt24 -mx7 -r   ${GITHUB_WORKSPACE}/${varpg7z} *
+  # 7z l                       ${GITHUB_WORKSPACE}/${varpg7z}
+  ls -alrt                   ${GITHUB_WORKSPACE}/${varpg7z}
+  export  pg_7z_size=$(find "${GITHUB_WORKSPACE}/${varpg7z}" -printf "%s")
+  loginfo "pg_7z_size $pg_7z_size" 
+  #                       96m
+  if [ ${pg_7z_size} -gt 100663296 ] 
+  then
+    rm -f    ${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+    loginfo "${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z is TOO BIG so removed."
+  fi
+  #
+  cd ${GITHUB_WORKSPACE} 
+  loginfo "END   pg 7z CREATION"
+fi
+
+
 
 # set +v +x +e
 set +e

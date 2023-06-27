@@ -136,30 +136,7 @@ fi
 pg_ctl -D ${PGDATA} -l logfile stop
 
 
-#
-#                                     # not yet tried/tested in cygwin
-#                                     # cygwin case
-if [ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ]
-then
-  loginfo "BEGIN pg 7z CREATION"
-  cd ${pgroot}
-  ls -alrt
-  loginfo                                       "pg-${os}-pg${pg}-${Platform}-${Configuration}-${compiler}.7z"
-  7z a -t7z -mmt24 -mx7 -r   ${GITHUB_WORKSPACE}/pg-${os}-pg${pg}-${Platform}-${Configuration}-${compiler}.7z *
-  # 7z l                       ${GITHUB_WORKSPACE}/pg-${os}-pg${pg}-${Platform}-${Configuration}-${compiler}.7z
-  ls -alrt                   ${GITHUB_WORKSPACE}/pg-${os}-pg${pg}-${Platform}-${Configuration}-${compiler}.7z
-  export  pg_7z_size=$(find "${GITHUB_WORKSPACE}/pg-${os}-pg${pg}-${Platform}-${Configuration}-${compiler}.7z" -printf "%s")
-  loginfo "pg_7z_size $pg_7z_size" 
-  #                       96m
-  if [ ${pg_7z_size} -gt 100663296 ] 
-  then
-    rm -f    ${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
-    loginfo "${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z is TOO BIG so removed."
-  fi
-  #
-  cd ${GITHUB_WORKSPACE} 
-  loginfo "END   pg 7z CREATION"
-fi
+
 
 # do again
 pg_ctl -D ${PGDATA} -l logfile start
