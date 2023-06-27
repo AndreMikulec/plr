@@ -394,18 +394,18 @@ jobs:
         run: |
           echo Building
           # init
-          ${env:R_HOME} = "${{ env.R_HOME }}"
-          ${env:pg} = "${{ matrix.pg }}"
-          ${env:pgsource} = "${{ env.pgsource }}
+          ${env:R_HOME}         = "${{ env.R_HOME }}"
+          ${env:pg}             = "${{ matrix.pg }}"
+          ${env:pgsource}       = "${{ env.pgsource }}
           ${env:compiler_style} = "${{ env.compiler_style }
-          ${env:R_ARCH} = "${{ env.R_ARCH }}"
-           # created "pgroot"
-           
+          ${env:R_ARCH}         = "${{ env.R_ARCH }}"
+           # Can re-define "pgroot"
+
           # non-init
-          ${env:pg} = "${{ matrix.pg }}"
-          ${env:pgsource} = "${{ env.pgsource }}
-          ${env:compiler_style} = "${{ env.compiler_style }
-          # used "pgroot"
+          ${env:pg}              = "${{ matrix.pg }}"
+          ${env:pgsource}        = "${{ env.pgsource }}
+          ${env:compiler_style}  = "${{ env.compiler_style }
+          # Can use re-defined  "pgroot"
           #
           # if I want to save the compiled "pg" binaries
           ${env:os}            = "${{ matrix.os }}"
@@ -414,7 +414,7 @@ jobs:
           ${env:Configuration} = "${{ matrix.Configuration }}"
           ${env:compiler}      = "${{ matrix.compiler }}"
 
-          Start-App "${{ env.bash }}" "-lc", "/c/projects/plr/build_script.sh"
+          Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/build_script.sh'"
 
       - name: Test Script
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) }}
@@ -427,12 +427,12 @@ jobs:
           # non-init
           # used "pgroot"
           ${env:compiler_style} = "${{ env.compiler_style }}"
-          ${env:pg} = "${{ matrix.pg }}
+          ${env:pg}             = "${{ matrix.pg }}
           # created "pgversion"
           ${env:rversion} = "${{ matrix.rversion }} # and dynamically found the correct version
           
           # saved compiled "plr"
-          ${env:gitrevshort} = "${{ env.gitrevshort }}"
+          ${env:gitrevshort}   = "${{ env.gitrevshort }}"
           ${env:os}            = "${{ matrix.os }}"
           # pgversion
           ${env:rversion}      = "${{ matrix.rversion }}"
@@ -440,7 +440,7 @@ jobs:
           ${env:Configuration} = "${{ matrix.Configuration }}"
           ${env:compiler}      = "${{ matrix.compiler }}"
           
-          Start-App "${{ env.bash }}" "-lc", "/c/projects/plr/test_script.sh"
+          Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/test_script.sh'"
           ${env:pgversion}     = "${{ env.pgversion }}"
 
       - name: Windows Machine Make a dist directory
@@ -460,7 +460,7 @@ jobs:
           # non-init
           # used "pgroot"
           
-          Start-App "${{ env.bash }}" "-lc", "/c/projects/plr/after_test.sh"
+          Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/after_test.sh'"
       #
       # Compress build for windows.  (Instead let 7z in "Windows Self Compressing Artifacts" compress using 7z)
       # https://github.com/AndreMikulec/testapp/blob/f13d725a9fcfa5daff3d25ff00f9899b417cbc5d/.github/workflows/build_everything.yml#L207
