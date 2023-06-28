@@ -5,8 +5,8 @@ cd "$(dirname "$0")"
 
 logok "BEGIN after_build.sh"
 
-# set -v -x -e
-set -e
+set -v -x -e
+# set -e
 
 # put this in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
 # but psql is already in the path
@@ -129,7 +129,7 @@ fi
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
 
-# set +v +x +e
-set +e
+set +v +x +e
+# set +e
 
 logok "END   after_build.sh"

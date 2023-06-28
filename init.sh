@@ -36,6 +36,9 @@ logerr() {
 
 logok "BEGIN init.sh"
 
+set -v -x -e
+# set -e
+
 # pwd
 # /c/projects/plr
 
@@ -121,5 +124,8 @@ else
   export PATH=${R_HOME}/bin:${PATH}
 fi
 loginfo "R_HOME is in the PATH $(echo ${PATH})"
+
+set +v +x +e
+# set +e
 
 logok "END   init.sh"

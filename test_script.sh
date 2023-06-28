@@ -5,8 +5,8 @@ cd "$(dirname "$0")"
 
 logok "BEGIN test_script.sh"
 
-# set -v -x -e
-set -e
+set -v -x -e
+# set -e
 
 # put this in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
 # but psql is already in the path
@@ -48,7 +48,7 @@ pg_ctl -D ${PGDATA} -l logfile stop
 # USE_PGXS=1 make clean
 # rm -r ${PGDATA}
 
-# set +v +x +e
-set +e
+set +v +x +e
+# set +e
 
 logok "END   test_script.sh"
