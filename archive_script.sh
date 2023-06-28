@@ -94,8 +94,11 @@ then
   # Tomas Kalibera custom build may contain spaces 
   # so gsub replaces spaces with underscores
   # 
+  # avoid cywin error - WARNING: ignoring environment value of R_HOME
+  export R_HOME_OLD=${R_HOME}
+  unset R_HOME
   export rversion=$(Rscript --vanilla -e 'cat(gsub('\'' '\'', replacement = '\''_'\'', x = paste0(R.version$major,'\''.'\'',R.version$minor,tolower(R.version$status))))' 2>/dev/null)
-
+  export R_HOME=${R_HOME_OLD}
   #
   # export rversion
   #
