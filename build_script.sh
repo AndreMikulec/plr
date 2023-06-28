@@ -5,8 +5,8 @@ cd "$(dirname "$0")"
 
 logok "BEGIN build_script.sh"
 
-# set -v -x -e
-set -e
+set -v -x -e
+# set -e
 
 if [ ! "${pg}" == "repository" ]
 then
@@ -208,8 +208,8 @@ fi
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
 
-# set +v +x +e
-set +e
+set +v +x +e
+# set +e
 
 logok "BEGIN build_script.sh"
 
