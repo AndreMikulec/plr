@@ -5,8 +5,8 @@ cd "$(dirname "$0")"
 
 logok "BEGIN after_build.sh"
 
-# set -v -x -e
-set -e
+set -v -x -e
+# set -e
 
 # put this in all non-init.sh scripts - pgroot is empty, if using a mingw binary
 # but psql is already in the path
@@ -155,9 +155,7 @@ then
   loginfo "END   pg 7z CREATION"
 fi
 
-
-
-# set +v +x +e
-set +e
+set +v +x +e
+# set +e
 
 logok "END   after_build.sh"
