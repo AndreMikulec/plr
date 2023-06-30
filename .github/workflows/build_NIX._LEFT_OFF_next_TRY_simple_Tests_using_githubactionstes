@@ -1,12 +1,26 @@
 
+name: plr CI NIX
+contents: write
+
 env:
   # Enabling runner diagnostic logging
   ACTIONS_RUNNER_DEBUG: true
   # Enabling step debug logging
   ACTIONS_STEP_DEBUG: true
 
-name: plr CI NIX
-contents: write
+
+
+on:
+  # You can then manually run a workflow on the desired branch and set debug_enabled to true to get a debug session.
+  # https://github.com/mxschmitt/action-tmate
+  # https://docs.github.com/en/actions/using-workflows/manually-running-a-workflow
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
 
 # IN DEVELOPMENT RIGHT NOW
 # on: [push, pull_request]
@@ -484,6 +498,11 @@ jobs:
         run: |
           msys2 -c 'uname -a'
           whoami
+
+      # Enable tmate debugging of manually-triggered workflows if the input option was provided
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
       - name: Build Script
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) }}
