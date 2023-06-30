@@ -85,22 +85,27 @@ jobs:
             compiler: mingw64
 
 
-#           - pg: REL_16_BETA1
+#           - pg: REL_16_BETA2
 #             Configuration: Debug
 #             Platform: x64
 #             os: windows-latest
 #             rversion: 4.2.3
 #             compiler: mingw64
 
-#
-#           - pg: REL_16_BETA1
+#           - pg: REL_16_BETA2
+#             Configuration: Debug
+#             Platform: x64
+#             os: windows-latest
+#             rversion: 4.3.1
+#             compiler: meson
+
+#           - pg: REL_16_BETA2
 #             Configuration: Debug
 #             Platform: x64
 #             os: windows-latest
 #             rversion: 4.3.1
 #             compiler: mingw64
 
-#
 #           - pg: master
 #             Configuration: Debug
 #             Platform: x64
@@ -108,15 +113,14 @@ jobs:
 #             rversion: 4.2.3
 #             compiler: mingw64
 
-#
 #           - pg: master
 #             Configuration: Debug
 #             Platform: x64
 #             os: windows-latest
 #             rversion: 4.3.1
-#             compiler: mingw64
+#             compiler: meson
 
-#
+
 #           - pg: master
 #             Configuration: Debug
 #             Platform: x64
@@ -244,7 +248,7 @@ jobs:
           }
           # "msys" - case - NEED to verify THIS - www.coin-or.org/OS/documentation/node16.html
           if("${{ env.matrix_Compiler_bit }}" -eq "none") {
-            ${env:bit} = "32"
+            ${env:bit} = ""
             # override - ignore matrix.Platform
             # build_NIX name would be wrong - if the use wrote the wrong matrix.Platform - can not fix
             ${env:Platform} = "x86"
@@ -289,6 +293,17 @@ jobs:
           # ${env:git} = "C\Program Files\Git\bin\git.exe"
           # Set-EnvVar "git=${env:git}"
 
+      - name: Windows mingw Environment Application Variables and programs
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'cygwin' }}
+        run: |
+          # Windows - Curl (limited features)
+          # ${env:curl} = "C:\Windows\System32\curl.exe"
+          #
+          # Need curl to first download cygwin, BEFORE installing cygwin curl
+          #
+          # Less features
+          ${env:curl} = "C:\Windows\System32\curl.exe"
+          Set-EnvVar "curl=${env:curl}"
 
 
       - name: Windows and Compiler Style mingw Environment Application Variables and programs
@@ -342,6 +357,8 @@ jobs:
         run: |
           if ("${env:bit}" -eq "64") {${env:R_ARCH} =  "/x64"}
           if ("${env:bit}" -eq "32") {${env:R_ARCH} =  "/i386"}
+          # "msys" case
+          if ("${env:bit}" -eq "")   {${env:R_ARCH} =  "/i386"}
           Set-EnvVar "R_ARCH=${env:R_ARCH}"
 
       # cygwin override
@@ -352,7 +369,6 @@ jobs:
           env:R_ARCH} =  ""
           # Also, init.sh "compiler_style == "cygwin", determines that the PATH does not inclue R_ARCH.
           Set-EnvVar "R_ARCH=${env:R_ARCH}"
-
 
       - name: Windows Environment and R Variables and Programs - R not from a Repository
         # NOTE - mingw does NOT have R in the repository.
