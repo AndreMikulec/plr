@@ -253,7 +253,7 @@ jobs:
           if ("${env:MSYSTEM}" -eq "MINGW32") {${env:R_ARCH} = "/i386"}
           Set-EnvVar "R_ARCH=${env:R_ARCH}"
 
-      - name: Windows Environment and R Variables and programs
+      - name: Windows Environment and R Variables and Programs - R not from a Repository 
         # NOTE - MINGW does NOT have R in the repository.
         # NOTE - CYGWIN DOES HAVE R in the repository.
         if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion != 'repository' }}
@@ -270,6 +270,52 @@ jobs:
           # "make installcheck" does not like spaces
           ${env:R_HOME} = "C:\RINSTALL"
           Set-EnvVar "R_HOME=${env:R_HOME}"
+
+          # R-major.minor.patch
+
+          ${env:rversion} -match '(\d+)'
+          ${env:rmajor} = $matches[1]
+          Set-EnvVar "rmajor=${env:rmajor}"
+
+          ${env:rversion} -match '\d+[.](\d+)'
+          ${env:rminor} = $matches[1]
+          Set-EnvVar "rminor=${env:rminor}"
+
+          ${env:rversion} -match '\d+[.]\d+[.](\d+)'
+          ${env:rpatch} = $matches[1]
+          Set-EnvVar "rpatch=${env:rpatch}"
+
+          ${env:rversionlong} = ([int]${env:rmajor} * 10000) + ([int]${env:rminor} * 100) + ([int]${env:rpatch})
+          Set-EnvVar "rversionlong=${env:rversionlong}"
+
+          if([int]${env:rversionlong} -ge 40300 && "${env:compiler}" -eq "msvc") { echo "R is Too New for msvc" }
+
+        - name: Windows R Version and MSVC Version Check
+          if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion != 'repository' && env.rversionlong >= 40300 }}
+          uses: actions/github-script@v3
+          with:
+            script: |
+                core.setFailed('Microsoft Visual C++ (msvc) can not compile R of version 4.3.0 and later!')
+
+      - name: Windows Environment and R Variables and Programs - R from the Repository
+        # NOTE - MINGW does NOT have R in the repository.
+        # NOTE - CYGWIN DOES HAVE R in the repository.
+        if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion == 'repository' }}
+        run: |
+          # R-major.minor.patch
+
+         ${env:rmajor}       = "notknown"
+         Set-EnvVar "rmajor=${env:rmajor}"
+
+         ${env:rminor}       = "notknown"
+         Set-EnvVar "rminor=${env:rminor}"
+
+         ${env:rpatch}       = "notknown"
+         Set-EnvVar "rpatch=${env:rpatch}"
+
+         ${env:rversionlong} = "notknown"
+         Set-EnvVar "rversionlong=${env:rversionlong}"
+
 
       - name: Windows Environment and PostgreSQL Variables and programs
         if: ${{ matrix.os == 'windows-latest' &&  matrix.pg != 'repository' }}
