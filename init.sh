@@ -118,7 +118,7 @@ export      PGLOG=${PGAPPDIR}/log.txt
 # not required in compilation
 #     required in "CREATE EXTENSION plr;" and regression tests
 
-# R in mingw does sub architectures
+# R in mingw does "R sub architectures"
 if [ "${compiler_style}" == "mingw" ]
 then
   export PATH=${R_HOME}/bin${R_ARCH}:${PATH}
@@ -126,7 +126,7 @@ fi
 
 if [ "${compiler_style}" == "cygwin" ]
 then
-  # cygwin does-not-do R sub architectures
+  # cygwin does-not-do "R sub architectures"
   export PATH=${R_HOME}/bin:${PATH}
 fi
 loginfo "R_HOME is in the PATH $(echo ${PATH})"

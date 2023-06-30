@@ -216,34 +216,43 @@ jobs:
          }
          Set-EnvVar "matrix_Compiler_bit=${env:matrix_Compiler_bit}"
 
-      - name: Windows and Compiler Style MINGW Environment Variables and programs
+      # General case
+      - name: Compiler Style Environment Variables and programs
+        run: |
+          if("${{ env.matrix_Compiler_bit }}" -eq "none" -and "${{ env.matrix_Platform_bit }}" -eq "none") {
+            # Also, see the Makefile - Real NIX
+            ${env:bit} = "none"
+            ${env:Platform} = "none"
+          }
+
+      - name: Windows and Compiler Style mingw Environment Variables and programs
       # 64 or 32 will be determined and overridden.
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }}
         run: |
-          # MINGW "bit" Used in the absolute path name of msys__
-            if("${{ env.matrix_Compiler_bit }}" -eq "64") {
-              ${env:bit} = "${{ env.matrix_Compiler_bit }}"
-              # override - ignore matrix.Platform
-              # build_NIX name would be wrong - if the use wrote the wrong matrix.Platform - can not fix
-              ${env:Platform} = "x64"
-            }
-            if("${{ env.matrix_Compiler_bit }}" -eq "32") {
-              ${env:bit} = "${{ env.matrix_Compiler_bit }}"
-              # override - ignore matrix.Platform
-              # build_NIX name would be wrong - if the use wrote the wrong matrix.Platform - can not fix
-              ${env:Platform} = "x86"
-            }
-            # msys case - NEED to verify THIS - www.coin-or.org/OS/documentation/node16.html
-            if("${{ env.matrix_Compiler_bit }}" -eq "none") {
-              ${env:bit} = "32"
-              # override - ignore matrix.Platform
-              # build_NIX name would be wrong - if the use wrote the wrong matrix.Platform - can not fix
-              ${env:Platform} = "x86"
-            }
-            Set-EnvVar "bit=${env:bit}"
-            Set-EnvVar "Platform=${env:Platform}"
+          # mingw "bit" Used in the absolute path name of msys__
+          if("${{ env.matrix_Compiler_bit }}" -eq "64") {
+            ${env:bit} = "${{ env.matrix_Compiler_bit }}"
+            # override - ignore matrix.Platform
+            # build_NIX name would be wrong - if the use wrote the wrong matrix.Platform - can not fix
+            ${env:Platform} = "x64"
+          }
+          if("${{ env.matrix_Compiler_bit }}" -eq "32") {
+            ${env:bit} = "${{ env.matrix_Compiler_bit }}"
+            # override - ignore matrix.Platform
+            # build_NIX name would be wrong - if the use wrote the wrong matrix.Platform - can not fix
+            ${env:Platform} = "x86"
+          }
+          # "msys" - case - NEED to verify THIS - www.coin-or.org/OS/documentation/node16.html
+          if("${{ env.matrix_Compiler_bit }}" -eq "none") {
+            ${env:bit} = "32"
+            # override - ignore matrix.Platform
+            # build_NIX name would be wrong - if the use wrote the wrong matrix.Platform - can not fix
+            ${env:Platform} = "x86"
+          }
+          Set-EnvVar "bit=${env:bit}"
+          Set-EnvVar "Platform=${env:Platform}"
 
-      - name: Windows and Compiler Style CYGWIN Environment Variables and programs
+      - name: Windows and Compiler Style cygwin Environment Variables and programs
       # 64 or 32 will be determined.
       # 32 bit cygwin is considerted to b "no BIT"
       # 64 or 32 will be determined and determined
@@ -260,8 +269,8 @@ jobs:
           Set-EnvVar "bit=${env:bit}"
           Set-EnvVar "Platform=${env:Platform}"
 
-      - name: Windows Environment Application Variables and programs
-        if: ${{ matrix.os == 'windows-latest' }}
+      - name: Windows mingw Environment Application Variables and programs
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }}
         run: |
 
           # Windows - Curl (limited features)
@@ -280,11 +289,13 @@ jobs:
           # ${env:git} = "C\Program Files\Git\bin\git.exe"
           # Set-EnvVar "git=${env:git}"
 
-      - name: Windows and Compiler Style MINGW Environment Application Variables and programs
+
+
+      - name: Windows and Compiler Style mingw Environment Application Variables and programs
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }}
         run: |
 
-          # NOTE, "bash" comes with MINGW out of the box from msys2/setup-msys2@v2.
+          # NOTE, "bash" comes with minw out of the box from msys2/setup-msys2@v2.
           # (I want to use THAT ONE)
           #
           # I do not want to use the "Git for Windows" Bash
@@ -317,17 +328,35 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # R_ARCH - Used in the compilation of plr - CYGWIN does not do R sub-architectures
-      - name: R R_ARCH Sub-Architectures
-        if: ${{ env.compiler_style != 'cygwin' }}
+      # General case
+      - name: General R R_ARCH Sub-Architectures
         run: |
-          if ("${env:MSYSTEM}" -eq "MINGW64") {${env:R_ARCH} =  "/x64"}
-          if ("${env:MSYSTEM}" -eq "MINGW32") {${env:R_ARCH} = "/i386"}
+          if("${{ env.matrix_Compiler_bit }}" -eq "none" -and "${{ env.matrix_Platform_bit }}" -eq "none") {
+            # Also, see the Makefile - Real NIX
+            ${env:R_ARCH} = ""
+          }
+
+      # General case
+      - name: Windows mingw R R_ARCH Sub-Architectures
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }} }}
+        run: |
+          if ("${env:bit}" -eq "64") {${env:R_ARCH} =  "/x64"}
+          if ("${env:bit}" -eq "32") {${env:R_ARCH} =  "/i386"}
           Set-EnvVar "R_ARCH=${env:R_ARCH}"
 
+      # cygwin override
+      # R_ARCH - Used in the compilation of plr - non-architecture cygwin does not do "R sub-architectures"
+      - name: R R_ARCH Sub-Architectures
+        if: ${{  matrix.os == 'windows-latest' && env.compiler_style == 'cygwin' }}
+        run: |
+          env:R_ARCH} =  ""
+          # Also, init.sh "compiler_style == "cygwin", determines that the PATH does not inclue R_ARCH.
+          Set-EnvVar "R_ARCH=${env:R_ARCH}"
+
+
       - name: Windows Environment and R Variables and Programs - R not from a Repository
-        # NOTE - MINGW does NOT have R in the repository.
-        # NOTE - CYGWIN DOES HAVE R in the repository.
+        # NOTE - mingw does NOT have R in the repository.
+        # NOTE - cygwin DOES HAVE R in the repository.
         if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion != 'repository' }}
         run: |
 
@@ -371,8 +400,8 @@ jobs:
             core.setFailed('Microsoft Visual C++ (msvc) can not compile plr of R version 4.3.0 and later!')
 
       - name: Windows Environment and R Variables and Programs - R from the Repository
-        # NOTE - MINGW does NOT have R in the repository.
-        # NOTE - CYGWIN DOES HAVE R in the repository.
+        # NOTE - mingw does NOT have R in the repository.
+        # NOTE - cygwin DOES HAVE R in the repository.
         if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion == 'repository' }}
         run: |
 
@@ -398,7 +427,7 @@ jobs:
           ${env:pgroot} = "C:\PGINSTALL"
           Set-EnvVar "pgroot=${env:pgroot}"
 
-      - name: Install Windows MINGW Software
+      - name: Install Windows mingw Software
         if: ${{ matrix.os == 'windows-latest' && env.compile_styler = 'mingw' }}
         uses: msys2/setup-msys2@v2
         with:
@@ -416,7 +445,7 @@ jobs:
           # 7zip 22.01 (JUN 2023)
           # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
           #
-          # Also, I will still install MINGW p7zip.  I will be compressing from within the MINGW bash.
+          # Also, I will still install mingw p7zip.  I will be compressing from within the mingw bash.
           #
           # Also, tar and zstd are needed for "actions/cache@v3.3.1"
           #
@@ -467,7 +496,7 @@ jobs:
         run: |
           Start-App "${{ env.rinstexe }}" "/VERYSILENT", "/DIR=${{ env.R_HOME }}",  "/NOICONS", "/TASKS="
 
-      - name: Windows MINGW - Downloading and Placing "pg" from the "repository" binaries
+      - name: Windows mingw - Downloading and Placing "pg" from the "repository" binaries
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' && matrix.pg == "repository" }}
         uses: msys2/setup-msys2@v2
         with:
@@ -535,7 +564,7 @@ jobs:
       # Workflow syntax for GitHub Actions
       # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_iddefaultsrun
 
-      - name: Windows MINGW - Testing MINGW shell
+      - name: Windows mingw - Testing mingw shell
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' }}
         uses: msys2/setup-msys2@v2
         with:
@@ -546,7 +575,7 @@ jobs:
           uname -a
           whoami
 
-      - name: Windows MINGW - Testing Powershell shell
+      - name: Windows mingw - Testing Powershell shell
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' }}
         uses: msys2/setup-msys2@v2
         with:
