@@ -290,9 +290,10 @@ jobs:
 
           if([int]${env:rversionlong} -ge 40300 && "${env:compiler}" -eq "msvc") { echo "R is Too New for msvc" }
 
+        # https://stackoverflow.com/questions/57903836/how-to-fail-a-job-in-github-actions
         - name: Windows R Version and MSVC Version Check
           if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion != 'repository' && env.rversionlong >= 40300 }}
-          uses: actions/github-script@v3
+          uses: actions/github-script@v6
           with:
             script: |
                 core.setFailed('Microsoft Visual C++ (msvc) can not compile R of version 4.3.0 and later!')
