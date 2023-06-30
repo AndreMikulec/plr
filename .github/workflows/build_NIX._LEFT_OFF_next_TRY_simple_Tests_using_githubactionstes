@@ -172,7 +172,16 @@ jobs:
           # NOTE - DOES NOT use the "Platform" matrix variable to determine 64 or 32
           # to be compatible with "msys2/setup-msys2@v2"
           #
-          if ( "${{ matrix.compiler }}" -eq "mingw64" ||  "${{ matrix.compiler }}" -eq "mingw32" }} ){
+          if ( 
+            "${{ matrix.compiler }}" -eq "msys"       -or 
+            "${{ matrix.compiler }}" -eq "mingw64"    -or
+            "${{ matrix.compiler }}" -eq "mingw32"    -or
+            "${{ matrix.compiler }}" -eq "ucrt64"     -or
+            "${{ matrix.compiler }}" -eq "clang32"    -or
+            "${{ matrix.compiler }}" -eq "clang64"    -or
+            "${{ matrix.compiler }}" -eq "clangarm64" 
+          ) 
+          {
             ${env:compiler_style} = "mingw"
             Set-EnvVar "compiler_style=${env:compiler_style}"
           }
@@ -220,6 +229,13 @@ jobs:
             }
             if("${{ env.matrix_Compiler_bit }}" -eq "32") {
               ${env:bit} = "${{ env.matrix_Compiler_bit }}"
+              # override - ignore matrix.Platform
+              # build_NIX name would be wrong - if the use wrote the wrong matrix.Platform - can not fix
+              ${env:Platform} = "x86"
+            }
+            # msys case - NEED to verify THIS - www.coin-or.org/OS/documentation/node16.html
+            if("${{ env.matrix_Compiler_bit }}" -eq "none") {
+              ${env:bit} = "32"
               # override - ignore matrix.Platform
               # build_NIX name would be wrong - if the use wrote the wrong matrix.Platform - can not fix
               ${env:Platform} = "x86"
