@@ -466,6 +466,7 @@ jobs:
           # Also, tar and zstd are needed for "actions/cache@v3.3.1"
           #
           install: >-
+            meson
             make
             gcc
             tar
@@ -632,6 +633,20 @@ jobs:
 
           ${env:pgroot}    = "${{ env.pgroot }}"
 
+      - name: Meson Build and Script - Build
+        if: ${{ matrix.compiler == 'meson' }}
+        uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: build
+          options: --verbose
+
+      - name: Meson Build and Install Script - Install
+        if: ${{ matrix.compiler == 'meson' }}
+        uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: install
+          options: --verbose
+
       - name: Test Script
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) }}
         working-directory: projects\plr
@@ -656,6 +671,21 @@ jobs:
           Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/test_script.sh'"
 
           ${env:pgroot}    = "${{ env.pgroot }}"
+
+      - name: Meson Test and Code Coverage Script - Test
+        if: ${{ matrix.compiler == 'meson' }}
+        uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: test
+          setup-options: -Db_coverage=true
+          options: --verbose
+
+      - name: Meson Test and Code Coverage Script - Code Coverage 
+        if: ${{ matrix.compiler == 'meson' }}
+        uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: coverage
+          options: --verbose
 
       - name: Windows Machine Make a dist directory
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) }}
