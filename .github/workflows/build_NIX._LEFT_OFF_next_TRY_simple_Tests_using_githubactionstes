@@ -184,23 +184,65 @@ jobs:
             Set-EnvVar "compiler_style=${env:compiler_style}"
           }
 
+      # currently the mingw cases
+      - name: Set the Matrix Platform Bit Env Variable
+        run: |
+         $word = "${{ matrix.Platform }}"
+         $shortword = $word.Substring($word.Length - 2)
+         if("$shortword" -eq "64" -or "$shortword" -eq "32") {
+            ${env:matrix_Platform_bit} = "$shortword"
+         } else {
+            ${env:matrix_Platform_bit} = "none"
+         }
+         Set-EnvVar "matrix_Platform_bit=${env:matrix_Platform_bit}"
+
+      - name: Set the Matrix Compiler Bit Env Variable
+        run: |
+         $word = "${{ matrix.Compiler }}"
+         $shortword = $word.Substring($word.Length - 2)
+         if("$shortword" -eq "64" -or "$shortword" -eq "32") {
+            ${env:matrix_Compiler_bit} = "$shortword"
+         } else {
+            ${env:matrix_Compiler_bit} = "none"
+         }
+         Set-EnvVar "matrix_Compiler_bit=${env:matrix_Compiler_bit}"
+
       - name: Windows and Compiler Style MINGW Environment Variables and programs
-      # 64 or 32 will be determined.
+      # 64 or 32 will be determined and overridden.
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }}
         run: |
-          # MINGW Used in the absolute path name of msys__
-          if("${{ matrix.compiler}}" -eq "mingw64") { ${env:bit} = "64" }
-          if("${{ matrix.compiler}}" -eq "mingw32") { ${env:bit} = "32" }
-          Set-EnvVar "bit=${env:bit}"
+          # MINGW "bit" Used in the absolute path name of msys__
+            if("${{ env.matrix_Compiler_bit }}" -eq "64") {
+              ${env:bit} = "${{ env.matrix_Compiler_bit }}"
+              # override - ignore matrix.Platform
+              # build_NIX name would be wrong - if the use wrote the wrong matrix.Platform - can not fix
+              ${env:Platform} = "x64"
+            }
+            if("${{ env.matrix_Compiler_bit }}" -eq "32") {
+              ${env:bit} = "${{ env.matrix_Compiler_bit }}"
+              # override - ignore matrix.Platform
+              # build_NIX name would be wrong - if the use wrote the wrong matrix.Platform - can not fix
+              ${env:Platform} = "x86"
+            }
+            Set-EnvVar "bit=${env:bit}"
+            Set-EnvVar "Platform=${env:Platform}"
 
       - name: Windows and Compiler Style CYGWIN Environment Variables and programs
       # 64 or 32 will be determined.
       # 32 bit cygwin is considerted to b "no BIT"
+      # 64 or 32 will be determined and determined
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'cygwin' }}
         run: |
-          if("${{ matrix.Platform }}" -eq "x64") { ${env:bit} = "64" }
-          if("${{ matrix.Platform }}" -eq "x86") { ${env:bit} = ""   }
+          if("${{ env.matrix_Platform_bit }}" -eq "64") {
+            ${env:bit} = "64"
+            ${env:Platform} = "x64"
+          }
+          if("${{ env.matrix_Platform_bit }}" -eq "86") {
+            ${env:bit} = ""
+            ${env:Platform} = "x86"
+          }
           Set-EnvVar "bit=${env:bit}"
+          Set-EnvVar "Platform=${env:Platform}"
 
       - name: Windows Environment Application Variables and programs
         if: ${{ matrix.os == 'windows-latest' }}
@@ -514,7 +556,7 @@ jobs:
           #
           ${env:pg}            = "${{ matrix.pg }}"
           ${env:Configuration} = "${{ matrix.Configuration }}
-          ${env:Platform}      = "${{ matrix.Platform }}"
+          ${env:Platform}      = "${{ env.Platform }}"
           ${env:os}            = "${{ matrix.os }}"
           ${env:rversion}      = "${{ matrix.rversion }}"
           ${env:compiler}      = "${{ matrix.compiler }}"
@@ -539,7 +581,7 @@ jobs:
           #
           ${env:pg}            = "${{ matrix.pg }}"
           ${env:Configuration} = "${{ matrix.Configuration }}
-          ${env:Platform}      = "${{ matrix.Platform }}"
+          ${env:Platform}      = "${{ env.Platform }}"
           ${env:os}            = "${{ matrix.os }}"
           ${env:rversion}      = "${{ matrix.rversion }}"
           ${env:compiler}      = "${{ matrix.compiler }}"
@@ -558,7 +600,7 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) }}
         working-directory: projects\plr
         run: |
-          mkdir ${{ github.event.repository.name }}_${{ matrix.os }}_${{ matrix.pg }}_${{ matrix.Platform}}_${{ matrix.Configuration }}_${{ matrix.rversion }}_${{ matrix.Compiler}}_dist
+          mkdir ${{ github.event.repository.name }}_${{ matrix.os }}_${{ matrix.pg }}_${{ env.Platform}}_${{ matrix.Configuration }}_${{ matrix.rversion }}_${{ matrix.Compiler}}_dist
 
       - name: Windows Self Compressing Artifacts
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) }}
@@ -570,7 +612,7 @@ jobs:
           #
           ${env:pg}            = "${{ matrix.pg }}"
           ${env:Configuration} = "${{ matrix.Configuration }}
-          ${env:Platform}      = "${{ matrix.Platform }}"
+          ${env:Platform}      = "${{ env.Platform }}"
           ${env:os}            = "${{ matrix.os }}"
           ${env:rversion}      = "${{ matrix.rversion }}"
           ${env:compiler}      = "${{ matrix.compiler }}"
