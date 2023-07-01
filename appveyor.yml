@@ -285,15 +285,6 @@ environment:
 #     compiler: cygwin
 
   # cygwin on x86 needs to work with the last cygwin x86 from December 2022
-  # cygwin on x86 needs to work with the last cygwin x86 from June 2022      in MobaXterm "Version 22.2 (2022-11-15)" onward
-
-  # from the "last" compiled "Cygwin PostgreSQL" - in December 2022 - https://cygwin.com/packages/summary/postgresql-src.html
-  - PlatformToolset: v143
-    Configuration: Debug
-    Platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # rversion - from the already compiled "Cygwin R"  - in December 2022 - cygwin.com/packages/summary/R.html
-    compiler: cygwin
 
   # plr to work with
   # MobaXterm Version 22.2 (2022-11-15) through the recent Version 23.2 (2023-06-25) and later?
@@ -305,6 +296,18 @@ environment:
     # rversion - from the already compiled "Cygwin R"  - in June 2022 - cygwin.com/packages/summary/R.html
     compiler: cygwin
     archive: mobaxterm232
+
+  # cygwin on x86 needs to work with the last cygwin x86 from June 2022      in MobaXterm "Version 22.2 (2022-11-15)" onward
+
+  # from the "last" compiled "Cygwin PostgreSQL" - in December 2022 - https://cygwin.com/packages/summary/postgresql-src.html
+  - PlatformToolset: v143
+    Configuration: Debug
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R"  - in December 2022 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
+
+
 
 #   - pg: REL_14_0 # static commit - from git
 #     PlatformToolset: v143
