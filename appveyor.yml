@@ -2016,6 +2016,7 @@ for:
       ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
 
   - set CYG_SETUP_DOWNLOAD_URL=http://cygwin.com/setup-%CYG_ARCH%.exe
+  - echo CYG_SETUP_DOWNLOAD_URL: %CYG_SETUP_DOWNLOAD_URL%
 
   #
   # possible user provided in the matrix
@@ -2183,8 +2184,6 @@ for:
   # https://github.com/petere/postgresql/blob/c3606de647583d7cbb39aadd2a2a989af28b97ea/.appveyor.yml
   # https://ci.appveyor.com/project/petere/postgresql/builds/37986514
 
-  #  cywin AND PostreSQL development
-  - 'appveyor DownloadFile %CYG_SETUP_DOWNLOAD_URL% -FileName setup.exe'
 
   - ps: |
       # Somewhat safe to pass to Windows CMD
@@ -2211,6 +2210,13 @@ for:
         ${env:CYG_SETUP_DOWNLOAD_URL} = "http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/setup/snapshots/setup-x86-2.919.exe"
       }
 
+  #  cywin AND PostreSQL development
+  - 'appveyor DownloadFile %CYG_SETUP_DOWNLOAD_URL% -FileName setup.exe'
+
+  - echo CYG_MIRROR: %CYG_MIRROR%
+  - echo cunsupported: %cunsupported%
+  - echo CYG_ROOT: %CYG_ROOT%
+  - echo CYG_CACHE: %CYG_CACHE%
 
   - 'setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel'
   #
