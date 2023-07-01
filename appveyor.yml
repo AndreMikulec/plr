@@ -2240,7 +2240,7 @@ for:
 
   # cygwin install (verbose to help see HTTP 404 errors)
   - echo setup.exe %unsupported_flag% -qnNdO -v -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%"
-  - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%"'
+  - 'setup.exe %unsupported_flag% -qnNdO -v -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" || type "%CYG_ROOT%\var\log\setup.log.full for details"'
 
   # Windows server
   - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P cygrunsrv'
