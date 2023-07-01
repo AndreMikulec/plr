@@ -1,78 +1,78 @@
 
 # Skipping commits affecting specific files (GitHub and Bitbucket only).
 skip_commits:
-  files:
-    # skipping AppVeyor build if, in the push’s head commit, all of the files
-    # have the extension .md
-    - '**/*.md'
+files:
+# skipping AppVeyor build if, in the push’s head commit, all of the files
+# have the extension .md
+- '**/*.md'
 
 image: Visual Studio 2015
 clone_depth: 1
 
 environment:
-  # Always Try to save
-  APPVEYOR_SAVE_CACHE_ON_ERROR: true
-  #
-  # https://cygwin.com/mirrors.html and MobaXterm ~/.aptcyg/setup.ini
-  #
-  # CYG_MIRROR: http://cygwin.mirror.rafal.ca/
-  CYG_MIRROR: https://mirrors.kernel.org/sourceware/cygwin/
-  # Here, slashes can also be pointing right.
-  CYG_CACHE: C:\cygwin\var\cache\setup
+# Always Try to save
+APPVEYOR_SAVE_CACHE_ON_ERROR: true
+#
+# https://cygwin.com/mirrors.html and MobaXterm ~/.aptcyg/setup.ini
+#
+# CYG_MIRROR: http://cygwin.mirror.rafal.ca/
+CYG_MIRROR: https://mirrors.kernel.org/sourceware/cygwin/
+# Here, slashes can also be pointing right.
+CYG_CACHE: C:\cygwin\var\cache\setup
 
-  matrix:
+matrix:
 
-  # Pre-R 4.2.+ sanity check
-  # References(near the bottom) -> Downloads
-  # https://developer.r-project.org/Blog/public/2021/03/12/windows/utf-8-toolchain-and-cran-package-checks/index.html
-  #
-  # Refresh this Page Often
-  # https://www.r-project.org/nosvn/winutf8/ucrt3/
-  #
-  # VERY VERY VOLITILE
-  # R-devel-win-80545-4517-4589.exe	2021-06-23 10:05	74M
-  # https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-80553-4517-4605.exe
-  #
-  # VERY VERY VOLITILE
-  # R-devel-win-dbg-80545-4517-4589.exe	2021-06-23 10:47	81M
-  # https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
-  #
-  # gcc10_ucrt3_4517.txz	2021-03-25 22:28	889M
-  # https://www.r-project.org/nosvn/winutf8/ucrt3/gcc10_ucrt3_4517.txz
-  #
-  # SEEN JUN 24 2021
-  #
+# Pre-R 4.2.+ sanity check
+# References(near the bottom) -> Downloads
+# https://developer.r-project.org/Blog/public/2021/03/12/windows/utf-8-toolchain-and-cran-package-checks/index.html
+#
+# Refresh this Page Often
+# https://www.r-project.org/nosvn/winutf8/ucrt3/
+#
+# VERY VERY VOLITILE
+# R-devel-win-80545-4517-4589.exe	2021-06-23 10:05	74M
+# https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-80553-4517-4605.exe
+#
+# VERY VERY VOLITILE
+# R-devel-win-dbg-80545-4517-4589.exe	2021-06-23 10:47	81M
+# https://www.r-project.org/nosvn/winutf8/ucrt3/R-devel-win-dbg-80553-4517-4605.exe
+#
+# gcc10_ucrt3_4517.txz	2021-03-25 22:28	889M
+# https://www.r-project.org/nosvn/winutf8/ucrt3/gcc10_ucrt3_4517.txz
+#
+# SEEN JUN 24 2021
+#
 
-  #
-  # get the internal R version
-  # compiler msys2 uses the HARD coded R install path location - SET R_HOME=%ProgramFiles%\R\R-%rversion%
-  #
-  # Installation and R call
-  # R call: # gsub(' ', replacement = '_', x = paste0(R.version$major,'.',R.version$minor,tolower(R.version$status)))
-  #
-  # Thomas K
-  #
-  # R for Windows 4.2.0 Pre-release-UCRT3
-  # gsub result: 4.2.0under_development_(unstable)
-  # C:\Program Files\R\R-devel # rversion is "devel"
-  #
-  # Jeremy O (Other typical)
-  #
-  # R for Windows 4.1.0
-  # gsub result: 4.1.0
-  # C:\Program Files\R\R-4.1.0 # rversion is "4.1.0"
-  #
-  # R for Windows 4.1.0 Patched
-  # gsub result: 4.1.0patched
-  # C:\Program Files\R\R-4.1.0patched # rversion is "4.1.0patched"
+#
+# get the internal R version
+# compiler msys2 uses the HARD coded R install path location - SET R_HOME=%ProgramFiles%\R\R-%rversion%
+#
+# Installation and R call
+# R call: # gsub(' ', replacement = '_', x = paste0(R.version$major,'.',R.version$minor,tolower(R.version$status)))
+#
+# Thomas K
+#
+# R for Windows 4.2.0 Pre-release-UCRT3
+# gsub result: 4.2.0under_development_(unstable)
+# C:\Program Files\R\R-devel # rversion is "devel"
+#
+# Jeremy O (Other typical)
+#
+# R for Windows 4.1.0
+# gsub result: 4.1.0
+# C:\Program Files\R\R-4.1.0 # rversion is "4.1.0"
+#
+# R for Windows 4.1.0 Patched
+# gsub result: 4.1.0patched
+# C:\Program Files\R\R-4.1.0patched # rversion is "4.1.0patched"
 
 
 
 # ####  LATE 2023 build jobs
 
-  # msvc
+# msvc
 
-  # LATE 2023 all msvc works (for R less than 4.3.0)
+# LATE 2023 all msvc works (for R less than 4.3.0)
 
 #   - pg: master # branch - non-static commit - from git
 #     PlatformToolset: v141
@@ -284,27 +284,27 @@ environment:
 #     # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
 #     compiler: cygwin
 
-  # cygwin on x86 needs to work with the last cygwin x86 from December 2022
-  # cygwin on x86 needs to work with the last cygwin x86 from June 2022      in MobaXterm "Version 22.2 (2022-11-15)" onward
+# cygwin on x86 needs to work with the last cygwin x86 from December 2022
+# cygwin on x86 needs to work with the last cygwin x86 from June 2022      in MobaXterm "Version 22.2 (2022-11-15)" onward
 
-  # from the "last" compiled "Cygwin PostgreSQL" - in December 2022 - https://cygwin.com/packages/summary/postgresql-src.html
-  - PlatformToolset: v143
-    Configuration: Debug
-    Platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # rversion - from the already compiled "Cygwin R"  - in December 2022 - cygwin.com/packages/summary/R.html
-    compiler: cygwin
+# from the "last" compiled "Cygwin PostgreSQL" - in December 2022 - https://cygwin.com/packages/summary/postgresql-src.html
+- PlatformToolset: v143
+Configuration: Debug
+Platform: x86
+APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+# rversion - from the already compiled "Cygwin R"  - in December 2022 - cygwin.com/packages/summary/R.html
+compiler: cygwin
 
-  # plr to work with
-  # MobaXterm Version 22.2 (2022-11-15) through the recent Version 23.2 (2023-06-25) and later?
-  # from the "last" compiled "Cygwin PostgreSQL" - in June 2022 - https://cygwin.com/packages/summary/postgresql-src.html
-  - PlatformToolset: v143
-    Configuration: Debug
-    Platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # rversion - from the already compiled "Cygwin R"  - in June 2022 - cygwin.com/packages/summary/R.html
-    compiler: cygwin
-    archive: mobaxterm232
+# plr to work with
+# MobaXterm Version 22.2 (2022-11-15) through the recent Version 23.2 (2023-06-25) and later?
+# from the "last" compiled "Cygwin PostgreSQL" - in June 2022 - https://cygwin.com/packages/summary/postgresql-src.html
+- PlatformToolset: v143
+Configuration: Debug
+Platform: x86
+APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+# rversion - from the already compiled "Cygwin R"  - in June 2022 - cygwin.com/packages/summary/R.html
+compiler: cygwin
+archive: mobaxterm232
 
 #   - pg: REL_14_0 # static commit - from git
 #     PlatformToolset: v143
@@ -1618,8 +1618,8 @@ environment:
 
 # NOV 24 2021 - resume allow failures on pg: master
 matrix:
-  allow_failures:
-    - pg: master
+allow_failures:
+- pg: master
 
 
 # # (currently), I have zero(0) failures
@@ -1631,438 +1631,438 @@ matrix:
 
 ### Documentation Begins ###
 
-  # matrix-Notice
-  # EnterpriseDB does not have PostgreSQL x86 platform binaries
-  # for PostgreSQL versions 11 and greater.
+# matrix-Notice
+# EnterpriseDB does not have PostgreSQL x86 platform binaries
+# for PostgreSQL versions 11 and greater.
 
-  # matrix-Notice
-  # Appveyor (as of this date APR 2021), does not have PostgreSQL x64 version 13 available
-  # Appveyor does not have any PostgreSQL x86 versions available.
+# matrix-Notice
+# Appveyor (as of this date APR 2021), does not have PostgreSQL x64 version 13 available
+# Appveyor does not have any PostgreSQL x86 versions available.
 
-  # matrix-Notice
-  # I can not compile plr using PostgreSQL 9.6, 9.5 from source: "git, tag, or commit":
-  # I have not found the right combination of APPVEYOR_BUILD_WORKER_IMAGE/PlatformToolset.
-  #
-  # matrix-Notice
-  # Moreover, still can be compiled plr using pg as an already-compiled-binary version
-  # of PostgreSQL 9.6 or 9.5.
+# matrix-Notice
+# I can not compile plr using PostgreSQL 9.6, 9.5 from source: "git, tag, or commit":
+# I have not found the right combination of APPVEYOR_BUILD_WORKER_IMAGE/PlatformToolset.
+#
+# matrix-Notice
+# Moreover, still can be compiled plr using pg as an already-compiled-binary version
+# of PostgreSQL 9.6 or 9.5.
 
-  # matrix-Notice
+# matrix-Notice
 
-  # Platform x86 or x64 mean 32bit and 64bit.
+# Platform x86 or x64 mean 32bit and 64bit.
 
-  # If compiling on msvc, the end product is a 32bit application xor a 64bit application.
-  # If compiling on msys2, then these are MINGW32 and MINGW64.
-  # If compiling on cygwin, then these are C:\cygwin and C:\cygwin64.
+# If compiling on msvc, the end product is a 32bit application xor a 64bit application.
+# If compiling on msys2, then these are MINGW32 and MINGW64.
+# If compiling on cygwin, then these are C:\cygwin and C:\cygwin64.
 
-  # Of Configuration options are "Release" and "Debug".
+# Of Configuration options are "Release" and "Debug".
 
-  # If compiling on msvc, these are the configurations "Release" and "Debug".
+# If compiling on msvc, these are the configurations "Release" and "Debug".
 
-  # If compiling on msys2 or cygwin, if "Debug" is chosen, then
-  # plr will be compiled with super debug features to be able to debug macros.
-  # Also, if PostgreSQL happens
-  # to also be compiled, then it will compile
-  # with the super debug features for the same reasons.
-  #
-  # see
-  #  ./configure --enable-cassert --enable-debug CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer"
-  # in
-  # https://wiki.postgresql.org/wiki/Developer_FAQ#What_debugging_features_are_available.3F
+# If compiling on msys2 or cygwin, if "Debug" is chosen, then
+# plr will be compiled with super debug features to be able to debug macros.
+# Also, if PostgreSQL happens
+# to also be compiled, then it will compile
+# with the super debug features for the same reasons.
+#
+# see
+#  ./configure --enable-cassert --enable-debug CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer"
+# in
+# https://wiki.postgresql.org/wiki/Developer_FAQ#What_debugging_features_are_available.3F
 
-  # Not all APPVEYOR_BUILD_WORKER_IMAGE\PlatformToolset pairs work for every matrix.
+# Not all APPVEYOR_BUILD_WORKER_IMAGE\PlatformToolset pairs work for every matrix.
 
-  # Msvc doing (PostgreSQL and) plr builds require an
-  # exact APPVEYOR_BUILD_WORKER_IMAGE\PlatformToolset per PostgreSQL version.
+# Msvc doing (PostgreSQL and) plr builds require an
+# exact APPVEYOR_BUILD_WORKER_IMAGE\PlatformToolset per PostgreSQL version.
 
-  # msys2 and cygwin builds, should be done on the
-  # latest available APPVEYOR_BUILD_WORKER_IMAGE\PlatformToolset.
+# msys2 and cygwin builds, should be done on the
+# latest available APPVEYOR_BUILD_WORKER_IMAGE\PlatformToolset.
 
-  # Notice
-  # 1. The very first creation of the tag: 0.0.0.0.0.GITHUBCACHE,
-  #    will make a 2nd Appeveyor build run
-  # 1a. Alternatively, the tag 0.0.0.0.0.GITHUBCACHE can be pushed,
-  #    and then immediately a user should cancel the Appveyor build.
-  # 2. msvc.diff.R solves all msvc.diff problems of all compilations
-  # 3. Solutions.pm.R correctly sets the "internal" platform,
-  #    "Win32" xor "x64".
-  #    The file Solutions.pm is used by perl to generate project files.
+# Notice
+# 1. The very first creation of the tag: 0.0.0.0.0.GITHUBCACHE,
+#    will make a 2nd Appeveyor build run
+# 1a. Alternatively, the tag 0.0.0.0.0.GITHUBCACHE can be pushed,
+#    and then immediately a user should cancel the Appveyor build.
+# 2. msvc.diff.R solves all msvc.diff problems of all compilations
+# 3. Solutions.pm.R correctly sets the "internal" platform,
+#    "Win32" xor "x64".
+#    The file Solutions.pm is used by perl to generate project files.
 
-  # begin - Microsoft Visual C++ msvc and msys2
+# begin - Microsoft Visual C++ msvc and msys2
 
-  # If a matrix entry has defined "rlinkbinoldurl" then get a custom built specific
-  # .7z file containing and installer exe file from the provided URL "rlinkbinoldurl"
-  # Note, the "rversion" must be correct.
-  # From the downloaded .7z file, 7z will try to extract this exact file name "R-${env:rversion}-win.exe"
-  #
-  # Typically, my custom builds (.7z files) are located at "https://github.com/AndreMikulec/plr/releases"
-  #
-  # HARD Note, if "rlinkbinoldurl" is not none and "R-${env:rversion}-win.exe" is successfully downloaded,
-  # then this OVERWRITES the cache.  Also, this processes lazily LEAVES this file in the cache.
-  # To clear the ENTIRE cache, then An Appveyor REST method would be needed. See the Appveyor docs.
+# If a matrix entry has defined "rlinkbinoldurl" then get a custom built specific
+# .7z file containing and installer exe file from the provided URL "rlinkbinoldurl"
+# Note, the "rversion" must be correct.
+# From the downloaded .7z file, 7z will try to extract this exact file name "R-${env:rversion}-win.exe"
+#
+# Typically, my custom builds (.7z files) are located at "https://github.com/AndreMikulec/plr/releases"
+#
+# HARD Note, if "rlinkbinoldurl" is not none and "R-${env:rversion}-win.exe" is successfully downloaded,
+# then this OVERWRITES the cache.  Also, this processes lazily LEAVES this file in the cache.
+# To clear the ENTIRE cache, then An Appveyor REST method would be needed. See the Appveyor docs.
 
-  # begin - Microsoft Visual C++ msvc
+# begin - Microsoft Visual C++ msvc
 
-  # pg - should be a specific already-compiled-binary version
-  # from https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
-  # and its platforms: "Windows x86-64"(x64) and "Windows x86-32"(x86).
-  #
-  # Alternately, pg can be a git branch, tag, or commit.
-  #
-  # Branches, tags, and commits, are different from an already-compiled binaries.
-  # They "does not have a dot "."" in the pg name.
+# pg - should be a specific already-compiled-binary version
+# from https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+# and its platforms: "Windows x86-64"(x64) and "Windows x86-32"(x86).
+#
+# Alternately, pg can be a git branch, tag, or commit.
+#
+# Branches, tags, and commits, are different from an already-compiled binaries.
+# They "does not have a dot "."" in the pg name.
 
-  # Of pg, if a commit is wanted,
-  # then also the environment variable - "pghint: commit" also must be set.
+# Of pg, if a commit is wanted,
+# then also the environment variable - "pghint: commit" also must be set.
 
-  # Because compiling uses much time, and to try to avoid re-compiling,
-  # this environment variable "githubcache: true" can be useful for static source code,
-  # e.g., tags and commits
-  #
-  # Of a (branch,) tag, and commit
-  #
-  # Of a (branch,) tag, and commit, optionally,
-  # the environment variable -  "githubcache: true" - may be set, to try to store the
-  # compiled PostgreSQL (pg) in the github releases 0.0.0.0.0.GITHUBCACHE,
-  # then retrieve it when necessary, then expand it and use it for plr compiling
-  # and plr regression testing.
+# Because compiling uses much time, and to try to avoid re-compiling,
+# this environment variable "githubcache: true" can be useful for static source code,
+# e.g., tags and commits
+#
+# Of a (branch,) tag, and commit
+#
+# Of a (branch,) tag, and commit, optionally,
+# the environment variable -  "githubcache: true" - may be set, to try to store the
+# compiled PostgreSQL (pg) in the github releases 0.0.0.0.0.GITHUBCACHE,
+# then retrieve it when necessary, then expand it and use it for plr compiling
+# and plr regression testing.
 
-  # When compiling plr with pg source code (branch, tag, or commit), the
-  # R file msvc.diff.R will be run, using Rscript.exe, and will patch files.
-  # These patched files will reduce the PostgreSQL regression testing to just the plr extension.
-  #
-  # If pg is a already-compiled-binary version
-  # and that PostgreSQL x64 version (subtracting off the non-version part of pg)
-  # is already installed on Appveyor,
-  # then instead, that Appveyor version and platform will be used
-  # to compile plr and perform regression testing.
-  # Therefore, a PostgreSQL already-compiled-binary will-not-be downloaded from "EnterpriseDB".
+# When compiling plr with pg source code (branch, tag, or commit), the
+# R file msvc.diff.R will be run, using Rscript.exe, and will patch files.
+# These patched files will reduce the PostgreSQL regression testing to just the plr extension.
+#
+# If pg is a already-compiled-binary version
+# and that PostgreSQL x64 version (subtracting off the non-version part of pg)
+# is already installed on Appveyor,
+# then instead, that Appveyor version and platform will be used
+# to compile plr and perform regression testing.
+# Therefore, a PostgreSQL already-compiled-binary will-not-be downloaded from "EnterpriseDB".
 
-  # The file plr.vcxproj.user must not exist (or be named plr.vcxproj.user.NOTUSED).
-  # The existance of file plr.vcxproj.user
-  # will cause non-"branch, tag, or commit" Debug builds to fail.
+# The file plr.vcxproj.user must not exist (or be named plr.vcxproj.user.NOTUSED).
+# The existance of file plr.vcxproj.user
+# will cause non-"branch, tag, or commit" Debug builds to fail.
 
-  # begin - msys2
+# begin - msys2
 
-  # A matrix that does NOT have pg means build plr from an already existing msys2 binary.
-  #
-  # The same matrix as in the previous sentence, plus, the matrix element "pglinkbinoldurl"
-  # means after installing from the existing msys2 binary, then install over(override)
-  # the version, with binaries provided by the URL. This may or may not work. This is
-  # meant for testing on "one version less than the current version". Typically, a new
-  # msys2 PostgreSQL version may appear six(6) months after the official version release
-  # date. Therefore, the msys2 PostgreSQL version may be current 50 percent of the time
-  # and old another 50 percent of the time
+# A matrix that does NOT have pg means build plr from an already existing msys2 binary.
+#
+# The same matrix as in the previous sentence, plus, the matrix element "pglinkbinoldurl"
+# means after installing from the existing msys2 binary, then install over(override)
+# the version, with binaries provided by the URL. This may or may not work. This is
+# meant for testing on "one version less than the current version". Typically, a new
+# msys2 PostgreSQL version may appear six(6) months after the official version release
+# date. Therefore, the msys2 PostgreSQL version may be current 50 percent of the time
+# and old another 50 percent of the time
 
-  # A matrix that does have  a pg value.  This is a git branch, release, or commit.
-  # The rules are the same as the msvc - "Of a (branch,) tag, and commit", except
-  # msvc.diff.R (nor any .diff file) nor any R are every run (used).
+# A matrix that does have  a pg value.  This is a git branch, release, or commit.
+# The rules are the same as the msvc - "Of a (branch,) tag, and commit", except
+# msvc.diff.R (nor any .diff file) nor any R are every run (used).
 
-  # begin - cygwin
+# begin - cygwin
 
-  # These are the same rules as "msys2".  However, no back version loading is implemented.
-  # So, the "pglinkbinoldurl" feature does not (currently) work for cygwin.
+# These are the same rules as "msys2".  However, no back version loading is implemented.
+# So, the "pglinkbinoldurl" feature does not (currently) work for cygwin.
 
-  # No "rversion".  The version of R, is the latest "Cygwin version of R."
-
-
-  # OTHER work by (the original author): Mikhail Titov
-  # --------------------------------------------------
-  #
-  # https://ci.appveyor.com/project/PurpleI2P/sqlite-fdw/history
-  # https://github.com/mlt/sqlite_fdw/blob/9903e2f1d70726bfb3819908750f40126940279c/.appveyor.yml
-  # https://github.com/pgspider/sqlite_fdw/pull/26
-  #
-  # https://github.com/mlt/odbc_fdw/blob/40cceb5753948964c2698f432d349ef2cb32c55d/.appveyor.yml
-  # https://github.com/mlt/odbc_fdw/blob/40cceb5753948964c2698f432d349ef2cb32c55d/test/appveyor_tests.ps1
-  #
-  # https://github.com/arkhipov/temporal_tables/blame/3ce22da51f2549e8f8b8fbf2850c63eb3a2f1fbb/appveyor.yml
-  # https://ci.appveyor.com/project/arkhipov/temporal-tables/builds/37866474
-  #
-  # https://github.com/xocolatl/periods/blob/d7b2081dd65514bbb8e96d8de4904d9357fa30c9/appveyor.yml
-  #
-  # https://github.com/arkhipov/acl/blob/a22179c62236b1bfa0e542c9875488163032d200/appveyor.yml
-
-  #
-  # Developing PostgreSQL for Windows: Peter Eisentraut
-  # ---------------------------------------------------
-  #
-  # Developing PostgreSQL for Windows
-  # 2020
-  # https://www.2ndquadrant.com/en/blog/developing-postgresql-windows-part-1/
-  # https://www.2ndquadrant.com/en/blog/developing-postgresql-windows-part-2/
-  # https://www.2ndquadrant.com/en/blog/developing-postgresql-windows-part-3/
-  #   2020
-  #   https://www.postgresql.org/message-id/d8e78714-dc77-4a64-783f-e863ba4d951f%402ndquadrant.com
-  #     https://www.postgresql.org/message-id/attachment/109034/0001-AppVeyor-configuration-for-MSVC.patch
-  #     https://www.postgresql.org/message-id/attachment/109033/0001-AppVeyor-configuration-for-MinGW.patch
-  #     https://www.postgresql.org/message-id/attachment/109032/0001-AppVeyor-configuration-for-Cygwin.patch
-  # 2021
-  # https://github.com/petere/postgresql/blob/appveyor-msvc/.appveyor.yml
-  # https://github.com/petere/postgresql/blob/appveyor-mingw/.appveyor.yml
-  # https://github.com/petere/postgresql/blob/appveyor-cygwin/.appveyor.yml
-  # . . .
-  # 2021
-  # https://ci.appveyor.com/project/petere/postgresql/builds/37986514
-  #
-  #
-  # https://github.com/petere/postgresql/blob/appveyor-msvc/.appveyor.yml
-  # https://github.com/petere/postgresql/blob/appveyor-mingw/.appveyor.yml
-  #   NOTE: STRANGLY DOES NOT DO: make check-world COPT=-Werror
-  #     SO"test: off" SO? NOT DO: creating database "regression"
-  #   https://ci.appveyor.com/project/petere/postgresql/builds/31378850?fullLog=true
-  #
-  # https://github.com/petere/postgresql/blob/appveyor-cygwin/.appveyor.yml
-  # . . .
-  # https://ci.appveyor.com/project/petere/postgresql/builds/37986514
-  #
-  # SPECIFICALLY THE BIG CYGWIN TESTS (WITH THE LONG 64 PASSING) RAN USING CODE
-  # OF THIS COMMIT:
-  # https://github.com/petere/postgresql/blob/92d42045cc81cb2b12612c6484fb00881cfed2b9/.appveyor.yml
-  # . . .
-  # RUN OUTPUT
-  # 64bit
-  # https://ci.appveyor.com/project/petere/postgresql/builds/37986514/job/or09udib29ew619r?fullLog=true
-
-  #
-  # help: 1 of 3
-  # From:	Andrew Dunstan <andrew(at)dunslane(dot)net>
-  # To:	PostgreSQL-development <pgsql-hackers(at)postgresql(dot)org>
-  # Subject:	msys2
-  # Date:	2018-10-07 19:32:44
-  # Message-ID:	9f4f22be-f9f1-b350-bc06-521226b87f7a@dunslane.net
-  # Views:	Raw Message | Whole Thread | Download mbox | Resend email
-  # Thread:
-  # 2018-10-07 19:32:44 from Andrew Dunstan <andrew(at)dunslane(dot)net>
-  # Lists:	pgsql-hackers
-  # https://www.postgresql.org/message-id/9f4f22be-f9f1-b350-bc06-521226b87f7a%40dunslane.net
-
-  # help: 2 of 3
-  # Developing PostgreSQL for Windows, Part 3
-  # March 24, 2020/in Eisentraut's PlanetPostgreSQL, PostgreSQL /by Peter Eisentraut
-  # https://www.2ndquadrant.com/en/blog/developing-postgresql-windows-part-3/
-  # . . .
-  # some AppVeyor files
-  # From:	Peter Eisentraut <peter(dot)eisentraut(at)2ndquadrant(dot)com>
-  # To:	pgsql-hackers <pgsql-hackers(at)postgresql(dot)org>
-  # Subject:	some AppVeyor files
-  # Date:	2020-03-23 16:05:33
-  # Message-ID:	d8e78714-dc77-4a64-783f-e863ba4d951f@2ndquadrant.com
-  # Views:	Raw Message | Whole Thread | Download mbox | Resend email
-  # Thread:
-  # 2020-03-23 16:05:33 from Peter Eisentraut <peter(dot)eisentraut(at)2ndquadrant(dot)com>
-  # Lists:	pgsql-hackers
-  # https://www.postgresql.org/message-id/d8e78714-dc77-4a64-783f-e863ba4d951f%402ndquadrant.com
-  # . . .
-  # From a04c2140482645a810bfd682b204bac5194eea8d Mon Sep 17 00:00:00 2001
-  # From: Peter Eisentraut <peter@eisentraut.org>
-  # Date: Tue, 10 Mar 2020 19:23:46 +0100
-  # Subject: [PATCH] AppVeyor configuration for MinGW
-  # https://www.postgresql.org/message-id/attachment/109033/0001-AppVeyor-configuration-for-MinGW.patch
-
-  # help: 3 of 3
-  # Package: mingw-w64-x86_64-postgresql
-  # Libraries for use with PostgreSQL (mingw-w64)
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-postgresql/PKGBUILD
-  # and
-  # https://packages.msys2.org/package/mingw-w64-x86_64-postgresql
+# No "rversion".  The version of R, is the latest "Cygwin version of R."
 
 
-  # SEE ALSO postgres and related msys2 builds: various authors
-  #
-  # https://aur.archlinux.org/packages/?O=0&SeB=n&K=postgres&outdated=&SB=n&SO=a&PP=50&do_Search=Go
-  #
-  # https://archlinux.org/packages/?sort=&arch=any&arch=x86_64&repo=Community&repo=Community-Testing&repo=Core&repo=Extra&repo=KDE-Unstable&repo=Multilib&repo=Multilib-Testing&repo=Testing&q=postgres&maintainer=&flagged=
+# OTHER work by (the original author): Mikhail Titov
+# --------------------------------------------------
+#
+# https://ci.appveyor.com/project/PurpleI2P/sqlite-fdw/history
+# https://github.com/mlt/sqlite_fdw/blob/9903e2f1d70726bfb3819908750f40126940279c/.appveyor.yml
+# https://github.com/pgspider/sqlite_fdw/pull/26
+#
+# https://github.com/mlt/odbc_fdw/blob/40cceb5753948964c2698f432d349ef2cb32c55d/.appveyor.yml
+# https://github.com/mlt/odbc_fdw/blob/40cceb5753948964c2698f432d349ef2cb32c55d/test/appveyor_tests.ps1
+#
+# https://github.com/arkhipov/temporal_tables/blame/3ce22da51f2549e8f8b8fbf2850c63eb3a2f1fbb/appveyor.yml
+# https://ci.appveyor.com/project/arkhipov/temporal-tables/builds/37866474
+#
+# https://github.com/xocolatl/periods/blob/d7b2081dd65514bbb8e96d8de4904d9357fa30c9/appveyor.yml
+#
+# https://github.com/arkhipov/acl/blob/a22179c62236b1bfa0e542c9875488163032d200/appveyor.yml
 
-  # # # MISC CYGWIN NOTES
-  #
-  # # # now 32bit cygwin version of R
-  # # #
-  # # # https://cygwin.com/setup-x86.exe
-  # # # https://cygwin.com/install.html
-  # #
-  # # # postgresql # 12.6-1 R(found in the Science group)
-  # # # https://cygwin.com/packages/package_list.html
-  # #
-  # # # perl make gcc-core readline(already in Base)
-  # # # flex(to build from git) bison(to build from git)
-  # # # zlib
-  # # # no optionals selected
-  # # https://www.postgresql.org/docs/13/install-requirements.html
-  #
-  #
-  # # ALMOST OBSOLETE NOTE
-  # # Thread: Postgresql on Windows 2000
-  # # https://postgrespro.com/list/thread-id/1977270
-  #
-  #
-  # # running bootstrap script ... [403] FATAL:  could not create shared memory segment: Function not implemented
-  # # $ cat /etc/defaults/etc/cygserver.conf
-  # # # cygserver.conf
-  #
-  #
-  # # Enable Postgresql in Cygwin
-  # #
-  # # Try foregoing your method of using a Windows service,
-  # #   and
-  # # simply start the Cygwin server background process service with:
-  # #
-  # #   export CYGWIN=server; /usr/sbin/cygserver -E &
-  # #
-  # # 2013
-  # # https://stackoverflow.com/questions/15915952/enable-postgresql-in-cygwin
-  #
-  #
-  # # cygserver and the PostgreSQL server
-  # #
-  # # Start cygserver for shared memory support.
-  # # To do this, enter the command
-  # #   /usr/sbin/cygserver &.
-  # # This program needs to be
-  # #   running anytime you start the PostgreSQL server
-  # #   or
-  # #   initialize a database cluster (initdb).
-  # #
-  # # The default cygserver configuration may need to be changed
-  # # (e.g., increase SEMMNS) to prevent PostgreSQL from failing due to a lack of system resources.
-  # #
-  # # The parallel regression tests (make check) can generate spurious regression test failures
-  # # due to overflowing the listen() backlog queue which causes
-  # # connection refused errors or hangs.
-  # # You can limit the number of connections
-  # # using the make variable MAX_CONNECTIONS thus:
-  # #
-  # #   make MAX_CONNECTIONS=5 check
-  # #
-  # # https://www.postgresql.org/docs/13/installation-platform-notes.html#INSTALLATION-NOTES-CYGWIN
-  #
-  #
-  # # Cygwin PostgreSQL 7.4.1 Regression Test Issue
-  # #
-  # #   The rules test passes under make check:
-  # #   $ make MAX_CONNECTIONS=5 check
-  # #
-  # # 2003
-  # # https://cryptominer.info/t/postgresql/pgsql-cygwin/03cxh00mc2/cygwin-postgresql-7-4-1-regression-test-issue
-  #
-  #
-  # # make installcheck
-  # #
-  # # 1. make check can generate spurious regression test failures due to overflowing
-  # # the the listen() backlog queue which generates connection refused errors.  Note
-  # # that
-  # #
-  # #   make installcheck
-  # #
-  # # does not have this problem since it runs all tests
-  # # sequentially instead of in large concurrent groups.
-  # #
-  # # $Id: README,v 1.15 2001/07/12 19:00:49 jt Exp $
-  # # http://web.mit.edu/cygwin/cygwin_v1.3.2/usr/doc/Cygwin/postgresql-7.1.2.README
+#
+# Developing PostgreSQL for Windows: Peter Eisentraut
+# ---------------------------------------------------
+#
+# Developing PostgreSQL for Windows
+# 2020
+# https://www.2ndquadrant.com/en/blog/developing-postgresql-windows-part-1/
+# https://www.2ndquadrant.com/en/blog/developing-postgresql-windows-part-2/
+# https://www.2ndquadrant.com/en/blog/developing-postgresql-windows-part-3/
+#   2020
+#   https://www.postgresql.org/message-id/d8e78714-dc77-4a64-783f-e863ba4d951f%402ndquadrant.com
+#     https://www.postgresql.org/message-id/attachment/109034/0001-AppVeyor-configuration-for-MSVC.patch
+#     https://www.postgresql.org/message-id/attachment/109033/0001-AppVeyor-configuration-for-MinGW.patch
+#     https://www.postgresql.org/message-id/attachment/109032/0001-AppVeyor-configuration-for-Cygwin.patch
+# 2021
+# https://github.com/petere/postgresql/blob/appveyor-msvc/.appveyor.yml
+# https://github.com/petere/postgresql/blob/appveyor-mingw/.appveyor.yml
+# https://github.com/petere/postgresql/blob/appveyor-cygwin/.appveyor.yml
+# . . .
+# 2021
+# https://ci.appveyor.com/project/petere/postgresql/builds/37986514
+#
+#
+# https://github.com/petere/postgresql/blob/appveyor-msvc/.appveyor.yml
+# https://github.com/petere/postgresql/blob/appveyor-mingw/.appveyor.yml
+#   NOTE: STRANGLY DOES NOT DO: make check-world COPT=-Werror
+#     SO"test: off" SO? NOT DO: creating database "regression"
+#   https://ci.appveyor.com/project/petere/postgresql/builds/31378850?fullLog=true
+#
+# https://github.com/petere/postgresql/blob/appveyor-cygwin/.appveyor.yml
+# . . .
+# https://ci.appveyor.com/project/petere/postgresql/builds/37986514
+#
+# SPECIFICALLY THE BIG CYGWIN TESTS (WITH THE LONG 64 PASSING) RAN USING CODE
+# OF THIS COMMIT:
+# https://github.com/petere/postgresql/blob/92d42045cc81cb2b12612c6484fb00881cfed2b9/.appveyor.yml
+# . . .
+# RUN OUTPUT
+# 64bit
+# https://ci.appveyor.com/project/petere/postgresql/builds/37986514/job/or09udib29ew619r?fullLog=true
+
+#
+# help: 1 of 3
+# From:	Andrew Dunstan <andrew(at)dunslane(dot)net>
+# To:	PostgreSQL-development <pgsql-hackers(at)postgresql(dot)org>
+# Subject:	msys2
+# Date:	2018-10-07 19:32:44
+# Message-ID:	9f4f22be-f9f1-b350-bc06-521226b87f7a@dunslane.net
+# Views:	Raw Message | Whole Thread | Download mbox | Resend email
+# Thread:
+# 2018-10-07 19:32:44 from Andrew Dunstan <andrew(at)dunslane(dot)net>
+# Lists:	pgsql-hackers
+# https://www.postgresql.org/message-id/9f4f22be-f9f1-b350-bc06-521226b87f7a%40dunslane.net
+
+# help: 2 of 3
+# Developing PostgreSQL for Windows, Part 3
+# March 24, 2020/in Eisentraut's PlanetPostgreSQL, PostgreSQL /by Peter Eisentraut
+# https://www.2ndquadrant.com/en/blog/developing-postgresql-windows-part-3/
+# . . .
+# some AppVeyor files
+# From:	Peter Eisentraut <peter(dot)eisentraut(at)2ndquadrant(dot)com>
+# To:	pgsql-hackers <pgsql-hackers(at)postgresql(dot)org>
+# Subject:	some AppVeyor files
+# Date:	2020-03-23 16:05:33
+# Message-ID:	d8e78714-dc77-4a64-783f-e863ba4d951f@2ndquadrant.com
+# Views:	Raw Message | Whole Thread | Download mbox | Resend email
+# Thread:
+# 2020-03-23 16:05:33 from Peter Eisentraut <peter(dot)eisentraut(at)2ndquadrant(dot)com>
+# Lists:	pgsql-hackers
+# https://www.postgresql.org/message-id/d8e78714-dc77-4a64-783f-e863ba4d951f%402ndquadrant.com
+# . . .
+# From a04c2140482645a810bfd682b204bac5194eea8d Mon Sep 17 00:00:00 2001
+# From: Peter Eisentraut <peter@eisentraut.org>
+# Date: Tue, 10 Mar 2020 19:23:46 +0100
+# Subject: [PATCH] AppVeyor configuration for MinGW
+# https://www.postgresql.org/message-id/attachment/109033/0001-AppVeyor-configuration-for-MinGW.patch
+
+# help: 3 of 3
+# Package: mingw-w64-x86_64-postgresql
+# Libraries for use with PostgreSQL (mingw-w64)
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-postgresql/PKGBUILD
+# and
+# https://packages.msys2.org/package/mingw-w64-x86_64-postgresql
+
+
+# SEE ALSO postgres and related msys2 builds: various authors
+#
+# https://aur.archlinux.org/packages/?O=0&SeB=n&K=postgres&outdated=&SB=n&SO=a&PP=50&do_Search=Go
+#
+# https://archlinux.org/packages/?sort=&arch=any&arch=x86_64&repo=Community&repo=Community-Testing&repo=Core&repo=Extra&repo=KDE-Unstable&repo=Multilib&repo=Multilib-Testing&repo=Testing&q=postgres&maintainer=&flagged=
+
+# # # MISC CYGWIN NOTES
+#
+# # # now 32bit cygwin version of R
+# # #
+# # # https://cygwin.com/setup-x86.exe
+# # # https://cygwin.com/install.html
+# #
+# # # postgresql # 12.6-1 R(found in the Science group)
+# # # https://cygwin.com/packages/package_list.html
+# #
+# # # perl make gcc-core readline(already in Base)
+# # # flex(to build from git) bison(to build from git)
+# # # zlib
+# # # no optionals selected
+# # https://www.postgresql.org/docs/13/install-requirements.html
+#
+#
+# # ALMOST OBSOLETE NOTE
+# # Thread: Postgresql on Windows 2000
+# # https://postgrespro.com/list/thread-id/1977270
+#
+#
+# # running bootstrap script ... [403] FATAL:  could not create shared memory segment: Function not implemented
+# # $ cat /etc/defaults/etc/cygserver.conf
+# # # cygserver.conf
+#
+#
+# # Enable Postgresql in Cygwin
+# #
+# # Try foregoing your method of using a Windows service,
+# #   and
+# # simply start the Cygwin server background process service with:
+# #
+# #   export CYGWIN=server; /usr/sbin/cygserver -E &
+# #
+# # 2013
+# # https://stackoverflow.com/questions/15915952/enable-postgresql-in-cygwin
+#
+#
+# # cygserver and the PostgreSQL server
+# #
+# # Start cygserver for shared memory support.
+# # To do this, enter the command
+# #   /usr/sbin/cygserver &.
+# # This program needs to be
+# #   running anytime you start the PostgreSQL server
+# #   or
+# #   initialize a database cluster (initdb).
+# #
+# # The default cygserver configuration may need to be changed
+# # (e.g., increase SEMMNS) to prevent PostgreSQL from failing due to a lack of system resources.
+# #
+# # The parallel regression tests (make check) can generate spurious regression test failures
+# # due to overflowing the listen() backlog queue which causes
+# # connection refused errors or hangs.
+# # You can limit the number of connections
+# # using the make variable MAX_CONNECTIONS thus:
+# #
+# #   make MAX_CONNECTIONS=5 check
+# #
+# # https://www.postgresql.org/docs/13/installation-platform-notes.html#INSTALLATION-NOTES-CYGWIN
+#
+#
+# # Cygwin PostgreSQL 7.4.1 Regression Test Issue
+# #
+# #   The rules test passes under make check:
+# #   $ make MAX_CONNECTIONS=5 check
+# #
+# # 2003
+# # https://cryptominer.info/t/postgresql/pgsql-cygwin/03cxh00mc2/cygwin-postgresql-7-4-1-regression-test-issue
+#
+#
+# # make installcheck
+# #
+# # 1. make check can generate spurious regression test failures due to overflowing
+# # the the listen() backlog queue which generates connection refused errors.  Note
+# # that
+# #
+# #   make installcheck
+# #
+# # does not have this problem since it runs all tests
+# # sequentially instead of in large concurrent groups.
+# #
+# # $Id: README,v 1.15 2001/07/12 19:00:49 jt Exp $
+# # http://web.mit.edu/cygwin/cygwin_v1.3.2/usr/doc/Cygwin/postgresql-7.1.2.README
 
 
 ### Documentation Ends ###
 
 for:
 -
-  matrix:
-    only:
-      - compiler: cygwin
+matrix:
+only:
+- compiler: cygwin
 
-  # mileage from cygwin 32bit will vary
-  # https://cran.r-project.org/doc/manuals/r-release/R-admin.html#Cygwin
+# mileage from cygwin 32bit will vary
+# https://cran.r-project.org/doc/manuals/r-release/R-admin.html#Cygwin
 
-  init:
-  - echo compiler cygwin init
-  - systeminfo
-  # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
-  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
-  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
-  # Make %x64% available for caching
-  # a variable used in the Appveyor cach area must be defined in the init
-  - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
-  - ps: |
-      # Set-PSDebug -Trace 2
+init:
+- echo compiler cygwin init
+- systeminfo
+# https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
+- if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
+- if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
+# Make %x64% available for caching
+# a variable used in the Appveyor cach area must be defined in the init
+- set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
+- ps: |
+# Set-PSDebug -Trace 2
 
-      if ("${env:compiler}" -eq "cygwin") {
-        if ("${env:Platform}" -eq "x64") {
-          ${env:CYG_ARCH} = "x86_64"
-          ${env:CYG_ROOT} = "C:\cygwin64"
-        } else {
-          ${env:CYG_ARCH} = "x86"
-          ${env:CYG_ROOT} = "C:\cygwin"
-        }
-      }
+if ("${env:compiler}" -eq "cygwin") {
+if ("${env:Platform}" -eq "x64") {
+${env:CYG_ARCH} = "x86_64"
+${env:CYG_ROOT} = "C:\cygwin64"
+} else {
+${env:CYG_ARCH} = "x86"
+${env:CYG_ROOT} = "C:\cygwin"
+}
+}
 
-      #       # cygwin DOES NOT do R subarchitectures
-      #       if ("${env:Platform}" -eq "x64") {
-      #         ${env:R_ARCH} = "/x64"
-      #       } else {
-      #         ${env:R_ARCH} = "/i386"
-      #       }
+#       # cygwin DOES NOT do R subarchitectures
+#       if ("${env:Platform}" -eq "x64") {
+#         ${env:R_ARCH} = "/x64"
+#       } else {
+#         ${env:R_ARCH} = "/i386"
+#       }
 
-      ${env:rbinurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
-      # "make installcheck" does not like spaces
-      ${env:R_HOME} = "C:\RINSTALL"
-      #
-      # also see that each *.sh dot sources early ". ./init.sh"
+${env:rbinurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
+# "make installcheck" does not like spaces
+${env:R_HOME} = "C:\RINSTALL"
+#
+# also see that each *.sh dot sources early ". ./init.sh"
 
-      if ("${env:Platform}" -eq "x64") {
-        ${env:bit} = "64"
-      } else {
-        ${env:bit} = "32"
-      }
-      ${env:betterperl} = "strawberry${env:bit}"
-      ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
+if ("${env:Platform}" -eq "x64") {
+${env:bit} = "64"
+} else {
+${env:bit} = "32"
+}
+${env:betterperl} = "strawberry${env:bit}"
+${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
 
-  - set CYG_SETUP_DOWNLOAD_URL=http://cygwin.com/setup-%CYG_ARCH%.exe
-  - echo CYG_SETUP_DOWNLOAD_URL: %CYG_SETUP_DOWNLOAD_URL%
+- set CYG_SETUP_DOWNLOAD_URL=http://cygwin.com/setup-%CYG_ARCH%.exe
+- echo CYG_SETUP_DOWNLOAD_URL: %CYG_SETUP_DOWNLOAD_URL%
 
-  #
-  # possible user provided in the matrix
-  # (for now, keep this area to be the same as "msys2" and NOT ALL "msys2" FEATURES are implemented)
-  #
-  - if not defined githubcache     set githubcache=false
-  - if not defined pghint          set pghint=none
-  - if not defined pg              set pg=none
-  - if not defined pglinkbinoldurl set pglinkbinoldurl=none
-  # not (yet) used in compiler cygwin
-  # - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
-  - if not defined rversion_more set rversion_more=-nodetails
+#
+# possible user provided in the matrix
+# (for now, keep this area to be the same as "msys2" and NOT ALL "msys2" FEATURES are implemented)
+#
+- if not defined githubcache     set githubcache=false
+- if not defined pghint          set pghint=none
+- if not defined pg              set pg=none
+- if not defined pglinkbinoldurl set pglinkbinoldurl=none
+# not (yet) used in compiler cygwin
+# - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
+- if not defined rversion_more set rversion_more=-nodetails
 
-  install:
-  - echo compiler cygwin install
-  - ps: |
-      # Set-PSDebug -Trace 2
-      # LATER - REMOVE THIS LINE
-      ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
-      ${env:PATH} = "${env:CYG_ROOT}\bin;${env:PATH}"
+install:
+- echo compiler cygwin install
+- ps: |
+# Set-PSDebug -Trace 2
+# LATER - REMOVE THIS LINE
+${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
+${env:PATH} = "${env:CYG_ROOT}\bin;${env:PATH}"
 
 #   # uses cygwin R
 #   # DOWNLOAD . . .
 #   - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
 
-  # From the version
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if("${env:pg}" -ne "none") {
-        ${env:pgversion} = ${env:pg}
-      }
-      # if pg equals none - msys2 binary case,
-      # then later in the .sh scripts, pgversion will be determined by SQL
+# From the version
+- ps: |
+# Set-PSDebug -Trace 2
+if("${env:pg}" -ne "none") {
+${env:pgversion} = ${env:pg}
+}
+# if pg equals none - msys2 binary case,
+# then later in the .sh scripts, pgversion will be determined by SQL
 
-  #
-  # only used about a custom PostgreSQL build (not an CYGWIN already compiled binary)
-  #
-  # no quotes - IMPORTANT to pass to bash
-  - set pgroot=C:\PGINSTALL
-  - mkdir "%pgroot%"
-  #
+#
+# only used about a custom PostgreSQL build (not an CYGWIN already compiled binary)
+#
+# no quotes - IMPORTANT to pass to bash
+- set pgroot=C:\PGINSTALL
+- mkdir "%pgroot%"
+#
 
-  #
-  # In powershell the (above) will not run/install
-  # neither plain as here, nor in Invoke-Command,
-  # (Perhaps because, of "some" complexity)
+#
+# In powershell the (above) will not run/install
+# neither plain as here, nor in Invoke-Command,
+# (Perhaps because, of "some" complexity)
 
 #   - ps: |
 #       # Set-PSDebug -Trace 2
@@ -2081,1039 +2081,1040 @@ for:
 #   # export PATH=. . .etc . . .:${PATH}
 #   # to the /etc/profile
 
-  #
-  # if "githubcache: true",
-  #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
-  #   pg already-compiled-binaries.
-  #
-  - set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
-  - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pg7z%
-  #
-  # note: using Windows instead of Powershell
-  # I could not get the Invoke-??? . . . I would silently run (and die), I would not get error feedback.
-  #
-  - if "%githubcache%"=="true" if not exist "%pg7z%"  (
-      bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
-      for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i)
-    )
-  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" curl -o "%pg7z%" -L "%pggithubbincacheurl%"
-  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if exist "%pg7z%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false)
-  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if "%pggithubbincachefound%"=="true" (
-        mkdir            "%pgroot%" &
-        7z x "%pg7z%"  "-o%pgroot%" &
-        dir              "%pgroot%" &
-        if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
-    )
-  #                            cygwin: executable IS STILL postgres.exe (not postgres)
-  # user provided (if any), in the matrix
-  - echo githubcache %githubcache%
-  # generated
-  # internal - do not reuse
-  - echo pggithubbincachefailingfound %pggithubbincachefailingfound%
-  # reused below
-  - echo pggithubbincachefound %pggithubbincachefound%
-  - if not defined pggithubbincachefound set pggithubbincachefound=false
-  - echo pggithubbincachefound %pggithubbincachefound%
-  # reused below
-  - echo pggithubbincacheextracted %pggithubbincacheextracted%
-  - if not defined pggithubbincacheextracted set pggithubbincacheextracted=false
-  - echo pggithubbincacheextracted %pggithubbincacheextracted%
+#
+# if "githubcache: true",
+#   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
+#   pg already-compiled-binaries.
+#
+- set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
+- set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pg7z%
+#
+# note: using Windows instead of Powershell
+# I could not get the Invoke-??? . . . I would silently run (and die), I would not get error feedback.
+#
+- if "%githubcache%"=="true" if not exist "%pg7z%"  (
+bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
+for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i)
+)
+- if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" curl -o "%pg7z%" -L "%pggithubbincacheurl%"
+- if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if exist "%pg7z%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false)
+- if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if "%pggithubbincachefound%"=="true" (
+mkdir            "%pgroot%" &
+7z x "%pg7z%"  "-o%pgroot%" &
+dir              "%pgroot%" &
+if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
+)
+#                            cygwin: executable IS STILL postgres.exe (not postgres)
+# user provided (if any), in the matrix
+- echo githubcache %githubcache%
+# generated
+# internal - do not reuse
+- echo pggithubbincachefailingfound %pggithubbincachefailingfound%
+# reused below
+- echo pggithubbincachefound %pggithubbincachefound%
+- if not defined pggithubbincachefound set pggithubbincachefound=false
+- echo pggithubbincachefound %pggithubbincachefound%
+# reused below
+- echo pggithubbincacheextracted %pggithubbincacheextracted%
+- if not defined pggithubbincacheextracted set pggithubbincacheextracted=false
+- echo pggithubbincacheextracted %pggithubbincacheextracted%
 
-  #
-  # Remove (if any) old plr files, from the pg already-compiled-binary
-  # extraction from 0.0.0.0.0.GITHUBCACHE
-  #
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if (("${env:githubcache}" -eq "true") -and ("${env:pggithubbincacheextracted}" -eq "true")) {
-        pushd "${env:pgroot}"
-        del share\extension\plr--*.sql   2>null
-        del share\extension\plr.control  2>null
-        del lib\plr.dll                  2>null
-        del symbols\plr.pdb              2>null
-        popd
-      }
+#
+# Remove (if any) old plr files, from the pg already-compiled-binary
+# extraction from 0.0.0.0.0.GITHUBCACHE
+#
+- ps: |
+# Set-PSDebug -Trace 2
+if (("${env:githubcache}" -eq "true") -and ("${env:pggithubbincacheextracted}" -eq "true")) {
+pushd "${env:pgroot}"
+del share\extension\plr--*.sql   2>null
+del share\extension\plr.control  2>null
+del lib\plr.dll                  2>null
+del symbols\plr.pdb              2>null
+popd
+}
 
-  #
-  # PostgreSQL from source code: git, tag, or commit
-  #
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:pg}" -ne "none")) {
-        git config --global advice.detachedHead false
-        $env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
-        #
-        # git branch or commit - alphanumeric and all lowercase letters (slower download)
-        #
-        if("${env:pghint}" -eq "commit") {
-          git clone -q                            https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
-          pwd
-          pushd c:\projects\postgresql
-          pwd
-          git checkout -q                 ${env:pg} -b ${env:pg}
-          git branch
-          echo ${env:pg}
-          popd
-          pwd
-        #
-        # git branch or tag(detached head)
-        # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
-        #
-        } else {
-          git clone -q --depth 1 --branch ${env:pg} https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
-          pushd c:\projects\postgresql
-          pwd
-          git branch
-          echo ${env:pg}
-          popd
-          pwd
-        }
-        pushd c:\projects\postgresql
-        pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
-        popd
-      }
+#
+# PostgreSQL from source code: git, tag, or commit
+#
+- ps: |
+# Set-PSDebug -Trace 2
+if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:pg}" -ne "none")) {
+git config --global advice.detachedHead false
+$env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
+#
+# git branch or commit - alphanumeric and all lowercase letters (slower download)
+#
+if("${env:pghint}" -eq "commit") {
+git clone -q                            https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+pwd
+pushd c:\projects\postgresql
+pwd
+git checkout -q                 ${env:pg} -b ${env:pg}
+git branch
+echo ${env:pg}
+popd
+pwd
+#
+# git branch or tag(detached head)
+# PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
+#
+} else {
+git clone -q --depth 1 --branch ${env:pg} https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+pushd c:\projects\postgresql
+pwd
+git branch
+echo ${env:pg}
+popd
+pwd
+}
+pushd c:\projects\postgresql
+pwd
+echo "Files . . ."
+$Table = Get-ChildItem
+foreach ($Row in $Table) { $Row.Name }
+popd
+}
 
-  # https://cygwin.com/faq/faq.html#faq.setup.cli
+# https://cygwin.com/faq/faq.html#faq.setup.cli
 
-  # environment of cygwin
-  #
-  # EARLY 2021
-  # https://github.com/petere/postgresql/blob/c3606de647583d7cbb39aadd2a2a989af28b97ea/.appveyor.yml
-  # https://ci.appveyor.com/project/petere/postgresql/builds/37986514
+# environment of cygwin
+#
+# EARLY 2021
+# https://github.com/petere/postgresql/blob/c3606de647583d7cbb39aadd2a2a989af28b97ea/.appveyor.yml
+# https://ci.appveyor.com/project/petere/postgresql/builds/37986514
 
 
-  - ps: |
-      # Somewhat safe to pass to Windows CMD
-      ${env:cunsupported} = " "
+- ps: |
+# Somewhat safe to pass to Windows CMD
+${env:cunsupported} = " "
 
-      # specific - "archive" is "none" or "last" or undefined
-      #
-      if(("${env:pg}" -eq "none" -or
-          "${env:pg}" -eq "last" -or
-          "${env:pg}" -eq ""
-        ) -and "${env:compiler}" -eq "cygwin" -and "${env:Platform}" -eq "x86") {
-        ${env:CYG_MIRROR} = "http://mirrors.kernel.org/sourceware/cygwin-archive/20221123/"
-        # new minor
-        ${env:cunsupported}  = "--allow-unsupported-windows"
-      }
+# specific - "archive" is "none" or "last" or undefined
+#
+if(("${env:pg}" -eq "none" -or
+"${env:pg}" -eq "last" -or
+"${env:pg}" -eq ""
+) -and "${env:compiler}" -eq "cygwin" -and "${env:Platform}" -eq "x86") {
+${env:CYG_MIRROR} = "http://mirrors.kernel.org/sourceware/cygwin-archive/20221123/"
+# new minor
+${env:cunsupported}  = "--allow-unsupported-windows"
+}
 
-      # specific - "archive" is "mobaxterm" or "mobaxterm232"
+# specific - "archive" is "mobaxterm" or "mobaxterm232"
 
-      if(("${env:archive}" -eq "mobaxterm"    -or
-          "${env:archive}" -eq "mobaxterm232"
-        ) -and "${env:compiler}" -eq "cygwin" -and "${env:Platform}" -eq "x86") {
-        ${env:CYG_MIRROR} = "http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/circa/2022/06/12/123302/"
-        # override
-        ${env:CYG_SETUP_DOWNLOAD_URL} = "http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/setup/snapshots/setup-x86-2.919.exe"
-      }
+if(("${env:archive}" -eq "mobaxterm"    -or
+"${env:archive}" -eq "mobaxterm232"
+) -and "${env:compiler}" -eq "cygwin" -and "${env:Platform}" -eq "x86") {
+${env:CYG_MIRROR} = "http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/circa/2022/06/12/123302/"
+# override
+${env:CYG_SETUP_DOWNLOAD_URL} = "http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/setup/snapshots/setup-x86-2.919.exe"
+}
 
-  #  cywin AND PostreSQL development
-  - 'appveyor DownloadFile %CYG_SETUP_DOWNLOAD_URL% -FileName setup.exe'
+#  cywin AND PostreSQL development
+- 'appveyor DownloadFile %CYG_SETUP_DOWNLOAD_URL% -FileName setup.exe'
 
-  - echo CYG_MIRROR: %CYG_MIRROR%
-  - echo cunsupported: %cunsupported%
-  - echo CYG_ROOT: %CYG_ROOT%
-  - echo CYG_CACHE: %CYG_CACHE%
 
-  - 'setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel'
-  #
-  # plr - andre - other packages - experience of need - while trying to - manually step by step build plr
-  - 'setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libintl-devel -P libcrypt-devel'
-  #
-  # to archive and un-archive (7z)
-  - 'setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P p7zip'
+- echo CYG_MIRROR: %CYG_MIRROR%
+- echo cunsupported: %cunsupported%
+- echo CYG_ROOT: %CYG_ROOT%
+- echo CYG_CACHE: %CYG_CACHE%
 
-  #
-  - bash -login -c "cygserver-config --yes"
-  #
-  - copy %CYG_ROOT%\etc\defaults\etc\cygserver.conf %CYG_ROOT%\etc\defaults\etc\cygserver.conf.original
-  - echo kern.ipc.shmmni 32767 >> %CYG_ROOT%\etc\defaults\etc\cygserver.conf
-  - echo kern.ipc.shmseg 32767 >> %CYG_ROOT%\etc\defaults\etc\cygserver.conf
-  #
-  - bash -login -c "cygrunsrv -S cygserver"
+- 'setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel'
+#
+# plr - andre - other packages - experience of need - while trying to - manually step by step build plr
+- 'setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libintl-devel -P libcrypt-devel'
+#
+# to archive and un-archive (7z)
+- 'setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P p7zip'
 
-  # PostgreSQL on cygwin
-  # https://cygwin.com/cgi-bin2/package-grep.cgi?grep=postgresql&arch=x86_64
-  #
-  ### trying to add more -devel to try to solve a plr-make "lpostgres" linking error
-  - setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P postgresql-client -P postgresql -P postgresql-devel
+#
+- bash -login -c "cygserver-config --yes"
+#
+- copy %CYG_ROOT%\etc\defaults\etc\cygserver.conf %CYG_ROOT%\etc\defaults\etc\cygserver.conf.original
+- echo kern.ipc.shmmni 32767 >> %CYG_ROOT%\etc\defaults\etc\cygserver.conf
+- echo kern.ipc.shmseg 32767 >> %CYG_ROOT%\etc\defaults\etc\cygserver.conf
+#
+- bash -login -c "cygrunsrv -S cygserver"
 
-  # needs pg_config
-  # 1. USE_PGXS=1
-  # 2. new variables PKGLIBDIR SHAREDIR to determine the location of the new plr files (to be archived)
-  #
-  # PostgreSQL - from an CYGWIN already-compiled-binary - pg_config
-  ### trying to add more -devel to try to solve a plr-make "lpostgres" linking error
-  - setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpq-devel
+# PostgreSQL on cygwin
+# https://cygwin.com/cgi-bin2/package-grep.cgi?grep=postgresql&arch=x86_64
+#
+### trying to add more -devel to try to solve a plr-make "lpostgres" linking error
+- setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P postgresql-client -P postgresql -P postgresql-devel
 
-  # R on cygwin
-  # https://cygwin.com/cgi-bin2/package-grep.cgi?grep=R-&arch=x86
-  ###
-  ### NEED A CYGWIN COMPILED "R", so "rversion" (if any) is effectively ignored
-  ###
-  # only linking to the "R from cygwin"
-  ### - if "%pg%"=="none" ( )
-  - setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
+# needs pg_config
+# 1. USE_PGXS=1
+# 2. new variables PKGLIBDIR SHAREDIR to determine the location of the new plr files (to be archived)
+#
+# PostgreSQL - from an CYGWIN already-compiled-binary - pg_config
+### trying to add more -devel to try to solve a plr-make "lpostgres" linking error
+- setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpq-devel
 
-  build_script:
-  # override
-  - set R_HOME=%CYG_ROOT%\lib\R
-  #
-  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
+# R on cygwin
+# https://cygwin.com/cgi-bin2/package-grep.cgi?grep=R-&arch=x86
+###
+### NEED A CYGWIN COMPILED "R", so "rversion" (if any) is effectively ignored
+###
+# only linking to the "R from cygwin"
+### - if "%pg%"=="none" ( )
+- setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
 
-  after_build:
-  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/after_build.sh"
+build_script:
+# override
+- set R_HOME=%CYG_ROOT%\lib\R
+#
+- bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
-  test_script:
-  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
+after_build:
+- bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/after_build.sh"
 
--
-  matrix:
-    only:
-      - compiler: msys2
-
-  init:
-  - echo compiler msys2 init
-  - systeminfo
-  # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
-  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
-  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
-  # Make %x64% available for caching
-  # a variable used in the Appveyor cach area must be defined in the init
-  - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
-  - ps: |
-      # Set-PSDebug -Trace 2
-
-      if ("${env:compiler}" -eq "msys2") {
-        if ("${env:Platform}" -eq "x64") {
-          ${env:MSYSTEM} = "MINGW64"
-        } else {
-          ${env:MSYSTEM} = "MINGW32"
-        }
-      }
-
-      if ("${env:MSYSTEM}" -eq "MINGW64") {
-        ${env:R_ARCH} = "/x64"
-      } else {
-        ${env:R_ARCH} = "/i386"
-      }
-
-      ${env:rbinurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
-      # "make installcheck" does not like spaces
-      ${env:R_HOME} = "C:\RINSTALL"
-      #
-      # also see that each *.sh dot sources early ". ./init.sh"
-
-      if ("${env:Platform}" -eq "x64") {
-        ${env:bit} = "64"
-      } else {
-        ${env:bit} = "32"
-      }
-      ${env:betterperl} = "strawberry${env:bit}"
-      ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
-  #
-  # possible user provided in the matrix
-  #
-  - if not defined githubcache     set githubcache=false
-  - if not defined pghint          set pghint=none
-  - if not defined pg              set pg=none
-  - if not defined pglinkbinoldurl set pglinkbinoldurl=none
-  - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
-  - if not defined rversionurl set rversionurl=https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
-  - if not defined rversion_more set rversion_more=-nodetails
-
-  install:
-  - echo compiler msys2 install
-  - ps: |
-      # Set-PSDebug -Trace 2
-      ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
-
-  # - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
-  - ps: |
-      # Set-PSDebug -Trace 2
-      # default
-      # special named R version(s)
-      if("${env:rlinkbinoldurl}" -eq "none") {
-        if("${env:rversion}" -match "beta|alpha|devel|patched") {
-          ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
-        }
-      } else {
-          # R general download (or a specific custom build)
-          ${env:rversionurl} = ${env:rlinkbinoldurl}
-      }
-      # .7z .zip .exe
-      ${env:rversionurl_download_ext} = [System.IO.Path]::GetExtension(${env:rversionurl})
-
-      # .7z .zip .exe # too many variants: not worth the time/code/headache/caching effort
-      if (Test-Path "R-${env:rversion}-win.exe") {
-        del         "R-${env:rversion}-win.exe"
-      }
-      #
-      # any download
-      # PowerShell 4.0, an Alias of "curl"
-      if(-not ("${env:rversionurl_download_ext}" -eq ".exe")) {
-        curl -o "R-${env:rversion}-win${env:rversionurl_download_ext}" -v "${env:rversionurl}"
-        7z e    "R-${env:rversion}-win${env:rversionurl_download_ext}" "R-${env:rversion}-win.exe"
-      } else {
-        curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
-      }
-  #
-  - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
-
-  # From the version
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if("${env:pg}" -ne "none") {
-        ${env:pgversion} = ${env:pg}
-      }
-      # if pg equals none - msys2 binary case,
-      # then later in the .sh scripts, pgversion will be determined by SQL
-
-  #
-  # only used about a custom PostgreSQL build (not an MSYS2 already compiled binary)
-  #
-  # no quotes - IMPORTANT to pass to bash
-  - set pgroot=C:\PGINSTALL
-  - mkdir "%pgroot%"
-  #
-
-  #
-  # In powershell the (above) will not run/install
-  # neither plain as here, nor in Invoke-Command,
-  # (Perhaps because, of "some" complexity)
-
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if (-not (Test-Path "${env:betterperl}.zip")) {
-        curl -o "${env:betterperl}.zip" -v "${env:betterperlurl}"
-      }
-      7z x    "${env:betterperl}.zip" "-oc:\${env:betterperl}"
-      # of needed to install pl/perl
-      ${env:PATH} = "c:\${env:betterperl}\perl\bin;${env:PATH}"
-      which perl
-      ${env:PATH} = "${env:PATH};c:\${env:betterperl}\c\bin"
-      which pexports
-  # note, if compiling PostgreSQL from source,
-  # then in the .sh files. one has to re-set the path
-  # xor append . . .
-  # export PATH=. . .etc . . .:${PATH}
-  # to the /etc/profile
-
-  #
-  # if "githubcache: true",
-  #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
-  #   pg already-compiled-binaries.
-  #
-  - set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
-  - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pg7z%
-  #
-  # note: using Windows instead of Powershell
-  # I could not get the Invoke-??? . . . I would silently run (and die), I would not get error feedback.
-  #
-  - if "%githubcache%"=="true" if not exist "%pg7z%"  (
-      bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
-      for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i)
-    )
-  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" curl -o "%pg7z%" -L "%pggithubbincacheurl%"
-  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if exist "%pg7z%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false)
-  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if "%pggithubbincachefound%"=="true" (
-        mkdir            "%pgroot%" &
-        7z x "%pg7z%"  "-o%pgroot%" &
-        dir              "%pgroot%" &
-        if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
-    )
-  #                            msys2: executable IS STILL postgres.exe (not postgres)
-  # user provided (if any), in the matrix
-  - echo githubcache %githubcache%
-  # generated
-  # internal - do not reuse
-  - echo pggithubbincachefailingfound %pggithubbincachefailingfound%
-  # reused below
-  - echo pggithubbincachefound %pggithubbincachefound%
-  - if not defined pggithubbincachefound set pggithubbincachefound=false
-  - echo pggithubbincachefound %pggithubbincachefound%
-  # reused below
-  - echo pggithubbincacheextracted %pggithubbincacheextracted%
-  - if not defined pggithubbincacheextracted set pggithubbincacheextracted=false
-  - echo pggithubbincacheextracted %pggithubbincacheextracted%
-
-  #
-  # Remove old plr files, from the pg already-compiled-binary
-  # extraction from 0.0.0.0.0.GITHUBCACHE, if any old files
-  #
-  # in the msys2 case, this will not happen (TODO: later remove this code)
-  #
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if (("${env:githubcache}" -eq "true") -and ("${env:pggithubbincacheextracted}" -eq "true")) {
-        pushd "${env:pgroot}"
-        del share\extension\plr--*.sql   2>null
-        del share\extension\plr.control  2>null
-        del lib\plr.dll                  2>null
-        del symbols\plr.pdb              2>null
-        popd
-      }
-
-  #
-  # PostgreSQL from source code: git, tag, or commit
-  #
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:pg}" -ne "none")) {
-        git config --global advice.detachedHead false
-        $env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
-        #
-        # git branch or commit - alphanumeric and all lowercase letters (slower download)
-        #
-        if("${env:pghint}" -eq "commit") {
-          git clone -q                            https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
-          pwd
-          pushd c:\projects\postgresql
-          pwd
-          git checkout -q                 ${env:pg} -b ${env:pg}
-          git branch
-          echo ${env:pg}
-          popd
-          pwd
-        #
-        # git branch or tag(detached head)
-        # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
-        #
-        } else {
-          git clone -q --depth 1 --branch ${env:pg} https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
-          pushd c:\projects\postgresql
-          pwd
-          git branch
-          echo ${env:pg}
-          popd
-          pwd
-        }
-        pushd c:\projects\postgresql
-        pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
-        popd
-      }
-
-  # msys2
-  #
-  # Nov Dec 2021 Appveyor changed the PATH
-  # The [first] winpty.exe found is [the] "wrong [one]"
-  #
-  # Attempt to avoid the error:
-  #
-  # 1 [main] winpty (2980) C:\Program Files\Git\usr\bin\winpty.exe: *** fatal error - cygheap base mismatch detected
-  # This problem is probably due to using incompatible versions of the cygwin DLL
-  #
-  - bash --login -c "pacman --noconfirm -S --needed winpty"
-
-  # PostgreSQL from an MSYS2 already-compiled-binary.
-  - if "%pg%"=="none" (
-      bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql"
-    )
-
-  #
-  # How to obtain older versions of packages using MSYS2?
-  # 2015
-  # https://stackoverflow.com/questions/33969803/how-to-obtain-older-versions-of-packages-using-msys2
-  #
-  - if "%pg%"=="none" if not "%pglinkbinoldurl%"=="none" (
-      bash -login -c "curl   -o             install.pkg.tar.zst ${pglinkbinoldurl}" &
-      bash -login -c "pacman -U --noconfirm install.pkg.tar.zst"
-    )
-
-  build_script:
-  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
-
-  after_build:
-  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/after_build.sh"
-
-  test_script:
-  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
-
+test_script:
+- bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
 
 -
-  matrix:
-    only:
-      - compiler: msvc
+matrix:
+only:
+- compiler: msys2
 
-  environment:
-    #
-    # Appveyor PostgreSQL clusters specific
-    #
-    PGUSER: postgres
-    PGPASSWORD: Password12!
-    #
-    # PostgreSQL client session
-    #
-    PGOPTIONS: -c log_error_verbosity=verbose -c log_min_messages=debug2 -c log_min_error_statement=debug2
-    #
+init:
+- echo compiler msys2 init
+- systeminfo
+# https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
+- if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
+- if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
+# Make %x64% available for caching
+# a variable used in the Appveyor cach area must be defined in the init
+- set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
+- ps: |
+# Set-PSDebug -Trace 2
 
-  # Appveyor build server environment variables
-  #
-  # ProgramFiles=C:\Program Files
-  # ProgramFiles(x86)=C:\Program Files (x86)
-  #
-  init:
-  - echo compiler msvc init
-  - systeminfo
-  # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
-  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
-  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
-  # Make %x64% available for caching
-  # a variable used in the Appveyor cache area must be defined in the init
-  - ps: |
-      if ("$env:Platform" -eq "x64") {
-        $env:pf = "$env:ProgramFiles"
-        $env:x64 = "-x64"
-      } else {
-        $env:pf = "${env:ProgramFiles(x86)}"
-      }
-      $env:exe = "postgresql-$env:pg-windows$env:x64.exe"
-      [Environment]::SetEnvironmentVariable("exe", $env:exe, "Machine")
+if ("${env:compiler}" -eq "msys2") {
+if ("${env:Platform}" -eq "x64") {
+${env:MSYSTEM} = "MINGW64"
+} else {
+${env:MSYSTEM} = "MINGW32"
+}
+}
 
-      if ("${env:Platform}" -eq "x64") {
-        ${env:bit} = "64"
-      } else {
-        ${env:bit} = "32"
-      }
-      ${env:betterperl} = "strawberry${env:bit}"
-      ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
-  #
-  # possible user provided in the matrix
-  #
-  - if not defined githubcache set githubcache=false
-  - if not defined pghint      set pghint=none
-  - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
-  - if not defined rversionurl set rversionurl=https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
-  - if not defined rversion_more set rversion_more=-nodetails
+if ("${env:MSYSTEM}" -eq "MINGW64") {
+${env:R_ARCH} = "/x64"
+} else {
+${env:R_ARCH} = "/i386"
+}
 
-  install:
-  - echo compiler msvc install
-  #
-  # FUTURE: bleeding edge versions of R for Windows (non-cygwin)
-  # https://cran.r-project.org/bin/windows/base/R-devel-win.exe
-  # https://cran.r-project.org/bin/windows/base/rdevel.html
-  #
-  # R release dates are here
-  # https://developer.r-project.org/
-  #
-  # R "MSYS2" compiled R binaries location: https://ftp.opencpu.org/
-  #
-  # https://cran.r-project.org/bin/windows/base/R-4.1.0patched-win.exe
-  # sometimes
-  # https://cran.r-project.org/bin/windows/base/R-4.1.#alpha-win.exe
-  # https://cran.r-project.org/bin/windows/base/rpatched.html
-  #
-  # - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
-  - ps: |
-      # Set-PSDebug -Trace 2
-      # default
-      # special named R version(s)
-      if("${env:rlinkbinoldurl}" -eq "none") {
-        if("${env:rversion}" -match "beta|alpha|devel|patched") {
-          ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
-        }
-      } else {
-          # R general download (or a specific custom build)
-          ${env:rversionurl} = ${env:rlinkbinoldurl}
-      }
-      # .7z .zip .exe
-      ${env:rversionurl_download_ext} = [System.IO.Path]::GetExtension(${env:rversionurl})
+${env:rbinurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
+# "make installcheck" does not like spaces
+${env:R_HOME} = "C:\RINSTALL"
+#
+# also see that each *.sh dot sources early ". ./init.sh"
 
-      # .7z .zip .exe # too many variants: not worth the time/code/headache/caching effort
-      if (Test-Path "R-${env:rversion}-win.exe") {
-        del         "R-${env:rversion}-win.exe"
-      }
-      #
-      # any download
-      # PowerShell 4.0, an Alias of "curl"
-      if(-not ("${env:rversionurl_download_ext}" -eq ".exe")) {
-        curl -o "R-${env:rversion}-win${env:rversionurl_download_ext}" -v "${env:rversionurl}"
-        7z e    "R-${env:rversion}-win${env:rversionurl_download_ext}" "R-${env:rversion}-win.exe"
-      } else {
-        curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
-      }
-  #
-  - R-%rversion%-win.exe /VERYSILENT
-  #
+if ("${env:Platform}" -eq "x64") {
+${env:bit} = "64"
+} else {
+${env:bit} = "32"
+}
+${env:betterperl} = "strawberry${env:bit}"
+${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
+#
+# possible user provided in the matrix
+#
+- if not defined githubcache     set githubcache=false
+- if not defined pghint          set pghint=none
+- if not defined pg              set pg=none
+- if not defined pglinkbinoldurl set pglinkbinoldurl=none
+- if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
+- if not defined rversionurl set rversionurl=https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
+- if not defined rversion_more set rversion_more=-nodetails
 
-  - set mingw=C:\msys64\mingw
-  #
-  # From the EnterpriseDB version name,
-  # if any, strip off the: right-most part dot, then numbers, then one hyphen, then numbers.
-  - ps: $env:pgversion = $env:pg -replace "[.]\d+-\d+$", ""
-  #
-  - echo pgversion=%pgversion%
-  - set pgroot=%pf%\PostgreSQL\%pgversion%
-  - echo %pgroot%
-  #
-  # In the Perl x86 case, in Perl, in install.pl,  "mkdir" silently fails.
-  # %pgroot% is always needed (to use\place binaries in) to do the regression tests,
-  # so just, explicitly (early), create that directory here now.
-  #
-  - if not exist "%pgroot%" mkdir "%pgroot%"
-  - echo SHOWING pgroot - "%pgroot%"
-  - dir "%pgroot%"
-  #
-  - SET R_HOME=%ProgramFiles%\R\R-%rversion%
-  - set rbin=%Platform:x86=i386%
+install:
+- echo compiler msys2 install
+- ps: |
+# Set-PSDebug -Trace 2
+${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
 
-  - SET sed=C:\msys64\usr\bin\sed
+# - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
+- ps: |
+# Set-PSDebug -Trace 2
+# default
+# special named R version(s)
+if("${env:rlinkbinoldurl}" -eq "none") {
+if("${env:rversion}" -match "beta|alpha|devel|patched") {
+${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
+}
+} else {
+# R general download (or a specific custom build)
+${env:rversionurl} = ${env:rlinkbinoldurl}
+}
+# .7z .zip .exe
+${env:rversionurl_download_ext} = [System.IO.Path]::GetExtension(${env:rversionurl})
 
-  # Appveyor specific: seems not required - with Appveyor - Strawberry perl is already in the path
-  # ActiveState Perl is good, but Strawberry Perl is preferred
-  #
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if (-not (Test-Path "${env:betterperl}.zip")) {
-        curl -o "${env:betterperl}.zip" -v "${env:betterperlurl}"
-      }
-      7z x    "${env:betterperl}.zip" "-oc:\${env:betterperl}"
-      # of needed to install pl/perl
-      ${env:PATH} = "c:\${env:betterperl}\perl\bin;${env:PATH}"
-      which perl
-      ${env:PATH} = "${env:PATH};c:\${env:betterperl}\c\bin"
-      which pexports
+# .7z .zip .exe # too many variants: not worth the time/code/headache/caching effort
+if (Test-Path "R-${env:rversion}-win.exe") {
+del         "R-${env:rversion}-win.exe"
+}
+#
+# any download
+# PowerShell 4.0, an Alias of "curl"
+if(-not ("${env:rversionurl_download_ext}" -eq ".exe")) {
+curl -o "R-${env:rversion}-win${env:rversionurl_download_ext}" -v "${env:rversionurl}"
+7z e    "R-${env:rversion}-win${env:rversionurl_download_ext}" "R-${env:rversion}-win.exe"
+} else {
+curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
+}
+#
+- R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
 
-  #
-  # if "githubcache: true",
-  #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
-  #   pg already-compiled-binaries.
-  #
-  - set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
-  - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pg7z%
-  #
-  # note: using Windows instead of Powershell
-  # I could not get the Invoke-??? . . . I would silently run (and die), I would not get error feedback.
-  #
-  - if "%githubcache%"=="true" if not exist "%pg7z%"  (
-      bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
-      for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i)
-    )
-  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" curl -o "%pg7z%" -L "%pggithubbincacheurl%"
-  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if exist "%pg7z%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false)
-  - if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if "%pggithubbincachefound%"=="true" (
-        mkdir            "%pgroot%" &
-        7z x "%pg7z%"  "-o%pgroot%" &
-        dir              "%pgroot%" &
-        if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
-    )
-  # user provided (if any), in the matrix
-  - echo githubcache %githubcache%
-  # generated
-  # internal - do not reuse
-  - echo pggithubbincachefailingfound %pggithubbincachefailingfound%
-  # reused below
-  - echo pggithubbincachefound %pggithubbincachefound%
-  - if not defined pggithubbincachefound set pggithubbincachefound=false
-  - echo pggithubbincachefound %pggithubbincachefound%
-  # reused below
-  - echo pggithubbincacheextracted %pggithubbincacheextracted%
-  - if not defined pggithubbincacheextracted set pggithubbincacheextracted=false
-  - echo pggithubbincacheextracted %pggithubbincacheextracted%
+# From the version
+- ps: |
+# Set-PSDebug -Trace 2
+if("${env:pg}" -ne "none") {
+${env:pgversion} = ${env:pg}
+}
+# if pg equals none - msys2 binary case,
+# then later in the .sh scripts, pgversion will be determined by SQL
 
-  #
-  # Remove old plr files, from the pg already-compiled-binary
-  # extraction from 0.0.0.0.0.GITHUBCACHE, if any old files
-  #
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if (("${env:githubcache}" -eq "true") -and ("${env:pggithubbincacheextracted}" -eq "true")) {
-        pushd "${env:pgroot}"
-        del share\extension\plr--*.sql   2>null
-        del share\extension\plr.control  2>null
-        del lib\plr.dll                  2>null
-        del symbols\plr.pdb              2>null
-        popd
-      }
+#
+# only used about a custom PostgreSQL build (not an MSYS2 already compiled binary)
+#
+# no quotes - IMPORTANT to pass to bash
+- set pgroot=C:\PGINSTALL
+- mkdir "%pgroot%"
+#
 
-  #
-  # msbuild needs
-  #
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
-        $env:proj="plr.vcxproj"
-        $env:dll="$($env:Platform.replace('x86', '.'))\$env:Configuration\plr.dll"
-      }
+#
+# In powershell the (above) will not run/install
+# neither plain as here, nor in Invoke-Command,
+# (Perhaps because, of "some" complexity)
 
+- ps: |
+# Set-PSDebug -Trace 2
+if (-not (Test-Path "${env:betterperl}.zip")) {
+curl -o "${env:betterperl}.zip" -v "${env:betterperlurl}"
+}
+7z x    "${env:betterperl}.zip" "-oc:\${env:betterperl}"
+# of needed to install pl/perl
+${env:PATH} = "c:\${env:betterperl}\perl\bin;${env:PATH}"
+which perl
+${env:PATH} = "${env:PATH};c:\${env:betterperl}\c\bin"
+which pexports
+# note, if compiling PostgreSQL from source,
+# then in the .sh files. one has to re-set the path
+# xor append . . .
+# export PATH=. . .etc . . .:${PATH}
+# to the /etc/profile
 
-  - ps: |
-      # "branchtagcommit" exists only because, this makes an easier test in a windows batch
-      # This environment variable is use in a test that is used that is used in determining
-      # whether or not to perform patching (see below).
-      #
-      if ("${env:pg}" -notmatch "[.]") {
-        ${env:branchtagcommit} = "yes"
-      } else {
-        ${env:branchtagcommit} = "no"
-      }
-      echo "branchtagcommit ${env:branchtagcommit}"
+#
+# if "githubcache: true",
+#   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
+#   pg already-compiled-binaries.
+#
+- set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
+- set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pg7z%
+#
+# note: using Windows instead of Powershell
+# I could not get the Invoke-??? . . . I would silently run (and die), I would not get error feedback.
+#
+- if "%githubcache%"=="true" if not exist "%pg7z%"  (
+bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
+for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i)
+)
+- if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" curl -o "%pg7z%" -L "%pggithubbincacheurl%"
+- if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if exist "%pg7z%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false)
+- if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if "%pggithubbincachefound%"=="true" (
+mkdir            "%pgroot%" &
+7z x "%pg7z%"  "-o%pgroot%" &
+dir              "%pgroot%" &
+if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
+)
+#                            msys2: executable IS STILL postgres.exe (not postgres)
+# user provided (if any), in the matrix
+- echo githubcache %githubcache%
+# generated
+# internal - do not reuse
+- echo pggithubbincachefailingfound %pggithubbincachefailingfound%
+# reused below
+- echo pggithubbincachefound %pggithubbincachefound%
+- if not defined pggithubbincachefound set pggithubbincachefound=false
+- echo pggithubbincachefound %pggithubbincachefound%
+# reused below
+- echo pggithubbincacheextracted %pggithubbincacheextracted%
+- if not defined pggithubbincacheextracted set pggithubbincacheextracted=false
+- echo pggithubbincacheextracted %pggithubbincacheextracted%
 
+#
+# Remove old plr files, from the pg already-compiled-binary
+# extraction from 0.0.0.0.0.GITHUBCACHE, if any old files
+#
+# in the msys2 case, this will not happen (TODO: later remove this code)
+#
+- ps: |
+# Set-PSDebug -Trace 2
+if (("${env:githubcache}" -eq "true") -and ("${env:pggithubbincacheextracted}" -eq "true")) {
+pushd "${env:pgroot}"
+del share\extension\plr--*.sql   2>null
+del share\extension\plr.control  2>null
+del lib\plr.dll                  2>null
+del symbols\plr.pdb              2>null
+popd
+}
 
-  #
-  # PostgreSQL from source code: git, tag, or commit
-  #
-  - ps: |
-      # Set-PSDebug -Trace 2
-      # notmatch - if no "dot is found" in pg name, then pg is a: git: branch, tag, or commit.
-      if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:pg}" -notmatch "[.]")) {
-        git config --global advice.detachedHead false
-        $env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
-        #
-        # git branch or commit - alphanumeric and all lowercase letters (slower download)
-        #
-        if(("${env:pg}" -cmatch  "^[a-z0-9]+$") -and ("${env:pghint}" -eq "commit")) {
-          git clone -q                            https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
-          pwd
-          pushd c:\projects\postgresql
-          pwd
-          git checkout -q                 ${env:pg} -b ${env:pg}
-          git branch
-          echo ${env:pg}
-          popd
-          pwd
-        #
-        # git branch or tag(detached head)
-        # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
-        #
-        } else {
-          git clone -q --depth 1 --branch ${env:pg} https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
-          pushd c:\projects\postgresql
-          pwd
-          git branch
-          echo ${env:pg}
-          popd
-          pwd
-        }
-        pushd c:\projects\postgresql
-        pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
-        popd
-      }
+#
+# PostgreSQL from source code: git, tag, or commit
+#
+- ps: |
+# Set-PSDebug -Trace 2
+if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:pg}" -ne "none")) {
+git config --global advice.detachedHead false
+$env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
+#
+# git branch or commit - alphanumeric and all lowercase letters (slower download)
+#
+if("${env:pghint}" -eq "commit") {
+git clone -q                            https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+pwd
+pushd c:\projects\postgresql
+pwd
+git checkout -q                 ${env:pg} -b ${env:pg}
+git branch
+echo ${env:pg}
+popd
+pwd
+#
+# git branch or tag(detached head)
+# PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
+#
+} else {
+git clone -q --depth 1 --branch ${env:pg} https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+pushd c:\projects\postgresql
+pwd
+git branch
+echo ${env:pg}
+popd
+pwd
+}
+pushd c:\projects\postgresql
+pwd
+echo "Files . . ."
+$Table = Get-ChildItem
+foreach ($Row in $Table) { $Row.Name }
+popd
+}
 
-  #
-  # PostgreSQL from source code: git, tag, or commit
-  #
-  # dynamically patch, so that a separate msvc.diff file does not have to be used
-  #
-  # Required "postgresrcroot" for msvc.diff.R and Solution.pm.R
-  - set postgresrcroot=C:\projects\postgresql
-  #
-  - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
-        echo Begin performing patching on-the-fly &
-        pushd "C:\projects\postgresql" &
-        copy "src\tools\msvc\Mkvcbuild.pm" "src\tools\msvc\Mkvcbuild.pm.old" &
-        copy "src\tools\msvc\vcregress.pl" "src\tools\msvc\vcregress.pl.old" &
-        popd &
-        echo Begin patching &
-        echo "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
-             "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
-        echo End patching &
-        pushd "C:\projects\postgresql" &
-        git diff --no-index "src/tools/msvc/Mkvcbuild.pm.old" "src/tools/msvc/Mkvcbuild.pm" --output=%APPVEYOR_BUILD_FOLDER%\Mkvcbuild.pm.diff &
-        sed -i "s/Mkvcbuild.pm.old/Mkvcbuild.pm/g" %APPVEYOR_BUILD_FOLDER%\Mkvcbuild.pm.diff &
-        git diff --no-index "src/tools/msvc/vcregress.pl.old" "src/tools/msvc/vcregress.pl" --output=%APPVEYOR_BUILD_FOLDER%\vcregress.pl.diff &
-        sed -i "s/vcregress.pl.old/vcregress.pl/g" %APPVEYOR_BUILD_FOLDER%\vcregress.pl.diff &
-        popd &
-        type %APPVEYOR_BUILD_FOLDER%\Mkvcbuild.pm.diff %APPVEYOR_BUILD_FOLDER%\vcregress.pl.diff > %APPVEYOR_BUILD_FOLDER%\msvc.diff &
-        echo **** Begin Display %APPVEYOR_BUILD_FOLDER%\msvc.diff **** &
-             type          %APPVEYOR_BUILD_FOLDER%\msvc.diff &
-        echo **** End   Display %APPVEYOR_BUILD_FOLDER%\msvc.diff **** &
-        echo Begin display of Mkvcbuild.pm &
-        type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm &
-        echo End display of Mkvcbuild.pm &
-        echo Begin display of vcregress.pl &
-        type c:\projects\postgresql\src\tools\msvc\vcregress.pl &
-        echo End display of vcregress.pl &
-        echo End performing patching on-the-fly
-    )
+# msys2
+#
+# Nov Dec 2021 Appveyor changed the PATH
+# The [first] winpty.exe found is [the] "wrong [one]"
+#
+# Attempt to avoid the error:
+#
+# 1 [main] winpty (2980) C:\Program Files\Git\usr\bin\winpty.exe: *** fatal error - cygheap base mismatch detected
+# This problem is probably due to using incompatible versions of the cygwin DLL
+#
+- bash --login -c "pacman --noconfirm -S --needed winpty"
+
+# PostgreSQL from an MSYS2 already-compiled-binary.
+- if "%pg%"=="none" (
+bash --login -c "pacman --noconfirm -S --needed ${MINGW_PACKAGE_PREFIX}-postgresql"
+)
+
+#
+# How to obtain older versions of packages using MSYS2?
+# 2015
+# https://stackoverflow.com/questions/33969803/how-to-obtain-older-versions-of-packages-using-msys2
+#
+- if "%pg%"=="none" if not "%pglinkbinoldurl%"=="none" (
+bash -login -c "curl   -o             install.pkg.tar.zst ${pglinkbinoldurl}" &
+bash -login -c "pacman -U --noconfirm install.pkg.tar.zst"
+)
+
+build_script:
+- bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
+
+after_build:
+- bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/after_build.sh"
+
+test_script:
+- bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
 
 
-  #
-  # PostgreSQL from source code: git, tag, or commit
-  #
-  # Microsoft Visual Studio specific: "cl /?" or "cl /help" can not be ran.
-  # "cl" is interpreted as an Appveyor specific alias to the Windows command "call"
-  # so PostgreSQL, can not correctly determing the platform.
-  #
-  # Trying to override the phantom alias executable "cl" - Microsoft "call"
-  # https://help.appveyor.com/discussions/problems/29255-trying-to-override-the-phantom-alias-executable-cl-microsoft-call
-  #
-  # force x86 to have the CPlatform: Win32
-  # force x64 to have the CPlatform: x64
-  #
-  - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
-      echo Begin performing patching on-the-fly &
-      echo Begin patching
-    )
-  - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" if "%Platform%"=="x86" (
-        echo "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R Win32 &
-             "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R Win32
-    )
-  - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" if "%Platform%"=="x64" (
-        echo "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R x64 &
-             "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R x64
-    )
-  - if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
-      echo End patching &
-      echo Begin display of Solution.pm &
-      type c:\projects\postgresql\src\tools\msvc\Solution.pm &
-      echo End display of Solution.pm &
-      echo End performing patching on-the-fly
-    )
+-
+matrix:
+only:
+- compiler: msvc
 
-  #
-  # PostgreSQL from source code: git, tag, or commit
-  #
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
-        gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:Platform.def" 2> $null
-        lib "/def:R$env:Platform.def" "/out:R$env:Platform.lib" "/MACHINE:$env:Platform"
-        pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
-        pushd c:\projects\postgresql
-        pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
-        cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
-        #
-        # patch already done - above - using msvc.diff.R
-        # patch -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
-        #
-        # creates both plr.vcxproj and pgsql.sln
-        perl contrib\plr\buildsetup.pl
-        pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
-        type C:\projects\postgresql\pgsql.sln
-        type plr.vcxproj
-        # echo . . . COMPARING . . .
-        # type pgcrypto.vcxproj
-        # type postgres.vcxproj
-        popd
-        pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
-        $env:proj="C:\projects\postgresql\pgsql.sln"
-        $env:dll="c:\projects\postgresql\$env:Configuration\plr\plr.dll"
-      }
+environment:
+#
+# Appveyor PostgreSQL clusters specific
+#
+PGUSER: postgres
+PGPASSWORD: Password12!
+#
+# PostgreSQL client session
+#
+PGOPTIONS: -c log_error_verbosity=verbose -c log_min_messages=debug2 -c log_min_error_statement=debug2
+#
 
-  # PostgreSQL from Appveyor or an EnterpriseDB already-compiled-binary.
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
-        $env:proj="plr.vcxproj"
-        $env:dll="$($env:Platform.replace('x86', '.'))\$env:Configuration\plr.dll"
-        if (-not (Test-Path "$env:pgroot\bin")) {
-          if (-not (Test-Path "$env:exe")) {
-            Start-FileDownload "http://get.EnterpriseDB.com/postgresql/$env:exe"
-          }
-          & ".\$env:exe" --unattendedmodeui none --mode unattended --superpassword "$env:PGPASSWORD" --servicepassword "$env:PGPASSWORD" | Out-Null
-          Stop-Service "postgresql$env:x64-$env:pgversion"
-          if ( Test-Path "$env:pgroot\bin" ) {
-            echo  "Directory $env:pgroot\bin does exist. - software from EnterpriseDB (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)."
-            echo "$env:pgroot"
-            echo "Files . . ."
-            $Table = Get-ChildItem "$env:pgroot"
-            foreach ($Row in $Table) { $Row.Name }
-          } else {
-            throw "Directory $env:pgroot\bin does not exist.`r`nDoes EnterpriseDB (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) have that version/platform combination?"
-          }
-        }
-        if ( Test-Path "$env:pgroot\bin" ) {
-          echo  "Directory $env:pgroot\bin does exist. - solution from appveyor (https://www.appveyor.com/docs/services-databases/#postgresql) or EnterpriseDB (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)."
-          echo "$env:pgroot"
-          echo "Files . . ."
-          $Table = Get-ChildItem "$env:pgroot"
-          foreach ($Row in $Table) { $Row.Name }
-        } else {
-          throw "Neither appveyor (https://www.appveyor.com/docs/services-databases/#postgresql) nor EnterpriseDB (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) have that version/platform combination?"
-        }
-      }
+# Appveyor build server environment variables
+#
+# ProgramFiles=C:\Program Files
+# ProgramFiles(x86)=C:\Program Files (x86)
+#
+init:
+- echo compiler msvc init
+- systeminfo
+# https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
+- if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
+- if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
+# Make %x64% available for caching
+# a variable used in the Appveyor cache area must be defined in the init
+- ps: |
+if ("$env:Platform" -eq "x64") {
+$env:pf = "$env:ProgramFiles"
+$env:x64 = "-x64"
+} else {
+$env:pf = "${env:ProgramFiles(x86)}"
+}
+$env:exe = "postgresql-$env:pg-windows$env:x64.exe"
+[Environment]::SetEnvironmentVariable("exe", $env:exe, "Machine")
 
-  # msbuild: reads the environment variable Platform. The Platform value can be either Win32 xor x64.
-  # xor
-  # msbuild: can read /p:platform=Value. The Value can be either Win32 xor x64.
-  #
-  build_script:
-  - echo compiler msvc build_script
-  - if %Platform%==x86 set CPlatform=Win32
-  - if %Platform%==x64 set CPlatform=x64
-  #
-  # note: build.pl is an alternative
-  #
-  - REM verbosity levels: q[uiet], m[inimal](orig program), n[ormal] (default), d[etailed], and diag[nostic]
-  - msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%Configuration% /p:platform=%CPlatform%
-            %proj%
-            /verbosity:quiet /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+if ("${env:Platform}" -eq "x64") {
+${env:bit} = "64"
+} else {
+${env:bit} = "32"
+}
+${env:betterperl} = "strawberry${env:bit}"
+${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
+#
+# possible user provided in the matrix
+#
+- if not defined githubcache set githubcache=false
+- if not defined pghint      set pghint=none
+- if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
+- if not defined rversionurl set rversionurl=https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
+- if not defined rversion_more set rversion_more=-nodetails
+
+install:
+- echo compiler msvc install
+#
+# FUTURE: bleeding edge versions of R for Windows (non-cygwin)
+# https://cran.r-project.org/bin/windows/base/R-devel-win.exe
+# https://cran.r-project.org/bin/windows/base/rdevel.html
+#
+# R release dates are here
+# https://developer.r-project.org/
+#
+# R "MSYS2" compiled R binaries location: https://ftp.opencpu.org/
+#
+# https://cran.r-project.org/bin/windows/base/R-4.1.0patched-win.exe
+# sometimes
+# https://cran.r-project.org/bin/windows/base/R-4.1.#alpha-win.exe
+# https://cran.r-project.org/bin/windows/base/rpatched.html
+#
+# - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
+- ps: |
+# Set-PSDebug -Trace 2
+# default
+# special named R version(s)
+if("${env:rlinkbinoldurl}" -eq "none") {
+if("${env:rversion}" -match "beta|alpha|devel|patched") {
+${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
+}
+} else {
+# R general download (or a specific custom build)
+${env:rversionurl} = ${env:rlinkbinoldurl}
+}
+# .7z .zip .exe
+${env:rversionurl_download_ext} = [System.IO.Path]::GetExtension(${env:rversionurl})
+
+# .7z .zip .exe # too many variants: not worth the time/code/headache/caching effort
+if (Test-Path "R-${env:rversion}-win.exe") {
+del         "R-${env:rversion}-win.exe"
+}
+#
+# any download
+# PowerShell 4.0, an Alias of "curl"
+if(-not ("${env:rversionurl_download_ext}" -eq ".exe")) {
+curl -o "R-${env:rversion}-win${env:rversionurl_download_ext}" -v "${env:rversionurl}"
+7z e    "R-${env:rversion}-win${env:rversionurl_download_ext}" "R-${env:rversion}-win.exe"
+} else {
+curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
+}
+#
+- R-%rversion%-win.exe /VERYSILENT
+#
+
+- set mingw=C:\msys64\mingw
+#
+# From the EnterpriseDB version name,
+# if any, strip off the: right-most part dot, then numbers, then one hyphen, then numbers.
+- ps: $env:pgversion = $env:pg -replace "[.]\d+-\d+$", ""
+#
+- echo pgversion=%pgversion%
+- set pgroot=%pf%\PostgreSQL\%pgversion%
+- echo %pgroot%
+#
+# In the Perl x86 case, in Perl, in install.pl,  "mkdir" silently fails.
+# %pgroot% is always needed (to use\place binaries in) to do the regression tests,
+# so just, explicitly (early), create that directory here now.
+#
+- if not exist "%pgroot%" mkdir "%pgroot%"
+- echo SHOWING pgroot - "%pgroot%"
+- dir "%pgroot%"
+#
+- SET R_HOME=%ProgramFiles%\R\R-%rversion%
+- set rbin=%Platform:x86=i386%
+
+- SET sed=C:\msys64\usr\bin\sed
+
+# Appveyor specific: seems not required - with Appveyor - Strawberry perl is already in the path
+# ActiveState Perl is good, but Strawberry Perl is preferred
+#
+- ps: |
+# Set-PSDebug -Trace 2
+if (-not (Test-Path "${env:betterperl}.zip")) {
+curl -o "${env:betterperl}.zip" -v "${env:betterperlurl}"
+}
+7z x    "${env:betterperl}.zip" "-oc:\${env:betterperl}"
+# of needed to install pl/perl
+${env:PATH} = "c:\${env:betterperl}\perl\bin;${env:PATH}"
+which perl
+${env:PATH} = "${env:PATH};c:\${env:betterperl}\c\bin"
+which pexports
+
+#
+# if "githubcache: true",
+#   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
+#   pg already-compiled-binaries.
+#
+- set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
+- set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pg7z%
+#
+# note: using Windows instead of Powershell
+# I could not get the Invoke-??? . . . I would silently run (and die), I would not get error feedback.
+#
+- if "%githubcache%"=="true" if not exist "%pg7z%"  (
+bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.sh" &
+for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\pggithubbincachefailingfound.txt) do (set pggithubbincachefailingfound=%%i)
+)
+- if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" curl -o "%pg7z%" -L "%pggithubbincacheurl%"
+- if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if exist "%pg7z%" (set pggithubbincachefound=true) else (set pggithubbincachefound=false)
+- if "%githubcache%"=="true" if "%pggithubbincachefailingfound%"=="false" if "%pggithubbincachefound%"=="true" (
+mkdir            "%pgroot%" &
+7z x "%pg7z%"  "-o%pgroot%" &
+dir              "%pgroot%" &
+if exist "%pgroot%\bin\postgres.exe" (set pggithubbincacheextracted=true) else (set pggithubbincacheextracted=false)
+)
+# user provided (if any), in the matrix
+- echo githubcache %githubcache%
+# generated
+# internal - do not reuse
+- echo pggithubbincachefailingfound %pggithubbincachefailingfound%
+# reused below
+- echo pggithubbincachefound %pggithubbincachefound%
+- if not defined pggithubbincachefound set pggithubbincachefound=false
+- echo pggithubbincachefound %pggithubbincachefound%
+# reused below
+- echo pggithubbincacheextracted %pggithubbincacheextracted%
+- if not defined pggithubbincacheextracted set pggithubbincacheextracted=false
+- echo pggithubbincacheextracted %pggithubbincacheextracted%
+
+#
+# Remove old plr files, from the pg already-compiled-binary
+# extraction from 0.0.0.0.0.GITHUBCACHE, if any old files
+#
+- ps: |
+# Set-PSDebug -Trace 2
+if (("${env:githubcache}" -eq "true") -and ("${env:pggithubbincacheextracted}" -eq "true")) {
+pushd "${env:pgroot}"
+del share\extension\plr--*.sql   2>null
+del share\extension\plr.control  2>null
+del lib\plr.dll                  2>null
+del symbols\plr.pdb              2>null
+popd
+}
+
+#
+# msbuild needs
+#
+- ps: |
+# Set-PSDebug -Trace 2
+if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
+$env:proj="plr.vcxproj"
+$env:dll="$($env:Platform.replace('x86', '.'))\$env:Configuration\plr.dll"
+}
 
 
-  after_build:
-  - appveyor AddMessage Packing -Category Information
-  - md tmp\share\extension
-  - dir .
-  - copy *.sql tmp\share\extension\
-  - copy *.control tmp\share\extension\
-  - copy LICENSE tmp\PLR_LICENSE
-  - md tmp\lib
-  - md tmp\symbols
-  - copy %dll% tmp\lib
-  - copy %dll:.dll=.pdb% tmp\symbols
-  - dir tmp
-  - set var7z=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%%rversion_more%-%Platform%-%Configuration%-%compiler%.7z
-  - 7z a -t7z -mmt24 -mx7 -r %var7z% .\tmp\* > nul
-  - dir "%var7z%"
-  - echo appveyor PushArtifact "%var7z%"
-  -      appveyor PushArtifact "%var7z%"
+- ps: |
+# "branchtagcommit" exists only because, this makes an easier test in a windows batch
+# This environment variable is use in a test that is used that is used in determining
+# whether or not to perform patching (see below).
+#
+if ("${env:pg}" -notmatch "[.]") {
+${env:branchtagcommit} = "yes"
+} else {
+${env:branchtagcommit} = "no"
+}
+echo "branchtagcommit ${env:branchtagcommit}"
 
-  # #
-  # - echo BEGIN TRY TO FIND BUILT FILES LOCATION: postgres.exe and plr.dll
-  # - bash --login -c "find '/c/projects/postgresql' -name '*postgres.exe' -type f 2>/dev/null"
-  # - bash --login -c "find '/c/projects/postgresql' -name '*plr.dll'      -type f 2>/dev/null"
-  # - echo END TRY TO FIND BUILT FILES LOCATION: postgres.exe and plr.dll
-  # #
-  # - echo BEGIN TRY TO PRINT ALL BUILT FILES
-  # - if exist "c:\projects\postgresql\Release" bash -login -c "find '/c/projects/postgresql/Release' -name '*' -print 2>/dev/null"
-  # - if exist "c:\projects\postgresql\Debug"   bash -login -c "find '/c/projects/postgresql/Debug'   -name '*' -print 2>/dev/null"
-  # - echo END TRY TO PRINT ALL BUILT FILES
-  # #
 
-  #
-  # place files from the .\Debug or .\Release directories onto $env:pgroot
-  #
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
-        pushd c:\projects\postgresql\src\tools\msvc
-        pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
-        perl install.pl "$env:pgroot"
-        pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
-        popd
-        pwd
-      }
-  #
-  # #
-  # - echo BEGIN TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
-  - bash --login -c "find \"$(cygpath \"${pf}\")\" -name '*postgres.exe' -type f 2>/dev/null"
-  - bash --login -c "find \"$(cygpath \"${pf}\")\" -name '*plr.dll'      -type f 2>/dev/null"
-  # - echo END TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
-  # #
+#
+# PostgreSQL from source code: git, tag, or commit
+#
+- ps: |
+# Set-PSDebug -Trace 2
+# notmatch - if no "dot is found" in pg name, then pg is a: git: branch, tag, or commit.
+if (("${env:pggithubbincacheextracted}" -eq "false") -and ("${env:pg}" -notmatch "[.]")) {
+git config --global advice.detachedHead false
+$env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
+#
+# git branch or commit - alphanumeric and all lowercase letters (slower download)
+#
+if(("${env:pg}" -cmatch  "^[a-z0-9]+$") -and ("${env:pghint}" -eq "commit")) {
+git clone -q                            https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+pwd
+pushd c:\projects\postgresql
+pwd
+git checkout -q                 ${env:pg} -b ${env:pg}
+git branch
+echo ${env:pg}
+popd
+pwd
+#
+# git branch or tag(detached head)
+# PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
+#
+} else {
+git clone -q --depth 1 --branch ${env:pg} https://git.postgresql.org/git/postgresql.git c:\projects\postgresql
+pushd c:\projects\postgresql
+pwd
+git branch
+echo ${env:pg}
+popd
+pwd
+}
+pushd c:\projects\postgresql
+pwd
+echo "Files . . ."
+$Table = Get-ChildItem
+foreach ($Row in $Table) { $Row.Name }
+popd
+}
 
-  #
-  # same as above (repeated here)
-  - set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
-  #
-  # Zipping must be performed here, after "perl install.pl".
-  # pg has been installed inside %pgroot% == %pf%\PostgreSQL\%pgversion% (see above).
-  # The PostgreSQL cluster must be down.
-  # The environment variable "pggithubbincachefound" is
-  #   used in determining whether or not to attempt to
-  #   deploy to the Github release 0.0.0.0.0.GITHUBCACHE (see below).
-  #
-  # "%pgroot%\bin\postgres.exe" SHOULD BE THERE - missing should NOT happen
-  - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" (
-      7z a -t7z -mmt24 -mx7 -r "%pg7z%"  "%pgroot%\*" > nul
-    )
-  #
-  # Often push "msvc pg" artifacts (because they are not too big.)
-  #
-  - if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pg7z%" (
-      appveyor PushArtifact "%pg7z%"
-    )
-  # what did I 7z up?
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if ( ("$env:githubcache" -eq "true") -and ("$env:pggithubbincachefound" -eq "false") -and (Test-Path "$env:pgroot\bin\postgres.exe") ) {
-        7z l "$env:pg7z"
-      }
+#
+# PostgreSQL from source code: git, tag, or commit
+#
+# dynamically patch, so that a separate msvc.diff file does not have to be used
+#
+# Required "postgresrcroot" for msvc.diff.R and Solution.pm.R
+- set postgresrcroot=C:\projects\postgresql
+#
+- if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
+echo Begin performing patching on-the-fly &
+pushd "C:\projects\postgresql" &
+copy "src\tools\msvc\Mkvcbuild.pm" "src\tools\msvc\Mkvcbuild.pm.old" &
+copy "src\tools\msvc\vcregress.pl" "src\tools\msvc\vcregress.pl.old" &
+popd &
+echo Begin patching &
+echo "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
+"%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\msvc.diff.R &
+echo End patching &
+pushd "C:\projects\postgresql" &
+git diff --no-index "src/tools/msvc/Mkvcbuild.pm.old" "src/tools/msvc/Mkvcbuild.pm" --output=%APPVEYOR_BUILD_FOLDER%\Mkvcbuild.pm.diff &
+sed -i "s/Mkvcbuild.pm.old/Mkvcbuild.pm/g" %APPVEYOR_BUILD_FOLDER%\Mkvcbuild.pm.diff &
+git diff --no-index "src/tools/msvc/vcregress.pl.old" "src/tools/msvc/vcregress.pl" --output=%APPVEYOR_BUILD_FOLDER%\vcregress.pl.diff &
+sed -i "s/vcregress.pl.old/vcregress.pl/g" %APPVEYOR_BUILD_FOLDER%\vcregress.pl.diff &
+popd &
+type %APPVEYOR_BUILD_FOLDER%\Mkvcbuild.pm.diff %APPVEYOR_BUILD_FOLDER%\vcregress.pl.diff > %APPVEYOR_BUILD_FOLDER%\msvc.diff &
+echo **** Begin Display %APPVEYOR_BUILD_FOLDER%\msvc.diff **** &
+type          %APPVEYOR_BUILD_FOLDER%\msvc.diff &
+echo **** End   Display %APPVEYOR_BUILD_FOLDER%\msvc.diff **** &
+echo Begin display of Mkvcbuild.pm &
+type c:\projects\postgresql\src\tools\msvc\Mkvcbuild.pm &
+echo End display of Mkvcbuild.pm &
+echo Begin display of vcregress.pl &
+type c:\projects\postgresql\src\tools\msvc\vcregress.pl &
+echo End display of vcregress.pl &
+echo End performing patching on-the-fly
+)
 
-  test_script:
-  - echo compiler msvc test_script
-  - path %pgroot%\bin;%PATH%
-  - which postgres
-  # From source code, but at this point in time,
-  # the source code is an already (compiled) binary on disk and correctly located within $env:pgroot.
-  #   see above - perl install.pl
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if ("$env:pg" -notmatch "[.]") {
-        Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
-        initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
-        pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
-      } else {
-        Add-AppveyorMessage "Copying the extension files to the PostgreSQL directories." -Category Information
-        7z x "$env:var7z" "-o$env:pgroot"
-      }
-      #
-      # If the pg is from the already-compiled-binary 0.0.0.0.0.GITHUBCACHE,
-      # then, add the "plr" to be (eventually) regression tested.
-      #
-      if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
-        7z x "$env:var7z" "-o$env:pgroot"
-      }
 
-  - appveyor AddMessage "Starting the database server." -Category Information
-  - setx /M PATH "%R_HOME%\bin\%rbin%;%PATH%"
-  - net start postgresql%x64%-%pgversion%
-  #
-  # I need the server_version_num, so we can later, test to determine "$env:psqlopt".
-  # I can not use "$env:pgversion" because a branch, tag, or commit
-  # name (e.g.) "master" can not (always) be (easily) compared.
-  #
-  # R 4.2.+ (on Windows utf8) sanity check
-  - psql -c "\l template[01]"
-  #
-  # also used in compiler - msys2 and cygwin
-  - psql --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;" --output=%APPVEYOR_BUILD_FOLDER%\server_version_num.txt
-  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/server_version_num.sh"
-  # load new environment variable(s) e.g. "server_version_num" into the current Windows
-  - for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\server_version_num.txt) do (set server_version_num=%%i)
-  - type %APPVEYOR_BUILD_FOLDER%\server_version_num.txt
-  - echo server_version_num %server_version_num%
-  - ps: |
-      # Set-PSDebug -Trace 2
-      Add-AppveyorTest Regression -Framework pg_regress -FileName sql\ -Outcome Running
-      # less than pg 9.5
-      if ([double]"$env:server_version_num" -lt 90500.0) {
-        $env:psqlopt="--psqldir"
-      } else {
-        $env:psqlopt="--bindir"
-      }
-      $env:Outcome="Passed"
-      $elapsed=(Measure-Command {
-        pg_regress "$env:psqlopt=$env:pgroot\bin" --dbname=pl_regression plr `
-          bad_fun opt_window do out_args plr_transaction opt_window_frame 2>&1 |
-          %{ if ($_ -is [System.Management.Automation.ErrorRecord]) { $_.Exception.Message } else { $_ } } |
-            Out-Default
-        if ($LASTEXITCODE -ne 0) {
-          $env:Outcome="Failed"
-        }
-      }).TotalMilliseconds
-      Update-AppVeyorTest Regression -Framework pg_regress -FileName sql\ -Outcome "$env:Outcome" -Duration $elapsed
-      if ("$env:Outcome" -ne "Passed") {
-        type regression.diffs
-        $host.SetShouldExit($LastExitCode)
-      }
+#
+# PostgreSQL from source code: git, tag, or commit
+#
+# Microsoft Visual Studio specific: "cl /?" or "cl /help" can not be ran.
+# "cl" is interpreted as an Appveyor specific alias to the Windows command "call"
+# so PostgreSQL, can not correctly determing the platform.
+#
+# Trying to override the phantom alias executable "cl" - Microsoft "call"
+# https://help.appveyor.com/discussions/problems/29255-trying-to-override-the-phantom-alias-executable-cl-microsoft-call
+#
+# force x86 to have the CPlatform: Win32
+# force x64 to have the CPlatform: x64
+#
+- if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
+echo Begin performing patching on-the-fly &
+echo Begin patching
+)
+- if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" if "%Platform%"=="x86" (
+echo "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R Win32 &
+"%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R Win32
+)
+- if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" if "%Platform%"=="x64" (
+echo "%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R x64 &
+"%R_HOME%\bin\%rbin%\Rscript.exe" --vanilla %APPVEYOR_BUILD_FOLDER%\Solution.pm.R x64
+)
+- if "%pggithubbincacheextracted%"=="false" if "%branchtagcommit%"=="yes" (
+echo End patching &
+echo Begin display of Solution.pm &
+type c:\projects\postgresql\src\tools\msvc\Solution.pm &
+echo End display of Solution.pm &
+echo End performing patching on-the-fly
+)
+
+#
+# PostgreSQL from source code: git, tag, or commit
+#
+- ps: |
+# Set-PSDebug -Trace 2
+if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
+gendef - "$env:R_HOME\bin\$env:rbin\R.dll" > "R$env:Platform.def" 2> $null
+lib "/def:R$env:Platform.def" "/out:R$env:Platform.lib" "/MACHINE:$env:Platform"
+pwd
+echo "Files . . ."
+$Table = Get-ChildItem
+foreach ($Row in $Table) { $Row.Name }
+pushd c:\projects\postgresql
+pwd
+echo "Files . . ."
+$Table = Get-ChildItem
+foreach ($Row in $Table) { $Row.Name }
+cmd /c mklink /J contrib\plr $env:APPVEYOR_BUILD_FOLDER
+#
+# patch already done - above - using msvc.diff.R
+# patch -p1 -i "$env:APPVEYOR_BUILD_FOLDER\msvc.diff"
+#
+# creates both plr.vcxproj and pgsql.sln
+perl contrib\plr\buildsetup.pl
+pwd
+echo "Files . . ."
+$Table = Get-ChildItem
+foreach ($Row in $Table) { $Row.Name }
+type C:\projects\postgresql\pgsql.sln
+type plr.vcxproj
+# echo . . . COMPARING . . .
+# type pgcrypto.vcxproj
+# type postgres.vcxproj
+popd
+pwd
+echo "Files . . ."
+$Table = Get-ChildItem
+foreach ($Row in $Table) { $Row.Name }
+$env:proj="C:\projects\postgresql\pgsql.sln"
+$env:dll="c:\projects\postgresql\$env:Configuration\plr\plr.dll"
+}
+
+# PostgreSQL from Appveyor or an EnterpriseDB already-compiled-binary.
+- ps: |
+# Set-PSDebug -Trace 2
+if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -match "[.]")) {
+$env:proj="plr.vcxproj"
+$env:dll="$($env:Platform.replace('x86', '.'))\$env:Configuration\plr.dll"
+if (-not (Test-Path "$env:pgroot\bin")) {
+if (-not (Test-Path "$env:exe")) {
+Start-FileDownload "http://get.EnterpriseDB.com/postgresql/$env:exe"
+}
+& ".\$env:exe" --unattendedmodeui none --mode unattended --superpassword "$env:PGPASSWORD" --servicepassword "$env:PGPASSWORD" | Out-Null
+Stop-Service "postgresql$env:x64-$env:pgversion"
+if ( Test-Path "$env:pgroot\bin" ) {
+echo  "Directory $env:pgroot\bin does exist. - software from EnterpriseDB (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)."
+echo "$env:pgroot"
+echo "Files . . ."
+$Table = Get-ChildItem "$env:pgroot"
+foreach ($Row in $Table) { $Row.Name }
+} else {
+throw "Directory $env:pgroot\bin does not exist.`r`nDoes EnterpriseDB (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) have that version/platform combination?"
+}
+}
+if ( Test-Path "$env:pgroot\bin" ) {
+echo  "Directory $env:pgroot\bin does exist. - solution from appveyor (https://www.appveyor.com/docs/services-databases/#postgresql) or EnterpriseDB (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)."
+echo "$env:pgroot"
+echo "Files . . ."
+$Table = Get-ChildItem "$env:pgroot"
+foreach ($Row in $Table) { $Row.Name }
+} else {
+throw "Neither appveyor (https://www.appveyor.com/docs/services-databases/#postgresql) nor EnterpriseDB (https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) have that version/platform combination?"
+}
+}
+
+# msbuild: reads the environment variable Platform. The Platform value can be either Win32 xor x64.
+# xor
+# msbuild: can read /p:platform=Value. The Value can be either Win32 xor x64.
+#
+build_script:
+- echo compiler msvc build_script
+- if %Platform%==x86 set CPlatform=Win32
+- if %Platform%==x64 set CPlatform=x64
+#
+# note: build.pl is an alternative
+#
+- REM verbosity levels: q[uiet], m[inimal](orig program), n[ormal] (default), d[etailed], and diag[nostic]
+- msbuild /p:PlatformToolset=%PlatformToolset% /p:configuration=%Configuration% /p:platform=%CPlatform%
+%proj%
+/verbosity:quiet /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+
+
+after_build:
+- appveyor AddMessage Packing -Category Information
+- md tmp\share\extension
+- dir .
+- copy *.sql tmp\share\extension\
+- copy *.control tmp\share\extension\
+- copy LICENSE tmp\PLR_LICENSE
+- md tmp\lib
+- md tmp\symbols
+- copy %dll% tmp\lib
+- copy %dll:.dll=.pdb% tmp\symbols
+- dir tmp
+- set var7z=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%%rversion_more%-%Platform%-%Configuration%-%compiler%.7z
+- 7z a -t7z -mmt24 -mx7 -r %var7z% .\tmp\* > nul
+- dir "%var7z%"
+- echo appveyor PushArtifact "%var7z%"
+-      appveyor PushArtifact "%var7z%"
+
+# #
+# - echo BEGIN TRY TO FIND BUILT FILES LOCATION: postgres.exe and plr.dll
+# - bash --login -c "find '/c/projects/postgresql' -name '*postgres.exe' -type f 2>/dev/null"
+# - bash --login -c "find '/c/projects/postgresql' -name '*plr.dll'      -type f 2>/dev/null"
+# - echo END TRY TO FIND BUILT FILES LOCATION: postgres.exe and plr.dll
+# #
+# - echo BEGIN TRY TO PRINT ALL BUILT FILES
+# - if exist "c:\projects\postgresql\Release" bash -login -c "find '/c/projects/postgresql/Release' -name '*' -print 2>/dev/null"
+# - if exist "c:\projects\postgresql\Debug"   bash -login -c "find '/c/projects/postgresql/Debug'   -name '*' -print 2>/dev/null"
+# - echo END TRY TO PRINT ALL BUILT FILES
+# #
+
+#
+# place files from the .\Debug or .\Release directories onto $env:pgroot
+#
+- ps: |
+# Set-PSDebug -Trace 2
+if (("$env:pggithubbincacheextracted" -eq "false") -and ("$env:pg" -notmatch "[.]")) {
+pushd c:\projects\postgresql\src\tools\msvc
+pwd
+echo "Files . . ."
+$Table = Get-ChildItem
+foreach ($Row in $Table) { $Row.Name }
+perl install.pl "$env:pgroot"
+pwd
+echo "Files . . ."
+$Table = Get-ChildItem
+foreach ($Row in $Table) { $Row.Name }
+popd
+pwd
+}
+#
+# #
+# - echo BEGIN TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
+- bash --login -c "find \"$(cygpath \"${pf}\")\" -name '*postgres.exe' -type f 2>/dev/null"
+- bash --login -c "find \"$(cygpath \"${pf}\")\" -name '*plr.dll'      -type f 2>/dev/null"
+# - echo END TRY TO FIND INSTALLED FILES LOCATION: postgres.exe and plr.dll
+# #
+
+#
+# same as above (repeated here)
+- set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
+#
+# Zipping must be performed here, after "perl install.pl".
+# pg has been installed inside %pgroot% == %pf%\PostgreSQL\%pgversion% (see above).
+# The PostgreSQL cluster must be down.
+# The environment variable "pggithubbincachefound" is
+#   used in determining whether or not to attempt to
+#   deploy to the Github release 0.0.0.0.0.GITHUBCACHE (see below).
+#
+# "%pgroot%\bin\postgres.exe" SHOULD BE THERE - missing should NOT happen
+- if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" (
+7z a -t7z -mmt24 -mx7 -r "%pg7z%"  "%pgroot%\*" > nul
+)
+#
+# Often push "msvc pg" artifacts (because they are not too big.)
+#
+- if "%githubcache%"=="true" if "%pggithubbincachefound%"=="false" if exist "%pgroot%\bin\postgres.exe" if exist "%pg7z%" (
+appveyor PushArtifact "%pg7z%"
+)
+# what did I 7z up?
+- ps: |
+# Set-PSDebug -Trace 2
+if ( ("$env:githubcache" -eq "true") -and ("$env:pggithubbincachefound" -eq "false") -and (Test-Path "$env:pgroot\bin\postgres.exe") ) {
+7z l "$env:pg7z"
+}
+
+test_script:
+- echo compiler msvc test_script
+- path %pgroot%\bin;%PATH%
+- which postgres
+# From source code, but at this point in time,
+# the source code is an already (compiled) binary on disk and correctly located within $env:pgroot.
+#   see above - perl install.pl
+- ps: |
+# Set-PSDebug -Trace 2
+if ("$env:pg" -notmatch "[.]") {
+Set-Content -path pg.pass -value "$env:pgpassword" -encoding ascii
+initdb -A md5 -U "$env:PGUSER" --pwfile=pg.pass C:\pgdata
+pg_ctl register -S demand -N "postgresql$env:x64-$env:pgversion" -D c:\pgdata
+} else {
+Add-AppveyorMessage "Copying the extension files to the PostgreSQL directories." -Category Information
+7z x "$env:var7z" "-o$env:pgroot"
+}
+#
+# If the pg is from the already-compiled-binary 0.0.0.0.0.GITHUBCACHE,
+# then, add the "plr" to be (eventually) regression tested.
+#
+if (("$env:githubcache" -eq "true") -and ("$env:pggithubbincacheextracted" -eq "true")) {
+7z x "$env:var7z" "-o$env:pgroot"
+}
+
+- appveyor AddMessage "Starting the database server." -Category Information
+- setx /M PATH "%R_HOME%\bin\%rbin%;%PATH%"
+- net start postgresql%x64%-%pgversion%
+#
+# I need the server_version_num, so we can later, test to determine "$env:psqlopt".
+# I can not use "$env:pgversion" because a branch, tag, or commit
+# name (e.g.) "master" can not (always) be (easily) compared.
+#
+# R 4.2.+ (on Windows utf8) sanity check
+- psql -c "\l template[01]"
+#
+# also used in compiler - msys2 and cygwin
+- psql --quiet --tuples-only -c "\pset footer off" -c "\timing off" -c "select current_setting('server_version_num')::integer;" --output=%APPVEYOR_BUILD_FOLDER%\server_version_num.txt
+- bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/server_version_num.sh"
+# load new environment variable(s) e.g. "server_version_num" into the current Windows
+- for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\server_version_num.txt) do (set server_version_num=%%i)
+- type %APPVEYOR_BUILD_FOLDER%\server_version_num.txt
+- echo server_version_num %server_version_num%
+- ps: |
+# Set-PSDebug -Trace 2
+Add-AppveyorTest Regression -Framework pg_regress -FileName sql\ -Outcome Running
+# less than pg 9.5
+if ([double]"$env:server_version_num" -lt 90500.0) {
+$env:psqlopt="--psqldir"
+} else {
+$env:psqlopt="--bindir"
+}
+$env:Outcome="Passed"
+$elapsed=(Measure-Command {
+pg_regress "$env:psqlopt=$env:pgroot\bin" --dbname=pl_regression plr `
+bad_fun opt_window do out_args plr_transaction opt_window_frame 2>&1 |
+%{ if ($_ -is [System.Management.Automation.ErrorRecord]) { $_.Exception.Message } else { $_ } } |
+Out-Default
+if ($LASTEXITCODE -ne 0) {
+$env:Outcome="Failed"
+}
+}).TotalMilliseconds
+Update-AppVeyorTest Regression -Framework pg_regress -FileName sql\ -Outcome "$env:Outcome" -Duration $elapsed
+if ("$env:Outcome" -ne "Passed") {
+type regression.diffs
+$host.SetShouldExit($LastExitCode)
+}
 
 
 #on_failure:
@@ -3131,32 +3132,32 @@ cache:
 
 artifacts:
 - path: 'plr-*.7z'
-  name: plr_7z
+name: plr_7z
 - path: 'pg-*.7z'
-  name: pg_7z
+name: pg_7z
 
 before_deploy:
 
 - cmd: |
-    choco install -y winscp
-    cd "%APPVEYOR_BUILD_FOLDER%"
-    echo open sftp://andremikulec,andremikulec.u:%FTP_PSW%@frs.sourceforge.net/ -hostkey="acceptnew" > ftp.txt 2>&1 || date /t
-    forfiles /M plr-*.7z  /C "cmd /c echo put @file /home/frs/project/andremikulec/ >> ftp.txt" 2>nul || date /t
-    forfiles /M pg-*.7z   /C "cmd /c echo put @file /home/frs/project/andremikulec/ >> ftp.txt" 2>nul || date /t
-    echo exit >> ftp.txt
-    set PATH=C:\Program Files (x86)\WinSCP;%PATH%
-    winscp.com /script=ftp.txt || date /t
+choco install -y winscp
+cd "%APPVEYOR_BUILD_FOLDER%"
+echo open sftp://andremikulec,andremikulec.u:%FTP_PSW%@frs.sourceforge.net/ -hostkey="acceptnew" > ftp.txt 2>&1 || date /t
+forfiles /M plr-*.7z  /C "cmd /c echo put @file /home/frs/project/andremikulec/ >> ftp.txt" 2>nul || date /t
+forfiles /M pg-*.7z   /C "cmd /c echo put @file /home/frs/project/andremikulec/ >> ftp.txt" 2>nul || date /t
+echo exit >> ftp.txt
+set PATH=C:\Program Files (x86)\WinSCP;%PATH%
+winscp.com /script=ftp.txt || date /t
 
 deploy:
 
-  # note, "deploy - on" "compiler: msys2, cygwin" is mis-interpreted as "msys2, cygwin"
-  # therefore, "msys2, cygwin" is not a usable deployment filter option
+# note, "deploy - on" "compiler: msys2, cygwin" is mis-interpreted as "msys2, cygwin"
+# therefore, "msys2, cygwin" is not a usable deployment filter option
 
-  #
-  # To try to deploy to sourceforge, the following must have happened.
-  # Requesting a new shell for "andremikulec" and waiting for it to start.
-  # queued... creating... starting...
-  #
+#
+# To try to deploy to sourceforge, the following must have happened.
+# Requesting a new shell for "andremikulec" and waiting for it to start.
+# queued... creating... starting...
+#
 
 #   - provider: FTP
 #     host: frs.sourceforge.net
@@ -3182,30 +3183,30 @@ deploy:
 #     application:
 #     active_mode: false
 
-  #
-  # always try to deploy here
-  #
-  - provider: GitHub
-    release: 0.0.0.0.0.GITHUBCACHE
-    draft: false
-    prerelease: false
-    artifact: pg_7z
-    auth_token:
-      secure: O4OTdJVY47/Ju0HtC3lEUOtmgFrdOiNCZyHPHi3FPDdJUmnqdsDhPGtJi+j+cLgy
-    # non - "branch, tag, or commit" will still be expected "false" ( githubcache != true )
-    # and never find a pg-*.7z to deploy - and that is OK.
+#
+# always try to deploy here
+#
+- provider: GitHub
+release: 0.0.0.0.0.GITHUBCACHE
+draft: false
+prerelease: false
+artifact: pg_7z
+auth_token:
+secure: O4OTdJVY47/Ju0HtC3lEUOtmgFrdOiNCZyHPHi3FPDdJUmnqdsDhPGtJi+j+cLgy
+# non - "branch, tag, or commit" will still be expected "false" ( githubcache != true )
+# and never find a pg-*.7z to deploy - and that is OK.
 
-  #
-  # second, last of Github deployments, to try to appear as "latest"
-  #
-  - provider: GitHub
-    release: $(APPVEYOR_REPO_TAG_NAME)
-    draft: false
-    prerelease: false
-    artifact: plr_7z
-    auth_token:
-      secure: O4OTdJVY47/Ju0HtC3lEUOtmgFrdOiNCZyHPHi3FPDdJUmnqdsDhPGtJi+j+cLgy
-    on:
-      APPVEYOR_REPO_TAG: true
+#
+# second, last of Github deployments, to try to appear as "latest"
+#
+- provider: GitHub
+release: $(APPVEYOR_REPO_TAG_NAME)
+draft: false
+prerelease: false
+artifact: plr_7z
+auth_token:
+secure: O4OTdJVY47/Ju0HtC3lEUOtmgFrdOiNCZyHPHi3FPDdJUmnqdsDhPGtJi+j+cLgy
+on:
+APPVEYOR_REPO_TAG: true
 
 
