@@ -2017,13 +2017,13 @@ for:
       #
       # also see that each *.sh dot sources early ". ./init.sh"
 
-      if ("${env:Platform}" -eq "x64") {
-        ${env:bit} = "64"
-      } else {
-        ${env:bit} = "32"
-      }
-      ${env:betterperl} = "strawberry${env:bit}"
-      ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
+#       if ("${env:Platform}" -eq "x64") {
+#         ${env:bit} = "64"
+#       } else {
+#         ${env:bit} = "32"
+#       }
+#       ${env:betterperl} = "strawberry${env:bit}"
+#       ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
 
   - set CYG_SETUP_DOWNLOAD_URL="http://cygwin.com/setup-%CYG_ARCH%.exe"
   - echo CYG_SETUP_DOWNLOAD_URL %CYG_SETUP_DOWNLOAD_URL%
@@ -2199,22 +2199,24 @@ for:
 
       # specific - "archive" is "none" or "last" or undefined
       #
+      ${env:cunsupported}  = "false"
+      #
       if(("${env:pg}" -eq "none" -or
           "${env:pg}" -eq "last" -or
           "${env:pg}" -eq ""
-        ) -and "${env:compiler}" -eq "cygwin" -and "${env:Platform}" -eq "x86") {
+        ) -and "${env:Platform}" -eq "x86" -and "${env:archive}" -eq "") {
         ${env:CYG_MIRROR} = "http://mirrors.kernel.org/sourceware/cygwin-archive/20221123/"
-        # new minor
         ${env:cunsupported}  = "true"
-      } else {
-        ${env:cunsupported}  = "false"
-      }
+      } 
 
       # specific - "archive" is "mobaxterm" or "mobaxterm232"
-
-      if(("${env:archive}" -eq "mobaxterm"    -or
-          "${env:archive}" -eq "mobaxterm232"
-        ) -and "${env:compiler}" -eq "cygwin" -and "${env:Platform}" -eq "x86") {
+      if(("${env:pg}" -eq "none" -or
+          "${env:pg}" -eq "last" -or
+          "${env:pg}" -eq ""
+        ) -and "${env:Platform}" -eq "x86" -and
+        ("${env:archive}" -eq "mobaxterm"    -or
+         "${env:archive}" -eq "mobaxterm232"
+        )) {
         ${env:CYG_MIRROR} = "http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/circa/2022/06/12/123302/"
         # override
         ${env:CYG_SETUP_DOWNLOAD_URL} = "http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/setup/snapshots/setup-x86-2.919.exe"
@@ -2240,7 +2242,7 @@ for:
 
   # cygwin install (verbose to help see HTTP 404 errors)
   - echo setup.exe %unsupported_flag% -qnNdO -v -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%"
-  - 'setup.exe %unsupported_flag% -qnNdO -v -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" || type "%CYG_ROOT%\var\log\setup.log.full for details"'
+  - 'setup.exe %unsupported_flag% -qnNdO -v -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" || type "%CYG_ROOT%\var\log\setup.log"'
 
   # Windows server
   - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P cygrunsrv'
