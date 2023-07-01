@@ -2238,13 +2238,19 @@ for:
   # destroy appveyors already existing directories
   - rmdir /S /Q "%CYG_ROOT%" || time /t
 
-  - 'setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P cygrunsrv -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel'
+  # server
+  - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P cygrunsrv'
+
+  # postgres installation requirements that are not already covered by the other lines
+  - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P gcc -P make -P tar -P gzip -P libreadline7 -P zlib -P icu-devel -P bison -P perl'
+
+  - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel'
   #
   # plr - andre - other packages - experience of need - while trying to - manually step by step build plr
-  - 'setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libintl-devel -P libcrypt-devel'
+  - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libintl-devel -P libcrypt-devel'
   #
   # to archive and un-archive (7z)
-  - 'setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P p7zip'
+  - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P p7zip'
 
   #
   - bash -login -c "cygserver-config --yes"
@@ -2259,7 +2265,7 @@ for:
   # https://cygwin.com/cgi-bin2/package-grep.cgi?grep=postgresql&arch=x86_64
   #
   ### trying to add more -devel to try to solve a plr-make "lpostgres" linking error
-  - setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P postgresql-client -P postgresql -P postgresql-devel
+  - setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P postgresql-client -P postgresql -P postgresql-devel
 
   # needs pg_config
   # 1. USE_PGXS=1
@@ -2267,7 +2273,7 @@ for:
   #
   # PostgreSQL - from an CYGWIN already-compiled-binary - pg_config
   ### trying to add more -devel to try to solve a plr-make "lpostgres" linking error
-  - setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpq-devel
+  - setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpq-devel
 
   # R on cygwin
   # https://cygwin.com/cgi-bin2/package-grep.cgi?grep=R-&arch=x86
@@ -2276,7 +2282,7 @@ for:
   ###
   # only linking to the "R from cygwin"
   ### - if "%pg%"=="none" ( )
-  - setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
+  - setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
 
   build_script:
   # override
