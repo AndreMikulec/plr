@@ -222,95 +222,71 @@ environment:
 #     rversion: 4.1.3
 #     compiler: msvc
 #
-#   # cygwin all x64 cygwin works
-#
-#   - pg: master # non-static commit - from git
-#     PlatformToolset: v143
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#     # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
-#     compiler: cygwin
-#
-#
-#   - pg: REL_16_BETA2 # static commit - from git
-#     PlatformToolset: v143
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#     # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
-#     compiler: cygwin
-#     #
-#     githubcache: true
-#
-#   - pg: REL_16_BETA2 # static commit - from git
-#     PlatformToolset: v143
-#     Configuration: Debug
-#     Platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#     # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
-#     compiler: cygwin
-#     #
-#     githubcache: true
-#
-#
-#   - pg: REL_15_0 # static commit - from git
-#     PlatformToolset: v143
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#     # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
-#     compiler: cygwin
-#     #
-#     githubcache: true
-#
-#   - pg: REL_15_0 # static commit - from git
-#     PlatformToolset: v143
-#     Configuration: Debug
-#     Platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#     # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
-#     compiler: cygwin
-#     #
-#     githubcache: true
-#
-#   # from the already compiled "Cygwin PostgreSQL" - 15.3-1 - June 2023 - https://cygwin.com/packages/summary/postgresql-src.html
-#   - PlatformToolset: v143
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#     # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
-#     compiler: cygwin
+  # cygwin all cygwin works - except x86 "dragon" "archive"
 
-  - pg: REL_16_BETA2
+  - pg: master # non-static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
+
+  - pg: master # non-static commit - from git
     PlatformToolset: v143
     Configuration: Debug
     Platform: x86
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # rversion - from the already compiled "Cygwin R"  - in June 2022 - cygwin.com/packages/summary/R.html
+    # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
     compiler: cygwin
 
+  - pg: REL_16_BETA2 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
+    #
+    githubcache: true
+
+  - pg: REL_16_BETA2 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
+    #
+    githubcache: true
+
+  - pg: REL_15_0 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
+    #
+    githubcache: true
+
+  - pg: REL_15_0 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
+    #
+    githubcache: true
+
+  # from the already compiled "Cygwin PostgreSQL" - 15.3-1 - June 2023 - https://cygwin.com/packages/summary/postgresql-src.html
   - PlatformToolset: v143
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # rversion - from the already compiled "Cygwin R"  - in June 2022 - cygwin.com/packages/summary/R.html
+    # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
     compiler: cygwin
-
-  # cygwin on x86 needs to work with the last cygwin x86 from December 2022
-
-  # plr to work with
-  # MobaXterm Version 22.2 (2022-11-15) through the recent Version 23.2 (2023-06-25) and later?
-  # from the "last" compiled "Cygwin PostgreSQL" - in June 2022 - https://cygwin.com/packages/summary/postgresql-src.html
-  - PlatformToolset: v143
-    Configuration: Debug
-    Platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # rversion - from the already compiled "Cygwin R"  - in June 2022 - cygwin.com/packages/summary/R.html
-    compiler: cygwin
-    archive: mobaxterm232
-
-  # cygwin on x86 needs to work with the last cygwin x86 from June 2022      in MobaXterm "Version 22.2 (2022-11-15)" onward
 
   # from the "last" compiled "Cygwin PostgreSQL" - in December 2022 - https://cygwin.com/packages/summary/postgresql-src.html
   - PlatformToolset: v143
@@ -320,49 +296,18 @@ environment:
     # rversion - from the already compiled "Cygwin R"  - in December 2022 - cygwin.com/packages/summary/R.html
     compiler: cygwin
 
-
-
-#   - pg: REL_14_0 # static commit - from git
-#     PlatformToolset: v143
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#     # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
-#     compiler: cygwin
-#     #
-#     githubcache: true
-#
-#   - pg: REL_14_0 # static commit - from git
-#     PlatformToolset: v143
+#   # plr to work with
+#   # MobaXterm Version 22.2 (2022-11-15) through the recent Version 23.2 (2023-06-25) and later?
+#   # from the "last" compiled "Cygwin PostgreSQL" - in June 2022 - https://cygwin.com/packages/summary/postgresql-src.html
+#   - PlatformToolset: v143
 #     Configuration: Debug
 #     Platform: x86
 #     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#     # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
+#     # rversion - from the already compiled "Cygwin R"  - in June 2022 - cygwin.com/packages/summary/R.html
 #     compiler: cygwin
-#     #
-#     githubcache: true
-#
-#
-#   - pg: REL_13_0 # static commit - from git
-#     PlatformToolset: v143
-#     Configuration: Debug
-#     Platform: x64
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#     # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
-#     compiler: cygwin
-#     #
-#     githubcache: true
-#
-#   - pg: REL_13_0 # static commit - from git
-#     PlatformToolset: v143
-#     Configuration: Debug
-#     Platform: x86
-#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#     # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
-#     compiler: cygwin
-#     #
-#     githubcache: true
-#
+#     archive: mobaxterm232
+
+  # cygwin on x86 needs to work with the last cygwin x86 from June 2022      in MobaXterm "Version 22.2 (2022-11-15)" onward
 
 
 
