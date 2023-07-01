@@ -282,6 +282,14 @@ environment:
 #     # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
 #     compiler: cygwin
 
+  - pg: REL_16_BETA2
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R"  - in June 2022 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
+
   - PlatformToolset: v143
     Configuration: Debug
     Platform: x64
@@ -2201,19 +2209,13 @@ for:
       #
       ${env:cunsupported}  = "false"
       #
-      if(("${env:pg}" -eq "none" -or
-          "${env:pg}" -eq "last" -or
-          "${env:pg}" -eq ""
-        ) -and "${env:Platform}" -eq "x86" -and "${env:archive}" -eq "") {
+      if("${env:Platform}" -eq "x86" -and "${env:archive}" -eq "") {
         ${env:CYG_MIRROR} = "http://mirrors.kernel.org/sourceware/cygwin-archive/20221123/"
         ${env:cunsupported}  = "true"
       } 
 
       # specific - "archive" is "mobaxterm" or "mobaxterm232"
-      if(("${env:pg}" -eq "none" -or
-          "${env:pg}" -eq "last" -or
-          "${env:pg}" -eq ""
-        ) -and "${env:Platform}" -eq "x86" -and
+      if("${env:Platform}" -eq "x86" -and
         ("${env:archive}" -eq "mobaxterm"    -or
          "${env:archive}" -eq "mobaxterm232"
         )) {
