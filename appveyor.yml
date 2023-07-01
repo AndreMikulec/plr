@@ -17,8 +17,6 @@ environment:
   #
   # CYG_MIRROR: http://cygwin.mirror.rafal.ca/
   CYG_MIRROR: https://mirrors.kernel.org/sourceware/cygwin/
-  # Here, slashes can also be pointing right.
-  CYG_CACHE: C:\cygwin\var\cache\setup
 
   matrix:
 
@@ -284,6 +282,12 @@ environment:
 #     # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
 #     compiler: cygwin
 
+  - PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R"  - in June 2022 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
 
   # cygwin on x86 needs to work with the last cygwin x86 from December 2022
 
@@ -297,13 +301,6 @@ environment:
     # rversion - from the already compiled "Cygwin R"  - in June 2022 - cygwin.com/packages/summary/R.html
     compiler: cygwin
     archive: mobaxterm232
-
-  - PlatformToolset: v143
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # rversion - from the already compiled "Cygwin R"  - in June 2022 - cygwin.com/packages/summary/R.html
-    compiler: cygwin
 
   # cygwin on x86 needs to work with the last cygwin x86 from June 2022      in MobaXterm "Version 22.2 (2022-11-15)" onward
 
@@ -1997,11 +1994,13 @@ for:
 
       if ("${env:compiler}" -eq "cygwin") {
         if ("${env:Platform}" -eq "x64") {
-          ${env:CYG_ARCH} = "x86_64"
-          ${env:CYG_ROOT} = "C:\cygwin64"
+          ${env:CYG_ARCH}  = "x86_64"
+          ${env:CYG_ROOT}  = "C:\cygwin64"
+          ${env:CYG_CACHE} = "C:\cygwin64\var\cache\setup"
         } else {
-          ${env:CYG_ARCH} = "x86"
-          ${env:CYG_ROOT} = "C:\cygwin"
+          ${env:CYG_ARCH}  = "x86"
+          ${env:CYG_ROOT}  = "C:\cygwin"
+          ${env:CYG_CACHE} = "C:\cygwin\var\cache\setup"
         }
       }
 
@@ -2045,8 +2044,6 @@ for:
   - echo compiler cygwin install
   - ps: |
       # Set-PSDebug -Trace 2
-      # LATER - REMOVE THIS LINE
-      ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
       ${env:PATH} = "${env:CYG_ROOT}\bin;${env:PATH}"
 
 #   # uses cygwin R
@@ -2221,26 +2218,19 @@ for:
         ${env:CYG_SETUP_DOWNLOAD_URL} = "http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/setup/snapshots/setup-x86-2.919.exe"
       }
 
+  - echo CYG_SETUP_DOWNLOAD_URL %CYG_SETUP_DOWNLOAD_URL%
+
   #  cywin AND PostreSQL development
   - 'appveyor DownloadFile %CYG_SETUP_DOWNLOAD_URL% -FileName setup.exe'
-
 
   - echo CYG_MIRROR %CYG_MIRROR%
   - echo cunsupported %cunsupported%
   - echo CYG_ROOT %CYG_ROOT%
   - echo CYG_CACHE %CYG_CACHE%
+  - echo CYG_ARCH %CYG_ARCH%
 
-  # check for an already existing CYG_ROOT
-  - echo dir "%CYG_ROOT%"
-  - dir "%CYG_ROOT%"
-
-  # PATH interference
-  - echo PATH
-  - echo %PATH%
-
-  # OS Environment interferance
-  - echo set
-  - set
+  # destroy appveyors already existing directories
+  - rmdir /S /Q "%CYG_ROOT%" || time /t
 
   - 'setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel'
   #
