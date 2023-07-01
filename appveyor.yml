@@ -284,6 +284,13 @@ environment:
 #     # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
 #     compiler: cygwin
 
+  - PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R"  - in June 2022 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
+
   # cygwin on x86 needs to work with the last cygwin x86 from December 2022
 
   # plr to work with
