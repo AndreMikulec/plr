@@ -2205,7 +2205,9 @@ for:
         ) -and "${env:compiler}" -eq "cygwin" -and "${env:Platform}" -eq "x86") {
         ${env:CYG_MIRROR} = "http://mirrors.kernel.org/sourceware/cygwin-archive/20221123/"
         # new minor
-        ${env:cunsupported}  = "--allow-unsupported-windows"
+        ${env:cunsupported}  = "true"
+      } else {
+        ${env:cunsupported}  = "false"
       }
 
       # specific - "archive" is "mobaxterm" or "mobaxterm232"
@@ -2218,6 +2220,9 @@ for:
         ${env:CYG_SETUP_DOWNLOAD_URL} = "http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/setup/snapshots/setup-x86-2.919.exe"
       }
 
+  - if "%cunsupported%"=="true"  set unsupported_flag="--allow-unsupported-windows"
+  - if "%cunsupported%"=="false" set unsupported_flag="  "
+
   - echo CYG_SETUP_DOWNLOAD_URL %CYG_SETUP_DOWNLOAD_URL%
 
   #  cywin AND PostreSQL development
@@ -2225,6 +2230,7 @@ for:
 
   - echo CYG_MIRROR %CYG_MIRROR%
   - echo cunsupported %cunsupported%
+  - echo unsupported_flag %unsupported_flag% VALUE
   - echo CYG_ROOT %CYG_ROOT%
   - echo CYG_CACHE %CYG_CACHE%
   - echo CYG_ARCH %CYG_ARCH%
@@ -2232,7 +2238,7 @@ for:
   # destroy appveyors already existing directories
   - rmdir /S /Q "%CYG_ROOT%" || time /t
 
-  - 'setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel'
+  - 'setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P cygrunsrv -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel'
   #
   # plr - andre - other packages - experience of need - while trying to - manually step by step build plr
   - 'setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libintl-devel -P libcrypt-devel'
