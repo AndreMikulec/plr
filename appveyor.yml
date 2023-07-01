@@ -2229,6 +2229,18 @@ for:
   - echo CYG_ROOT %CYG_ROOT%
   - echo CYG_CACHE %CYG_CACHE%
 
+  # check for an already existing CYG_ROOT
+  - echo dir "%CYG_ROOT%"
+  - dir "%CYG_ROOT%"
+
+  # PATH interference
+  - echo PATH
+  - echo %PATH%
+
+  # OS Environment interferance
+  - echo set
+  - set
+
   - 'setup.exe %cunsupported% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel'
   #
   # plr - andre - other packages - experience of need - while trying to - manually step by step build plr
