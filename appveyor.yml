@@ -2238,10 +2238,14 @@ for:
   # destroy appveyors already existing directories
   - rmdir /S /Q "%CYG_ROOT%" || time /t
 
-  # server
+  # cygwin install (verbose to help see HTTP 404 errors)
+  - echo setup.exe %unsupported_flag% -qnNdO -v -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%"
+  - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%"'
+
+  # Windows server
   - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P cygrunsrv'
 
-  # postgres installation requirements that are not already covered by the other lines
+  # postgres installation requirements that are not already covered by the other lines further down
   - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P gcc-core -P make -P tar -P gzip -P libreadline7 -P zlib -P icu-devel -P bison -P perl'
 
   - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel'
