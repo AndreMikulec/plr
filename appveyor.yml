@@ -1953,13 +1953,6 @@ for:
         }
       }
 
-      #       # cygwin DOES NOT do R subarchitectures
-      #       if ("${env:Platform}" -eq "x64") {
-      #         ${env:R_ARCH} = "/x64"
-      #       } else {
-      #         ${env:R_ARCH} = "/i386"
-      #       }
-
     # https://cygwin.com/mirrors.html and MobaXterm ~/.aptcyg/setup.ini
     #
     # CYG_MIRROR: http://cygwin.mirror.rafal.ca/
@@ -2199,6 +2192,7 @@ for:
   - setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
 
   build_script:
+  # # Note - cygwin DOES NOT do "R subarchitectures" - R_ARCH - "/x64" and "/i386"
   # set
   - set R_HOME=%CYG_ROOT%\lib\R
   #
