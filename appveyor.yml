@@ -291,6 +291,9 @@ environment:
     # rversion - from the already compiled "Cygwin R"  - in December 2022 - cygwin.com/packages/summary/R.html
     compiler: cygwin
 
+# 
+#   # x86 "dragon" "archive"
+#
 #   # plr to work with
 #   # MobaXterm Version 22.2 (2022-11-15) through the recent Version 23.2 (2023-06-25) and later?
 #   # from the "last" compiled "Cygwin PostgreSQL" - in June 2022 - https://cygwin.com/packages/summary/postgresql-src.html
@@ -301,10 +304,6 @@ environment:
 #     # rversion - from the already compiled "Cygwin R"  - in June 2022 - cygwin.com/packages/summary/R.html
 #     compiler: cygwin
 #     archive: mobaxterm232
-
-  # cygwin on x86 needs to work with the last cygwin x86 from June 2022      in MobaXterm "Version 22.2 (2022-11-15)" onward
-
-
 
 #   # msys2
 #
@@ -2192,7 +2191,8 @@ for:
   - setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
 
   build_script:
-  # # Note - cygwin DOES NOT do "R subarchitectures" - R_ARCH - "/x64" and "/i386"
+  #
+  # Note - cygwin DOES NOT do "R subarchitectures" - R_ARCH - "/x64" and "/i386"
   # set
   - set R_HOME=%CYG_ROOT%\lib\R
   #
