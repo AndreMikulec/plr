@@ -1965,17 +1965,7 @@ for:
       # "make installcheck" does not like spaces
       ${env:R_HOME} = "C:\RINSTALL"
       #
-      # also see that each *.sh dot sources early ". ./init.sh"
 
-#       if ("${env:Platform}" -eq "x64") {
-#         ${env:bit} = "64"
-#       } else {
-#         ${env:bit} = "32"
-#       }
-#       ${env:betterperl} = "strawberry${env:bit}"
-#       ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
-
-    #
     # https://cygwin.com/mirrors.html and MobaXterm ~/.aptcyg/setup.ini
     #
     # CYG_MIRROR: http://cygwin.mirror.rafal.ca/
@@ -2023,29 +2013,6 @@ for:
   - mkdir "%pgroot%"
   #
 
-  #
-  # In powershell the (above) will not run/install
-  # neither plain as here, nor in Invoke-Command,
-  # (Perhaps because, of "some" complexity)
-
-#   - ps: |
-#       # Set-PSDebug -Trace 2
-#       if (-not (Test-Path "${env:betterperl}.zip")) {
-#         curl -o "${env:betterperl}.zip" -v "${env:betterperlurl}"
-#       }
-#       7z x    "${env:betterperl}.zip" "-oc:\${env:betterperl}"
-#       # of needed to install pl/perl
-#       ${env:PATH} = "c:\${env:betterperl}\perl\bin;${env:PATH}"
-#       which perl
-#       ${env:PATH} = "${env:PATH};c:\${env:betterperl}\c\bin"
-#       which pexports
-#   # note, if compiling PostgreSQL from source,
-#   # then in the .sh files. one has to re-set the path
-#   # xor append . . .
-#   # export PATH=. . .etc . . .:${PATH}
-#   # to the /etc/profile
-
-  #
   # if "githubcache: true",
   #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
   #   pg already-compiled-binaries.
