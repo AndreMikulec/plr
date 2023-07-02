@@ -2900,7 +2900,7 @@ for:
   # Remove the semi-duplicate "plr" entry int the pgsql.sln file.
   # This is needed for msvc versions 2019 and later.
   # On msvc 2017 and older versions this duplicate entry is required.
-  - if exist C:\projects\postgresql\pgsql.sln if "%branchtagcommit%"=="yes" & "%msvcversion%"=="2019_or_younger (
+  - if exist C:\projects\postgresql\pgsql.sln if "%branchtagcommit%"=="yes" if "%msvc_age%"=="2019_or_younger" (
       echo REMOVE plr ENTRY from pgsql.sln &
       echo FILE BEFORE clean_pgsql_sln.sh C:\projects\postgresql\pgsql.sln &
       type      C:\projects\postgresql\pgsql.sln &
