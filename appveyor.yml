@@ -1926,7 +1926,6 @@ for:
       - compiler: cygwin
 
 
-
   # mileage from cygwin 32bit will vary
   # https://cran.r-project.org/doc/manuals/r-release/R-admin.html#Cygwin
 
@@ -1961,15 +1960,11 @@ for:
       #         ${env:R_ARCH} = "/i386"
       #       }
 
-      ${env:rbinurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
-      # "make installcheck" does not like spaces
-      ${env:R_HOME} = "C:\RINSTALL"
-      #
-
     # https://cygwin.com/mirrors.html and MobaXterm ~/.aptcyg/setup.ini
     #
     # CYG_MIRROR: http://cygwin.mirror.rafal.ca/
   - set CYG_MIRROR="https://mirrors.kernel.org/sourceware/cygwin/"
+  - echo CYG_MIRROR %CYG_MIRROR%
 
   - set CYG_SETUP_DOWNLOAD_URL="http://cygwin.com/setup-%CYG_ARCH%.exe"
   - echo CYG_SETUP_DOWNLOAD_URL %CYG_SETUP_DOWNLOAD_URL%
@@ -1991,10 +1986,6 @@ for:
   - ps: |
       # Set-PSDebug -Trace 2
       ${env:PATH} = "${env:CYG_ROOT}\bin;${env:PATH}"
-
-#   # uses cygwin R
-#   # DOWNLOAD . . .
-#   - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
 
   # From the version
   - ps: |
@@ -2208,7 +2199,7 @@ for:
   - setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
 
   build_script:
-  # override
+  # set
   - set R_HOME=%CYG_ROOT%\lib\R
   #
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
