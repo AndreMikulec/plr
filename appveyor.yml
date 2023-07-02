@@ -12,11 +12,6 @@ clone_depth: 1
 environment:
   # Always Try to save
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
-  #
-  # https://cygwin.com/mirrors.html and MobaXterm ~/.aptcyg/setup.ini
-  #
-  # CYG_MIRROR: http://cygwin.mirror.rafal.ca/
-  CYG_MIRROR: https://mirrors.kernel.org/sourceware/cygwin/
 
   matrix:
 
@@ -1930,6 +1925,8 @@ for:
     only:
       - compiler: cygwin
 
+
+
   # mileage from cygwin 32bit will vary
   # https://cran.r-project.org/doc/manuals/r-release/R-admin.html#Cygwin
 
@@ -1977,6 +1974,12 @@ for:
 #       }
 #       ${env:betterperl} = "strawberry${env:bit}"
 #       ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
+
+    #
+    # https://cygwin.com/mirrors.html and MobaXterm ~/.aptcyg/setup.ini
+    #
+    # CYG_MIRROR: http://cygwin.mirror.rafal.ca/
+  - set CYG_MIRROR="https://mirrors.kernel.org/sourceware/cygwin/"
 
   - set CYG_SETUP_DOWNLOAD_URL="http://cygwin.com/setup-%CYG_ARCH%.exe"
   - echo CYG_SETUP_DOWNLOAD_URL %CYG_SETUP_DOWNLOAD_URL%
