@@ -2,7 +2,7 @@
 name: plr CI NIX
 contents: write
 
-# LEFT OFF - # TODO - because this pgroot and pgsource  a PATH, then change to UPPERCASE
+# LEFT OFF - # TODO - because this PGROOT and pgsource  a PATH, then change to UPPERCASE
 # LEFT OFF - # TODO - modify .sh files
 # LEFT OFF - # TODO - setup CYGWIN
 # LEFT OFF - # TODO - run CYGWIN and fix powershell bugs
@@ -456,12 +456,12 @@ jobs:
         run: |
           Set-EnvVar "pg_binaries_compiled_from_source=true"
 
-      - name: Windows mingw - set pgroot
+      - name: Windows mingw - set PGROOT
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' && env.pg_binaries_installed_in_system_location == '' }}
         run: |
           # Nix does not like spaces
-          ${env:pgroot} = "C:\PGINSTALL"
-          Set-EnvVar "pgroot=${env:pgroot}"
+          ${env:PGROOT} = "C:\PGINSTALL"
+          Set-EnvVar "PGROOT=${env:PGROOT}"
 
       - name: Install Windows mingw Software
         if: ${{ matrix.os == 'windows-latest' && env.compile_styler = 'mingw' }}
@@ -699,7 +699,7 @@ jobs:
           ${env:bit}            = "${{ env.bit }}"
           ${env:R_HOME}         = "${{ env.R_HOME }}"
           ${env:R_ARCH}         = "${{ env.R_ARCH }}"
-          ${env:pgroot}         = "${{ env.pgroot }}"   # TODO - because this is a PATH, then change to UPPERCASE
+          ${env:PGROOT}         = "${{ env.PGROOT }}"   # TODO - because this is a PATH, then change to UPPERCASE
           ${env:pgsource}       = "${{ env.pgsource }}" # TODO - because this is a PATH, then change to UPPERCASE
 
           ${pg_binaries_installed} = "${{ env.pg_binaries_installed }}"
@@ -707,18 +707,18 @@ jobs:
           if( -not ( Test-Path "${{ env.var7z }}" )) {
             Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/build_script.sh'"
             # init.sh
-            ${env:pgroot}    = "${{ env.pgroot }}"
+            ${env:PGROOT}    = "${{ env.PGROOT }}"
           } else { echo "FILE FOUND ${{ env.var7z }} so ignoring - make Build"
 
           if( -not ( Test-Path "${{ env.var7z }}" )) {
             Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/test_script.sh'"
             # init.sh
-            ${env:pgroot}    = "${{ env.pgroot }}"
+            ${env:PGROOT}    = "${{ env.PGROOT }}"
           } else { echo "FILE FOUND ${{ env.var7z }} so ignoring - make Test"
 
           Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/archive_script.sh'"
           # init.sh
-          ${env:pgroot}    = "${{ env.pgroot }}"
+          ${env:PGROOT}    = "${{ env.PGROOT }}"
 
           ${env:rversion}  = "${{ env.rversion }}"
           ${env:pgversion} = "${{ env.pgversion }}"

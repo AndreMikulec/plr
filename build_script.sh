@@ -17,11 +17,11 @@ then
     cd ${pgsource}
     if [ "${Configuration}" == "Release" ]
     then
-      ./configure --enable-depend --disable-rpath --without-icu --prefix=${pgroot}
+      ./configure --enable-depend --disable-rpath --without-icu --prefix=${PGROOT}
     fi
     if [ "${Configuration}" == "Debug" ]
     then
-      ./configure --enable-depend --disable-rpath --enable-debug --enable-cassert CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer" --without-icu --prefix=${pgroot}
+      ./configure --enable-depend --disable-rpath --enable-debug --enable-cassert CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer" --without-icu --prefix=${PGROOT}
     fi
     loginfo "END   PostgreSQL CONFIGURE"
     loginfo "BEGIN PostgreSQL BUILD"
@@ -34,10 +34,10 @@ then
     loginfo "END   PostgreSQL BUILD + INSTALL"
   else
     loginfo "BEGIN 7z EXTRACTION"
-    cd ${pgroot}
+    cd ${PGROOT}
     # 7z l "${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
     7z x "${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-    ls -alrt ${pgroot}
+    ls -alrt ${PGROOT}
     cd ${GITHUB_WORKSPACE}
     loginfo "END   7z EXTRACTION"
   fi
@@ -45,22 +45,22 @@ then
 fi
 
 
-# put this in all non-init.sh scripts - pgroot is empty, if using a mingw binary
+# put this in all non-init.sh scripts - PGROOT is empty, if using a mingw binary
 # but psql is already in the path
-if [ -f "${pgroot}/bin/psql" ]
+if [ -f "${PGROOT}/bin/psql" ]
 then
-  export PATH=${pgroot}/bin:${PATH}
+  export PATH=${PGROOT}/bin:${PATH}
 fi
 #
-# cygwin # pgroot: /usr - is the general location of binaries (psql) and already in the PATH
+# cygwin # PGROOT: /usr - is the general location of binaries (psql) and already in the PATH
 #
 # $ echo $(cygpath "C:\cygwin\bin")
 # /usr/bin
 #
 # cygwin # initdb, postgres, and pg_ctl are here "/usr/sbin"
-if [ -f "${pgroot}/sbin/postgres" ]
+if [ -f "${PGROOT}/sbin/postgres" ]
 then
-  export PATH=${pgroot}/sbin:${PATH}
+  export PATH=${PGROOT}/sbin:${PATH}
 fi
 
 # # Later I get this information from pgconfig variables PKGLIBDIR SHAREDIR.
@@ -71,7 +71,7 @@ fi
 # # Uses the "/postgresql" directory if the plr files are found in the
 # # default cygwin-package-management shared install folders
 # #
-# if [ -d "${pgroot}/share/postgresql" ]
+# if [ -d "${PGROOT}/share/postgresql" ]
 # then
 #   export dirpostgresql=/postgresql
 # fi
@@ -91,7 +91,7 @@ pg_config
 loginfo "END   verify that PLR will link to the correct PostgreSQL"
 # 
 # ls -alrt /usr/sbin
-# ls -alrt ${pgroot}/sbin
+# ls -alrt ${PGROOT}/sbin
 # which postgres
 
 #

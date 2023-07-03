@@ -8,22 +8,22 @@ logok "BEGIN test_script.sh"
 set -v -x -e
 # set -e
 
-# put this in all non-init.sh scripts - pgroot is empty, if using a mingw binary
+# put this in all non-init.sh scripts - PGROOT is empty, if using a mingw binary
 # but psql is already in the path
-if [ -f "${pgroot}/bin/psql" ]
+if [ -f "${PGROOT}/bin/psql" ]
 then
-  export PATH=${pgroot}/bin:${PATH}
+  export PATH=${PGROOT}/bin:${PATH}
 fi
 #
-# cygwin # pgroot: /usr - is the general location of binaries (psql) and already in the PATH
+# cygwin # PGROOT: /usr - is the general location of binaries (psql) and already in the PATH
 #
 # $ echo $(cygpath "C:\cygwin\bin")
 # /usr/bin
 #
 # cygwin # initdb, postgres, and pg_ctl are here "/usr/sbin"
-if [ -f "${pgroot}/sbin/postgres" ]
+if [ -f "${PGROOT}/sbin/postgres" ]
 then
-  export PATH=${pgroot}/sbin:${PATH}
+  export PATH=${PGROOT}/sbin:${PATH}
 fi
 
 loginfo "BEGIN verified that PLR has linked to the correct postgreSQL"

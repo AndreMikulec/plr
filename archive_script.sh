@@ -8,22 +8,22 @@ logok "BEGIN after_build.sh"
 set -v -x -e
 # set -e
 
-# put this in all non-init.sh scripts - pgroot is empty, if using a mingw binary
+# put this in all non-init.sh scripts - PGROOT is empty, if using a mingw binary
 # but psql is already in the path
-if [ -f "${pgroot}/bin/psql" ]
+if [ -f "${PGROOT}/bin/psql" ]
 then
-  export PATH=${pgroot}/bin:${PATH}
+  export PATH=${PGROOT}/bin:${PATH}
 fi
 #
-# cygwin # pgroot: /usr - is the general location of binaries (psql) and already in the PATH
+# cygwin # PGROOT: /usr - is the general location of binaries (psql) and already in the PATH
 #
 # $ echo $(cygpath "C:\cygwin\bin")
 # /usr/bin
 #
 # cygwin # initdb, postgres, and pg_ctl are here "/usr/sbin"
-if [ -f "${pgroot}/sbin/postgres" ]
+if [ -f "${PGROOT}/sbin/postgres" ]
 then
-  export PATH=${pgroot}/sbin:${PATH}
+  export PATH=${PGROOT}/sbin:${PATH}
 fi
 
 
@@ -127,7 +127,7 @@ loginfo "END plr 7z CREATION"
 #
 #                                     # not yet tried/tested in cygwin
 #                                     # cygwin case
-if [ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ]
+if [ -f "${PGROOT}/bin/postgres" ] || [ -f "${PGROOT}/sbin/postgres" ]
 then
   loginfo "BEGIN pg 7z CREATION"
   export varpg7z=pg-${os}-pg${pg}-${Platform}-${Configuration}-${compiler}.7z
@@ -135,7 +135,7 @@ then
   echo "varpg7z=${varpg7z}" >> ${GITHUB_ENV}
   #
   loginfo "${varpg7z}"
-  cd ${pgroot}
+  cd ${PGROOT}
   ls -alrt
   
   loginfo                                       "${varpg7z}"

@@ -75,18 +75,18 @@ export GITHUB_ENV=$(cygpath "${GITHUB_ENV}")
 if [ ! "${pg}" == "repository" ]
 then
   # the place in the yaml where I told I want "pg" installed
-  export pgroot=$(cygpath "${pgroot}")
+  export PGROOT=$(cygpath "${PGROOT}")
 fi
 if [ "${pg}" == "repository" ] && [ "${compiler_style}" == "mingw" ]
 then
-  export pgroot=${MINGW_PREFIX}
+  export PGROOT=${MINGW_PREFIX}
 fi
 if [ "${pg}" == "repository" ] && [ "${compiler_style}" == "cygwin" ]
 then
   # override (not all executables use "/usr/bin": initdb, postgres, and pg_ctl are in "/usr/sbin")
-  export pgroot=/usr
+  export PGROOT=/usr
 fi
-loginfo "pgroot $pgroot"
+loginfo "PGROOT $PGROOT"
 
 
 
@@ -97,18 +97,18 @@ export TZ=UTC
 # mingw case
 if [ "${compiler_style}" == "mingw" ]
 then
-  export PGAPPDIR="C:/msys64$HOME"${pgroot}/postgresql/Data
+  export PGAPPDIR="C:/msys64$HOME"${PGROOT}/postgresql/Data
 fi
 # cygwin case
 if [ "${compiler_style}" == "cygwin" ]
 then
-  export PGAPPDIR=/cygdrive/c/cygwin${bit}${HOME}${pgroot}/postgresql/Data
+  export PGAPPDIR=/cygdrive/c/cygwin${bit}${HOME}${PGROOT}/postgresql/Data
 fi
 #
 # add OTHER cases HERE: future arm* (guessing now)
 if [ "${PGAPPDIR}" == "" ]
 then
-    export PGAPPDIR="$HOME"${pgroot}/postgresql/Data
+    export PGAPPDIR="$HOME"${PGROOT}/postgresql/Data
 fi
 
 export     PGDATA=${PGAPPDIR}
