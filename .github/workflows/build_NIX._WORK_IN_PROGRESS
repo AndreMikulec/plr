@@ -29,7 +29,7 @@ jobs:
 
   build_NIX:
 
-    name: ${{ matrix.os }} ${{ matrix.pg }} ${{ matrix.Platform}} ${{ matrix.Configuration }} ${{ matrix.rversion }} ${{ matrix.Compiler}}
+    name: ${{ matrix.os }} ${{ matrix.pg }} ${{ matrix.Platform}} ${{ matrix.Configuration }} ${{ matrix.rversion }} ${{ matrix.Compiler }}
     needs: prereq_checks
     runs-on: ${{ matrix.os }}
     defaults:
@@ -39,99 +39,56 @@ jobs:
       fail-fast: false
       matrix:
         include:
-
-            # The matrix variable "pg" may be the word "repository".
+            # "pg" choices are the following 
             # Git branch, Git tag, Git commit("${env:pghint}" -eq "commit").
             #
             # If the matrix variable "pghint" is "commit" then pg is a commit and not a tag and not a branch.
 
-            # If "pg" is "repository",then do not compile pg from source.
+            # The matrix variable "pg" can be a git commit.
+            # Use "pghint: commit" to explaint that "pg" is a git commit.
+
+            # If "pg" is not in the matrix,then do not compile pg from source.
             # [Later, instead get the pg binaries from a repository.]
+            # The version called "pgversion" is not know now. It is determined later.
             #
             # The derived environment variable "pgversion" (the exact internal "pg version")
             # will be determined by SQL.
             # This is used in the asset name.
 
-            # If the matrix variable "compiler" is "mingw64" or "mingw32", then "Platform" is ignored.
+            # "rversion" is expected to be downloaded over the internet.
+            # If "rversion" is not in the matrix, 
+            # then expect to get "r" from the repository. (e.g. cygwing case)
+            # "rversion" is expect to not be known in advance.
 
-#           - pg: repository
-#             Configuration: Debug
-#             Platform: x64
-#             os: windows-latest
-#             rversion: 4.2.3
+          - pg: REL_16_BETA2
+          - Configuration: Debug
+            Platform: x64
+            os: windows-latest
+            rversion: 4.3.1
+            compiler: mingw64
+            builder: make
 
-
-          - pg: repository
+          - pg: REL_16_BETA2
             Configuration: Debug
             Platform: x64
             os: windows-latest
             rversion: 4.3.1
             compiler: mingw64
+            builder: meson
 
-
-#           - pg: REL_15_3
-#             Configuration: Debug
-#             Platform: x64
-#             os: windows-latest
-#             rversion: 4.2.3
-#             compiler: mingw64
-
-
-          - pg: REL_15_3
-            Configuration: Debug
+          - Configuration: Debug
             Platform: x64
             os: windows-latest
-            rversion: 4.3.1
-            compiler: mingw64
+            compiler: cygwin
+            builder: make
 
-
-#           - pg: REL_16_BETA2
-#             Configuration: Debug
-#             Platform: x64
-#             os: windows-latest
-#             rversion: 4.2.3
-#             compiler: mingw64
-
-#           - pg: REL_16_BETA2
-#             Configuration: Debug
-#             Platform: x64
-#             os: windows-latest
-#             rversion: 4.3.1
-#             compiler: meson
-
-#           - pg: REL_16_BETA2
-#             Configuration: Debug
-#             Platform: x64
-#             os: windows-latest
-#             rversion: 4.3.1
-#             compiler: mingw64
-
-#           - pg: master
-#             Configuration: Debug
-#             Platform: x64
-#             os: windows-latest
-#             rversion: 4.2.3
-#             compiler: mingw64
-
-#           - pg: master
-#             Configuration: Debug
-#             Platform: x64
-#             os: windows-latest
-#             rversion: 4.3.1
-#             compiler: meson
-
-
-#           - pg: master
-#             Configuration: Debug
-#             Platform: x64
-#             os: windows-latest
-#             rversion: 4.3.1
-#             compiler: mingw64
-
+          - Configuration: Debug
+            Platform: x64
+            os: windows-latest
+            compiler: cygwin
+            builder: meson
 
     steps:
-
-
       - name: Windows System
         if: matrix.os == 'windows-latest'
         shell: cmd
@@ -148,7 +105,6 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: cmd
         run: |
-          rem FIX_THIS - add this to the asset OUTPUT name
           echo USER_SHA ${{ env.USER_SHA }}
           echo GITHUB_SHA ${{ env.GITHUB_SHA }}
           set GITHUB_SHA=${{ env.GITHUB_SHA }}
@@ -156,11 +112,12 @@ jobs:
           set gitrevshort=%GITHUB_SHA:~0,8%
           echo gitrevshort %gitrevshort%
           printf "gitrevshort=%gitrevshort%" >> %GITHUB_ENV%
+          rem
+          rem Or in powershell - "${env:GITHUB_SHA}".SubString(0,8)
 
-      - name: Ubuntu Shortened Git Commit Environment Variable
-        if: ${{ matrix.os == 'ubuntu-latest' || matrix.os = 'macos-latest' }}
+      - name: Ubuntu and MacOS Shortened Git Commit Environment Variable
+        if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
         run: |
-          rem FIX_THIS - add this to the asset OUTPUT name
           echo USER_SHA ${{ env.USER_SHA }}
           echo GITHUB_SHA ${{ env.GITHUB_SHA }}
           export GITHUB_SHA=${{ env.GITHUB_SHA }}
@@ -187,139 +144,159 @@ jobs:
           ) 
           {
             ${env:compiler_style} = "mingw"
-            Set-EnvVar "compiler_style=${env:compiler_style}"
           }
-
-          # NOTE - Instead uses the "Platform" matrix variable to determine 64 or 32
-          # Later, 64 or 32 will be determined.
           if ( "${{ matrix.compiler }}" -eq "cygwin" ){
             ${env:compiler_style} = "cygwin"
-            Set-EnvVar "compiler_style=${env:compiler_style}"
           }
+          if ( "${{ matrix.compiler }}" -eq "msvc" ){
+            ${env:compiler_style} = "msvc"
+          }
+          Set-EnvVar "compiler_style=${env:compiler_style}"
 
-      # currently the mingw cases
-      - name: Set the Matrix Platform Bit Env Variable
+      - name: Windows matrix_Platform_bit Env Variable
+        if: matrix.os == 'windows-latest'
         run: |
          $word = "${{ matrix.Platform }}"
          $shortword = $word.Substring($word.Length - 2)
          if("$shortword" -eq "64" -or "$shortword" -eq "32") {
             ${env:matrix_Platform_bit} = "$shortword"
-         } else {
-            ${env:matrix_Platform_bit} = "none"
-         }
+         } 
          Set-EnvVar "matrix_Platform_bit=${env:matrix_Platform_bit}"
 
-      - name: Set the Matrix Compiler Bit Env Variable
+      - name: Windows matrix_Platform_bit Env Variable
+        if: matrix.os == 'windows-latest'
         run: |
          $word = "${{ matrix.Compiler }}"
          $shortword = $word.Substring($word.Length - 2)
          if("$shortword" -eq "64" -or "$shortword" -eq "32") {
             ${env:matrix_Compiler_bit} = "$shortword"
-         } else {
-            ${env:matrix_Compiler_bit} = "none"
          }
          Set-EnvVar "matrix_Compiler_bit=${env:matrix_Compiler_bit}"
 
       # General case
-      - name: Compiler Style Environment Variables and programs
+      - name: Windows Platform Environment Variable
+        if: matrix.os == 'window-latest'
+        run: Set-EnvVar "Platform=${{ matrix.Platform }}"
+          
+      # General case
+      - name: Ubuntu and MacOS Environment Variables
+        if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
+        echo "Platform=${{ matrix.Platform }}" >> $GITHUB_ENV
+
+      # General case - Override
+      - name: Windows Platform Specific Default Environment Variable
+        if: matrix.os == 'window-latest'
         run: |
-          if("${{ env.matrix_Compiler_bit }}" -eq "none" -and "${{ env.matrix_Platform_bit }}" -eq "none") {
-            # Also, see the Makefile - Real NIX
-            ${env:bit} = "none"
-            ${env:Platform} = "none"
+          if("${{ env.matrix_Compiler_bit }}" -eq "" -and "${{ env.matrix_Platform_bit }}" -eq "") {
+            # UPFRONT ASSUMPTION - MAY BE CHANGED LATER
+            ${env:Platform} = "x64"
+            Set-EnvVar "Platform=${env:Platform}"
           }
 
-      - name: Windows and Compiler Style mingw Environment Variables and programs
+      # General case - Override
+      - name: Ubuntu and MacOS Platform Specific Default Environment Variable
+        if: {{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
+        run: |
+          if [ "${{ env.matrix_Compiler_bit }}" == "" ] && [ "${{ env.matrix_Platform_bit }}" == "" ]
+          then
+            # UPFRONT ASSUMPTION - MAY BE CHANGED LATER
+            export Platform="x64"
+            echo "Platform=${Platform}" >> $GITHUB_ENV
+          fi
+
+      # From here and onward use env.Platform to read the [Assumed] Platform
+
       # 64 or 32 will be determined and overridden.
+      # mingw "bit" Used in the absolute path name of msys__
+      - name: Windows and Compiler Style mingw Environment Variables and programs
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }}
         run: |
-          # mingw "bit" Used in the absolute path name of msys__
           if("${{ env.matrix_Compiler_bit }}" -eq "64") {
             ${env:bit} = "${{ env.matrix_Compiler_bit }}"
-            # override - ignore matrix.Platform
-            # build_NIX name would be wrong - if the use wrote the wrong matrix.Platform - can not fix
+            Set-EnvVar "bit=${env:bit}"
             ${env:Platform} = "x64"
           }
           if("${{ env.matrix_Compiler_bit }}" -eq "32") {
             ${env:bit} = "${{ env.matrix_Compiler_bit }}"
-            # override - ignore matrix.Platform
-            # build_NIX name would be wrong - if the use wrote the wrong matrix.Platform - can not fix
+            Set-EnvVar "bit=${env:bit}"
             ${env:Platform} = "x86"
           }
-          # "msys" - case - NEED to verify THIS - www.coin-or.org/OS/documentation/node16.html
-          if("${{ env.matrix_Compiler_bit }}" -eq "none") {
-            ${env:bit} = ""
-            # override - ignore matrix.Platform
-            # build_NIX name would be wrong - if the use wrote the wrong matrix.Platform - can not fix
+          # "msys" 
+          if("${{ env.matrix_Compiler_bit }}" -eq "") {
+            # case - NEED to verify THIS - www.coin-or.org/OS/documentation/node16.html
             ${env:Platform} = "x86"
           }
-          Set-EnvVar "bit=${env:bit}"
           Set-EnvVar "Platform=${env:Platform}"
 
-      - name: Windows and Compiler Style cygwin Environment Variables and programs
       # 64 or 32 will be determined.
-      # 32 bit cygwin is considerted to b "no BIT"
+      # 32 bit cygwin is considerted to be "no BIT"
       # 64 or 32 will be determined and determined
+      # cygwin "bit" Used in the absolute path name of cygwin__
+      - name: Windows and Compiler Style cygwin Environment Variables and programs
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'cygwin' }}
         run: |
           if("${{ env.matrix_Platform_bit }}" -eq "64") {
+            #
             ${env:bit} = "64"
+            Set-EnvVar "bit=${env:bit}"
+            #
             ${env:Platform} = "x64"
           }
           if("${{ env.matrix_Platform_bit }}" -eq "86") {
-            ${env:bit} = ""
+            #
+            # 32 bit cygwin is 
+            # considerted to be "no BIT"
+            #
             ${env:Platform} = "x86"
           }
-          Set-EnvVar "bit=${env:bit}"
           Set-EnvVar "Platform=${env:Platform}"
 
-      - name: Windows mingw Environment Application Variables and programs
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }}
-        run: |
-
-          # Windows - Curl (limited features)
-          # ${env:curl} = "C:\Windows\System32\curl.exe"
-          #
-          # More features
-          ${env:curl} = "C:\msys${env:bit}\usr\bin\curl.exe"
-          Set-EnvVar "curl=${env:curl}"
-
-          # Git 2.41.0.windows.1 (Git for Windows)
-          # C\Program Files\Git\bin\git.exe
-          # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
-          #
-          # Never had a problem with Windows, Powershell, and Git for Windows
-          #
-          # ${env:git} = "C\Program Files\Git\bin\git.exe"
-          # Set-EnvVar "git=${env:git}"
-
-      - name: Windows mingw Environment Application Variables and programs
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'cygwin' }}
-        run: |
-          # Windows - Curl (limited features)
-          # ${env:curl} = "C:\Windows\System32\curl.exe"
-          #
-          # Need curl to first download cygwin, BEFORE installing cygwin curl
-          #
-          # Less features
-          ${env:curl} = "C:\Windows\System32\curl.exe"
-          Set-EnvVar "curl=${env:curl}"
-
+#       - name: Windows mingw Environment Application Variables and programs
+#         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }}
+#         run: |
+# 
+#           # Windows - Curl (limited features)
+#           # ${env:curl} = "C:\Windows\System32\curl.exe"
+#           #
+#           # More features
+#           ${env:curl} = "C:\msys${env:bit}\usr\bin\curl.exe"
+#           Set-EnvVar "curl=${env:curl}"
+# 
+#           # Git 2.41.0.windows.1 (Git for Windows)
+#           # C\Program Files\Git\bin\git.exe
+#           # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
+#           #
+#           # Never had a problem with Windows, Powershell, and Git for Windows
+#           #
+#           # ${env:git} = "C\Program Files\Git\bin\git.exe"
+#           # Set-EnvVar "git=${env:git}"
+# 
+#       - name: Windows mingw Environment Application Variables and programs
+#         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'cygwin' }}
+#         run: |
+#           # Windows - Curl (limited features)
+#           # ${env:curl} = "C:\Windows\System32\curl.exe"
+#           #
+#           # Need curl to first download cygwin, BEFORE installing cygwin curl
+#           #
+#           # Less features
+#           ${env:curl} = "C:\Windows\System32\curl.exe"
+#           Set-EnvVar "curl=${env:curl}"
 
       - name: Windows and Compiler Style mingw Environment Application Variables and programs
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }}
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' }}
         run: |
-
-          # NOTE, "bash" comes with minw out of the box from msys2/setup-msys2@v2.
+          # NOTE, "bash" comes with mingw out of the box from msys2/setup-msys2@v2.
           # (I want to use THAT ONE)
           #
           # I do not want to use the "Git for Windows" Bash
           # Bash 5.2.15(1)-release
           # C\Program Files\Git\bin\bash.exe
-          # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
-          #
+          # github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
 
-          ${env:bash} = "C:\msys${{ env.bit }}\usr\bin\bash.exe";
+          # mingw case
+
+          ${env:bash} = "C:\msys${{ env.bit }}\usr\bin\bash.exe"
           Set-EnvVar "bash=${env:bash}"
 
           # matrix varible compiler(mingw64) is input to msys2/setup-msys2.
@@ -340,53 +317,19 @@ jobs:
           # if ("${{ env:MSYSTEM }}" -eq "MINGW32"){ ${env:OSBitVersion} = "i686" }
           # Set-EnvVar "OSBitVersion=${env:OSBitVersion}"
 
+      - name: Windows and Compiler Style cygwin Environment Application Variables and programs
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'cygwin' }}
+        run: |
+          ${env:bash} = "C:\cygwin${{ env.bit }}\usr\bin\bash.exe";
+          Set-EnvVar "bash=${env:bash}"
+
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # General case
-      - name: General R R_ARCH Sub-Architectures
+
+      - name: Downloadable R for Windows - Version - R not from a Repository
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' }}
         run: |
-          if("${{ env.matrix_Compiler_bit }}" -eq "none" -and "${{ env.matrix_Platform_bit }}" -eq "none") {
-            # Also, see the Makefile - Real NIX
-            ${env:R_ARCH} = ""
-          }
-
-      # General case
-      - name: Windows mingw R R_ARCH Sub-Architectures
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }} }}
-        run: |
-          if ("${env:bit}" -eq "64") {${env:R_ARCH} =  "/x64"}
-          if ("${env:bit}" -eq "32") {${env:R_ARCH} =  "/i386"}
-          # "msys" case
-          if ("${env:bit}" -eq "")   {${env:R_ARCH} =  "/i386"}
-          Set-EnvVar "R_ARCH=${env:R_ARCH}"
-
-      # cygwin override
-      # R_ARCH - Used in the compilation of plr - non-architecture cygwin does not do "R sub-architectures"
-      - name: R R_ARCH Sub-Architectures
-        if: ${{  matrix.os == 'windows-latest' && env.compiler_style == 'cygwin' }}
-        run: |
-          env:R_ARCH} =  ""
-          # Also, init.sh "compiler_style == "cygwin", determines that the PATH does not inclue R_ARCH.
-          Set-EnvVar "R_ARCH=${env:R_ARCH}"
-
-      - name: Windows Environment and R Variables and Programs - R not from a Repository
-        # NOTE - mingw does NOT have R in the repository.
-        # NOTE - cygwin DOES HAVE R in the repository.
-        if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion != 'repository' }}
-        run: |
-
-          # Online location of the R installer exe.
-          ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/R-${{ matrix.rversion }}-win.exe"
-          Set-EnvVar "rversionurl=${env:rversionurl}"
-
-          # After download of R, this is the R installation exe.
-          ${env:rinstexe} = "C:\projects\R-${{ matrix.rversion }}-win.exe"
-          Set-EnvVar "rinstexe=${env:rinstexe}"
-
-          # "make installcheck" does not like spaces
-          ${env:R_HOME} = "C:\RINSTALL"
-          Set-EnvVar "R_HOME=${env:R_HOME}"
 
           # R-major.minor.patch
 
@@ -402,44 +345,115 @@ jobs:
           ${env:rpatch} = $matches[1]
           Set-EnvVar "rpatch=${env:rpatch}"
 
-          ${env:rversionlong} = ([int]${env:rmajor} * 10000) + ([int]${env:rminor} * 100) + ([int]${env:rpatch})
+          ${env:rversionlong} = ([int]"${env:rmajor}" * 10000) + ([int]"${env:rminor}" * 100) + ([int]"${env:rpatch}")
           Set-EnvVar "rversionlong=${env:rversionlong}"
 
-          if([int]${env:rversionlong} -ge 40300 && "${env:compiler}" -eq "msvc") { echo "R is Too New for msvc" }
 
-      # https://stackoverflow.com/questions/57903836/how-to-fail-a-job-in-github-actions
-      - name: Windows R Version and MSVC Version Check
-        if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion != 'repository' && env.rversionlong >= 40300 }}
+      - name: Windows R Version and Platform Check
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' && env.rversionlong < 21100 && env.Platform == 'x64' }}
         uses: actions/github-script@v6
         with:
           script: |
-            core.setFailed('Microsoft Visual C++ (msvc) can not compile plr of R version 4.3.0 and later!')
+            core.setFailed('R for Windows Versions earler than 2.11.0 are only x86 and never x64')
 
-      - name: Windows Environment and R Variables and Programs - R from the Repository
+      - name: Windows R Version and Platform Check - Older than Oldest
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' && env.rversionlong < 10602  }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.setFailed('R for Windows Versions earler than 1.6.2 do not exist.')
+
+      # https://stackoverflow.com/questions/57903836/how-to-fail-a-job-in-github-actions
+      - name: Windows R Version and MSVC Version Check
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'msvc' &&  matrix.rversion != '' && env.rversionlong >= 40300 }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.setFailed('Microsoft Visual C++ (msvc) can not compile plr of R version 4.3.0 and later.')
+
+      - name: Windows R Version and MSVC Version Check and Platform Check
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'msvc' &&  matrix.rversion != '' && matrix.Platform = 'x86' && env.rversionlong >= 40103 }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.setFailed('Microsoft Visual C++ (msvc) can not compile Platform x86 plr of R version 4.1.3 and later.')
+
         # NOTE - mingw does NOT have R in the repository.
         # NOTE - cygwin DOES HAVE R in the repository.
-        if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion == 'repository' }}
+      - name: Downloadable R for Windows - Online Location - R not from a Repository
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' }}
         run: |
+          #
+          # R for Windows Online Download Locaton
+          # https://cran-archive.r-project.org/bin/windows/base/old/
+          #
+          # Newer R
+          # CHANGES IN R VERSION 2.12.0
+          # A sub-architecture is used for 32-bit (i386) as well as 64-bit (x64) builds.
+          # The 32- and 64-bit distributions have been merged.
+          # cran-archive.r-project.org/bin/windows/base/old/2.12.0/CHANGES.R-2.12.0.html
+          # https://cran-archive.r-project.org/bin/windows/base/old/2.12.0/
+          # https://cran-archive.r-project.org/bin/windows/base/old/2.11.1/
+          #
+          if([int]"${{ env.rversionlong }}" -ge 21200 ) {
+            ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/R-${{ matrix.rversion }}-win.exe"
+            ${env:rinstexe} = "${env:GITHUB_WORKSPACE}\R-${{ matrix.rversion }}-win.exe"
+          }
+          # Old R
+          if([int]"${{ env.rversionlong }}" -ge 21100 -and [int]"${{ env.rversionlong }}" -lt 21200 ) {
+            ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/R-${{ matrix.rversion }}-win${{ env.bit }}.exe"
+            ${env:rinstexe} = "${env:GITHUB_WORKSPACE}\R-${{ matrix.rversion }}-win${{ env.bit }}.exe"
+          }
+          # Older R - Only R for Windows of x86 - "bit" is only "32"
+          if( [int]"${{ env.rversionlong }}" -ge 20200 -and [int]"${{ env.rversionlong }}" -lt 21100 ) {
+            ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/R-${{ matrix.rversion }}-win${{ env.bit }}.exe"
+            ${env:rinstexe} = "${env:GITHUB_WORKSPACE}\R-${{ matrix.rversion }}-win${{ env.bit }}.exe"
+          }
+          # Oldest R - Only R for Windows of x86
+          if( [int]"${{ env.rversionlong }}" -ge 10602 -and [int]"${{ env.rversionlong }}" -lt 20200 ) {
+            ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/" + "rw" + "${env:rmajor}" +"${env:rminor}".PadLeft(2,"0") + "${env:rpatch}"  + ".exe"
+            ${env:rinstexe} = "${env:GITHUB_WORKSPACE}\" + "rw" + "${env:rmajor}" +"${env:rminor}".PadLeft(2,"0") + "${env:rpatch}"  + ".exe"
+          }
 
-          # R-major.minor.patch
+          Set-EnvVar "rversionurl=${env:rversionurl}"
+          # After download of R, this is the R installation exe.
+          Set-EnvVar "rinstexe=${env:rinstexe}"
 
-          ${env:rmajor}       = "notknown"
-          Set-EnvVar "rmajor=${env:rmajor}"
+          # "mingw" - "make installcheck" does not like spaces
+          ${env:R_HOME} = "C:\RINSTALL"
+          Set-EnvVar "R_HOME=${env:R_HOME}"
 
-          ${env:rminor}       = "notknown"
-          Set-EnvVar "rminor=${env:rminor}"
-
-          ${env:rpatch}       = "notknown"
-          Set-EnvVar "rpatch=${env:rpatch}"
-
-          ${env:rversionlong} = "notknown"
-          Set-EnvVar "rversionlong=${env:rversionlong}"
-
-
-      - name: Windows Environment and PostgreSQL Variables and programs
-        if: ${{ matrix.os == 'windows-latest' &&  matrix.pg != 'repository' }}
+      # General case
+      # R for Windows does Sub-Architectures
+      # Note - cygwin does not use "R Sub-Architectures"
+      # See cran-archive.r-project.org/bin/windows/base/old/2.12.0/CHANGES.R-2.12.0.html
+      - name: Windows mingw and msvc R R_ARCH Sub-Architectures
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' }}
         run: |
-          #Nix does not like spaces
+          if([int]"${{ env.rversionlong }}" -ge 21200) {
+            if ("${{ env.Platform }}" -eq "x64") { ${env:R_ARCH} =  "/x64" }
+            # includes "msys" case
+            if ("${{ env.Platform }}" -eq "x86") { ${env:R_ARCH} =  "/i386" }
+            Set-EnvVar "R_ARCH=${env:R_ARCH}"
+         }
+ 
+      - name: Windows mingw - to/that have the "pg" binaries installed in the default (well-known) system location
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' && matrix.pg == '' }}
+        run: |
+          Set-EnvVar "pg_binaries_installed_in_system_location=true"
+        # eventually use the most current Windows "mingw" "pg"
+        # or
+        # eventually install the latest "pg" from the repository
+
+      - name: Windows mingw -  Windows mingw - to/that have the "pg" binaries compiled from source
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' && matrix.pg != '' }}
+        run: |
+          Set-EnvVar "pg_binaries_compiled_from_source=true"
+
+      - name: Windows mingw - set pgroot
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' && env.pg_binaries_installed_in_system_location == '' }}
+        run: |
+          # Nix does not like spaces
           ${env:pgroot} = "C:\PGINSTALL"
           Set-EnvVar "pgroot=${env:pgroot}"
 
@@ -477,13 +491,12 @@ jobs:
             flex
             bison
             perl
-            curl
             winpty
             p7zip
             tar
             zstd
 
-      # needs "tar" and "zstd"
+      # Needs "tar" and "zstd"
       #
       # The cache is scoped to the key, version, and branch.
       # The default branch cache is available to other branches.
@@ -492,7 +505,7 @@ jobs:
       # older caches will be evicted based on when the cache was last accessed.
       #
       - name: Cache R-x.y.z Windows Installer Exe
-        if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion != 'repository' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' }}
         id: cache-R.windows.installer.exe
         uses: actions/cache@v3.3.1
         with:
@@ -501,28 +514,37 @@ jobs:
         env:
           SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
 
-      - name: Windows Download R-x.y.z Installer Exe
-        if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion != 'repository' && steps.cache-R.windows.installer.exe.outputs.cache-hit != 'true' }}
-        run: |
-          if (-not (Test-Path "${{ env.rinstexe }}")) {
-            Start-App "${{ env.curl }}"  "-v", "-o", "${{ env.rinstexe }}", "${{ env.rversionurl }}"
-          }
+      - name: Download R for Windows R-x.y.z R-rmajor.rminor.rpatch
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' }}
+        uses: suisei-cn/actions-download-file@v1.3.0
+        id: downloadfileRforWindows 
+        name: Download R for Windows
+        with:
+          url: ${{ env.rversionurl }}
 
-      - name: Windows Install R-x.y.z
-        if: ${{ matrix.os == 'windows-latest' &&  matrix.rversion != 'repository' }}
+      - name: Install R for Windows R-x.y.z R-rmajor.rminor.rpatch
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' }}
         run: |
           Start-App "${{ env.rinstexe }}" "/VERYSILENT", "/DIR=${{ env.R_HOME }}",  "/NOICONS", "/TASKS="
 
       - name: Windows mingw - Downloading and Placing "pg" from the "repository" binaries
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' && matrix.pg == "repository" }}
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' && env.pg_binaries_installed_in_system_location == 'true' }}
         uses: msys2/setup-msys2@v2
         with:
           msystem: ${{ matrix.compiler }}
           update: true
           install: postgresql
+       #
+
+      # TODO
+      # if env.compiler_style = 'msvc'
+      # if "pg" includes a dot ".", then 
+      #  .1 download "pg" binaries from EnterpriseDB
+      #  .2 install  "pg" binaries from EnterpriseDB
+      #  .3 Set-EnvVar "pg_binaries_installed=true"
 
       - name: Downloading "pg" source code
-        if: ${{ matrix.os == 'windows-latest' &&  matrix.pg != "repository" }}
+        if: ${{ env.pg_binaries_compiled_from_source = 'true' }}
         working-directory: projects\plr
         run: |
           echo Using Git
@@ -541,8 +563,8 @@ jobs:
           Set-EnvVar "pgsource=C:\projects\postgresql"
           #
           if("{{ matrix.pghint }}" -eq "commit") {
-            git clone -q                         https://git.postgresql.org/git/postgresql.git C:\projects\postgresql
-            pushd C:\projects\postgresql
+            git clone -q                         "https://git.postgresql.org/git/postgresql.git" "C:\projects\postgresql"
+            pushd "C:\projects\postgresql"
             git checkout -q                  ${{ matrix.pg }} -b ${{ matrix.pg }}
             git branch
             echo ${{ matrix.pg }}
@@ -552,13 +574,14 @@ jobs:
           # PostgreSQL case - git branches and tags have at least one capital letter - but expect mostly CAPS
           #
           } else {
-            git clone -q --depth 1 --branch  ${{ matrix.pg }} https://git.postgresql.org/git/postgresql.git C:\projects\postgresql
-            pushd C:\projects\postgresql
+            git clone -q --depth 1 --branch  ${{ matrix.pg }} "https://git.postgresql.org/git/postgresql.git" "C:\projects\postgresql"
+            pushd "C:\projects\postgresql"
             git branch
             echo ${{ matrix.pg }}
             popd
           }
-          pushd C:\projects\postgresql
+          pushd "C:\projects\postgresql"
+          dir
           popd
 
       - name: Windows Set Same Locations
@@ -567,30 +590,21 @@ jobs:
         # https://docs.github.com/en/actions/learn-github-actions/variables
         run: |
           #
-          # These locations are now exactly the same.
-          # GITHUB_WORKSPACE = c\projects\plr = c\projects\postgresql\contrib\plr
+          # Make these locations to be exactly the same.
+          # GITHUB_WORKSPACE = C\projects\plr = C\projects\postgresql\contrib\plr
           #
-          mkdir "c:\projects"
-          pushd "c:\projects"
+          mkdir "C:\projects"
+          pushd "C:\projects"
           cmd /c mklink /J   plr                    ${env:GITHUB_WORKSPACE}
           popd
+          # if not already done by the "pg_binaries_compiled_from_source=true"
+          mkdir "C:\projects\postgresql"
           pushd "C:\projects\postgresql"
           cmd /c mklink /J              contrib\plr ${env:GITHUB_WORKSPACE}
           popd
 
       # Workflow syntax for GitHub Actions
       # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_iddefaultsrun
-
-      - name: Windows mingw - Testing mingw shell
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' }}
-        uses: msys2/setup-msys2@v2
-        with:
-          msystem: ${{ matrix.compiler }}
-          updated: true
-        shell: msys2 {0}
-        run: |
-          uname -a
-          whoami
 
       - name: Windows mingw - Testing Powershell shell
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' }}
@@ -600,123 +614,106 @@ jobs:
           updated: true
         shell: msys2 {0}
         run: |
-          msys2 -c 'uname -a'
-          whoami
+          msys2 -c 'set -x -v -e; uname -a; set +x +v +e'
+          msys2 -c 'set -x -v -e; whoami -a; set +x +v +e'
+          msys2 -c 'set -x -v -e; id -a; set +x +v +e'
+          msys2 -c 'set -x -v -e; pwd -a; set +x +v +e'
+          msys2 -c 'set -x -v -e; echo ${SHELL}; set +x +v +e'
 
-      # Enable tmate debugging of manually-triggered workflows if the input option was provided
+      # Enable "tmate" debugging of manually-triggered workflows if the input option was provided
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
-      - name: Build Script
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) }}
-        working-directory: projects\plr
-        run: |
-          echo Building
-
-          ${env:gitrevshort}   = "${{ env.gitrevshort }}"
-          #
-          ${env:pg}            = "${{ matrix.pg }}"
-          ${env:Configuration} = "${{ matrix.Configuration }}
-          ${env:Platform}      = "${{ env.Platform }}"
-          ${env:os}            = "${{ matrix.os }}"
-          ${env:rversion}      = "${{ matrix.rversion }}"
-          ${env:compiler}      = "${{ matrix.compiler }}"
-          #
-          ${env:compiler_style} = "${{ env.compiler_style }}"
-          ${env:bit}            = "${{ env.bit }}"
-          ${env:R_HOME}         = "${{ env.R_HOME }}"
-          ${env:R_ARCH}         = "${{ env.R_ARCH }}"
-          ${env:pgsource}       = "${{ env.pgsource }}"
-
-          Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/build_script.sh'"
-
-          ${env:pgroot}    = "${{ env.pgroot }}"
-
-      - name: Meson Build and Script - Build
-        if: ${{ matrix.compiler == 'meson' }}
+      - name: meson - Build
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
         uses: BSFishy/meson-build@v1.0.3
         with:
           action: build
           options: --verbose
 
-      - name: Meson Build and Install Script - Install
-        if: ${{ matrix.compiler == 'meson' }}
+      - name: meson - Install
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
         uses: BSFishy/meson-build@v1.0.3
         with:
           action: install
           options: --verbose
 
-      - name: Test Script
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) }}
+      - name: meson - Test
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
         working-directory: projects\plr
         run: |
-          echo Testing
+          action: install
+          options: --verbose
 
-          ${env:gitrevshort}   = "${{ env.gitrevshort }}"
-          #
-          ${env:pg}            = "${{ matrix.pg }}"
-          ${env:Configuration} = "${{ matrix.Configuration }}
-          ${env:Platform}      = "${{ env.Platform }}"
-          ${env:os}            = "${{ matrix.os }}"
-          ${env:rversion}      = "${{ matrix.rversion }}"
-          ${env:compiler}      = "${{ matrix.compiler }}"
-          #
-          ${env:compiler_style} = "${{ env.compiler_style }}"
-          ${env:bit}            = "${{ env.bit }}"
-          ${env:R_HOME}         = "${{ env.R_HOME }}"
-          ${env:R_ARCH}         = "${{ env.R_ARCH }}"
-          ${env:pgsource}       = "${{ env.pgsource }}"
-
-          Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/test_script.sh'"
-
-          ${env:pgroot}    = "${{ env.pgroot }}"
-
-      - name: Meson Test and Code Coverage Script - Test
-        if: ${{ matrix.compiler == 'meson' }}
+      - name: meson - Test 
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
         uses: BSFishy/meson-build@v1.0.3
         with:
           action: test
           setup-options: -Db_coverage=true
           options: --verbose
 
-      - name: Meson Test and Code Coverage Script - Code Coverage 
-        if: ${{ matrix.compiler == 'meson' }}
+      - name: meson - Code Coverage 
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
         uses: BSFishy/meson-build@v1.0.3
         with:
           action: coverage
           options: --verbose
 
-      - name: Windows Machine Make a dist directory
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) }}
-        working-directory: projects\plr
-        run: |
-          mkdir ${{ github.event.repository.name }}_${{ matrix.os }}_${{ matrix.pg }}_${{ env.Platform}}_${{ matrix.Configuration }}_${{ matrix.rversion }}_${{ matrix.Compiler}}_dist
-
-      - name: Windows Self Compressing Artifacts
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) }}
-        working-directory: projects\plr
+      - name: meson - Archiving
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
         run: |
           echo Archiving
+          echo TODO
+        env:
+          var7z: ${{ env.var7z }}
+          varpg7z : ${{ env.varpg7z }}
+          githubcache :${{ matrix.githubcache }}
 
-          ${env:gitrevshort}   = "${{ env.gitrevshort }}"
-          #
+
+      - name: make - Build (make) Test(make) and Archive (any builder)
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'make' }}
+        run: |
+          echo Building, Testing, and Archiving
+
           ${env:pg}            = "${{ matrix.pg }}"
-          ${env:Configuration} = "${{ matrix.Configuration }}
+          ${env:Configuration} = "${{ matrix.Configuration }}"
+          # Not                    "matrix.Platform"
           ${env:Platform}      = "${{ env.Platform }}"
           ${env:os}            = "${{ matrix.os }}"
           ${env:rversion}      = "${{ matrix.rversion }}"
           ${env:compiler}      = "${{ matrix.compiler }}"
-          #
+          ${env:pghint}        = "${{ matrix.pghint }}"
+          ${env.githubcache}   = "${{ matrix.githubcache }}"
+          ${env:builder}       = "${{ matrix.builder }}"
+
+          ${env:gitrevshort}   = "${{ env.gitrevshort }}"
           ${env:compiler_style} = "${{ env.compiler_style }}"
           ${env:bit}            = "${{ env.bit }}"
           ${env:R_HOME}         = "${{ env.R_HOME }}"
           ${env:R_ARCH}         = "${{ env.R_ARCH }}"
-          ${env:pgsource}       = "${{ env.pgsource }}"
+          ${env:pgroot}         = "${{ env.pgroot }}"   # TODO - because this is a PATH, then change to UPPERCASE
+          ${env:pgsource}       = "${{ env.pgsource }}" # TODO - because this is a PATH, then change to UPPERCASE
+
+          ${pg_binaries_installed} = "${{ env.pg_binaries_installed }}"
+
+          if( -not ( Test-Path "${{ env.var7z }}" )) {
+            Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/build_script.sh'"
+            # init.sh
+            ${env:pgroot}    = "${{ env.pgroot }}"
+          } else { echo "FILE FOUND ${{ env.var7z }} so ignoring - make Build"
+
+          if( -not ( Test-Path "${{ env.var7z }}" )) {
+            Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/test_script.sh'"
+            # init.sh
+            ${env:pgroot}    = "${{ env.pgroot }}"
+          } else { echo "FILE FOUND ${{ env.var7z }} so ignoring - make Test"
 
           Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/archive_script.sh'"
-
+          # init.sh
           ${env:pgroot}    = "${{ env.pgroot }}"
+
           ${env:rversion}  = "${{ env.rversion }}"
           ${env:pgversion} = "${{ env.pgversion }}"
           ${env:var7z}     = "${{ env.var7z }}"
@@ -747,4 +744,20 @@ jobs:
         env:
           USER_GITHUB_SHA: ${{ github.sha }}
           USER_GITHUB_REF_NAME: ${{ github.ref_name }}
+
+      - name: Release
+        if: ${{ github.ref_type == 'tag' && matrix.githubcache == 'true' }}
+        uses: ncipollo/release-action@v1.12.0
+        with:
+          allowUpdates: true
+          replacesArtifacts: true
+          commit: ${{ env.GITHUB_SHA }}
+          tag: 0.0.0.0.0.GITHUBCACHE
+          artifacts: "${{ env.varpg7z }}"
+          token: ${{ secrets.PLR_ACTIONS_CREATE_RELEASE_REPO_SECRET }}
+        env:
+          USER_GITHUB_SHA: ${{ github.sha }}
+          USER_GITHUB_REF_NAME: ${{ github.ref_name }}
+
+
 
