@@ -2,6 +2,12 @@
 name: plr CI NIX
 contents: write
 
+# LEFT OFF - # TODO - because this pgroot and pgsource  a PATH, then change to UPPERCASE
+# LEFT OFF - # TODO - modify .sh files
+# LEFT OFF - # TODO - setup CYGWIN
+# LEFT OFF - # TODO - run CYGWIN and fix powershell bugs
+
+
 env:
   # Enabling runner diagnostic logging
   ACTIONS_RUNNER_DEBUG: true
