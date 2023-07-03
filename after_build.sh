@@ -5,8 +5,8 @@ cd "$(dirname "$0")"
 
 logok "BEGIN after_build.sh"
 
-# set -v -x -e
-set -e
+set -v -x -e
+# set -e
 
 # put this in all non-init.sh scripts - pgroot is empty, if using an msys2 binary
 # but psql is already in the path
@@ -82,7 +82,11 @@ then
   # Tomas Kalibera custom build may contain spaces 
   # so gsub replaces spaces with underscores
   # 
+  # avoid cywin error - WARNING: ignoring environment value of R_HOME
+  export R_HOME_OLD=${R_HOME}
+  unset R_HOME
   export rversion=$(Rscript --vanilla -e 'cat(gsub('\'' '\'', replacement = '\''_'\'', x = paste0(R.version$major,'\''.'\'',R.version$minor,tolower(R.version$status))))' 2>/dev/null)
+  export R_HOME=${R_HOME_OLD}
 fi
 
 export var7z=plr-${gitrevshort}-pg${pgversion}-R${rversion}${rversion_more}-${Platform}-${Configuration}-${compiler}.7z
@@ -125,7 +129,7 @@ fi
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
 
-# set +v +x +e
-set +e
+set +v +x +e
+# set +e
 
 logok "END   after_build.sh"

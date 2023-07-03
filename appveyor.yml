@@ -12,13 +12,6 @@ clone_depth: 1
 environment:
   # Always Try to save
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
-  #
-  # https://cygwin.com/mirrors.html and MobaXterm ~/.aptcyg/setup.ini
-  #
-  # CYG_MIRROR: http://cygwin.mirror.rafal.ca/
-  CYG_MIRROR: https://mirrors.kernel.org/sourceware/cygwin/
-  # Here, slashes can also be pointing right.
-  CYG_CACHE: C:\cygwin\var\cache\setup
 
   matrix:
 
@@ -66,137 +59,80 @@ environment:
   # gsub result: 4.1.0patched
   # C:\Program Files\R\R-4.1.0patched # rversion is "4.1.0patched"
 
+#### BEGIN JUNE 2023 ####
 
+  # msvc - late June 2023
+  # msvc
 
-# ####  EARLY NOV 2022 build jobs
+  - pg: master # non-static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.2.3
+    compiler: msvc
 
-  - pg: master # branch - non-static commit - from git
-    PlatformToolset: v141
+  - pg: REL_16_BETA2 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.2.3
+    compiler: msvc
+    #
+    githubcache: true
+
+  - pg: 15.3-2
+    PlatformToolset: v143
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.2.3
+    compiler: msvc
+
+  - pg: 14.8-2
+    PlatformToolset: v143
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.2.3
+    compiler: msvc
+
+  - pg: 13.11-2
+    PlatformToolset: v143
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.2.3
+    compiler: msvc
+
+  - pg: 12.15-2
+    PlatformToolset: v143
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.2.3
+    compiler: msvc
+
+  - pg: REL_11_20 # verify can compile pgsql.sln on msvc 2017
+    PlatformToolset: v140
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.2.2
+    rversion: 4.2.3
     compiler: msvc
+    #
+    githubcache: true
 
-  - pg: master # branch - non-static commit - from git
-    PlatformToolset: v141
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.1.3
-    compiler: msvc
-
-
-  - pg: REL_15_0 # static commit - from git
-    PlatformToolset: v141
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.2.2
-    compiler: msvc
-
-  - pg: 15.0-1
-    PlatformToolset: v141
+  - pg: 11.20-2
+    PlatformToolset: v140
     Configuration: Release
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.2.2
+    rversion: 4.2.3
     compiler: msvc
 
-  - pg: REL_15_0 # static commit - from git
-    PlatformToolset: v141
-    Configuration: Debug
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.1.3
-    compiler: msvc
-
-  - pg: 15.0-1
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.1.3
-    compiler: msvc
-
-
-  - pg: 14.5-1
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.2.2
-    compiler: msvc
-
-  - pg: 14.5-1
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.1.3
-    compiler: msvc
-
-
-  - pg: 13.8-1
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.2.2
-    compiler: msvc
-
-  - pg: 13.8-1
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.1.3
-    compiler: msvc
-
-
-  - pg: 12.12-1
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.2.2
-    compiler: msvc
-
-  - pg: 12.12-1
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.1.3
-    compiler: msvc
-
-
-  - pg: 11.17-1
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.2.2
-    compiler: msvc
-
-  - pg: 11.17-1
-    PlatformToolset: v141
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    rversion: 4.1.3
-    compiler: msvc
-
-
-  - pg: 10.22-1
-    PlatformToolset: v120
-    Configuration: Release
-    Platform: x64
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    rversion: 4.2.2
-    compiler: msvc
-
-  - pg: 10.22-1
+  - pg: 10.23-1
     PlatformToolset: v120
     Configuration: Release
     Platform: x64
@@ -204,49 +140,169 @@ environment:
     rversion: 4.1.3
     compiler: msvc
 
+  # msvc - "pg" 10     - last version "pg" supports x86
+  # msvc - "r"   4.1.3 - last version "r"  supports x86
 
+  - pg: REL_10_23 # verify can compile pgsql.sln on msvc 2015
+    PlatformToolset: v120
+    Configuration: Debug
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 4.1.3
+    compiler: msvc
+    #
+    githubcache: true
+
+  - pg: 10.23-1
+    PlatformToolset: v120
+    Configuration: Release
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    rversion: 4.1.3
+    compiler: msvc
+ 
+#   # msys2 - late June 2023
+#   # msys2
 
   - pg: master # branch - non-static commit - from git
     PlatformToolset: v143
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
-    rversion: 4.2.2
+    rversion: 4.3.1
     compiler: msys2
 
-  - pg: REL_15_0 # static commit - from git
+  - pg: REL_16_BETA2 # static commit - from git
     PlatformToolset: v143
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # msys2 - rversion and directory-name-part must match (HARD coded R install path location)
-    rversion: 4.2.2
+    rversion: 4.3.1
     compiler: msys2
     #
     githubcache: true
 
-
-
-  - pg: REL_14_0 # static commit - from git
+  - pg: REL_15_3 # static commit - from git # binary distributer version is volitile
     PlatformToolset: v143
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # rversion - from the already compiled "Cygwin R"
-    compiler: cygwin
+    rversion: 4.3.1
+    compiler: msys2
     #
     githubcache: true
 
-  # from the pre-built pg from Cygwin
+    # from the already compiled "MINGW64 PostgreSQL" - 15.1-2 - June 2023 - packages.msys2.org/package/mingw-w64-x86_64-postgresql
+    # none - from the repository - June 2023 - pg 15.1-2
   - PlatformToolset: v143
     Configuration: Debug
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    # rversion - from the already compiled "Cygwin R"
+    rversion: 4.3.1
+    compiler: msys2
+
+    # msvc/msys2? - "pg" 10     - last version "pg" supports x86
+    # msvc/msys2? - "r"   4.1.3 - last version "r"  supports x86
+
+  - pg: REL_10_23 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.1.3
+    compiler: msys2
+    #
+    githubcache: true
+ 
+  # cygwin - late june 2023
+  # cygwin - all cygwin work - except x86 "dragon" "archive" - binaries are not available
+
+  - pg: master # non-static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
     compiler: cygwin
 
+  - pg: master # non-static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
 
+  - pg: REL_16_BETA2 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
+    #
+    githubcache: true
+
+  - pg: REL_16_BETA2 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
+    #
+    githubcache: true
+
+  - pg: REL_15_3 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
+    #
+    githubcache: true
+
+  - pg: REL_15_3 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
+    #
+    githubcache: true
+
+  # from the already compiled "Cygwin PostgreSQL" - 15.3-1 - June 2023 - https://cygwin.com/packages/summary/postgresql-src.html
+  - PlatformToolset: v143
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R" - 4.3.0-1 - June 2023 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
+
+  # from the "last" compiled "Cygwin PostgreSQL" - in December 2022 - https://cygwin.com/packages/summary/postgresql-src.html
+  - PlatformToolset: v143
+    Configuration: Release
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    # rversion - from the already compiled "Cygwin R"  - in December 2022 - cygwin.com/packages/summary/R.html
+    compiler: cygwin
+
+#   # x86 "dragon" "archive" (binaries are not available)
+#
+#   # plr to work with
+#   # MobaXterm Version 22.2 (2022-11-15) through the recent Version 23.2 (2023-06-25) and later?
+#   # from the "last" compiled "Cygwin PostgreSQL" - in June 2022 - https://cygwin.com/packages/summary/postgresql-src.html
+#   - PlatformToolset: v143
+#     Configuration: Debug
+#     Platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+#     # rversion - from the already compiled "Cygwin R"  - in June 2022 - cygwin.com/packages/summary/R.html
+#     compiler: cygwin
+#     archive: mobaxterm232 # or alternately "mobaxterm"
+
+#### END JUNE 2023 ####
 
 # # ####  EARLY SEP 2022 build jobs
 #
@@ -1803,6 +1859,7 @@ for:
     only:
       - compiler: cygwin
 
+
   # mileage from cygwin 32bit will vary
   # https://cran.r-project.org/doc/manuals/r-release/R-admin.html#Cygwin
 
@@ -1812,6 +1869,7 @@ for:
   # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
   - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
   - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
+  - if     "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" echo APPVEYOR_BUILD_WORKER_IMAGE is 2015
   # Make %x64% available for caching
   # a variable used in the Appveyor cach area must be defined in the init
   - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
@@ -1820,34 +1878,25 @@ for:
 
       if ("${env:compiler}" -eq "cygwin") {
         if ("${env:Platform}" -eq "x64") {
-          ${env:CYG_ARCH} = "x86_64"
-          ${env:CYG_ROOT} = "C:\cygwin64"
+          ${env:CYG_ARCH}  = "x86_64"
+          ${env:CYG_ROOT}  = "C:\cygwin64"
+          ${env:CYG_CACHE} = "C:\cygwin64\var\cache\setup"
         } else {
-          ${env:CYG_ARCH} = "x86"
-          ${env:CYG_ROOT} = "C:\cygwin"
+          ${env:CYG_ARCH}  = "x86"
+          ${env:CYG_ROOT}  = "C:\cygwin"
+          ${env:CYG_CACHE} = "C:\cygwin\var\cache\setup"
         }
       }
 
-      #       # cygwin DOES NOT do R subarchitectures
-      #       if ("${env:Platform}" -eq "x64") {
-      #         ${env:R_ARCH} = "/x64"
-      #       } else {
-      #         ${env:R_ARCH} = "/i386"
-      #       }
+    # https://cygwin.com/mirrors.html and MobaXterm ~/.aptcyg/setup.ini
+    #
+    # CYG_MIRROR: http://cygwin.mirror.rafal.ca/
+  - set CYG_MIRROR="https://mirrors.kernel.org/sourceware/cygwin/"
+  - echo CYG_MIRROR %CYG_MIRROR%
 
-      ${env:rbinurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
-      # "make installcheck" does not like spaces
-      ${env:R_HOME} = "C:\RINSTALL"
-      #
-      # also see that each *.sh dot sources early ". ./init.sh"
+  - set CYG_SETUP_DOWNLOAD_URL="http://cygwin.com/setup-%CYG_ARCH%.exe"
+  - echo CYG_SETUP_DOWNLOAD_URL %CYG_SETUP_DOWNLOAD_URL%
 
-      if ("${env:Platform}" -eq "x64") {
-        ${env:bit} = "64"
-      } else {
-        ${env:bit} = "32"
-      }
-      ${env:betterperl} = "strawberry${env:bit}"
-      ${env:betterperlurl} = "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-${env:bit}bit-portable.zip"
   #
   # possible user provided in the matrix
   # (for now, keep this area to be the same as "msys2" and NOT ALL "msys2" FEATURES are implemented)
@@ -1864,13 +1913,7 @@ for:
   - echo compiler cygwin install
   - ps: |
       # Set-PSDebug -Trace 2
-      # LATER - REMOVE THIS LINE
-      ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
       ${env:PATH} = "${env:CYG_ROOT}\bin;${env:PATH}"
-
-#   # uses cygwin R
-#   # DOWNLOAD . . .
-#   - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
 
   # From the version
   - ps: |
@@ -1889,29 +1932,6 @@ for:
   - mkdir "%pgroot%"
   #
 
-  #
-  # In powershell the (above) will not run/install
-  # neither plain as here, nor in Invoke-Command,
-  # (Perhaps because, of "some" complexity)
-
-#   - ps: |
-#       # Set-PSDebug -Trace 2
-#       if (-not (Test-Path "${env:betterperl}.zip")) {
-#         curl -o "${env:betterperl}.zip" -v "${env:betterperlurl}"
-#       }
-#       7z x    "${env:betterperl}.zip" "-oc:\${env:betterperl}"
-#       # of needed to install pl/perl
-#       ${env:PATH} = "c:\${env:betterperl}\perl\bin;${env:PATH}"
-#       which perl
-#       ${env:PATH} = "${env:PATH};c:\${env:betterperl}\c\bin"
-#       which pexports
-#   # note, if compiling PostgreSQL from source,
-#   # then in the .sh files. one has to re-set the path
-#   # xor append . . .
-#   # export PATH=. . .etc . . .:${PATH}
-#   # to the /etc/profile
-
-  #
   # if "githubcache: true",
   #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
   #   pg already-compiled-binaries.
@@ -2014,15 +2034,65 @@ for:
   # https://github.com/petere/postgresql/blob/c3606de647583d7cbb39aadd2a2a989af28b97ea/.appveyor.yml
   # https://ci.appveyor.com/project/petere/postgresql/builds/37986514
 
+
+  - ps: |
+      # Somewhat safe to pass to Windows CMD
+      ${env:cunsupported} = " "
+
+      # specific - "archive" is "none" or "last" or undefined
+      #
+      ${env:cunsupported}  = "false"
+      #
+      if("${env:Platform}" -eq "x86" -and "${env:archive}" -eq "") {
+        ${env:CYG_MIRROR} = "http://mirrors.kernel.org/sourceware/cygwin-archive/20221123/"
+        ${env:cunsupported}  = "true"
+      } 
+
+      # specific - "archive" is "mobaxterm" or "mobaxterm232"
+      if("${env:Platform}" -eq "x86" -and
+        ("${env:archive}" -eq "mobaxterm"    -or
+         "${env:archive}" -eq "mobaxterm232"
+        )) {
+        ${env:CYG_MIRROR} = "http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/circa/2022/06/12/123302/"
+        # override
+        ${env:CYG_SETUP_DOWNLOAD_URL} = "http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/setup/snapshots/setup-x86-2.919.exe"
+      }
+
+  - if "%cunsupported%"=="true"  set unsupported_flag="--allow-unsupported-windows"
+  - if "%cunsupported%"=="false" set unsupported_flag="  "
+
+  - echo CYG_SETUP_DOWNLOAD_URL %CYG_SETUP_DOWNLOAD_URL%
+
   #  cywin AND PostreSQL development
-  - 'appveyor DownloadFile http://cygwin.com/setup-%CYG_ARCH%.exe -FileName setup.exe'
-  - 'setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel'
+  - 'appveyor DownloadFile %CYG_SETUP_DOWNLOAD_URL% -FileName setup.exe'
+
+  - echo CYG_MIRROR %CYG_MIRROR%
+  - echo cunsupported %cunsupported%
+  - echo unsupported_flag %unsupported_flag% VALUE
+  - echo CYG_ROOT %CYG_ROOT%
+  - echo CYG_CACHE %CYG_CACHE%
+  - echo CYG_ARCH %CYG_ARCH%
+
+  # destroy appveyors already existing directories
+  - rmdir /S /Q "%CYG_ROOT%" || time /t
+
+  # cygwin install (verbose to help see HTTP 404 errors)
+  - echo setup.exe %unsupported_flag% -qnNdO -v -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%"
+  - 'setup.exe %unsupported_flag% -qnNdO -v -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" || type "%CYG_ROOT%\var\log\setup.log.full" || type "%CYG_ROOT%\var\log\setup.log" || time /t'
+
+  # Windows server
+  - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P cygrunsrv'
+
+  # postgres installation requirements that are not already covered by the other lines further down
+  - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P gcc-core -P make -P tar -P gzip -P libreadline7 -P zlib -P icu-devel -P bison -P perl'
+
+  - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel'
   #
   # plr - andre - other packages - experience of need - while trying to - manually step by step build plr
-  - 'setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libintl-devel -P libcrypt-devel'
+  - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libintl-devel -P libcrypt-devel'
   #
   # to archive and un-archive (7z)
-  - 'setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P p7zip'
+  - 'setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P p7zip'
 
   #
   - bash -login -c "cygserver-config --yes"
@@ -2037,7 +2107,7 @@ for:
   # https://cygwin.com/cgi-bin2/package-grep.cgi?grep=postgresql&arch=x86_64
   #
   ### trying to add more -devel to try to solve a plr-make "lpostgres" linking error
-  - setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P postgresql-client -P postgresql -P postgresql-devel
+  - setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P postgresql-client -P postgresql -P postgresql-devel
 
   # needs pg_config
   # 1. USE_PGXS=1
@@ -2045,7 +2115,7 @@ for:
   #
   # PostgreSQL - from an CYGWIN already-compiled-binary - pg_config
   ### trying to add more -devel to try to solve a plr-make "lpostgres" linking error
-  - setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpq-devel
+  - setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpq-devel
 
   # R on cygwin
   # https://cygwin.com/cgi-bin2/package-grep.cgi?grep=R-&arch=x86
@@ -2054,10 +2124,12 @@ for:
   ###
   # only linking to the "R from cygwin"
   ### - if "%pg%"=="none" ( )
-  - setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
+  - setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
 
   build_script:
-  # override
+  #
+  # Note - cygwin DOES NOT do "R subarchitectures" - R_ARCH - "/x64" and "/i386"
+  # set
   - set R_HOME=%CYG_ROOT%\lib\R
   #
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
@@ -2079,6 +2151,7 @@ for:
   # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
   - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
   - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
+  - if     "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" echo APPVEYOR_BUILD_WORKER_IMAGE is 2015
   # Make %x64% available for caching
   # a variable used in the Appveyor cach area must be defined in the init
   - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
@@ -2362,6 +2435,20 @@ for:
   # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
   - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
   - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
+  - if     "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" echo APPVEYOR_BUILD_WORKER_IMAGE is 2015
+  - ps: |
+      ${env:msvcversion} = "2015"
+      ${env:msvcproductid} = "unknown"
+      if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
+        ${env:msvcversion}   = $(& "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion)
+        ${env:msvcproductid} = $(& "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId)
+      }
+      if([int]"${env:msvcversion}" -ge 2019) {
+        ${env:msvc_age} = "2019_or_younger"
+      } else {
+        ${env:msvc_age} = "2017_or_older"
+      }
+
   # Make %x64% available for caching
   # a variable used in the Appveyor cache area must be defined in the init
   - ps: |
@@ -2710,6 +2797,18 @@ for:
         $env:dll="c:\projects\postgresql\$env:Configuration\plr\plr.dll"
       }
 
+  # Remove the semi-duplicate "plr" entry int the pgsql.sln file.
+  # This is needed for msvc versions 2019 and later.
+  # On msvc 2017 and older versions this duplicate entry is required.
+  - if exist C:\projects\postgresql\pgsql.sln if "%branchtagcommit%"=="yes" if "%msvc_age%"=="2019_or_younger" (
+      echo REMOVE plr ENTRY from pgsql.sln &
+      echo FILE BEFORE clean_pgsql_sln.sh C:\projects\postgresql\pgsql.sln &
+      type      C:\projects\postgresql\pgsql.sln &
+      bash -lc '/c/projects/plr/clean_pgsql_sln.sh' &
+      echo FILE AFTER clean_pgsql_sln.sh C:\projects\postgresql\pgsql.sln &
+      type      C:\projects\postgresql\pgsql.sln
+    )
+
   # PostgreSQL from Appveyor or an EnterpriseDB already-compiled-binary.
   - ps: |
       # Set-PSDebug -Trace 2
@@ -2967,7 +3066,7 @@ deploy:
 #     folder: /home/frs/project/andremikulec
 #     application:
 #     active_mode: false
-# 
+#
 #   - provider: FTP
 #     host: frs.sourceforge.net
 #     protocol: sftp

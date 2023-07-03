@@ -5,8 +5,8 @@ cd "$(dirname "$0")"
 
 logok "BEGIN build_script.sh"
 
-# set -v -x -e
-set -e
+set -v -x -e
+# set -e
 
 # which R msys2 and cygwin
 # /c/RINSTALL/bin/x64/R
@@ -33,11 +33,11 @@ then
     cd ${pgsource}
     if [ "${Configuration}" == "Release" ]
     then
-      ./configure --enable-depend --disable-rpath --prefix=${pgroot}
+      ./configure --enable-depend --disable-rpath --without-icu --prefix=${pgroot}
     fi
     if [ "${Configuration}" == "Debug" ]
     then
-      ./configure --enable-depend --disable-rpath --enable-debug --enable-cassert CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer" --prefix=${pgroot}
+      ./configure --enable-depend --disable-rpath --without-icu --enable-debug --enable-cassert CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer" --prefix=${pgroot}
     fi
     loginfo "END   PostgreSQL CONFIGURE"
     loginfo "BEGIN PostgreSQL BUILD"
@@ -276,8 +276,8 @@ fi
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
 
-# set +v +x +e
-set +e
+set +v +x +e
+# set +e
 
 logok "BEGIN build_script.sh"
 
