@@ -14,7 +14,7 @@ then
   if [ ! -f "pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" ]
   then
     loginfo "BEGIN PostgreSQL CONFIGURE"
-    cd ${pgsource}
+    cd ${PGSOURCE}
     if [ "${Configuration}" == "Release" ]
     then
       ./configure --enable-depend --disable-rpath --without-icu --prefix=${PGROOT}

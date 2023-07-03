@@ -48,13 +48,13 @@ export R_HOME=$(cygpath "${R_HOME}")
 loginfo "R_HOME ${R_HOME}"
 
 #
-# "pgsource" variable
+# "PGSOURCE" variable
 # is only used about a custom PostgreSQL build (not a mingw or cygwin already compiled binary)
 #
 if [ ! "${pg}" == "repository" ]
 then
-  export pgsource=$(cygpath "${pgsource}")
-  loginfo "pgsource ${pgsource}"
+  export PGSOURCE=$(cygpath "${PGSOURCE}")
+  loginfo "PGSOURCE ${PGSOURCE}"
 fi
 
 export GITHUB_WORKSPACE=$(cygpath "${GITHUB_WORKSPACE}")

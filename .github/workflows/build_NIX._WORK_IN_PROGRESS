@@ -2,7 +2,7 @@
 name: plr CI NIX
 contents: write
 
-# LEFT OFF - # TODO - because this PGROOT and pgsource  a PATH, then change to UPPERCASE
+# LEFT OFF - # TODO - because this PGROOT and PGSOURCE  a PATH, then change to UPPERCASE
 # LEFT OFF - # TODO - modify .sh files
 # LEFT OFF - # TODO - setup CYGWIN
 # LEFT OFF - # TODO - run CYGWIN and fix powershell bugs
@@ -566,7 +566,7 @@ jobs:
           #
           # git commit - alphanumeric and all lowercase letters (slower download)
           #
-          Set-EnvVar "pgsource=C:\projects\postgresql"
+          Set-EnvVar "PGSOURCE=C:\projects\postgresql"
           #
           if("{{ matrix.pghint }}" -eq "commit") {
             git clone -q                         "https://git.postgresql.org/git/postgresql.git" "C:\projects\postgresql"
@@ -700,7 +700,7 @@ jobs:
           ${env:R_HOME}         = "${{ env.R_HOME }}"
           ${env:R_ARCH}         = "${{ env.R_ARCH }}"
           ${env:PGROOT}         = "${{ env.PGROOT }}"   # TODO - because this is a PATH, then change to UPPERCASE
-          ${env:pgsource}       = "${{ env.pgsource }}" # TODO - because this is a PATH, then change to UPPERCASE
+          ${env:PGSOURCE}       = "${{ env.PGSOURCE }}" # TODO - because this is a PATH, then change to UPPERCASE
 
           ${pg_binaries_installed} = "${{ env.pg_binaries_installed }}"
 
