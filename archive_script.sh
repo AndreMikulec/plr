@@ -107,7 +107,7 @@ then
 fi
 
 
-export var7z=plr-${gitrevshort}-${os}-pg${pgversion}-R${rversion}-${Platform}-${Configuration}-${compiler}.7z
+export var7z=plr-${gitrevshort}-${os}-pg${pgversion}-R${rversion}-${Platform}-${Configuration}-${compiler}-${builder}.7z
 #
 echo "var7z=${var7z}" >> ${GITHUB_ENV}
 #
@@ -130,7 +130,7 @@ loginfo "END plr 7z CREATION"
 if [ -f "${PGROOT}/bin/postgres" ] || [ -f "${PGROOT}/sbin/postgres" ]
 then
   loginfo "BEGIN pg 7z CREATION"
-  export varpg7z=pg-${os}-pg${pg}-${Platform}-${Configuration}-${compiler}.7z
+  export varpg7z=pg-${os}-pg${pg}-${Platform}-${Configuration}-${compiler}-${builder}.7z
   #
   echo "varpg7z=${varpg7z}" >> ${GITHUB_ENV}
   #
@@ -147,8 +147,8 @@ then
   #                       96m
   if [ ${pg_7z_size} -gt 100663296 ] 
   then
-    rm -f    ${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
-    loginfo "${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z is TOO BIG so removed."
+    rm -f    ${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}-${builder}.7z
+    loginfo "${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}-${builder}.7z is TOO BIG so removed."
   fi
   #
   cd ${GITHUB_WORKSPACE} 

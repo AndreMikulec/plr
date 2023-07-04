@@ -11,7 +11,7 @@ set -v -x -e
 if [ ! "${pg}" == "repository" ]
 then
   loginfo "BEGIN PostgreSQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
-  if [ ! -f "pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" ]
+  if [ ! -f "pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}-${builder}.7z" ]
   then
     loginfo "BEGIN PostgreSQL CONFIGURE"
     cd ${PGSOURCE}
@@ -35,8 +35,8 @@ then
   else
     loginfo "BEGIN 7z EXTRACTION"
     cd ${PGROOT}
-    # 7z l "${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-    7z x "${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+    # 7z l "${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}-${builder}.7z"
+    7z x "${GITHUB_WORKSPACE}/pg-${os}-pg${pgversion}-${Platform}-${Configuration}-${compiler}-${builder}.7z"
     ls -alrt ${PGROOT}
     cd ${GITHUB_WORKSPACE}
     loginfo "END   7z EXTRACTION"
