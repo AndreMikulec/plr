@@ -2,19 +2,11 @@
 name: plr CI NIX
 contents: write
 
-# LEFT OFF - # TODO - because this PGROOT and PGSOURCE  a PATH, then change to UPPERCASE
-# LEFT OFF - # TODO - modify .sh files
-# LEFT OFF - # TODO - setup CYGWIN
-# LEFT OFF - # TODO - run CYGWIN and fix powershell bugs
-
-
 env:
   # Enabling runner diagnostic logging
   ACTIONS_RUNNER_DEBUG: true
   # Enabling step debug logging
   ACTIONS_STEP_DEBUG: true
-
-
 
 on:
   # You can then manually run a workflow on the desired branch and set debug_enabled to true to get a debug session.
@@ -219,7 +211,7 @@ jobs:
 
       # 64 or 32 will be determined and overridden.
       # mingw "bit" Used in the absolute path name of msys__
-      - name: Windows and Compiler Style mingw Environment Variables and programs
+      - name: Windows mingw Compiler Style Environment Variables and programs
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
@@ -244,7 +236,7 @@ jobs:
       # 32 bit cygwin is considerted to be "no BIT"
       # 64 or 32 will be determined and determined
       # cygwin "bit" Used in the absolute path name of cygwin__
-      - name: Windows and Compiler Style cygwin Environment Variables and programs
+      - name: Windows cygwin Compiler Style Environment Variables and programs
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'cygwin' }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
@@ -263,6 +255,22 @@ jobs:
             ${env:Platform} = "x86"
           }
           Set-EnvVar "Platform=${env:Platform}"
+
+      - name: Windows cygwin Environment Specific Variables
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'cygwin' }}
+        run: |
+          function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
+          ${env:CYG_ROOT}  =  "C:\cygwin${env:bit}"
+          Set-EnvVar "CYG_ROOT=${env:CYG_ROOT}"
+          ${env:CYG_CACHE} =  "${env:CYG_ROOT}\var\cache\setup"
+          Set-EnvVar "CYG_CACHE=${env:CYG_CACHE}"
+          ${env:CYG_ARCH} = "x86" + $(if("${{ env.Platform }}" -eq "x64"){ "_" }) + "${env:bit}"
+
+          ${env:cyg_setup_download_url}="http://cygwin.com/setup-${env:CYG_ARCH}.exe"
+          Set-EnvVar "cyg_setup_download_url=${env:cyg_setup_download_url}"
+
+          ${env:cyg_mirror}="https://mirrors.kernel.org/sourceware/cygwin/"
+          Set-EnvVar "cyg_mirror=${env:cyg_mirror}"
 
       - name: Windows and Compiler Style mingw Environment Application Variables and programs
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' }}
@@ -298,6 +306,25 @@ jobs:
           # if ("${{ env:MSYSTEM }}" -eq "MINGW64"){ ${env:OSBitVersion} = "x86_64"}
           # if ("${{ env:MSYSTEM }}" -eq "MINGW32"){ ${env:OSBitVersion} = "i686" }
           # Set-EnvVar "OSBitVersion=${env:OSBitVersion}"
+
+      - name: mingw or cygwin PG Version
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'cygwin' ) }}
+        run: |
+          function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
+          if("${{ env.pg }}" -ne "commit") {  ${env:pgversion} = "${{ matrix.pg }}" }
+          Set-EnvVar "pgversion=${env:pgversion}"
+
+      - name: msvc PG Version
+        if: ${{ matrix.os == 'windows-latest' &&  env.compiler_style = 'msvc'  }}
+        run: |
+          function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
+          if( ("${{ env.pg }}" -ne "commit" )  {  
+             #
+             # From the EnterpriseDB version name
+             # if any, strip off the: right-most part dot, then numbers, then one hyphen, then numbers.
+  -          ${env:pgversion} = ${env:pg} -replace "[.]\d+-\d+$", ""
+          }
+          Set-EnvVar "pgversion=${env:pgversion}"
 
       - name: Windows and Compiler Style cygwin Environment Application Variables and programs
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'cygwin' }}
@@ -405,6 +432,8 @@ jobs:
           # "mingw" - "make installcheck" does not like spaces
           ${env:R_HOME} = "C:\RINSTALL"
           Set-EnvVar "R_HOME=${env:R_HOME}"
+
+
 
       # General case
       # R for Windows does Sub-Architectures
@@ -722,6 +751,11 @@ jobs:
           ${env.githubcache}   = "${{ matrix.githubcache }}"
           ${env:builder}       = "${{ matrix.builder }}"
 
+          echo Print the PATH variable
+          $env:PATH.Split(';')
+          echo Print the OS Environment variables
+          Get-ChildItem env:
+
           Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/test_script.sh'"
           # init.sh
           ${env:PGROOT}     = "${{ env.PGROOT }}"
@@ -755,6 +789,11 @@ jobs:
           ${env:pghint}        = "${{ matrix.pghint }}"
           ${env.githubcache}   = "${{ matrix.githubcache }}"
           ${env:builder}       = "${{ matrix.builder }}"
+
+          echo Print the PATH variable
+          $env:PATH.Split(';')
+          echo Print the OS Environment variables
+          Get-ChildItem env:
 
           Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/archive_script.sh'"
           # init.sh
