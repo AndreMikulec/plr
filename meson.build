@@ -30,10 +30,31 @@ plr_regress = [
 # Best practice of using pkg-config in meson build system
 # https://stackoverflow.com/questions/68931956/best-practice-of-using-pkg-config-in-meson-build-system
 #
-plr_deps = []
-dep_R = dependency('libR')
-plr_deps +=  dep_R
 
+# Detect MinGW host #8776
+# https://github.com/mesonbuild/meson/issues/8776
+# each returns "windows" 
+host_system   = host_machine.system()
+# build_system  = build_machine.system()
+# target_system = target_machine.system()
+
+plr_deps = []
+# default
+dep_R = dependency('libR', required : get_option('R_HOME'))
+
+# DANGER - both "mingw" nad "msvc" can be detected
+#
+# Meson with MSVC on GitHub Actions
+# Written by David Rheinsberg, on April 21, 2021.
+# Seen July 2023
+# https://dvdhrm.github.io/2021/04/21/meson-msvc-github-actions/
+#
+if host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'gcc' and get_option('rversion').version_compare('>=2.12')
+  # override - compiler is "mingw" and the version of "R" is 2.12 or greater
+  dep_R = dependency('libR', required : join_paths( get_option('R_HOME'), get_option('R_ARCH') ) )
+endif
+
+plr_deps +=  dep_R
 
 plr_link_with = []
 link_R = ['R']
@@ -47,7 +68,8 @@ plr_link_with += link_R
 # figure this out myself
 
 plr_incdir = []
-R_HOME = fs.parent(find_program('R'))
+# No, let the Developer provide this information
+# R_HOME = fs.parent(find_program('R'))
 R_incdir = include_directories(join_paths(R_HOME, 'include'))
 plr_incdir += R_incdir
 

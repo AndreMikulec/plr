@@ -1,2 +1,3 @@
 option('R_HOME', type : 'string', value : '', description : 'The directory where the R shared library file lives. This location is typically in "lib" directory. An exception is in the case of R for Windows versions  2.12 and higher. In this case the location is where the R.exe exists and that directory is before the /x64 xor /i386 subdirectories.')
-option('R_ARCH', type : 'string', value : '', description : 'Used compiling (msvc, mingw) with R for Windows versions 2.12 and higher. Expected values: /x64 xor /i386')
+option('R_ARCH', type : 'string', value : '', description : 'Used in compiling (msvc, mingw) with R for Windows versions 2.12 and higher. Expected values: /x64 xor /i386')
+option('rversion', type : 'string', value : '', description : 'The "version" of "R"')
