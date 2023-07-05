@@ -360,14 +360,14 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            core.setFailed('R for Windows Versions earler than 2.11.0 are only x86 and never x64')
+            core.setFailed('R for Windows versions earler than 2.11.0 are only x86 and never x64.')
 
       - name: Windows R Version and Platform Check - Older than Oldest
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' && env.rversionlong < 10602  }}
         uses: actions/github-script@v6
         with:
           script: |
-            core.setFailed('R for Windows Versions earler than 1.6.2 do not exist.')
+            core.setFailed('R for Windows versions earler than 1.6.2 does not exist.')
 
       # https://stackoverflow.com/questions/57903836/how-to-fail-a-job-in-github-actions
       - name: Windows R Version and MSVC Version Check
