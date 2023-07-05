@@ -11,12 +11,12 @@ plr_sources = files(
 
 plr_regress = [
   'plr',
-  'plr_transaction',
   'bad_fun',
-  'out_args'
   'opt_window',
-  'opt_window_frame',
   'do',
+  'out_args'
+  'plr_transaction',
+  'opt_window_frame',
 ]
 
 # THESE TO MAKE IT BUILD
@@ -49,10 +49,21 @@ dep_R = dependency('libR', required : get_option('R_HOME'))
 # Seen July 2023
 # https://dvdhrm.github.io/2021/04/21/meson-msvc-github-actions/
 #
-if host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'gcc' and get_option('rversion').version_compare('>=2.12')
-  # override - compiler is "mingw" and the version of "R" is 2.12 or greater
+if host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'gcc' and get_option('rversion').version_compare('>=2.12.0')
+   or
+   host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'msvc' and get_option('rversion').version_compare('>=2.12.0')
+  # override - compiler is ( "mingw" or "msvc" ) and the version of "R" is 2.12 or greater
   dep_R = dependency('libR', required : join_paths( get_option('R_HOME'), get_option('R_ARCH') ) )
 endif
+
+if host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'msvc' and get_option('rversion').version_compare('>=4.3.0')
+  message('Microsoft Visual C++ can not compile plr using R for Windows of versions 4.3.0 and greater.')
+endif
+
+
+# if you wish to generate Visual Studio project files, pass --backend vs.
+# https://mesonbuild.com/Using-with-Visual-Studio.html
+
 
 plr_deps +=  dep_R
 
@@ -76,7 +87,7 @@ plr_incdir += R_incdir
 if host_system == 'windows'
   plr_sources += rc_lib_gen.process(win32ver_rc, extra_args: [
     '--NAME', 'plr',
-    '--FILEDESC', 'PL/R - PostgreSQL support for R as a procedural language (PL)',])
+    '--FILEDESC', 'PL/R - PostgreSQL support for R as a procedural language (PLR)',])
 endif
 
 plr = shared_library('plr',
