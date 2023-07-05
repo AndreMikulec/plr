@@ -210,7 +210,7 @@ jobs:
       # From here and onward use env.Platform to read the [Assumed] Platform
 
       # 64 or 32 will be determined and overridden.
-      # mingw "bit" Used in the absolute path name of msys__
+      # mingw "bit" to be Eventually Used in the absolute path name of msys__
       - name: Windows mingw Compiler Style Environment Variables and programs
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }}
         run: |
@@ -260,34 +260,31 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'cygwin' }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
-          ${env:CYG_ROOT}  =  "C:\cygwin${env:bit}"
+          ${env:CYG_ROOT} = "C:\cygwin${{ env.bit }}"
           Set-EnvVar "CYG_ROOT=${env:CYG_ROOT}"
           ${env:CYG_CACHE} =  "${env:CYG_ROOT}\var\cache\setup"
           Set-EnvVar "CYG_CACHE=${env:CYG_CACHE}"
-          ${env:CYG_ARCH} = "x86" + $(if("${{ env.Platform }}" -eq "x64"){ "_" }) + "${env:bit}"
+          ${env:CYG_ARCH} = "x86" + $(if("${{ env.Platform }}" -eq "x64"){ "_" }) + "${{ env.bit }}"
+          Set-EnvVar "CYG_ARCH=${env:CYG_ARCH}"
 
-          ${env:cyg_setup_download_url}="http://cygwin.com/setup-${env:CYG_ARCH}.exe"
-          Set-EnvVar "cyg_setup_download_url=${env:cyg_setup_download_url}"
+      # SHELL
+      #
+      # I do not want to use the "Git for Windows" Bash
+      # Bash 5.2.15(1)-release
+      # C\Program Files\Git\bin\bash.exe
+      # github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
 
-          ${env:cyg_mirror}="https://mirrors.kernel.org/sourceware/cygwin/"
-          Set-EnvVar "cyg_mirror=${env:cyg_mirror}"
-
-      - name: Windows and Compiler Style mingw Environment Application Variables and programs
+      - name: Windows mingw SHELL
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
+
           # NOTE, "bash" comes with mingw out of the box from msys2/setup-msys2@v2.
           # (I want to use THAT ONE)
-          #
-          # I do not want to use the "Git for Windows" Bash
-          # Bash 5.2.15(1)-release
-          # C\Program Files\Git\bin\bash.exe
-          # github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
-
           # mingw case
 
-          ${env:bash} = "C:\msys${{ env.bit }}\usr\bin\bash.exe"
-          Set-EnvVar "bash=${env:bash}"
+          ${env:SHELL} = "C:\msys${{ env.bit }}\usr\bin\bash.exe"
+          Set-EnvVar "SHELL=${env:SHELL}"
 
           # matrix varible compiler(mingw64) is input to msys2/setup-msys2.
           # msys2/setup-msys2  then determines MSYSTEM.
@@ -306,6 +303,13 @@ jobs:
           # if ("${{ env:MSYSTEM }}" -eq "MINGW64"){ ${env:OSBitVersion} = "x86_64"}
           # if ("${{ env:MSYSTEM }}" -eq "MINGW32"){ ${env:OSBitVersion} = "i686" }
           # Set-EnvVar "OSBitVersion=${env:OSBitVersion}"
+
+      - name: Windows cygwin SHELL
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'cygwin' }}
+        run: |
+          function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
+          ${env:SHELL} = "C:\cygwin${{ env.bit }}\usr\bin\bash.exe"
+          Set-EnvVar "SHELL=${env:SHELL}"
 
       - name: mingw or cygwin PG Version
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'cygwin' ) }}
@@ -326,12 +330,6 @@ jobs:
           }
           Set-EnvVar "pgversion=${env:pgversion}"
 
-      - name: Windows and Compiler Style cygwin Environment Application Variables and programs
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'cygwin' }}
-        run: |
-          function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
-          ${env:bash} = "C:\cygwin${{ env.bit }}\usr\bin\bash.exe";
-          Set-EnvVar "bash=${env:bash}"
 
       - name: Checkout code
         uses: actions/checkout@v3
@@ -356,7 +354,6 @@ jobs:
 
           ${env:rversionlong} = ([int]"${env:rmajor}" * 10000) + ([int]"${env:rminor}" * 100) + ([int]"${env:rpatch}")
           Set-EnvVar "rversionlong=${env:rversionlong}"
-
 
       - name: Windows R Version and Platform Check
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' && env.rversionlong < 21100 && env.Platform == 'x64' }}
@@ -433,7 +430,23 @@ jobs:
           ${env:R_HOME} = "C:\RINSTALL"
           Set-EnvVar "R_HOME=${env:R_HOME}"
 
-
+        # NOTE - cygwin DOES HAVE R in the repository.
+      - name: cygwin R from a Repository location
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' }}
+        run: |
+          function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
+          ${env:cyg_setup_download_url}="http://cygwin.com/setup-${{ env.CYG_ARCH }}.exe"
+          Set-EnvVar "cyg_setup_download_url=${env:cyg_setup_download_url}"
+          if("${{ env.Platform }}" = "x64" ) {
+            ${env:cyg_mirror}="https://mirrors.kernel.org/sourceware/cygwin/"
+          }
+          # last "x86" of December 2022"
+          if("${{ env.Platform }}" = "x86" ) {
+            ${env:cyg_mirror}="http://mirrors.kernel.org/sourceware/cygwin-archive/20221123/"
+          }
+          Set-EnvVar "cyg_mirror=${env:cyg_mirror}"
+          ${env:R_HOME}="${{ env.CYG_ROOT }}\lib\R"
+          Set_EnvVar "R_HOME=${env:R_HOME}"
 
       # General case
       # R for Windows does Sub-Architectures
@@ -491,7 +504,7 @@ jobs:
           # 7zip 22.01 (JUN 2023)
           # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
           #
-          # Also, I will still install mingw p7zip.  I will be compressing from within the mingw bash.
+          # Also, I will still install mingw p7zip.  I will be compressing from within the mingw SHELL.
           #
           # Also, tar and zstd are needed for "actions/cache@v3.3.1"
           #
@@ -711,7 +724,7 @@ jobs:
           echo Print the OS Environment variables
           Get-ChildItem env:
 
-          Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/build_script.sh'"
+          Start-App "${{ env.SHELL }}" "-lc", "'/c/projects/plr/build_script.sh'"
           # init.sh
           ${env:PGROOT}     = "${{ env.PGROOT }}"
 
@@ -756,7 +769,7 @@ jobs:
           echo Print the OS Environment variables
           Get-ChildItem env:
 
-          Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/test_script.sh'"
+          Start-App "${{ env.SHELL }}" "-lc", "'/c/projects/plr/test_script.sh'"
           # init.sh
           ${env:PGROOT}     = "${{ env.PGROOT }}"
 
@@ -795,7 +808,7 @@ jobs:
           echo Print the OS Environment variables
           Get-ChildItem env:
 
-          Start-App "${{ env.bash }}" "-lc", "'/c/projects/plr/archive_script.sh'"
+          Start-App "${{ env.SHELL }}" "-lc", "'/c/projects/plr/archive_script.sh'"
           # init.sh
           ${env:PGROOT}     = "${{ env.PGROOT }}"
           # archive_script.sh
