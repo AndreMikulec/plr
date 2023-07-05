@@ -1,4 +1,3 @@
-fs = import('filesystem')
 
 
 plr_sources = files(
@@ -33,7 +32,9 @@ plr_regress = [
 
 # Detect MinGW host #8776
 # https://github.com/mesonbuild/meson/issues/8776
-# each returns "windows" 
+# each returns "windows"
+# (quote: Cygwin is not identified as windows, so you don't have to worry about that. )
+#   TODO test that 
 host_system   = host_machine.system()
 # build_system  = build_machine.system()
 # target_system = target_machine.system()
@@ -52,7 +53,7 @@ dep_R = dependency('libR', required : get_option('R_HOME'))
 if host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'gcc' and get_option('rversion').version_compare('>=2.12.0')
    or
    host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'msvc' and get_option('rversion').version_compare('>=2.12.0')
-  # override - compiler is ( "mingw" or "msvc" ) and the version of "R" is 2.12 or greater
+  # override - compiler is ( "mingw" or "msvc" ) and the version of "R" is 2.12.0 or greater
   dep_R = dependency('libR', required : join_paths( get_option('R_HOME'), get_option('R_ARCH') ) )
 endif
 
