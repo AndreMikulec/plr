@@ -647,22 +647,76 @@ jobs:
         shell: msys2 {0}
         run: |
           msys2 -c 'set -x -v -e; uname -a'
-          msys2 -c 'set -x -v -e; whoami'
-          msys2 -c 'set -x -v -e; id'
-          msys2 -c 'set -x -v -e; pwd'
-          msys2 -c 'set -x -v -e; echo ${SHELL}'
+          msys2 -c 'set -x -v -e; echo whoami $(whoami)'
+          msys2 -c 'set -x -v -e; echo id $(id)'
+          msys2 -c 'set -x -v -e; echo pwd $(pwd)'
+          msys2 -c 'set -x -v -e; echo SHELL ${SHELL}'
 
       # Enable "tmate" debugging of manually-triggered workflows if the input option was provided
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
+      - name: Before the Build - Windows Set OS Environment Variabless
+        if: matrix.os == 'windows-latest'
+        run: |
+          function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
+          echo Set OS Environment Variables
+          ${env:pg}            = "${{ matrix.pg }}"
+          Set-EnvVar "pg=${env:pg}"
+          ${env:Configuration} = "${{ matrix.Configuration }}"
+          Set-EnvVar "Configuration=${env:Configuration}"
+
+          # Not                   "matrix.Platform"
+          ${env:Platform}      = "${{ env.Platform }}"
+          Set-EnvVar "Platform=${env:Platform}"
+
+          ${env:os}            = "${{ matrix.os }}"
+          Set-EnvVar "os=${env:os}"
+          ${env:rversion}      = "${{ matrix.rversion }}"
+          Set-EnvVar "rversion=${env:rversion}"
+          ${env:compiler}      = "${{ matrix.compiler }}"
+          Set-EnvVar "compiler=${env:compiler}"
+          ${env:pghint}        = "${{ matrix.pghint }}"
+          Set-EnvVar "pghint=${env:pghint}"
+          ${env.githubcache}   = "${{ matrix.githubcache }}"
+          Set-EnvVar "githubcache=${env:githubcache}"
+          ${env:builder}       = "${{ matrix.builder }}"
+          Set-EnvVar "builder=${env:builder}"
+
+      - name: Before the Build - Ubuntu or MacOS - Set OS Environment Variabless
+        if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
+        env:
+        run: |
+          echo Set OS Environment Variables
+          ${pg}            = "${{ matrix.pg }}"
+          echo "pg=${pg}" > ${GITHUB_ENV}
+          ${Configuration} = "${{ matrix.Configuration }}"
+          echo "Configuration=${Configuration}" > ${GITHUB_ENV}
+
+          # Not               "matrix.Platform"
+          ${Platform}      = "${{ env.Platform }}"
+          echo "Platform=${Platform}" > ${GITHUB_ENV}
+
+          ${os}            = "${{ matrix.os }}"
+          echo "os=${os}" > ${GITHUB_ENV}
+          ${rversion}      = "${{ matrix.rversion }}"
+          echo "rversion=${rversion}" > ${GITHUB_ENV}
+          ${compiler}      = "${{ matrix.compiler }}"
+          echo "compiler=${compiler}" > ${GITHUB_ENV}
+          ${pghint}        = "${{ matrix.pghint }}"
+          echo "pghint=${pghint}" > ${GITHUB_ENV}
+          ${githubcache}   = "${{ matrix.githubcache }}"
+          echo "githubcache=${githubcache}" > ${GITHUB_ENV}
+          ${builder}       = "${{ matrix.builder }}"
+          echo "builder=${builder}" > ${GITHUB_ENV}
+
       - name: Before the Build - Windows Print Variabless
         if: matrix.os == 'windows-latest'
         env:
           RUNNER_CONTEXT_JSON: ${{ toJson(runner) }}
           GITHUB_CONTEXT_JSON: ${{ toJSON(github) }}
-          ENV_JSON: ${{ toJSON(vars) }}
+          ENV: ${{ toJSON(vars) }} # load env. variables into OS Environment Variables (and Platform)
           SECRETS_JSON: ${{ toJSON(secrets) }}
           MATRIX_JSON: ${{ toJSON(matrix) }}
         run: |
@@ -671,18 +725,22 @@ jobs:
           echo Print github context global data JSON
           echo "${env:GITHUB_CONTEXT_JSON}"
           echo Print env. vars JSON
-          echo "${env:ENV_JSON}" # null
+          echo "${env:ENV}" # null
           echo Print secrets JSON
           echo "${env:SECRETS_JSON}"
           echo Print matrix JSON
           echo "${env:MATRIX_JSON}"
+          echo Print the PATH variable
+          "${env:PATH}".Split(';')
+          echo Print the OS Environment variables
+          Get-ChildItem env:
 
-      - name: Before the Build - Ubuntu or MacOS Print Variabless
+      - name: Before the Build - Ubuntu or MacOS - Print Variabless
         if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
         env:
           RUNNER_CONTEXT_JSON: ${{ toJson(runner) }}
           GITHUB_CONTEXT_JSON: ${{ toJSON(github) }}
-          ENV_JSON: ${{ toJSON(vars) }}
+          ENV: ${{ toJSON(vars) }} # load env. variables into OS Environment Variables (and Platform)
           SECRETS_JSON: ${{ toJSON(secrets) }}
           MATRIX_JSON: ${{ toJSON(matrix) }}
         run: |
@@ -691,11 +749,15 @@ jobs:
           echo Print github context global data JSON
           echo "${GITHUB_CONTEXT_JSON}"
           echo Print env. vars JSON
-          echo "${ENV_JSON}" # null
+          echo "${ENV}" # null
           echo Print secrets JSON
           echo "${SECRETS_JSON}"
           echo Print matrix JSON
           echo "${MATRIX_JSON}"
+          echo Print the PATH variable
+          echo "${PATH}"
+          echo Print the OS Environment variables
+          export
 
       - name: make - Build
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'make' }}
@@ -703,30 +765,10 @@ jobs:
           # convert env. to OS Environment Variables
           VARS: ${{ toJSON(vars) }}
         run: |
-          function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
           function Start-App  {param($X,$Y) Start-Process -NoNewWindow -FilePath "$X" -ArgumentList $Y }
 
-          ${env:pg}            = "${{ matrix.pg }}"
-          ${env:Configuration} = "${{ matrix.Configuration }}"
-
-          # Not                   "matrix.Platform"
-          ${env:Platform}      = "${{ env.Platform }}"
-
-          ${env:os}            = "${{ matrix.os }}"
-          ${env:rversion}      = "${{ matrix.rversion }}"
-          ${env:compiler}      = "${{ matrix.compiler }}"
-          ${env:pghint}        = "${{ matrix.pghint }}"
-          ${env.githubcache}   = "${{ matrix.githubcache }}"
-          ${env:builder}       = "${{ matrix.builder }}"
-
-          echo Print the PATH variable
-          $env:PATH.Split(';')
-          echo Print the OS Environment variables
-          Get-ChildItem env:
-
           Start-App "${{ env.SHELL }}" "-lc", "'/c/projects/plr/build_script.sh'"
-          # init.sh
-          ${env:PGROOT}     = "${{ env.PGROOT }}"
+          # init.sh may modify PGROOT but PGROOT is not anymore used outside of the .sh files
 
       - name: meson - Build
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
@@ -748,30 +790,10 @@ jobs:
           # convert env. to OS Environment Variables
           VARS: ${{ toJSON(vars) }}
         run: |
-          function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
           function Start-App  {param($X,$Y) Start-Process -NoNewWindow -FilePath "$X" -ArgumentList $Y }
 
-          ${env:pg}            = "${{ matrix.pg }}"
-          ${env:Configuration} = "${{ matrix.Configuration }}"
-
-          # Not                   "matrix.Platform"
-          ${env:Platform}      = "${{ env.Platform }}"
-
-          ${env:os}            = "${{ matrix.os }}"
-          ${env:rversion}      = "${{ matrix.rversion }}"
-          ${env:compiler}      = "${{ matrix.compiler }}"
-          ${env:pghint}        = "${{ matrix.pghint }}"
-          ${env.githubcache}   = "${{ matrix.githubcache }}"
-          ${env:builder}       = "${{ matrix.builder }}"
-
-          echo Print the PATH variable
-          $env:PATH.Split(';')
-          echo Print the OS Environment variables
-          Get-ChildItem env:
-
           Start-App "${{ env.SHELL }}" "-lc", "'/c/projects/plr/test_script.sh'"
-          # init.sh
-          ${env:PGROOT}     = "${{ env.PGROOT }}"
+          # init.sh may modify PGROOT but PGROOT is not anymore used outside of the .sh files
 
       - name: meson - Test 
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
@@ -790,32 +812,10 @@ jobs:
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
           function Start-App  {param($X,$Y) Start-Process -NoNewWindow -FilePath "$X" -ArgumentList $Y }
 
-          ${env:pg}            = "${{ matrix.pg }}"
-          ${env:Configuration} = "${{ matrix.Configuration }}"
-
-          # Not                   "matrix.Platform"
-          ${env:Platform}      = "${{ env.Platform }}"
-
-          ${env:os}            = "${{ matrix.os }}"
-          ${env:rversion}      = "${{ matrix.rversion }}"
-          ${env:compiler}      = "${{ matrix.compiler }}"
-          ${env:pghint}        = "${{ matrix.pghint }}"
-          ${env.githubcache}   = "${{ matrix.githubcache }}"
-          ${env:builder}       = "${{ matrix.builder }}"
-
-          echo Print the PATH variable
-          $env:PATH.Split(';')
-          echo Print the OS Environment variables
-          Get-ChildItem env:
-
           Start-App "${{ env.SHELL }}" "-lc", "'/c/projects/plr/archive_script.sh'"
-          # init.sh
-          ${env:PGROOT}     = "${{ env.PGROOT }}"
-          # archive_script.sh
-          ${env:rversion}  = "${{ env.rversion }}"
-          ${env:pgversion} = "${{ env.pgversion }}"
-          ${env:var7z}     = "${{ env.var7z }}"
-          ${env:varpg7z}   = "${{ env.varpg7z }}"
+          # init.sh may modify  "PGROOT", "bit", or "Platform", but these are not anymore used outside of the .sh files.
+          # archive_script.sh may modify "rversion" or "pgversion", but these are not anymore used outside of the .sh files.
+          # archive_script.sh will create "var7z" and maybe "varpg7z". The .env has been modified inside the .sh files
 
       - name: meson - Archiving
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
