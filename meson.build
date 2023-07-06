@@ -34,7 +34,10 @@ plr_regress = [
 # https://github.com/mesonbuild/meson/issues/8776
 # each returns "windows"
 # (quote: Cygwin is not identified as windows, so you don't have to worry about that. )
-#   TODO test that 
+# 
+# ANDRE verified JUL 2023
+# "cygwin" - each DOES return "cygwin"
+#
 host_system   = host_machine.system()
 # build_system  = build_machine.system()
 # target_system = target_machine.system()
@@ -61,10 +64,8 @@ if host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'm
   message('Microsoft Visual C++ can not compile plr using R for Windows of versions 4.3.0 and greater.')
 endif
 
-
 # if you wish to generate Visual Studio project files, pass --backend vs.
 # https://mesonbuild.com/Using-with-Visual-Studio.html
-
 
 plr_deps +=  dep_R
 
