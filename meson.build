@@ -88,7 +88,47 @@ dep_R = dependency('libR', required : get_option('R_HOME'))
 # Written by David Rheinsberg, on April 21, 2021.
 # Seen July 2023
 # https://dvdhrm.github.io/2021/04/21/meson-msvc-github-actions/
-#
+
+# cygwin
+# meson configure
+# 
+#   Core options                    Default Value                     Possible Values                   Description
+#   --------------                  -------------                     ---------------                   -----------
+#   buildtype                       debug
+#   optimization                    0                                 [plain, 0, g, 1, 2, 3, s]
+#   warning_level                   1                                 [0, 1, 2, 3]                      Compiler warning level to use
+# 
+#   Base options                    Default Value                     Possible Values                   Description
+#   --------------                  -------------                     ---------------                   -----------
+#   b_coverage                      false                             [true, false]                     Enable coverage tracking.
+#   b_ndebug                        false                             [true, false, if-release]         Disable asserts
+#   b_pch                           true                              [true, false]                     Use precompiled headers
+#   b_pie                           false                             [true, false]                     Build executables as position independent
+#   b_staticpic                     true                              [true, false]                     Build static libraries as position independent
+# 
+#   Compiler options                Default Value                     Possible Values                   Description
+#   ------------------              -------------                     ---------------                   -----------
+#   c_args                          []                                []                                Extra arguments passed to the c compiler
+#   c_link_args                     []                                []                                Extra arguments passed to the c linker
+#   c_std                           none                              [none, c89, c99, c11, c17, c18,   C language standard to use
+#                                                                      c2x, gnu89, gnu99, gnu11, gnu17,
+#                                                                      gnu18, gnu2x]
+#   build.c_args                    []                                []                                Extra arguments passed to the c compiler
+#   build.c_link_args               []                                []                                Extra arguments passed to the c linker
+#   build.c_std                     none                              [none, c89, c99, c11, c17, c18,   C language standard to use
+#                                                                      c2x, gnu89, gnu99, gnu11, gnu17,
+#                                                                      gnu18, gnu2x]
+#   pkgconfig module options        Default Value                     Possible Values                   Description
+#   --------------------------      -------------                     ---------------                   -----------
+#   pkgconfig.relocatable           false                             [true, false]                     Generate pkgconfig files as relocatable
+# 
+#   Testing options                 Default Value                     Possible Values                   Description
+#   -----------------               -------------                     ---------------                   -----------
+#   errorlogs                       true                              [true, false]                     Whether to print the logs from failing tests
+#   stdsplit                        true                              [true, false]                     Split stdout and stderr in test logs
+
+
+
 if    host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'gcc' \
       and \
       get_option('rversion').version_compare('>=2.12.0') 
