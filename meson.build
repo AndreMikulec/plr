@@ -77,7 +77,7 @@ plr_deps = []
 if    host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'gcc' \
       and \
       get_option('rversion').version_compare('>=2.12.0') 
-   or
+    or
       host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'msvc' \
       and \
       get_option('rversion').version_compare('>=2.12.0')
