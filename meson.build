@@ -42,12 +42,67 @@ host_system   = host_machine.system()
 # build_system  = build_machine.system()
 # target_system = target_machine.system()
 
-plr_deps = []
-# default
-dep_R = dependency('libR', required : false)
-if not dep_R.found()
-  
+if host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'msvc' \
+  and \
+  get_option('rversion').version_compare('>=4.3.0')
+  error('Microsoft Visual C++ can not compile plr using R for Windows of versions 4.3.0 and greater.')
 endif
+
+
+# Manually put "R" so the searcher can find it.
+# option 1
+# https://people.freedesktop.org/~dbn/pkg-config-guide.html
+# or
+# option 2
+# Some dependencies provide no valid methods for discovery
+#  compiler.find_library()
+#  https://mesonbuild.com/Reference-manual_returned_compiler.html#compilerfind_library
+# https://mesonbuild.com/Dependencies.html
+# find_library example
+# Release-notes-for-0.50.0.md
+# find_library ldap example
+# https://github.com/postgres/postgres/blob/9f6253613e8857942b1928bd7163bc1529fc9c69/meson.build#L682
+
+if meson.get_compiler('c').get_id() == 'msvc'
+  # mingw gendef
+  # gendef . . . run it
+  # gendef.exe - "$(R_HOME)\bin\$(rbin)\R.dll" &gt; R$(PlatformTarget).def
+
+  # msvc lib 
+  # lib   . . . run it
+endif
+
+plr_deps = []
+
+if    host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'gcc' \
+      and \
+      get_option('rversion').version_compare('>=2.12.0') 
+   or
+      host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'msvc' \
+      and \
+      get_option('rversion').version_compare('>=2.12.0')
+    # Compiler is ( "mingw" or "msvc" ) and the version of "R" is 2.12.0 or greater.
+    # R for Windows Sub-Architectures
+    # (Note R 4.1.3 and greater is still Sub-Archecture with the 32bit part removed.)
+    dep_R = dependency('libR', required : false)
+    if not dep_R.found()
+      dep_R = find_library('libR', dirs: join_paths (get_option('R_HOME'), get_option('R_ARCH').substring(1)))
+      if not dep_R.found()
+        error("R library is not found.  Check R_HOME and R_ARCH.")
+      endif
+    endif
+else
+    # Non Sub-Architecture anywhere else
+    dep_R = dependency('libR', required : false)
+    if not dep_R.found()
+      dep_R = find_library('libR', dirs:  get_option('R_HOME'))
+      if not dep_R.found()
+        error("R library is not found.  Check R_HOME.")
+      endif
+    endif
+endif
+
+plr_deps +=  dep_R
 
 # #
 # DANGER - both "mingw" nad "msvc" can be detected
@@ -130,33 +185,12 @@ endif
 #   errorlogs                       true                              [true, false]                     Whether to print the logs from failing tests
 #   stdsplit                        true                              [true, false]                     Split stdout and stderr in test logs
 
-
-
-if    host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'gcc' \
-      and \
-      get_option('rversion').version_compare('>=2.12.0') 
-   or
-      host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'msvc' \
-      and \
-      get_option('rversion').version_compare('>=2.12.0')
-    # override - compiler is ( "mingw" or "msvc" ) and the version of "R" is 2.12.0 or greater
-    message('Requiring R_ARCH . . . ')
-    dep_R = dependency('libR', required : join_paths (get_option('R_HOME'), get_option('R_ARCH')))
-endif
-
-if host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'msvc' \
-  and \
-  get_option('rversion').version_compare('>=4.3.0')
-  error('Microsoft Visual C++ can not compile plr using R for Windows of versions 4.3.0 and greater.')
-endif
-
 # if you wish to generate Visual Studio project files, pass --backend vs.
 # https://mesonbuild.com/Using-with-Visual-Studio.html
 
-plr_deps +=  dep_R
 
 plr_link_with = []
-link_R = ['R']
+link_R = 'R'
 plr_link_with += link_R
 
 # https://wiki.postgresql.org/wiki/Meson
