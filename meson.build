@@ -46,8 +46,44 @@ plr_deps = []
 # default
 dep_R = dependency('libR', required : get_option('R_HOME'))
 
+# #
 # DANGER - both "mingw" nad "msvc" can be detected
+# #
 #
+# Details for vsenv 
+# The --vsenv argument is supported since 0.60.0, 
+# -Dvsenv=true syntax is supported since 1.1.0.
+# 
+# Since 0.59.0, meson automatically activates a Visual Studio environment on Windows 
+# for all its subcommands, but only if no other compilers (e.g. gcc or clang) are found, 
+# and silently continues if Visual Studio activation fails.
+# 
+# Setting the vsenv option to true forces Visual Studio activation 
+# even when other compilers are found. 
+# It also make Meson abort with an error message when activation fails.
+# 
+# vsenv is true by default when using the vs backend.
+# 
+# Seen July 2023
+# https://mesonbuild.com/Builtin-options.html
+#
+# Meson with MSVC on GitHub Actions
+# 
+# since this is what it detects by default in the GitHub Actions Environment. 
+# running Meson on GitHub Actions will end up using GCC rather than MSVC
+# His fix . . .
+# 
+#     - name: Prepare MSVC
+#       uses: bus1/cabuild/action/msdevshell@v1
+#       with:
+#         architecture: x64
+#     - name: Prepare Build
+#       run: meson setup build
+#     - name: Run Build
+#       run: meson compile -v -C build
+#     - name: Run Test Suite
+#       run: meson test -v -C build
+# 
 # Meson with MSVC on GitHub Actions
 # Written by David Rheinsberg, on April 21, 2021.
 # Seen July 2023
