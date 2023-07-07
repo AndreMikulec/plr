@@ -144,7 +144,7 @@ endif
 if host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'msvc' \
   and \
   get_option('rversion').version_compare('>=4.3.0')
-  message('Microsoft Visual C++ can not compile plr using R for Windows of versions 4.3.0 and greater.')
+  error('Microsoft Visual C++ can not compile plr using R for Windows of versions 4.3.0 and greater.')
 endif
 
 # if you wish to generate Visual Studio project files, pass --backend vs.
