@@ -44,7 +44,10 @@ host_system   = host_machine.system()
 
 plr_deps = []
 # default
-dep_R = dependency('libR', required : get_option('R_HOME'))
+dep_R = dependency('libR', required : false)
+if not dep_R.found()
+  
+endif
 
 # #
 # DANGER - both "mingw" nad "msvc" can be detected
