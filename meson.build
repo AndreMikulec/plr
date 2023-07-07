@@ -184,6 +184,9 @@ plr = shared_module('plr',
     'dependencies': [plr_deps, contrib_mod_args['dependencies']]
   },
 )
+
+pl_targets += plr
+
 contrib_targets += plr
 
 install_data(
