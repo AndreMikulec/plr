@@ -53,14 +53,21 @@ dep_R = dependency('libR', required : get_option('R_HOME'))
 # Seen July 2023
 # https://dvdhrm.github.io/2021/04/21/meson-msvc-github-actions/
 #
-if host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'gcc' and get_option('rversion').version_compare('>=2.12.0')
+if    host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'gcc' \
+      and \
+      get_option('rversion').version_compare('>=2.12.0') 
    or
-   host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'msvc' and get_option('rversion').version_compare('>=2.12.0')
-  # override - compiler is ( "mingw" or "msvc" ) and the version of "R" is 2.12.0 or greater
-  dep_R = dependency('libR', required : join_paths( get_option('R_HOME'), get_option('R_ARCH') ) )
+      host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'msvc' \
+      and \
+      get_option('rversion').version_compare('>=2.12.0')
+    # override - compiler is ( "mingw" or "msvc" ) and the version of "R" is 2.12.0 or greater
+    message('Requiring R_ARCH . . . ')
+    dep_R = dependency('libR', required : join_paths (get_option('R_HOME'), get_option('R_ARCH')))
 endif
 
-if host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'msvc' and get_option('rversion').version_compare('>=4.3.0')
+if host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'msvc' \
+  and \
+  get_option('rversion').version_compare('>=4.3.0')
   message('Microsoft Visual C++ can not compile plr using R for Windows of versions 4.3.0 and greater.')
 endif
 
