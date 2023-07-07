@@ -175,7 +175,7 @@ if host_system == 'windows'
     '--FILEDESC', 'PL/R - PostgreSQL support for R as a procedural language (PLR)',])
 endif
 
-plr = shared_library('plr',
+plr = shared_module('plr',
   plr_sources,
   link_with: plr_link_with,
   c_pch: pch_postgres_h,
