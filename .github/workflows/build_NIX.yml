@@ -928,10 +928,8 @@ jobs:
           if( "${{ env.compiler_style }}"-eq "cygwin") { Start-App "${{ env.SHELL }}" "-login", "-c" "'cygserver-config --yes'" }
           # LEFT_OFF - cygwin service and memory
 
-
           Start-App "${{ env.SHELL }}" "cp", "'/c/projects/plr/build_script.sh'"
-          # init.sh may modify PGROOT but PGROOT is not anymore used outside of the .sh files
-          # init.sh may modify  "PGROOT", "bit", or "Platform", but these are not anymore used outside of the .sh files.
+          # init.sh may modify  "PGROOT", "but these are not anymore used outside of the .sh files.
 
       - name: meson - Build
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
@@ -957,7 +955,7 @@ jobs:
           function Start-App  {param($X,$Y) Start-Process -NoNewWindow -FilePath "$X" -ArgumentList $Y }
           
           Start-App "${{ env.SHELL }}" "-lc", "'/c/projects/plr/test_script.sh'"
-          # init.sh may modify PGROOT but PGROOT is not anymore used outside of the .sh files
+          # init.sh may modify  "PGROOT", but these are not anymore used outside of the .sh files.
 
       - name: meson - Test 
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
@@ -978,7 +976,7 @@ jobs:
           function Start-App  {param($X,$Y) Start-Process -NoNewWindow -FilePath "$X" -ArgumentList $Y }
 
           Start-App "${{ env.SHELL }}" "-lc", "'/c/projects/plr/archive_script.sh'"
-          # init.sh may modify  "PGROOT", "bit", or "Platform", but these are not anymore used outside of the .sh files.
+          # init.sh may modify  "PGROOT", but these are not anymore used outside of the .sh files.
           #
           # archive_script.sh may modify "rversion" or "pgversion", but these are not anymore used outside of the .sh files.
           # archive_script.sh will create "var7z" and maybe "varpg7z". The .env has been modified inside the .sh files
