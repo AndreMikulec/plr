@@ -151,6 +151,23 @@ jobs:
             ${env:compiler_style} = "msvc"
           }
           Set-EnvVar "compiler_style=${env:compiler_style}"
+          #
+                                                            # pacman . . .  case-sensitive . . .
+          if (  "${{ matrix.compiler }}" -eq "MINGW64"    ) { ${env:mingw_env} = "x86_64" }
+          if (  "${{ matrix.compiler }}" -eq "MINGW32"    ) { ${env:mingw_env} = "i686" }
+          if (  "${{ matrix.compiler }}" -eq "UCRT64"     ) { ${env:mingw_env} = "ucrt-x86_64" }
+          if (  "${{ matrix.compiler }}" -eq "CLANG32"    ) { ${env:mingw_env} = "clang-i686" }
+          if (  "${{ matrix.compiler }}" -eq "CLANG64"    ) { ${env:mingw_env} = "clang-x86_64" }
+          if (  "${{ matrix.compiler }}" -eq "CLANGARM64" ) { ${env:mingw_env} = "clang-aarch64" }
+          Set-EnvVar "mingw_env=${env:mingw_env}"
+
+          if (  "${{ matrix.compiler }}" -eq "MINGW64"    ) { ${env:compiler_exe} = "gcc" }
+          if (  "${{ matrix.compiler }}" -eq "MINGW32"    ) { ${env:compiler_exe} = "gcc" }
+          if (  "${{ matrix.compiler }}" -eq "UCRT64"     ) { ${env:compiler_exe} = "gcc" }
+          if (  "${{ matrix.compiler }}" -eq "CLANG32"    ) { ${env:compiler_exe} = "clang" }
+          if (  "${{ matrix.compiler }}" -eq "CLANG64"    ) { ${env:compiler_exe} = "clang" }
+          if (  "${{ matrix.compiler }}" -eq "CLANGARM64" ) { ${env:compiler_exe} = "clang" }
+          Set-EnvVar "compiler_exe=${env:compiler_exe}"
 
       - name: Windows matrix_Platform_bit Env Variable
         if: matrix.os == 'windows-latest'
@@ -496,8 +513,12 @@ jobs:
       # and add various things on top of it.
       # https://www.msys2.org/docs/environments
       #
+      # Allowed values: MSYS | MINGW64 | MINGW32 | UCRT64 | CLANG32 | CLANG64 | CLANGARM64
+      # https://github.com/msys2/setup-msys2
+      # EXCEPT NOT SUPPORTING "MSYS" because of inconsistent (non-standard "old" bare) package naming
+      #
       - name: Install Windows mingw Software
-        if: ${{ matrix.os == 'windows-latest' && env.compile_styler = 'mingw' }}
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }}
         uses: msys2/setup-msys2@v2
         with:
           msystem: ${{ matrix.compiler }}
@@ -508,9 +529,7 @@ jobs:
           #
           # Is "--without-icu" ignored in pg 15 and lower? Yes, ignored.
           #
-          # git - after "icu-devel", "git" was removed - Instead, I will use "Git for Windows"
-          #
-          # NOTE
+          # NOTE - Github Actions has "Git for Windows Installed" (with "git" and "7z")
           # 7zip 22.01 (JUN 2023)
           # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
           #
@@ -519,20 +538,25 @@ jobs:
           # Also, tar and zstd are needed for "actions/cache@v3.3.1"
           #
           install: >-
-            meson
-            make
-            gcc
+            mingw-w64-${{ env.mingw_env }}-pkg-config
+            mingw-w64-${{ env.mingw_env }}-curl
+            git
+            mingw-w64-${{ env.mingw_env }}-meson
+            mingw-w64-${{ env.mingw_env }}-make
+            mingw-w64-${{ env.mingw_env }}-${{ env.compiler_exe }}
             tar
-            gzip
-            readline
-            zlib
-            icu-devel
-            flex
-            bison
-            perl
-            winpty
-            p7zip
-            tar
+            gzip 
+            mingw-w64-${{ env.mingw_env }}-readline
+            mingw-w64-${{ env.mingw_env }}-zlib
+            mingw-w64-${{ env.mingw_env }}-icu
+            icu-devel  
+            git
+            flex       
+            bison      
+            mingw-w64-${{ env.mingw_env }}-perl
+            mingw-w64-${{ env.mingw_env }}-winpty
+            p7zip   
+            tar       
             zstd
 
       # Needs "tar" and "zstd"
