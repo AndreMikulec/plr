@@ -38,16 +38,84 @@ plr_regress = [
 # ANDRE verified JUL 2023
 # "cygwin" - each DOES return "cygwin"
 #
-host_system   = host_machine.system()
+# host_system   = host_machine.system()
 # build_system  = build_machine.system()
 # target_system = target_machine.system()
 
-if host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'msvc' \
+is_msvc    = meson.get_compiler('c').get_id() == 'msvc'
+is_gcc     = meson.get_compiler('c').get_id() == 'gcc'
+is_windows = build_machine.system() == 'windows'
+rversion   = get_option('rversion')
+
+if is_windows \
   and \
-  get_option('rversion').version_compare('>=4.3.0')
+  rversion.version_compare('>=4.3.0')
   error('Microsoft Visual C++ can not compile plr using R for Windows of versions 4.3.0 and greater.')
 endif
 
+if    is_windows and is_gcc \
+      and \
+      rversion.version_compare('>=2.12.0') 
+    or
+      is_windows' and is_msvc  \
+      and \
+      rversion.version_compare('>=2.12.0')
+    #
+    # Compiler is ( "mingw" or "msvc" ) and the version of "R" is 2.12.0 or greater.
+    # R for Windows is Sub-Architectures
+    # (Note R 4.1.3 and greater is still Sub-Archecture with the 32bit part removed.)
+    r_subarchitectures = true
+else
+    # Non Sub-Architecture anywhere else
+    r_subarchitectures = false
+endif
+
+# msvc lib 
+# Target platform
+# C:\Program Files\Microsoft Visual Studio\2022\Community>lib /?
+# https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-target-framework-and-target-platform?view=vs-2022
+if get_option('R_ARCH') == '/x64'
+  PlatformTarget == 'x64'
+endif
+if get_option('R_ARCH') == '/i386'
+  PlatformTarget == 'x86'
+endif
+
+if not r_subarchitectures
+  win_Rddl_path_nosubarch = get_option('R_HOME')
+endif
+if r_subarchitectures
+  win_Rddl_path_subarch   = get_option('R_HOME') / get_option('R_ARCH').substring(1)
+endif
+
+if not r_subarchitectures
+  win_Rddl_pathfile = win_Rddl_path_nosubarch / 'R.dll'
+endif
+if r_subarchitectures
+  win_Rddl_pathfile = win_Rddl_path_subarch   / 'R.dll'
+endif
+
+if is_windows and is_msvc
+
+  # gendef - Can be from 
+  # mingw-w64-???-tools-git
+  # https://packages.msys2.org/search?t=binpkg&q=tools-git
+  # How to use it
+  # https://sourceforge.net/p/mingw-w64/wik0i2/gendef/
+  #
+  # gendef.exe path and file must be known or available
+  #
+  # Unable to use custom_command for tools that only output to stdout #512
+  # https://github.com/mesonbuild/meson/issues/512
+  #
+  custom_target('R.def', capture: true, command: [ 'gendef' ,'-' , win_Rddl_pathfile ] ,output: 'R.def')
+
+  # msvc lib 
+  # Target platform
+  r = run_command('lib', '/def:R.def', '/out:R.lib', '/MACHINE:' + PlatformTarget)
+endif
+
+plr_deps = []
 
 # Manually put "R" so the searcher can find it.
 # option 1
@@ -58,51 +126,33 @@ endif
 #  compiler.find_library()
 #  https://mesonbuild.com/Reference-manual_returned_compiler.html#compilerfind_library
 # https://mesonbuild.com/Dependencies.html
+#
 # find_library example
 # Release-notes-for-0.50.0.md
+#
 # find_library ldap example
 # https://github.com/postgres/postgres/blob/9f6253613e8857942b1928bd7163bc1529fc9c69/meson.build#L682
 
-if meson.get_compiler('c').get_id() == 'msvc'
-  # mingw gendef
-  # gendef . . . run it
-  # gendef.exe - "$(R_HOME)\bin\$(rbin)\R.dll" &gt; R$(PlatformTarget).def
-
-  # msvc lib 
-  # lib   . . . run it
+# non-Windows and Windows
+#
+dep_R = dependency('libR', required : false)
+if not dep_R.found()
+  if not r_subarchitectures
+    dep_R = find_library('libR', dirs:  get_option('R_HOME'))
+  endif  
+  if    r_subarchitectures
+    # actually only ever known to be on Windows
+    dep_R = find_library('libR', dirs: get_option('R_HOME') / get_option('R_ARCH').substring(1))
+  endif
+  if not dep_R.found()
+    error("R library is not found.  Check R_HOME [and R_ARCH if applicable].")
+  endif
 endif
 
-plr_deps = []
-
-if    host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'gcc' \
-      and \
-      get_option('rversion').version_compare('>=2.12.0') 
-    or
-      host_machine.system() == 'windows' and meson.get_compiler('c').get_id() == 'msvc' \
-      and \
-      get_option('rversion').version_compare('>=2.12.0')
-    # Compiler is ( "mingw" or "msvc" ) and the version of "R" is 2.12.0 or greater.
-    # R for Windows Sub-Architectures
-    # (Note R 4.1.3 and greater is still Sub-Archecture with the 32bit part removed.)
-    dep_R = dependency('libR', required : false)
-    if not dep_R.found()
-      dep_R = find_library('libR', dirs: join_paths (get_option('R_HOME'), get_option('R_ARCH').substring(1)))
-      if not dep_R.found()
-        error("R library is not found.  Check R_HOME and R_ARCH.")
-      endif
-    endif
 else
-    # Non Sub-Architecture anywhere else
-    dep_R = dependency('libR', required : false)
-    if not dep_R.found()
-      dep_R = find_library('libR', dirs:  get_option('R_HOME'))
-      if not dep_R.found()
-        error("R library is not found.  Check R_HOME.")
-      endif
-    endif
-endif
 
 plr_deps +=  dep_R
+
 
 # #
 # DANGER - both "mingw" nad "msvc" can be detected
@@ -124,6 +174,7 @@ plr_deps +=  dep_R
 # 
 # Seen July 2023
 # https://mesonbuild.com/Builtin-options.html
+#
 #
 # Meson with MSVC on GitHub Actions
 # 
