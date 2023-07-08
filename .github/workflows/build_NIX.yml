@@ -215,20 +215,20 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
-          if("${{ env.matrix_Compiler_bit }}" -eq "64") {
-            ${env:bit} = "${{ env.matrix_Compiler_bit }}"
-            Set-EnvVar "bit=${env:bit}"
+          if("${{ env.matrix_Compiler_bit }}" -eq "64") {"
+            Set-EnvVar "bit=64" # always 64
             ${env:Platform} = "x64"
           }
           if("${{ env.matrix_Compiler_bit }}" -eq "32") {
-            ${env:bit} = "${{ env.matrix_Compiler_bit }}"
-            Set-EnvVar "bit=${env:bit}"
+            Set-EnvVar "bit=64" # always 64
             ${env:Platform} = "x86"
           }
           # "msys" 
+          # msys is msys/x86_64
+          # https://packages.msys2.org/repo
           if("${{ env.matrix_Compiler_bit }}" -eq "") {
             # case - NEED to verify THIS - www.coin-or.org/OS/documentation/node16.html
-            ${env:Platform} = "x86"
+            ${env:Platform} = "x64"
           }
           Set-EnvVar "Platform=${env:Platform}"
 
@@ -485,12 +485,22 @@ jobs:
           # Nix does not like spaces
           ${env:PGROOT} = "C:\PGINSTALL"
           Set-EnvVar "PGROOT=${env:PGROOT}"
-
+      
+      #                                    # always 64
+      # typical PATH for software - C:\msys${{ bit }}\${{ matrix.compiler }}\bin
+      #
+      # Environments
+      # The MSYS environment contains the unix-like/cygwin based tools, 
+      # lives under /usr and is special in that it is always active. 
+      # All the other environments inherit from the MSYS environment 
+      # and add various things on top of it.
+      # https://www.msys2.org/docs/environments
+      #
       - name: Install Windows mingw Software
         if: ${{ matrix.os == 'windows-latest' && env.compile_styler = 'mingw' }}
         uses: msys2/setup-msys2@v2
         with:
-          msystem: ${{matrix.compiler}}
+          msystem: ${{ matrix.compiler }}
           update: true
           #
           # https://www.postgresql.org/docs/16/install-requirements.html
