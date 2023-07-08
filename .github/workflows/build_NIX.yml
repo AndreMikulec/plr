@@ -502,7 +502,63 @@ jobs:
           # Nix does not like spaces
           ${env:PGROOT} = "C:\PGINSTALL"
           Set-EnvVar "PGROOT=${env:PGROOT}"
-      
+
+      # #
+      # DANGER - both "mingw" nad "msvc" can be detected
+      # #
+      #
+      # Details for vsenv 
+      # The --vsenv argument is supported since 0.60.0, 
+      # -Dvsenv=true syntax is supported since 1.1.0.
+      # 
+      # Since 0.59.0, meson automatically activates a Visual Studio environment on Windows 
+      # for all its subcommands, but only if no other compilers (e.g. gcc or clang) are found, 
+      # and silently continues if Visual Studio activation fails.
+      # 
+      # Setting the vsenv option to true forces Visual Studio activation 
+      # even when other compilers are found. 
+      # It also make Meson abort with an error message when activation fails.
+      # 
+      # vsenv is true by default when using the vs backend.
+      #
+      #    generic VS backend (`--backend=vs`) that autodetects the currently active VS version.
+      #    Release-notes-for-0.40.0.md
+      #
+      #    if you wish to generate Visual Studio project files, pass --backend vs.
+      #    https://mesonbuild.com/Using-with-Visual-Studio.html
+      # 
+      # Seen July 2023
+      # https://mesonbuild.com/Builtin-options.html
+      #
+      #
+      # Meson with MSVC on GitHub Actions
+      # 
+      # since this is what it detects by default in the GitHub Actions Environment. 
+      # running Meson on GitHub Actions will end up using GCC rather than MSVC
+      #
+      # His fix . . . 
+      #
+      # Following steps will thus run as if in an MSVC Developer Shell.
+      #  A full example is appended at the bottom . . . 
+      # 
+      #     - name: Prepare MSVC
+      #       uses: bus1/cabuild/action/msdevshell@v1
+      #       with:
+      #         architecture: x64
+      #     - name: Prepare Build
+      #       run: meson ... etc . . .
+      # 
+      # Meson with MSVC on GitHub Actions
+      # Written by David Rheinsberg, on April 21, 2021.
+      # Seen July 2023
+      # https://dvdhrm.github.io/2021/04/21/meson-msvc-github-actions/
+
+      - name: Prepare Github Actions, MSVC, and Meson
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'msvc' && matrix.bulder = 'meson' }}
+        uses: bus1/cabuild/action/msdevshell@v1
+        with:
+          architecture: x64
+
       #                                    # always 64
       # typical PATH for software - C:\msys${{ bit }}\${{ matrix.compiler }}\bin
       #
@@ -678,6 +734,9 @@ jobs:
         with:
           msystem: ${{ matrix.compiler }}
           updated: true
+          #  corresponds to the MSYS2_PATH_TYPE setting in MSYS2
+          # https://github.com/msys2/MSYS2-packages/blob/915946a637e1f2b7e26e32782f3af322009293db/filesystem/profile#L28-L45
+          path-type: minimal
         shell: msys2 {0}
         run: |
           msys2 -c 'set -x -v -e; uname -a'
