@@ -149,6 +149,9 @@ endif
 # option 1
 # https://people.freedesktop.org/~dbn/pkg-config-guide.html
 #
+# https://www.msys2.org/docs/pkgconfig/
+# https://www.cygwin.com/packages/summary/pkg-config.html
+#
 # You should generate a pkg-config
 # pkgc = import('pkgconfig')
 # Compiling D sources

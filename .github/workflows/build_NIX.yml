@@ -144,14 +144,6 @@ jobs:
           {
             ${env:compiler_style} = "mingw"
           }
-          if ( "${{ matrix.compiler }}" -eq "cygwin" ){
-            ${env:compiler_style} = "cygwin"
-          }
-          if ( "${{ matrix.compiler }}" -eq "msvc" ){
-            ${env:compiler_style} = "msvc"
-          }
-          Set-EnvVar "compiler_style=${env:compiler_style}"
-          #
                                                             # pacman . . .  case-sensitive . . .
           if (  "${{ matrix.compiler }}" -eq "MINGW64"    ) { ${env:mingw_env} = "x86_64" }
           if (  "${{ matrix.compiler }}" -eq "MINGW32"    ) { ${env:mingw_env} = "i686" }
@@ -168,6 +160,24 @@ jobs:
           if (  "${{ matrix.compiler }}" -eq "CLANG64"    ) { ${env:compiler_exe} = "clang" }
           if (  "${{ matrix.compiler }}" -eq "CLANGARM64" ) { ${env:compiler_exe} = "clang" }
           Set-EnvVar "compiler_exe=${env:compiler_exe}"
+
+          if ( "${{ matrix.Platform }}" -eq "x64" ) { ${env:msvc_architecture} = "x64" }
+          if ( "${{ matrix.Platform }}" -eq "x86" ) { ${env:msvc_architecture} = "x86" }
+          Set-EnvVar "msvc_architecture=${env:msvc_architecture}"
+
+          if ( "${{ matrix.compiler }}" -eq "msvc" ){
+            ${env:compiler_style} = "msvc"
+          }
+
+          if ( "${{ matrix.Platform }}" -eq "x64" ) { ${env:cygwin_platform} = "x86_64" }
+          if ( "${{ matrix.Platform }}" -eq "x86" ) { ${env:cygwin_platform} = "x86" }
+          Set-EnvVar "cygwin_platform=${env:cygwin_platform}"
+
+          if ( "${{ matrix.compiler }}" -eq "cygwin" ){
+            ${env:compiler_style} = "cygwin"
+          }
+         
+          Set-EnvVar "compiler_style=${env:compiler_style}"
 
       - name: Windows matrix_Platform_bit Env Variable
         if: matrix.os == 'windows-latest'
@@ -552,12 +562,51 @@ jobs:
       # Written by David Rheinsberg, on April 21, 2021.
       # Seen July 2023
       # https://dvdhrm.github.io/2021/04/21/meson-msvc-github-actions/
-
+      #
+      # `x64` for 64-bit x86 machines, `x86` for 32-bit x86 machines.
+      # https://github.com/bus1/cabuild/blob/8c91ebf06b7a5f8405cf93c89a6928e4c76967e0/action/msdevshell/action.yml
+      # #
+      # Setting the default architecture
+      # # .sln file - GlobalSection(SolutionConfigurationPlatforms) = preSolutio
+      # Debug|ARM = Debug|ARM
+      # Debug|x64 = Debug|x64
+      # Debug|x86 = Debug|x86
+      # Release|ARM = Release|ARM
+      # Release|x64 = Release|x64
+      # Release|x86 = Release|x86
+      # https://www.codevoid.net/ruminations/2020/12/28/default-architecture-visual-studio.html
+      #
       - name: Prepare Github Actions, MSVC, and Meson
         if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'msvc' && matrix.bulder = 'meson' }}
         uses: bus1/cabuild/action/msdevshell@v1
         with:
-          architecture: x64
+          architecture: ${{ env.msvc_architecture }}
+
+      - name: Prepare Github Actions and Cygwin
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'cygwin' }}
+        uses: cygwin/cygwin-install-action@v4
+        env:
+          # Andre Experience
+          # /usr/local/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:.
+          # current directory is NOT my "~" directory
+          PATH:
+          CHERE_INVOKING: 1
+        with:
+          platform: ${{ env.cygwin_platform }}
+          install-dir: "C:\cygwin${{ env.bit }}"
+          add-to-path: false
+          # package list based off of
+          # https://github.com/AndreMikulec/plr/blob/8613137fe46337a4d2067fc49a2a6d8295976b7b/appveyor.yml#L2081
+          packages: >-
+            pkg-config
+            cygrunsrv
+            gcc-core make tar gzip libreadline7 zlib icu-devel bison perl
+            flex libreadline-devel libssl-devel libxml2-devel libxslt-devel openldap-devel zlib-devel
+            libintl-devel libcrypt-devel
+            p7zip
+            postgresql-client postgresql postgresql-devel
+            libpq-devel
+            R R-debuginf
 
       #                                    # always 64
       # typical PATH for software - C:\msys${{ bit }}\${{ matrix.compiler }}\bin
@@ -673,7 +722,7 @@ jobs:
           # If one is not getting the "pg" from a repository,
           # then One must get pg from source [and then eventually compile pg into binaries].
           #
-          # avoid an error
+          # avoid a Powershell error
           git config --global advice.detachedHead false
           # recommended - github.com/msys2/setup-msys2/tree/v2
           git config --global core.autocrlf
@@ -707,7 +756,7 @@ jobs:
 
       - name: Windows Set Same Locations
         if: matrix.os == 'windows-latest'
-        # GITHUB_WORKSPACE="D\a\githubactionstest\githubactionstest"
+        # GITHUB_WORKSPACE="D\a\plr\plr"
         # https://docs.github.com/en/actions/learn-github-actions/variables
         run: |
           #
@@ -807,7 +856,7 @@ jobs:
       - name: Before the Build - Windows Print Variabless
         if: matrix.os == 'windows-latest'
         env:
-          RUNNER_CONTEXT_JSON: ${{ toJson(runner) }}
+          RUNNER_CONTEXT_JSON: ${{ toJSON(runner) }}
           GITHUB_CONTEXT_JSON: ${{ toJSON(github) }}
           ENV: ${{ toJSON(vars) }} # load env. variables into OS Environment Variables (and Platform)
           SECRETS_JSON: ${{ toJSON(secrets) }}
@@ -862,6 +911,11 @@ jobs:
 
           Start-App "${{ env.SHELL }}" "-lc", "'/c/projects/plr/build_script.sh'"
           # init.sh may modify PGROOT but PGROOT is not anymore used outside of the .sh files
+          # init.sh may modify  "PGROOT", "bit", or "Platform", but these are not anymore used outside of the .sh files.
+          #
+          # archive_script.sh may modify "rversion" or "pgversion", but these are not anymore used outside of the .sh files.
+          # archive_script.sh will create "var7z" and maybe "varpg7z". The .env has been modified inside the .sh files
+          # "var7z" WILL BE USED outside of the .sh fles AND MAYBE "varpg7z" WILL BE USED outisde of the .sh files
 
       - name: meson - Build
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
