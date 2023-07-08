@@ -62,7 +62,7 @@ jobs:
             Platform: x64
             os: windows-latest
             rversion: 4.3.1
-            compiler: mingw64
+            compiler: UCRT64
             builder: make
 
           - pg: REL_16_BETA2
@@ -70,7 +70,7 @@ jobs:
             Platform: x64
             os: windows-latest
             rversion: 4.3.1
-            compiler: mingw64
+            compiler: UCRT64
             builder: meson
 
           - Configuration: Debug
@@ -133,13 +133,13 @@ jobs:
           # to be compatible with "msys2/setup-msys2@v2"
           #
           if ( 
-            "${{ matrix.compiler }}" -eq "msys"       -or 
-            "${{ matrix.compiler }}" -eq "mingw64"    -or
-            "${{ matrix.compiler }}" -eq "mingw32"    -or
-            "${{ matrix.compiler }}" -eq "ucrt64"     -or
-            "${{ matrix.compiler }}" -eq "clang32"    -or
-            "${{ matrix.compiler }}" -eq "clang64"    -or
-            "${{ matrix.compiler }}" -eq "clangarm64" 
+            "${{ matrix.compiler }}" -eq "MSYS"       -or 
+            "${{ matrix.compiler }}" -eq "MINGW64"    -or
+            "${{ matrix.compiler }}" -eq "MINGW32"    -or
+            "${{ matrix.compiler }}" -eq "UCRT64"     -or
+            "${{ matrix.compiler }}" -eq "CLANG32"    -or
+            "${{ matrix.compiler }}" -eq "CLANG64"    -or
+            "${{ matrix.compiler }}" -eq "CLANGARM64" 
           ) 
           {
             ${env:compiler_style} = "mingw"
