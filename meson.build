@@ -1,12 +1,23 @@
 
 
+# As a subproject of postgres, setup . . . 
+# meson setup -Dplr:rversion=4.2.3 -Dplr:R_HOME='C:\Program Files\R\R-4.2.3' -Dplr:R_ARCH='/x64'
 
+# Core
+# -Dbuildtype=release
+
+# CAN BE specific
+# -Db_pie=true  
+# 
 # cygwin
+# 
 # meson configure
 # 
 #   Core options                    Default Value                     Possible Values                   Description
 #   --------------                  -------------                     ---------------                   -----------
-#   buildtype                       debug
+#   buildtype                      debug                            [plain, debug, debugoptimized,   Build type to use
+#                                                                    release, minsize, custom]
+#
 #   optimization                    0                                 [plain, 0, g, 1, 2, 3, s]
 #   warning_level                   1                                 [0, 1, 2, 3]                      Compiler warning level to use
 # 
@@ -77,6 +88,11 @@ is_gcc     = meson.get_compiler('c').get_id() == 'gcc'
 is_windows = build_machine.system() == 'windows'
 rversion   = get_option('rversion')
 
+if rversion == ''
+  error('One must supply: -Dplr:rversion=x.y.z')
+endif
+
+
 if is_windows \
   and \
   rversion.version_compare('>=4.3.0')
@@ -85,9 +101,9 @@ endif
 
 if    is_windows and is_gcc \
       and \
-      rversion.version_compare('>=2.12.0') 
-    or
-      is_windows' and is_msvc  \
+      rversion.version_compare('>=2.12.0')  \
+    or \
+      is_windows and is_msvc  \
       and \
       rversion.version_compare('>=2.12.0')
     #
@@ -104,26 +120,42 @@ endif
 # Target platform
 # C:\Program Files\Microsoft Visual Studio\2022\Community>lib /?
 # https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-target-framework-and-target-platform?view=vs-2022
-if get_option('R_ARCH') == '/x64'
+
+R_arch = get_option('R_ARCH')
+
+if R_arch == ''
+  message('One has not supplied: -Dplr:R_ARCH=newvalue')
+endif
+
+
+if R_arch == '/x64'
   PlatformTarget == 'x64'
 endif
-if get_option('R_ARCH') == '/i386'
+if R_arch == '/i386'
   PlatformTarget == 'x86'
 endif
 
+
+R_home = get_option('R_HOME')
+if R_home == ''
+  error('One must supply: -Dplr:R_HOME=newvalue')
+endif
+
+
 if not r_subarchitectures
-  win_Rddl_path_nosubarch = get_option('R_HOME')
+  win_Rddl_path_nosubarch = R_home
 endif
 if r_subarchitectures
-  win_Rddl_path_subarch   = get_option('R_HOME') / get_option('R_ARCH').substring(1)
+  win_Rddl_path_subarch   = R_home / R_arch.substring(1)
 endif
 
 if not r_subarchitectures
-  win_Rddl_pathfile = win_Rddl_path_nosubarch / 'R.dll'
+  win_Rddl_path = win_Rddl_path_nosubarch 
 endif
 if r_subarchitectures
-  win_Rddl_pathfile = win_Rddl_path_subarch   / 'R.dll'
+  win_Rddl_path = win_Rddl_path_subarch   
 endif
+
 
 if is_windows and is_msvc
 
@@ -138,11 +170,11 @@ if is_windows and is_msvc
   # Unable to use custom_command for tools that only output to stdout #512
   # https://github.com/mesonbuild/meson/issues/512
   #
-  custom_target('R.def', capture: true, command: [ 'gendef' ,'-' , win_Rddl_pathfile ] ,output: 'R.def')
+  custom_target('R def file', capture: true, command: [ 'gendef' ,'-' , win_Rddl_path / 'R.dll' ], output: win_Rddl_path / 'R.def')
 
   # msvc lib 
   # Target platform
-  r = run_command('lib', '/def:R.def', '/out:R.lib', '/MACHINE:' + PlatformTarget)
+  r = run_command('lib', '/def:' + win_Rddl_path / 'R.def', '/out:' + win_Rddl_path / 'R.lib', '/MACHINE:' + PlatformTarget)
 endif
 
 # Manually put "R" so the searcher can find it.
@@ -181,11 +213,11 @@ plr_deps = []
 dep_R = dependency('libR', required : false)
 if not dep_R.found()
   if not r_subarchitectures
-    dep_R = find_library('libR', dirs:  get_option('R_HOME'))
+    dep_R = find_library('libR', dirs: R_home)
   endif  
   if    r_subarchitectures
     # actually only ever known have "R Sub-Architectures" on Windows
-    dep_R = find_library('libR', dirs: get_option('R_HOME') / get_option('R_ARCH').substring(1))
+    dep_R = find_library('libR', dirs: R_home / R_arch.substring(1))
   endif
   if not dep_R.found()
     error("R library is not found.  Check R_HOME [and R_ARCH if applicable].")
@@ -196,16 +228,12 @@ else
 
 plr_deps +=  dep_R
 
-
-
-
-
 plr_link_with = []
 link_R = 'R'
 plr_link_with += link_R
 
 plr_incdir = []
-R_incdir = include_directories(join_paths(R_HOME, 'include'))
+R_incdir = include_directories(join_paths(R_home, 'include'))
 plr_incdir += R_incdir
 
 if host_system == 'windows'
