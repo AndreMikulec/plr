@@ -309,7 +309,7 @@ plr_deps = []
 # non-Windows and Windows
 #
 # # putting 
-# # dep_R = dependency('libR', required : false)
+# # dep_R = dependency('libR', required : true)
 # # and
 # # dep_R
 # # in root/meson.built WHEREVER zlib is found
