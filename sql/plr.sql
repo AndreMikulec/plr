@@ -92,7 +92,7 @@ create or replace function echo(text) returns text as 'print(arg1)' language 'pl
 select echo('hello');
 
 create or replace function reval(text) returns text as 'eval(parse(text = arg1))' language 'plr';
-select reval('a <- sd(c(1,2,3)); b <- mean(c(1,2,3)); a + b');
+select reval('b <- mean(c(1,2,3)); a <- sd(c(1,2,3)); a + b');
 
 create or replace function "commandArgs"() returns text[] as '' language 'plr';
 select "commandArgs"();
