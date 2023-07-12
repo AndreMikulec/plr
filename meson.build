@@ -1,7 +1,67 @@
 
 
-# As a subproject of postgres, setup . . . 
-# meson setup -Dplr:rversion=4.2.3 -Dplr:R_HOME='C:\Program Files\R\R-4.2.3' -Dplr:R_ARCH='/x64'
+# PLR is built as a "contrib" of postgres
+
+# cygwin setup
+# 
+# rem "Command Prompt" -> Right Click -> Run As Administrator
+# 
+# mkdir "C:\cygwin64.Downloads"
+# cd "C:\cygwin64.Downloads"
+# 
+# # Download the file "setup-x86_64.exe" from https://www.cygwin.com/install.html
+# # Place the file into  "C:\cygwin64.Downloads"
+# # Rename the file. 
+# 
+# set CYG_ARCH=x64
+# set CYG_ROOT=C:\cygwin64
+# set CYG_CACHE=C:\cygwin64\var\cache\setup
+# set CYG_MIRROR=https://mirrors.kernel.org/sourceware/cygwin/
+# 
+# # Choose to install Cygwin into     "C:\cygwin64".
+# # Choose to use the Cygwin cache at "C:\cygwin64.Downloads".
+# setup-x86_64_3.4.7.exe -qnNdO -v -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%"
+# setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P cygrunsrv
+# 
+# rem IMPORTANT
+# setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P pkg-config -P meson -P gendef
+# 
+# setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P gcc-core -P make -P tar -P gzip -P libreadline7 -P zlib -P icu-devel -P bison -P perl
+# setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel
+# setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libintl-devel -P libcrypt-devel
+# setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P p7zip
+# setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P postgresql-client -P postgresql -P postgresql-devel
+# setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpq-devel
+# setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
+# set SHELL=%CYG_ROOT%\bin\bash
+# %SHELL% -login -c "cygserver-config --yes"
+# copy %CYG_ROOT%\etc\defaults\etc\cygserver.conf %CYG_ROOT%\etc\defaults\etc\cygserver.conf.original
+# echo kern.ipc.shmmni 32767 >> %CYG_ROOT%\etc\defaults\etc\cygserver.conf
+# echo kern.ipc.shmseg 32767 >> %CYG_ROOT%\etc\defaults\etc\cygserver.conf
+# %SHELL% -login -c "cygrunsrv -S cygserver"
+# cd "C:\"
+# 
+
+# Of postgres 17devel or REL_16_BETA2 and later . . .
+# In the file contrib\meson.build
+# add this line "subdir('plr')" as the top subdir.
+# 
+# In the directory "contrib", create the subdirectory "plr".
+# Place the contents of "https://github.com/postgres-plr/plr" there.
+
+
+# cygwin + R and PLR
+# From the Cygwin command prompt
+# export R_HOME=/usr/lib/R
+# meson setup -Dplr:rversion=4.2.3 -Dplr:R_HOME='/usr/lib/R' -Dplr:R_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=disabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+
+# "R for Windows"(msvc,mingw) + R and PLR
+# From the windows command prompt
+# set R_HOME=C:\Program Files\R\R-4.2.3
+# set R_ARCH=/x64
+# meson setup -Dplr:rversion=4.2.3 -Dplr:R_HOME='C:\Program Files\R\R-4.2.3' -Dplr:R_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=disabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+
+
 
 # Core
 # -Dbuildtype=release
@@ -15,8 +75,8 @@
 # 
 #   Core options                    Default Value                     Possible Values                   Description
 #   --------------                  -------------                     ---------------                   -----------
-#   buildtype                      debug                            [plain, debug, debugoptimized,   Build type to use
-#                                                                    release, minsize, custom]
+#   buildtype                      debug                              [plain, debug, debugoptimized,    Build type to use
+#                                                                     release, minsize, custom]
 #
 #   optimization                    0                                 [plain, 0, g, 1, 2, 3, s]
 #   warning_level                   1                                 [0, 1, 2, 3]                      Compiler warning level to use
@@ -94,8 +154,9 @@ endif
 
 
 if is_windows \
-  and \
+    and \
   rversion.version_compare('>=4.3.0')
+  #
   error('Microsoft Visual C++ can not compile plr using R for Windows of versions 4.3.0 and greater.')
 endif
 
