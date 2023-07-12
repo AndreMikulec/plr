@@ -30,7 +30,10 @@
 # setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel
 # setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libintl-devel -P libcrypt-devel
 # setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P p7zip
-# setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P postgresql-client -P postgresql -P postgresql-devel
+
+# (currently debugging problem "R packages, except "base" are not availabe in R(plr)"- uninstalling to try to find the problem
+# REM setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P postgresql-client -P postgresql -P postgresql-devel
+
 # setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpq-devel
 # setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
 # set SHELL=%CYG_ROOT%\bin\bash
@@ -80,8 +83,16 @@
 # R --version
 # R version 4.3.0 (2023-04-21) -- "Already Tomorrow"
 # 
+#
+# rm -Rf build 
+#
 # export R_HOME=/usr/lib/R
-# meson setup -Drversion=4.3.0 -DR_HOME='/usr/lib/R' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=disabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+# J is my RAMDISK
+# C is permanent if I want a more permanent SOLUTION : --prefix /cygdrive/c/PGINSTALL )
+# meson setup --prefix /cygdrive/j/PGINSTALL -Drversion=4.3.0 -DR_HOME='/usr/lib/R' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=disabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+#
+# optionally run to change the --prefix 
+# meson setup --prefix /cygdrive/c/PGINSTALL
 
 # "R for Windows"(msvc,mingw) + R and PLR
 # From the windows command prompt
@@ -89,15 +100,26 @@
 # set R_ARCH=/x64
 # meson setup -Drversion=4.2.3 -DR_HOME='C:\Program Files\R\R-4.2.3' -DR_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=disabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 
-
+# not this
+#
+# If these is NOT installed (and these MAY BE OLD)
+# -P postgresql-client -P postgresql -P postgresql-devel
+# and if this is ran
 # meson compile -C build -v contrib/plr/plr:shared_module
+# then later
+# meson test -C build --num-processes 1 -v --suite setup
+# ERROR: File 'src/port/libpgport.a' could not be found
+
+# this
+#
+# # meson compile -C build -v
 # # Ignore failures.  Test "setup" is pre-required setup/test.
-# # (Meson test has no concept of pre-required, so this is a working hack.)
-# meson test -C build -v --suite plr 2>/dev/null || true
-# # succeed - but only useful if I change the SQL of a\the plr test(s)
-# meson test -C build --no-rebuild --num-processes 4 -v --suite setup --suite plr
-# # incremental plr/*.c file changing, rebuilding and re-testing
-# meson test -C build -v --suite plr
+# # (Meson test has no concept of pre-required, so this is a working hack.
+# meson test -C build --num-processes 1 -v --suite setup 
+# meson test -C build --num-processes 1 -v --suite plr
+# meson test -C build --no-rebuild --num-processes 1 -v --suite setup --suite plr
+# now may be faster
+# meson test -C build -num-processes 1 -v --suite plr
 
 # Core
 # -Dbuildtype=release
@@ -180,8 +202,11 @@ plr_regress = [
 # target_system = target_machine.system()
 
 is_msvc    = meson.get_compiler('c').get_id() == 'msvc'
+#
 is_gcc     = meson.get_compiler('c').get_id() == 'gcc'
 is_windows = build_machine.system() == 'windows'
+is_mingw   = is_windows and is_gcc
+#
 rversion   = get_option('rversion')
 
 if rversion == ''
@@ -189,18 +214,18 @@ if rversion == ''
 endif
 
 
-if is_windows \
+if is_msvc \
     and \
   rversion.version_compare('>=4.3.0')
   #
   error('Microsoft Visual C++ can not compile plr using R for Windows of versions 4.3.0 and greater.')
 endif
 
-if    is_windows and is_gcc \
+if    is_mingw  \
       and \
       rversion.version_compare('>=2.12.0')  \
     or \
-      is_windows and is_msvc  \
+      is_msvc  \
       and \
       rversion.version_compare('>=2.12.0')
     #
@@ -254,7 +279,7 @@ if    r_subarchitectures
 endif
 
 
-if is_windows and is_msvc
+if is_msvc
 
   # gendef - Can be from 
   # mingw-w64-???-tools-git
@@ -304,6 +329,22 @@ endif
 # https://github.com/postgres/postgres/blob/9f6253613e8857942b1928bd7163bc1529fc9c69/meson.build#L682
 
 plr_deps = []
+
+
+dep_R = dependency('libR', required : true)
+
+  # $ cat /lib/pkgconfig/libR.pc
+  # rhome=/usr/lib/R
+  # rlibdir=${rhome}/lib
+  # rincludedir=/usr/lib/R/include
+  # 
+  # Name: libR
+  # Description: R as a library
+  # Version: 4.3.0
+  # Libs: -fopenmp   -L${rlibdir} -lR
+  # Cflags: -I${rincludedir} -I${rincludedir}
+  # Libs.private:
+
 
 # non-Windows and Windows
 #
