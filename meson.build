@@ -90,13 +90,13 @@
 # meson setup -Drversion=4.2.3 -DR_HOME='C:\Program Files\R\R-4.2.3' -DR_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=disabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 
 
-# meson compile -C=build -v contrib/bloom/plr:shared_module
+# meson compile -C build -v contrib/bloom/plr:shared_module
 # meson test --list --suite setup --suite plr
 # # Ignore failures.  Test "setup" is pre-required setup/test.
 # # Meson test has no concept of pre-required, so this is a working hack.
 # meson test -C build -v --suite plr 2>/dev/null || true
 # # succeed - but only useful if I change the SQL of a\the plr test(s)
-# meson test -C build --no-rebuild --num-processes=4 -v --suite setup --suite plr
+# meson test -C build --no-rebuild --num-processes 4 -v --suite setup --suite plr
 # # incremental plr/*.c file changing, rebuilding and re-testing
 # meson test -C build -v --suite plr
 
@@ -186,7 +186,7 @@ is_windows = build_machine.system() == 'windows'
 rversion   = get_option('rversion')
 
 if rversion == ''
-  error('One must supply: -Dplr:rversion=x.y.z')
+  error('One must supply: -Drversion=x.y.z')
 endif
 
 
@@ -222,7 +222,7 @@ endif
 R_arch = get_option('R_ARCH')
 
 if R_arch == ''
-  message('One has not supplied: -Dplr:R_ARCH=newvalue')
+  message('One has not supplied: -DR_ARCH=newvalue')
 endif
 
 
@@ -236,7 +236,7 @@ endif
 
 R_home = get_option('R_HOME')
 if R_home == ''
-  error('One must supply: -Dplr:R_HOME=newvalue')
+  error('One must supply: -DR_HOME=newvalue')
 endif
 
 
@@ -331,6 +331,10 @@ plr_link_with += link_R
 plr_incdir = []
 R_incdir = include_directories(R_home / 'include')
 plr_incdir += R_incdir
+
+if host_system == 'windows'
+  message('Detected host_system as windows.')
+endif
 
 if host_system == 'windows'
   plr_sources += rc_lib_gen.process(win32ver_rc, extra_args: [
