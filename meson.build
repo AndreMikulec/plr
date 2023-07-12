@@ -308,19 +308,21 @@ plr_deps = []
 
 # non-Windows and Windows
 #
-dep_R = dependency('libR', required : false)
-if not dep_R.found()
+# dep_R = dependency('libR', required : false)
+# if not dep_R.found()
   if not r_subarchitectures
-    dep_R = find_library('libR', dirs: R_home)
+    message('Finding not R Sub-architectures libR')
+    dep_R = cc.find_library('libR', dirs: R_home)
   endif  
   if    r_subarchitectures
     # actually only ever known have "R Sub-Architectures" on Windows
-    dep_R = find_library('libR', dirs: R_home / R_arch.substring(1))
+    message('Finding     R Sub-architectures libR')
+    dep_R = cc.find_library('libR', dirs: R_home / R_arch.substring(1))
   endif
   if not dep_R.found()
     error('R library is not found.  Check R_HOME [and R_ARCH if applicable].')
   endif
-endif
+# endif
 
 plr_deps +=  dep_R
 
