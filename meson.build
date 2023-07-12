@@ -354,7 +354,7 @@ endif
 
 plr = shared_module('plr',
   plr_sources,
-  link_with: plr_link_with,
+  link_with: plr_link_with, # meson shared_module link_with - contrib/plr/meson.build:355:0: ERROR: 'R' is not a target.
   c_pch: pch_postgres_h,
   include_directories: plr_incdir,
   kwargs: contrib_mod_args + {
