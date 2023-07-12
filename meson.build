@@ -370,6 +370,44 @@ plr = shared_module('plr',
   },
 )
 
+# COMPARE (TO SUCCESS)
+# 
+# https://ci.appveyor.com/project/AndreMikulec/plr/builds/47456066/job/pcph05t6u8nkxwg5?fullLog=true#L9540
+# 
+# gcc -Wall -Wmissing-prototypes -Wpointer-arith
+# -Wdeclaration-after-statement -Werror=vla -Wendif-labels
+# -Wmissing-format-attribute -Wimplicit-fallthrough=3
+# -Wcast-function-type -Wformat-security -fno-strict-aliasing
+# -fwrapv -fexcess-precision=standard -Wno-format-truncation
+# -Wno-stringop-truncation -ggdb -O2 -pipe -Wall
+# -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2
+# -fstack-protector-strong --param=ssp-buffer-size=4 -shared
+# -o plr.dll -Wl,--out-implib=libplr.a plr.o pg_conversion.o
+# pg_backend_support.o pg_userfuncs.o pg_rsupport.o -L/usr/lib
+# -Wl,-no-undefined -Wl,--allow-multiple-definition
+# -Wl,--enable-auto-import -L/usr/local/lib -Wl,--as-needed
+# -L/usr/lib/R/bin -L/usr/lib/R/lib -lR -L/usr/lib -lpostgres
+# -lpgcommon -lpgport -lintl -lssl -lcrypto -lz -lreadline
+# -lldap
+# 
+# -- SUCCESS (SO FAR - BEFORE TESTS)
+# 
+# [854/854] 
+# cc -o contrib/plr/plr.dll contrib/plr/plr.dll.p/plr.c.o
+# contrib/plr/plr.dll.p/pg_conversion.c.o
+# contrib/plr/plr.dll.p/pg_backend_support.c.o
+# contrib/plr/plr.dll.p/pg_userfuncs.c.o
+# contrib/plr/plr.dll.p/pg_rsupport.c.o -Wl,--as-needed
+# -Wl,--allow-shlib-undefined -Wl,-O1 -shared
+# -Wl,--start-group -Wl,--out-implib=contrib/plr/plr.dll.a
+# -fopenmp /usr/lib/R/lib/libR.dll.a -fvisibility=hidden
+# /cygdrive/j/postgres-master_e9f15bc_2307081419/build/src/backend/libpostgres.exe.a
+# -pthread /usr/lib/libssl.dll.a /usr/lib/libcrypto.dll.a -lm
+# -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32
+# -loleaut32 -luuid -lcomdlg32 -ladvapi32 -Wl,--end-group
+
+
+
 # # pl_targets
 # # part of a "language accumation list" that is passed into "install_quiet"
 # # (but contrib_targets (below) is also passed into "install_quiet")
