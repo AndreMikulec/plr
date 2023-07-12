@@ -308,11 +308,12 @@ plr_deps = []
 
 # non-Windows and Windows
 #
-# dep_R = dependency('libR', required : false)
-# if not dep_R.found()
+dep_R = dependency('libR', required : false)
+if not dep_R.found()
   if not r_subarchitectures
     message('Finding not R Sub-architectures libR')
-    # ERROR: C shared or static library 'libR' not found - cc.find_library
+    # ERROR: C shared or static library 'libR' not found - cc.find_library('libR', dirs: R_home)
+    # ERROR: C shared or static library 'libR' not found -    find_library('libR', dirs: R_home)
     dep_R = find_library('libR', dirs: R_home)
   endif  
   if    r_subarchitectures
@@ -323,7 +324,7 @@ plr_deps = []
   if not dep_R.found()
     error('R library is not found.  Check R_HOME [and R_ARCH if applicable].')
   endif
-# endif
+endif
 
 plr_deps +=  dep_R
 
