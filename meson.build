@@ -296,6 +296,7 @@ if is_msvc
 
   # msvc lib 
   # Target platform
+  # (BETTER) ALTERNATIVE use build_target ( export_dynamic xor implib )
   r = run_command('lib', '/def:' + win_Rddl_path / 'R.def', '/out:' + win_Rddl_path / 'R.lib', '/MACHINE:' + PlatformTarget)
 endif
 
