@@ -308,23 +308,29 @@ plr_deps = []
 
 # non-Windows and Windows
 #
-dep_R = dependency('libR', required : false)
-if not dep_R.found()
-  if not r_subarchitectures
-    message('Finding not R Sub-architectures libR')
-    # ERROR: C shared or static library 'libR' not found - cc.find_library('libR', dirs: R_home)
-    # ERROR: C shared or static library 'libR' not found -    find_library('libR', dirs: R_home)
-    dep_R = find_library('libR', dirs: R_home)
-  endif  
-  if    r_subarchitectures
-    # actually only ever known have "R Sub-Architectures" on Windows
-    message('Finding     R Sub-architectures libR')
-    dep_R = find_library('libR', dirs: R_home / R_arch.substring(1))
-  endif
-  if not dep_R.found()
-    error('R library is not found.  Check R_HOME [and R_ARCH if applicable].')
-  endif
-endif
+# # putting 
+# # dep_R = dependency('libR', required : false)
+# # and
+# # dep_R
+# # in root/meson.built WHEREVER zlib is found
+#
+# dep_R = dependency('libR', required : false)
+# if not dep_R.found()
+#   if not r_subarchitectures
+#     message('Finding not R Sub-architectures libR')
+#     # ERROR: C shared or static library 'libR' not found - cc.find_library('libR', dirs: R_home)
+#     # ERROR: C shared or static library 'libR' not found -    find_library('libR', dirs: R_home)
+#     dep_R = find_library('libR', dirs: R_home)
+#   endif  
+#   if    r_subarchitectures
+#     # actually only ever known have "R Sub-Architectures" on Windows
+#     message('Finding     R Sub-architectures libR')
+#     dep_R = find_library('libR', dirs: R_home / R_arch.substring(1))
+#   endif
+#   if not dep_R.found()
+#     error('R library is not found.  Check R_HOME [and R_ARCH if applicable].')
+#   endif
+# endif
 
 plr_deps +=  dep_R
 
