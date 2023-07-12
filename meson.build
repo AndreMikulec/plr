@@ -361,9 +361,9 @@ endif
 
 plr = shared_module('plr',
   plr_sources,
-  link_args: plr_link_args,
+  link_args: plr_link_args, # cannot find -lR: No such file or directory
   link_with: plr_link_with, # meson shared_module link_with - contrib/plr/meson.build:355:0: ERROR: 'R' is not a target.
-  c_pch: pch_postgres_h,    # cannot find -lR: No such file or directory
+  c_pch: pch_postgres_h,   
   include_directories: plr_incdir,
   kwargs: contrib_mod_args + {
     'dependencies': [plr_deps, contrib_mod_args['dependencies']]
