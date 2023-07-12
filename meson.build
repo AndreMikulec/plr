@@ -334,8 +334,14 @@ plr_deps = []
 
 plr_deps +=  dep_R
 
+
+plr_link_args = []
+args_R = '-lR'
+plr_link_args += args_R
+
 plr_link_with = []
-link_R = 'R'
+# link_R = ['R']
+link_R = []
 plr_link_with += link_R
 
 plr_incdir = []
@@ -354,6 +360,7 @@ endif
 
 plr = shared_module('plr',
   plr_sources,
+  link_args: plr_link_args,
   link_with: plr_link_with, # meson shared_module link_with - contrib/plr/meson.build:355:0: ERROR: 'R' is not a target.
   c_pch: pch_postgres_h,
   include_directories: plr_incdir,
