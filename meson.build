@@ -337,7 +337,7 @@ plr_deps +=  dep_R
 
 plr_link_args = []
 # args_R = '-lR'
-args_R = '-lR'
+args_R = []
 plr_link_args += args_R
 
 plr_link_with = []
