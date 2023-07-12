@@ -49,19 +49,56 @@
 # In the directory "contrib", create the subdirectory "plr".
 # Place the contents of "https://github.com/postgres-plr/plr" there.
 
-
 # cygwin + R and PLR
-# From the Cygwin command prompt
+
+
+# Start the Cygwin command prompt
+#
+# set PATH=
+# set CHERE_INVOKING=1
+# "C:\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico -
+# 
+# $ echo ${PATH}
+# /usr/local/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:.
+#
+# cd `posgres source code` of postgres 17devel or REL_16_BETA2 and later 
+
+# Of postgres 17devel or REL_16_BETA2 and later . . .
+# In the file contrib/meson.build
+# add this line "subdir('plr')" as the top subdir.
+# 
+# In the directory "contrib", create the subdirectory "plr".
+# Place the contents of "https://github.com/postgres-plr/plr" there.
+#
+# Append the contents of contrib/plr/meson_options.txt_root_additions
+#  to the file `posgres source code`/meson_options.txt
+# 
+
+# From the Cygwin command prompt (July 11, 2023)
+#
+# Determine the installed version of R and write it ito the setup LINE below . . 
+# R --version
+# R version 4.3.0 (2023-04-21) -- "Already Tomorrow"
+# 
 # export R_HOME=/usr/lib/R
-# meson setup -Dplr:rversion=4.2.3 -Dplr:R_HOME='/usr/lib/R' -Dplr:R_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=disabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+# meson setup -Drversion=4.3.0 -DR_HOME='/usr/lib/R' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=disabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 
 # "R for Windows"(msvc,mingw) + R and PLR
 # From the windows command prompt
 # set R_HOME=C:\Program Files\R\R-4.2.3
 # set R_ARCH=/x64
-# meson setup -Dplr:rversion=4.2.3 -Dplr:R_HOME='C:\Program Files\R\R-4.2.3' -Dplr:R_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=disabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+# meson setup -Drversion=4.2.3 -DR_HOME='C:\Program Files\R\R-4.2.3' -DR_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=disabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 
 
+# meson compile -C=build -v contrib/bloom/plr:shared_module
+# meson test --list --suite setup --suite plr
+# # Ignore failures.  Test "setup" is pre-required setup/test.
+# # Meson test has no concept of pre-required, so this is a working hack.
+# meson test -C build -v --suite plr 2>/dev/null || true
+# # succeed - but only useful if I change the SQL of a\the plr test(s)
+# meson test -C build --no-rebuild --num-processes=4 -v --suite setup --suite plr
+# # incremental plr/*.c file changing, rebuilding and re-testing
+# meson test -C build -v --suite plr
 
 # Core
 # -Dbuildtype=release
@@ -123,7 +160,7 @@ plr_regress = [
   'bad_fun',
   'opt_window',
   'do',
-  'out_args'
+  'out_args',
   'plr_transaction',
   'opt_window_frame',
 ]
@@ -206,14 +243,14 @@ endif
 if not r_subarchitectures
   win_Rddl_path_nosubarch = R_home
 endif
-if r_subarchitectures
+if     r_subarchitectures
   win_Rddl_path_subarch   = R_home / R_arch.substring(1)
 endif
 
 if not r_subarchitectures
   win_Rddl_path = win_Rddl_path_nosubarch 
 endif
-if r_subarchitectures
+if    r_subarchitectures
   win_Rddl_path = win_Rddl_path_subarch   
 endif
 
@@ -281,11 +318,9 @@ if not dep_R.found()
     dep_R = find_library('libR', dirs: R_home / R_arch.substring(1))
   endif
   if not dep_R.found()
-    error("R library is not found.  Check R_HOME [and R_ARCH if applicable].")
+    error('R library is not found.  Check R_HOME [and R_ARCH if applicable].')
   endif
 endif
-
-else
 
 plr_deps +=  dep_R
 
@@ -294,7 +329,7 @@ link_R = 'R'
 plr_link_with += link_R
 
 plr_incdir = []
-R_incdir = include_directories(join_paths(R_home, 'include'))
+R_incdir = include_directories(R_home / 'include')
 plr_incdir += R_incdir
 
 if host_system == 'windows'
@@ -334,13 +369,13 @@ install_data(
   kwargs: contrib_data_args,
 )
 
-
 tests += {
   'name': 'plr',
   'sd': meson.current_source_dir(),
   'bd': meson.current_build_dir(),
   'regress': {
     'sql': [
-      plr_regress,
+      plr_regress
     ],
   },
+}
