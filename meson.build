@@ -91,9 +91,8 @@
 
 
 # meson compile -C build -v contrib/plr/plr:shared_module
-# meson test --list --suite setup --suite plr
 # # Ignore failures.  Test "setup" is pre-required setup/test.
-# # Meson test has no concept of pre-required, so this is a working hack.
+# # (Meson test has no concept of pre-required, so this is a working hack.)
 # meson test -C build -v --suite plr 2>/dev/null || true
 # # succeed - but only useful if I change the SQL of a\the plr test(s)
 # meson test -C build --no-rebuild --num-processes 4 -v --suite setup --suite plr
@@ -405,6 +404,46 @@ plr = shared_module('plr',
 # -pthread /usr/lib/libssl.dll.a /usr/lib/libcrypto.dll.a -lm
 # -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32
 # -loleaut32 -luuid -lcomdlg32 -ladvapi32 -Wl,--end-group
+
+
+# test plr.sql FAILS
+#
+# meson test -C build --num-processes 1 -v --suite plr
+# meson test -C build --no-rebuild --num-processes 1 -v --suite setup --suite plr
+# meson test -C build --num-processes 1 -v --suite plr
+# 
+# ▶ 3/3 - plr                                      2030 ms FAIL
+# ▶ 3/3 - bad_fun                                   962 ms OK
+# ▶ 3/3 - opt_window                                965 ms OK
+# ▶ 3/3 - do                                       1007 ms OK
+# ▶ 3/3 - out_args                                  995 ms OK
+# ▶ 3/3 - plr_transaction                          1045 ms OK
+# ▶ 3/3 - opt_window_frame                          968 ms OK
+# 3/3 postgresql:plr / plr/regress          ERROR            21.88s   exit status 1
+# ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― ✀  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+# stderr:
+# # 1 of 7 tests failed.
+# # The differences that caused some tests to fail can be viewed in the file "/cygdrive/j/postgres-master_e9f15bc_2307081419/build/testrun/plr/regress/regression.diffs".
+# # A copy of the test summary that you see above is saved in the file "/cygdrive/j/postgres-master_e9f15bc_2307081419/build/testrun/plr/regress/regression.out".
+# 
+# (test program exited with status code 1)
+# ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+# 
+# 
+# Summary of Failures:
+# 
+# 3/3 postgresql:plr / plr/regress          ERROR            21.88s   exit status 1
+# 
+# Ok:                 2
+# Expected Fail:      0
+# Fail:               1
+# Unexpected Pass:    0
+# Skipped:            0
+# Timeout:            0
+# 
+# Full log written to /cygdrive/j/postgres-master_e9f15bc_2307081419/build/meson-logs/testlog.txt
+# 
+# AnonymousUser@ANONYMOUST /cygdrive/j/postgres-master_e9f15bc_2307081419
 
 
 
