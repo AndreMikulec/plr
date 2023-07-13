@@ -63,7 +63,11 @@
 # Start the Cygwin command prompt METHOD 3 (from a current mintty)
 # 
 # $(cygpath "J:\cygwin64\bin\mintty.exe") -i /Cygwin-Terminal.ico &
-#
+
+# In minnty do
+# mkdir       /cygdrive/c/tmp
+# export  TMP=/cygdrive/c/tmp
+# export TEMP=/cygdrive/c/tmp
 
 
 # Of postgres 17devel or REL_16_BETA2 and later . . .
@@ -163,7 +167,7 @@
 # meson test -C build --num-processes 1 -v --suite plr
 #
 
-# running test
+# running tests
 #
 # meson install -C build
 # mkdir -p /cygdrive/j/PGDATA
@@ -177,6 +181,14 @@
 # ../PGINSTALL/bin/pg_ctl -D /cygdrive/j/PGDATA -l logfile stop
 # rm -Rf /cygdrive/j/PGDATA
 # rm -Rf /cygdrive/j/PGINSTALL
+
+
+# clean up in the Administrators Prompt
+#
+# shutdown current
+# %SHELL% -login -c "cygrunsrv -E cygserver" 
+# uninstall previous
+# %SHELL% -login -c "cygrunsrv -R cygserver"
 
 
 # Core
