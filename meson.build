@@ -37,13 +37,34 @@
 # setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpq-devel
 # setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
 # set SHELL=%CYG_ROOT%\bin\bash
+# shutdown current
+# %SHELL% -login -c "cygrunsrv -E cygserver || true" 
+# uninstall previous
+# %SHELL% -login -c "cygrunsrv -R cygserver || true"
+# install
 # %SHELL% -login -c "cygserver-config --yes"
 # copy %CYG_ROOT%\etc\defaults\etc\cygserver.conf %CYG_ROOT%\etc\defaults\etc\cygserver.conf.original
 # echo kern.ipc.shmmni 32767 >> %CYG_ROOT%\etc\defaults\etc\cygserver.conf
 # echo kern.ipc.shmseg 32767 >> %CYG_ROOT%\etc\defaults\etc\cygserver.conf
+# start
 # %SHELL% -login -c "cygrunsrv -S cygserver"
-# cd "C:\"
+
+# Start the Cygwin command prompt METHOD 1
+#
+# %SHELL% -login -c "PATH="""" CHERE_INVOKING=1 ""J:\cygwin64\bin\mintty.exe"" -i /Cygwin-Terminal.ico -"
+# export PATH=/usr/local/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:.:/usr/lib/lapack
 # 
+# Start the Cygwin command prompt METHOD 2 (BETTER)
+#
+# set PATH=
+# set CHERE_INVOKING=1
+# "C:\cygwin64\bin\mintty.exe" -i /Cygwin-Terminal.ico -
+
+# Start the Cygwin command prompt METHOD 3 (from a current mintty)
+# 
+# $(cygpath "J:\cygwin64\bin\mintty.exe") -i /Cygwin-Terminal.ico &
+#
+
 
 # Of postgres 17devel or REL_16_BETA2 and later . . .
 # In the file contrib\meson.build
@@ -54,13 +75,6 @@
 
 # cygwin + R and PLR
 
-
-# Start the Cygwin command prompt
-#
-# set PATH=
-# set CHERE_INVOKING=1
-# "C:\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico -
-# 
 # $ echo ${PATH}
 # /usr/local/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:.
 #
@@ -87,8 +101,10 @@
 # rm -Rf build 
 #
 # export R_HOME=/usr/lib/R
-# J is my RAMDISK
-# C is permanent if I want a more permanent SOLUTION : --prefix /cygdrive/c/PGINSTALL )
+# unset RTOOLS43_HOME
+# rem J is my RAMDISK
+# rem C is permanent if I want a more permanent SOLUTION : --prefix /cygdrive/c/PGINSTALL
+# note: readline is enabled
 # meson setup --prefix /cygdrive/j/PGINSTALL -Drversion=4.3.0 -DR_HOME='/usr/lib/R' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 #
 # optionally run to change the --prefix 
@@ -98,9 +114,10 @@
 # From the windows command prompt
 # set R_HOME=C:\Program Files\R\R-4.2.3
 # set R_ARCH=/x64
+# note readline is enabled
 # meson setup -Drversion=4.2.3 -DR_HOME='C:\Program Files\R\R-4.2.3' -DR_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 
-# not this
+# not this (because I must do a full build before an incremental build of just "plr")
 #
 # If these is NOT installed (and these MAY BE OLD)
 # -P postgresql-client -P postgresql -P postgresql-devel
@@ -120,6 +137,31 @@
 # meson test -C build --no-rebuild --num-processes 1 -v --suite setup --suite plr
 # now may be faster
 # meson test -C build -num-processes 1 -v --suite plr
+
+# after the full build
+# if I forgot earlier to add the "plr" source folder, then
+#
+# AnonymousUser@ANONYMOUST /cygdrive/j/postgres-REL_16_BETA2
+# $ meson test -C build --num-processes 1 -v --suite plr
+# ninja: no work to do.
+# No suitable tests defined.
+#
+# $ meson compile -C build -v contrib/plr
+# INFO: autodetecting backend as ninja
+# 
+# ERROR: Can't invoke target `contrib/plr`: target not found
+#
+# if I forgot earlier to add the "plr" source folder, then 
+# .1 add it now "plr" to "contrib/plr"
+# .2 add an entry "subdir('plr')" in contrib/meson.build
+# .3 run below . . 
+# meson compile -C build -v contrib
+# # meson detects plr and compiles it
+# .4 run below
+# meson test -C build --num-processes 1 -v --suite setup
+# .5 run below
+# meson test -C build --num-processes 1 -v --suite plr
+#
 
 # running test
 #
