@@ -89,16 +89,16 @@
 # export R_HOME=/usr/lib/R
 # J is my RAMDISK
 # C is permanent if I want a more permanent SOLUTION : --prefix /cygdrive/c/PGINSTALL )
-# meson setup --prefix /cygdrive/j/PGINSTALL -Drversion=4.3.0 -DR_HOME='/usr/lib/R' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=disabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+# meson setup --prefix /cygdrive/j/PGINSTALL -Drversion=4.3.0 -DR_HOME='/usr/lib/R' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 #
 # optionally run to change the --prefix 
-# meson setup --prefix /cygdrive/c/PGINSTALL
+# meson configure --prefix /cygdrive/c/PGINSTALL
 
-# "R for Windows"(msvc,mingw) + R and PLR
+# "R for Windows"(msvc,mingw) + R and PLR (includes "readline")
 # From the windows command prompt
 # set R_HOME=C:\Program Files\R\R-4.2.3
 # set R_ARCH=/x64
-# meson setup -Drversion=4.2.3 -DR_HOME='C:\Program Files\R\R-4.2.3' -DR_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=disabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+# meson setup -Drversion=4.2.3 -DR_HOME='C:\Program Files\R\R-4.2.3' -DR_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 
 # not this
 #
@@ -112,7 +112,7 @@
 
 # this
 #
-# # meson compile -C build -v
+# meson compile -C build -v
 # # Ignore failures.  Test "setup" is pre-required setup/test.
 # # (Meson test has no concept of pre-required, so this is a working hack.
 # meson test -C build --num-processes 1 -v --suite setup 
@@ -120,6 +120,22 @@
 # meson test -C build --no-rebuild --num-processes 1 -v --suite setup --suite plr
 # now may be faster
 # meson test -C build -num-processes 1 -v --suite plr
+
+# running test
+#
+# meson install -C build
+# mkdir -p /cygdrive/j/PGDATA
+# ../PGINSTALL/bin/initdb -D /cygdrive/j/PGDATA
+# ../PGINSTALL/bin/pg_ctl -D /cygdrive/j/PGDATA -l logfile start
+# ../PGINSTALL/bin/createdb test
+# export PGUSER=$(whoami)
+# if I want to browse inside (optional)
+# ../PGINSTALL/bin/psql test
+# meson test -C build --num-processes 1 -v --setup running --suite plr-running
+# ../PGINSTALL/bin/pg_ctl -D /cygdrive/j/PGDATA -l logfile stop
+# rm -Rf /cygdrive/j/PGDATA
+# rm -Rf /cygdrive/j/PGINSTALL
+
 
 # Core
 # -Dbuildtype=release
