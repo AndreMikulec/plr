@@ -51,7 +51,7 @@
 
 # Start the Cygwin command prompt METHOD 1
 #
-# %SHELL% -login -c "PATH="""" CHERE_INVOKING=1 ""J:\cygwin64\bin\mintty.exe"" -i /Cygwin-Terminal.ico -"
+# %SHELL% -login -c "PATH="""" CHERE_INVOKING=1 ""C:\cygwin64\bin\mintty.exe"" -i /Cygwin-Terminal.ico -"
 # export PATH=/usr/local/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:.:/usr/lib/lapack
 # 
 # Start the Cygwin command prompt METHOD 2 (BETTER)
@@ -62,7 +62,7 @@
 
 # Start the Cygwin command prompt METHOD 3 (from a current mintty)
 # 
-# $(cygpath "J:\cygwin64\bin\mintty.exe") -i /Cygwin-Terminal.ico &
+# $(cygpath "C:\cygwin64\bin\mintty.exe") -i /Cygwin-Terminal.ico &
 
 # In minnty do
 # mkdir       /cygdrive/c/tmp
@@ -509,7 +509,9 @@ if host_system == 'windows'
     '--FILEDESC', 'PL/R - PostgreSQL support for R as a procedural language (PLR)',])
 endif
 
-plr = both_libraries('plr',
+plr = build_target('plr',
+  target_type : 'shared_module',
+  implib : true,
   plr_sources,
   link_args: plr_link_args, # cannot find -lR: No such file or directory
   link_with: plr_link_with, # meson shared_module link_with - contrib/plr/meson.build:355:0: ERROR: 'R' is not a target.
