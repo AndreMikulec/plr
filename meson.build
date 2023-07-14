@@ -520,8 +520,7 @@ plr = both_libraries('plr',
 
 # test plr.sql FAILS
 #
-# meson test -C build --num-processes 1 -v --suite plr
-# meson test -C build --no-rebuild --num-processes 1 -v --suite setup --suite plr
+# meson test -C build --num-processes 1 -v --suite setup
 # meson test -C build --num-processes 1 -v --suite plr
 # 
 # ▶ 3/3 - plr                                      2030 ms FAIL
