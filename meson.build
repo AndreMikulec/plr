@@ -173,11 +173,9 @@
 # this
 #
 # meson compile -C build -v
-# # Ignore failures.  Test "setup" is pre-required setup/test.
-# # (Meson test has no concept of pre-required, so this is a working hack.
+# # (Meson test has no concept of pre-required "test", so this is an EnterprisDB working hack.)
 # meson test -C build --num-processes 1 -v --suite setup 
 # meson test -C build --num-processes 1 -v --suite plr
-# meson test -C build --no-rebuild --num-processes 1 -v --suite setup --suite plr
 # now may be faster
 # meson test -C build -num-processes 1 -v --suite plr
 
