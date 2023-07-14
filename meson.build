@@ -70,6 +70,45 @@
 # export TEMP=/cygdrive/c/tmp
 
 
+# modify the libR.pc pkg-config file
+# ----------------------------------
+# 
+# ### SEE Joe Conway's plr Makefile
+# ### https://github.com/postgres-plr/plr/blob/3305e4fd2acf623744624f2b8f22f2e0076d94cf/Makefile
+# 
+# AnonymousUser@ANONYMOUST /cygdrive/c/postgres-master_e9f15bc_2307081419
+# $ cat /lib/pkgconfig/libR.pc
+# 
+# rhome=/usr/lib/R
+# rlibdir=${rhome}/lib
+# rincludedir=/usr/lib/R/include
+# 
+# Name: libR
+# Description: R as a library
+# Version: 4.3.0
+# Libs: -fopenmp   -L${rlibdir} -lR
+# Cflags: -I${rincludedir} -I${rincludedir}
+# Libs.private:
+# 
+# AnonymousUser@ANONYMOUST /cygdrive/c/postgres-master_e9f15bc_2307081419
+# $ cp  /lib/pkgconfig/libR.pc  /lib/pkgconfig/libR.pc.original
+# 
+# AnonymousUser@ANONYMOUST /cygdrive/c/postgres-master_e9f15bc_2307081419
+# $ vi  /lib/pkgconfig/libR.pc
+# 
+# rhome=/usr/lib/R
+# r_libdir1x=${rhome}/bin
+# r_libdir2x=${rhome}/lib
+# rincludedir=/usr/lib/R/include
+# 
+# Name: libR
+# Description: R as a library
+# Version: 4.3.0
+# Libs: -fopenmp   -L${r_libdir1x} -L${r_libdir2x} -lR
+# Cflags: -I${rincludedir} -I${rincludedir}
+# Libs.private:
+
+
 # Of postgres 17devel or REL_16_BETA2 and later . . .
 # In the file contrib\meson.build
 # add this line "subdir('plr')" as the top subdir.
@@ -82,9 +121,9 @@
 # $ echo ${PATH}
 # /usr/local/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:.
 #
-# cd `posgres source code` of postgres 17devel or REL_16_BETA2 and later 
+# cd `posgres source code` of postgres postgres-master_e9f15bc_2307081419 or REL_16_BETA2 and later 
 
-# Of postgres 17devel or REL_16_BETA2 and later . . .
+# Of postgres 17devel (postgres-master_e9f15bc_2307081419) or REL_16_BETA2 and later . . .
 # In the file contrib/meson.build
 # add this line "subdir('plr')" as the top subdir.
 # 
