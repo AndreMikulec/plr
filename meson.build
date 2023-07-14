@@ -206,7 +206,6 @@
 # rm -Rf build/contrib/plr/*
 # meson compile -C build -v contrib
 # # no "re-setup" happens, just "plr compilaton" happens, so THIS IS FAST), 
-
 # .4 run below
 # meson test -C build --num-processes 1 -v --suite setup
 # .5 run below
@@ -507,6 +506,8 @@ plr_link_with += link_R
 plr_incdir = []
 R_incdir = include_directories(R_home / 'include')
 plr_incdir += R_incdir
+R_incdir_R_ext = include_directories(R_home / 'include' / 'R_ext')
+plr_incdir += R_incdir_R_ext
 
 if host_system == 'windows'
   message('Detected host_system as windows.')
