@@ -510,9 +510,9 @@ if host_system == 'windows'
 endif
 
 plr = build_target('plr',
+  plr_sources,
   target_type : 'shared_module',
   implib : true,
-  plr_sources,
   link_args: plr_link_args, # cannot find -lR: No such file or directory
   link_with: plr_link_with, # meson shared_module link_with - contrib/plr/meson.build:355:0: ERROR: 'R' is not a target.
   c_pch: pch_postgres_h,   
