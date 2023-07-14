@@ -199,12 +199,21 @@
 # .2 add an entry "subdir('plr')" in contrib/meson.build
 # .3 run below . . 
 # meson compile -C build -v contrib
-# # meson detects plr and compiles it
+# # meson detects plr and "re-setups" and "compiles ONLY plr"
+# .3ALT
+# If the response is"ninja: no work to do."
+# then do these BOTH
+# rm -Rf build/contrib/plr/*
+# meson compile -C build -v contrib
+# # no "re-setup" happens, just "plr compilaton" happens, so THIS IS FAST), 
+
 # .4 run below
 # meson test -C build --num-processes 1 -v --suite setup
 # .5 run below
 # meson test -C build --num-processes 1 -v --suite plr
 #
+
+
 
 # running tests
 #
