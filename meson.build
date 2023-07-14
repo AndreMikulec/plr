@@ -165,6 +165,7 @@
 # If these is NOT installed (and these MAY BE OLD)
 # -P postgresql-client -P postgresql -P postgresql-devel
 # and if this is ran
+# rm -Rf build/contrib/plr/*
 # meson compile -C build -v contrib/plr/plr:shared_module
 # then later
 # meson test -C build --num-processes 1 -v --suite setup
@@ -448,19 +449,8 @@ plr_deps = []
 
 
 dep_R = dependency('libR', required : true)
-
-  # $ cat /lib/pkgconfig/libR.pc
-  # rhome=/usr/lib/R
-  # rlibdir=${rhome}/lib
-  # rincludedir=/usr/lib/R/include
-  # 
-  # Name: libR
-  # Description: R as a library
-  # Version: 4.3.0
-  # Libs: -fopenmp   -L${rlibdir} -lR
-  # Cflags: -I${rincludedir} -I${rincludedir}
-  # Libs.private:
-
+# Note using the Joe Conway modified: /lib/pkgconfig/libR.pc
+# See the NOTE from ABOVE
 
 # non-Windows and Windows
 #
@@ -520,6 +510,12 @@ if host_system == 'windows'
     '--FILEDESC', 'PL/R - PostgreSQL support for R as a procedural language (PLR)',])
 endif
 
+# Alternative, could have also been
+# plr = build_target('plr',
+#   plr_sources,
+#   target_type : 'shared_module',
+#   implib : true, 
+
 plr = shared_module('plr',
   plr_sources,
   link_args: plr_link_args, # cannot find -lR: No such file or directory
@@ -533,27 +529,112 @@ plr = shared_module('plr',
 
 # COMPARE (TO SUCCESS)
 # 
-# https://ci.appveyor.com/project/AndreMikulec/plr/builds/47456066/job/pcph05t6u8nkxwg5?fullLog=true#L9540
+# make
+# https://github.com/AndreMikulec/plr/blob/8613137fe46337a4d2067fc49a2a6d8295976b7b/Makefile
+# result . . 
+# https://ci.appveyor.com/project/AndreMikulec/plr/builds/47456066/job/dywplxs87baufykh?fullLog=true#L9594
 # 
 # gcc -Wall -Wmissing-prototypes -Wpointer-arith
 # -Wdeclaration-after-statement -Werror=vla -Wendif-labels
 # -Wmissing-format-attribute -Wimplicit-fallthrough=3
-# -Wcast-function-type -Wformat-security -fno-strict-aliasing
-# -fwrapv -fexcess-precision=standard -Wno-format-truncation
-# -Wno-stringop-truncation -ggdb -O2 -pipe -Wall
-# -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2
-# -fstack-protector-strong --param=ssp-buffer-size=4 -shared
-# -o plr.dll -Wl,--out-implib=libplr.a plr.o pg_conversion.o
-# pg_backend_support.o pg_userfuncs.o pg_rsupport.o -L/usr/lib
-# -Wl,-no-undefined -Wl,--allow-multiple-definition
+# -Wcast-function-type -Wshadow=compatible-local
+# -Wformat-security -fno-strict-aliasing -fwrapv
+# -fexcess-precision=standard -Wno-format-truncation
+# -Wno-stringop-truncation -g -ggdb -Og -g3
+# -fno-omit-frame-pointer -fvisibility=hidden -ggdb -Og -g3
+# -fno-omit-frame-pointer -shared -o plr.dll
+# -Wl,--out-implib=libplr.a plr.o pg_conversion.o
+# pg_backend_support.o pg_userfuncs.o pg_rsupport.o
+# -L/cygdrive/c/PGINSTALL/lib -Wl,--allow-multiple-definition
 # -Wl,--enable-auto-import -L/usr/local/lib -Wl,--as-needed
-# -L/usr/lib/R/bin -L/usr/lib/R/lib -lR -L/usr/lib -lpostgres
-# -lpgcommon -lpgport -lintl -lssl -lcrypto -lz -lreadline
-# -lldap
+# -fvisibility=hidden -L/usr/lib/R/bin -L/usr/lib/R/lib -lR
+# -L/cygdrive/c/PGINSTALL/lib -lpostgres -lpgcommon -lpgport
+# -lz -lreadline
 # 
 # -- SUCCESS (SO FAR - BEFORE TESTS)
 # 
-# [854/854] 
+# meson
+#
+# [1/6] 
+# cc -Icontrib/plr/plr.dll.p -I/usr/lib/R/include
+# -Isrc/include -I../src/include -fdiagnostics-color=always
+# -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -O3
+# -fno-strict-aliasing -fwrapv -fexcess-precision=standard
+# -D_GNU_SOURCE -Wmissing-prototypes -Wpointer-arith
+# -Werror=vla -Wendif-labels -Wmissing-format-attribute
+# -Wimplicit-fallthrough=3 -Wcast-function-type
+# -Wshadow=compatible-local -Wformat-security
+# -Wdeclaration-after-statement -Wno-format-truncation
+# -Wno-stringop-truncation -pthread -fvisibility=hidden -MD
+# -MQ contrib/plr/plr.dll.p/pg_backend_support.c.o -MF
+# contrib/plr/plr.dll.p/pg_backend_support.c.o.d -o
+# contrib/plr/plr.dll.p/pg_backend_support.c.o -c
+# ../contrib/plr/pg_backend_support.c
+# 
+# [2/6] 
+# cc -Icontrib/plr/plr.dll.p -I/usr/lib/R/include
+# -Isrc/include -I../src/include -fdiagnostics-color=always
+# -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -O3
+# -fno-strict-aliasing -fwrapv -fexcess-precision=standard
+# -D_GNU_SOURCE -Wmissing-prototypes -Wpointer-arith
+# -Werror=vla -Wendif-labels -Wmissing-format-attribute
+# -Wimplicit-fallthrough=3 -Wcast-function-type
+# -Wshadow=compatible-local -Wformat-security
+# -Wdeclaration-after-statement -Wno-format-truncation
+# -Wno-stringop-truncation -pthread -fvisibility=hidden -MD
+# -MQ contrib/plr/plr.dll.p/pg_userfuncs.c.o -MF
+# contrib/plr/plr.dll.p/pg_userfuncs.c.o.d -o
+# contrib/plr/plr.dll.p/pg_userfuncs.c.o -c
+# ../contrib/plr/pg_userfuncs.c
+# 
+# [3/6] 
+# cc -Icontrib/plr/plr.dll.p -I/usr/lib/R/include
+# -Isrc/include -I../src/include -fdiagnostics-color=always
+# -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -O3
+# -fno-strict-aliasing -fwrapv -fexcess-precision=standard
+# -D_GNU_SOURCE -Wmissing-prototypes -Wpointer-arith
+# -Werror=vla -Wendif-labels -Wmissing-format-attribute
+# -Wimplicit-fallthrough=3 -Wcast-function-type
+# -Wshadow=compatible-local -Wformat-security
+# -Wdeclaration-after-statement -Wno-format-truncation
+# -Wno-stringop-truncation -pthread -fvisibility=hidden -MD
+# -MQ contrib/plr/plr.dll.p/pg_rsupport.c.o -MF
+# contrib/plr/plr.dll.p/pg_rsupport.c.o.d -o
+# contrib/plr/plr.dll.p/pg_rsupport.c.o -c
+# ../contrib/plr/pg_rsupport.c
+# 
+# [4/6] 
+# cc -Icontrib/plr/plr.dll.p -I/usr/lib/R/include
+# -Isrc/include -I../src/include -fdiagnostics-color=always
+# -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -O3
+# -fno-strict-aliasing -fwrapv -fexcess-precision=standard
+# -D_GNU_SOURCE -Wmissing-prototypes -Wpointer-arith
+# -Werror=vla -Wendif-labels -Wmissing-format-attribute
+# -Wimplicit-fallthrough=3 -Wcast-function-type
+# -Wshadow=compatible-local -Wformat-security
+# -Wdeclaration-after-statement -Wno-format-truncation
+# -Wno-stringop-truncation -pthread -fvisibility=hidden -MD
+# -MQ contrib/plr/plr.dll.p/plr.c.o -MF
+# contrib/plr/plr.dll.p/plr.c.o.d -o
+# contrib/plr/plr.dll.p/plr.c.o -c ../contrib/plr/plr.c
+# 
+# [5/6] 
+# cc -Icontrib/plr/plr.dll.p -I/usr/lib/R/include
+# -Isrc/include -I../src/include -fdiagnostics-color=always
+# -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -O3
+# -fno-strict-aliasing -fwrapv -fexcess-precision=standard
+# -D_GNU_SOURCE -Wmissing-prototypes -Wpointer-arith
+# -Werror=vla -Wendif-labels -Wmissing-format-attribute
+# -Wimplicit-fallthrough=3 -Wcast-function-type
+# -Wshadow=compatible-local -Wformat-security
+# -Wdeclaration-after-statement -Wno-format-truncation
+# -Wno-stringop-truncation -pthread -fvisibility=hidden -MD
+# -MQ contrib/plr/plr.dll.p/pg_conversion.c.o -MF
+# contrib/plr/plr.dll.p/pg_conversion.c.o.d -o
+# contrib/plr/plr.dll.p/pg_conversion.c.o -c
+# ../contrib/plr/pg_conversion.c
+# 
+# [6/6] 
 # cc -o contrib/plr/plr.dll contrib/plr/plr.dll.p/plr.c.o
 # contrib/plr/plr.dll.p/pg_conversion.c.o
 # contrib/plr/plr.dll.p/pg_backend_support.c.o
@@ -562,51 +643,61 @@ plr = shared_module('plr',
 # -Wl,--allow-shlib-undefined -Wl,-O1 -shared
 # -Wl,--start-group -Wl,--out-implib=contrib/plr/plr.dll.a
 # -fopenmp /usr/lib/R/lib/libR.dll.a -fvisibility=hidden
-# /cygdrive/j/postgres-master_e9f15bc_2307081419/build/src/backend/libpostgres.exe.a
+# /cygdrive/j/postgres-REL_16_BETA2/build/src/backend/libpostgres.exe.a
 # -pthread /usr/lib/libssl.dll.a /usr/lib/libcrypto.dll.a -lm
 # -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32
 # -loleaut32 -luuid -lcomdlg32 -ladvapi32 -Wl,--end-group
-
-
-# test plr.sql FAILS
-#
-# meson test -C build --num-processes 1 -v --suite setup
-# meson test -C build --num-processes 1 -v --suite plr
 # 
-# ▶ 3/3 - plr                                      2030 ms FAIL
-# ▶ 3/3 - bad_fun                                   962 ms OK
-# ▶ 3/3 - opt_window                                965 ms OK
-# ▶ 3/3 - do                                       1007 ms OK
-# ▶ 3/3 - out_args                                  995 ms OK
-# ▶ 3/3 - plr_transaction                          1045 ms OK
-# ▶ 3/3 - opt_window_frame                          968 ms OK
-# 3/3 postgresql:plr / plr/regress          ERROR            21.88s   exit status 1
-# ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― ✀  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-# stderr:
-# # 1 of 7 tests failed.
-# # The differences that caused some tests to fail can be viewed in the file "/cygdrive/j/postgres-master_e9f15bc_2307081419/build/testrun/plr/regress/regression.diffs".
-# # A copy of the test summary that you see above is saved in the file "/cygdrive/j/postgres-master_e9f15bc_2307081419/build/testrun/plr/regress/regression.out".
+# REGRESS_SHLIB=/cygdrive/j/postgres-REL_16_BETA2/build/src/test/regress/regress.dll
+# PG_REGRESS=/cygdrive/j/postgres-REL_16_BETA2/build/src/test/regress/pg_regress.exe
+# LD_LIBRARY_PATH=/cygdrive/j/postgres-REL_16_BETA2/build/tmp_install//cygdrive/j/PGINSTALL/lib
+# MALLOC_PERTURB_=184 PG_TEST_EXTRA=''
+# PATH=/cygdrive/j/postgres-REL_16_BETA2/build/tmp_install//cygdrive/j/PGINSTALL/bin:/cygdrive/j/postgres-REL_16_BETA2/build/contrib/plr:/usr/local/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:.:/usr/lib/lapack
+# /usr/bin/python3
+# /cygdrive/j/postgres-REL_16_BETA2/build/../src/tools/testwrap
+# --basedir /cygdrive/j/postgres-REL_16_BETA2/build --srcdir
+# /cygdrive/j/postgres-REL_16_BETA2/contrib/plr --testgroup
+# plr --testname regress --
+# /cygdrive/j/postgres-REL_16_BETA2/build/src/test/regress/pg_regress.exe
+# --inputdir /cygdrive/j/postgres-REL_16_BETA2/contrib/plr
+# --expecteddir /cygdrive/j/postgres-REL_16_BETA2/contrib/plr
+# --bindir '' --dlpath
+# /cygdrive/j/postgres-REL_16_BETA2/build/contrib/plr
+# --max-concurrent-tests=20 --dbname regression_plr
+# --outputdir
+# /cygdrive/j/postgres-REL_16_BETA2/build/testrun/plr/regress
+# --temp-instance
+# /cygdrive/j/postgres-REL_16_BETA2/build/testrun/plr/regress/tmp_check
+# --port 40001 plr bad_fun opt_window do out_args
+# plr_transaction opt_window_frame
 # 
-# (test program exited with status code 1)
-# ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+# AnonymousUser@ANONYMOUST /cygdrive/j/postgres-REL_16_BETA2
+# $ meson test -C build --num-processes 1 -v --suite plr
+# ninja: no work to do.
+# ninja: Entering directory `/cygdrive/j/postgres-REL_16_BETA2/build'
+# ninja: no work to do.
+# 1/1 postgresql:plr / plr/regress        RUNNING
+# >>> REGRESS_SHLIB=/cygdrive/j/postgres-REL_16_BETA2/build/src/test/regress/regress.dll PG_REGRESS=/cygdrive/j/postgres-REL_16_BETA2/build/src/test/regress/pg_regress.exe LD_LIBRARY_PATH=/cygdrive/j/postgres-REL_16_BETA2/build/tmp_install//cygdrive/j/PGINSTALL/lib MALLOC_PERTURB_=184 PG_TEST_EXTRA='' PATH=/cygdrive/j/postgres-REL_16_BETA2/build/tmp_install//cygdrive/j/PGINSTALL/bin:/cygdrive/j/postgres-REL_16_BETA2/build/contrib/plr:/usr/local/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:.:/usr/lib/lapack /usr/bin/python3 /cygdrive/j/postgres-REL_16_BETA2/build/../src/tools/testwrap --basedir /cygdrive/j/postgres-REL_16_BETA2/build --srcdir /cygdrive/j/postgres-REL_16_BETA2/contrib/plr --testgroup plr --testname regress -- /cygdrive/j/postgres-REL_16_BETA2/build/src/test/regress/pg_regress.exe --inputdir /cygdrive/j/postgres-REL_16_BETA2/contrib/plr --expecteddir /cygdrive/j/postgres-REL_16_BETA2/contrib/plr --bindir '' --dlpath /cygdrive/j/postgres-REL_16_BETA2/build/contrib/plr --max-concurrent-tests=20 --dbname regression_plr --outputdir /cygdrive/j/postgres-REL_16_BETA2/build/testrun/plr/regress --temp-instance /cygdrive/j/postgres-REL_16_BETA2/build/testrun/plr/regress/tmp_check --port 40001 plr bad_fun opt_window do out_args plr_transaction opt_window_frame
+# ▶ 1/1 - plr                                      2387 ms OK
+# ▶ 1/1 - bad_fun                                   980 ms OK
+# ▶ 1/1 - opt_window                                928 ms OK
+# ▶ 1/1 - do                                        806 ms OK
+# ▶ 1/1 - out_args                                  849 ms OK
+# ▶ 1/1 - plr_transaction                           855 ms OK
+# ▶ 1/1 - opt_window_frame                        32863 ms OK
+# 1/1 postgresql:plr / plr/regress        OK               83.64s   7 subtests passed
 # 
 # 
-# Summary of Failures:
-# 
-# 3/3 postgresql:plr / plr/regress          ERROR            21.88s   exit status 1
-# 
-# Ok:                 2
+# Ok:                 1
 # Expected Fail:      0
-# Fail:               1
+# Fail:               0
 # Unexpected Pass:    0
 # Skipped:            0
 # Timeout:            0
 # 
-# Full log written to /cygdrive/j/postgres-master_e9f15bc_2307081419/build/meson-logs/testlog.txt
+# Full log written to /cygdrive/j/postgres-REL_16_BETA2/build/meson-logs/testlog.txt
 # 
-# AnonymousUser@ANONYMOUST /cygdrive/j/postgres-master_e9f15bc_2307081419
-
-
+# AnonymousUser@ANONYMOUST /cygdrive/j/postgres-REL_16_BETA2
 
 # # pl_targets
 # # part of a "language accumation list" that is passed into "install_quiet"
