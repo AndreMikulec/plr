@@ -452,7 +452,11 @@ endif
 plr_deps = []
 
 
-dep_R = dependency('libR', required : true)
+# cygwin WORKS
+# dep_R = dependency('libR', required : true)
+# manually - in "cygwin" SMALL TESTS - works - "Library R found: YES"
+dep_R = cc.find_library('R', required: true, dirs : ['/usr/lib/R/bin','/usr/lib/R/lib'])
+
 # Note using the Joe Conway modified: /lib/pkgconfig/libR.pc
 # See the NOTE from ABOVE
 
