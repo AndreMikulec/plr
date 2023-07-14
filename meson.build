@@ -204,7 +204,12 @@
 # then do these BOTH
 # rm -Rf build/contrib/plr/*
 # meson compile -C build -v contrib
-# # no "re-setup" happens, just "plr compilaton" happens, so THIS IS FAST), 
+# # no "re-setup" happens, just "plr compilaton" happens, so THIS IS FAST)
+# .3SUMMARY
+# most safe (combo) to do re-tests
+# rm -Rf build/contrib/plr/*
+# meson compile -C build -v contrib
+#
 # .4 run below
 # meson test -C build --num-processes 1 -v --suite setup
 # .5 run below
