@@ -168,17 +168,16 @@
 # rm -Rf build/contrib/plr/*
 # meson compile -C build -v contrib/plr/plr:shared_module
 # then later
-# meson test -C build --num-processes 1 -v --suite setup
+# meson test -C build --num-processes 1 -v --suite setup 
 # ERROR: File 'src/port/libpgport.a' could not be found
 
 # this
 #
 # meson compile -C build -v
 # # (Meson test has no concept of pre-required "test", so this is an EnterprisDB working hack.)
-# meson test -C build --num-processes 1 -v --suite setup 
-# meson test -C build --num-processes 1 -v --suite plr
+# meson test -C build --num-processes 1 -v --suite setup  
 # now may be faster
-# meson test -C build -num-processes 1 -v --suite plr
+# meson test -C build --num-processes 1 -v --suite plr
 
 # after the full build
 # if I forgot earlier to add the "plr" source folder, then
