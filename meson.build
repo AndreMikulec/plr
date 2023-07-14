@@ -506,8 +506,11 @@ plr_link_with += link_R
 plr_incdir = []
 R_incdir = include_directories(R_home / 'include')
 plr_incdir += R_incdir
-R_incdir_R_ext = include_directories(R_home / 'include' / 'R_ext')
-plr_incdir += R_incdir_R_ext
+# Different from "make",
+# suprisingly "meson" "include_directories" does not recurse into subdirectories
+# If I "do not" have this then R_ext "C" functions produce "wrong answers."
+# R_incdir_R_ext = include_directories(R_home / 'include' / 'R_ext')
+# plr_incdir += R_incdir_R_ext
 
 if host_system == 'windows'
   message('Detected host_system as windows.')
