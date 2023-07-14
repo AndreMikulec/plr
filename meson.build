@@ -368,10 +368,10 @@ endif
 
 
 if R_arch == '/x64'
-  PlatformTarget == 'x64'
+  PlatformTarget = 'x64'
 endif
 if R_arch == '/i386'
-  PlatformTarget == 'x86'
+  PlatformTarget = 'x86'
 endif
 
 
