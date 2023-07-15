@@ -349,7 +349,7 @@
 # rem currenlty not used
 # rem set MSYS_ARCH=x64
 # 
-# set MSYS_ROOT=J
+# set MSYS_ROOT=J:\msys64
 # set MSYS_CACHE=J:\msys64\var\cache\setup
 # 
 # mkdir %MSYS_ROOT%
