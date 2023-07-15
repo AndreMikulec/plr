@@ -118,6 +118,22 @@
 # modify the libR.pc pkg-config file
 # ----------------------------------
 
+# mingw
+# https://www.msys2.org/docs/pkgconfig/
+
+# AnonymousUser@ANONYMOUST UCRT64 /j/postgres-REL_16_BETA2
+# # export | grep PKG_CONFIG
+# declare -x PKG_CONFIG_PATH="/ucrt64/lib/pkgconfig:/ucrt64/share/pkgconfig"
+# declare -x PKG_CONFIG_SYSTEM_INCLUDE_PATH="/ucrt64/include"
+# declare -x PKG_CONFIG_SYSTEM_LIBRARY_PATH="/ucrt64/lib"
+
+# export
+
+# PKG_CONFIG_SYSTEM_INCLUDE_PATH
+# https://man.archlinux.org/man/pkgconf.1.en
+
+# non-mingw follows
+
 # ### SEE https://linux.die.net/man/1/pkg-config
 # ### NOTICE: --msvc-syntax
 #
@@ -561,11 +577,11 @@ if is_msvc_or_is_mingw
   if not dep_R.found()
     # If I create my own libR.pc file, then THESE SHOULD never reached.
     if not r_subarchitectures
-      dep_R = cc.find_library('libR', dirs: R_home)
+      dep_R = cc.find_library('libR', dirs: R_home / 'bin' )
     endif
     if    r_subarchitectures
       # actually only ever known to have "R Sub-Architectures" is on Windows  
-      dep_R = cc.find_library('libR', dirs: R_home / R_arch.substring(1))     # contrib/plr/meson.build:564:15: ERROR: C shared or static library 'libR' not found
+      dep_R = cc.find_library('libR', dirs: R_home / 'bin' / R_arch.substring(1))     # contrib/plr/meson.build:567:15: ERROR: C shared or static library 'libR' not found
     endif
   endif
 endif
