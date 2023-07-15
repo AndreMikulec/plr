@@ -218,10 +218,12 @@
 # From the windows command prompt
 # AnonymousUser@ANONYMOUST UCRT64 /j/postgres-REL_16_BETA2
 #
-# (NOTE: I MAY WANT TO RE-INSTALL R THIS AND PUT IT ON THE J DRIVE)
-# MAKE SURE THAT NO SPACE EXISTS AT THE END OF THE "SET"
-# set R_HOME=C:\Program Files\R\R-4.2.3
-# set R_ARCH=/x64
+
+# (NOTE: I MAY WANT TO RE-INSTALL R THIS AND PUT IT ON THE "J" DRIVE)
+# 
+# export R_HOME="/c/Program Files/R/R-4.2.3" && unset RTOOLS43_HOME
+# export | grep R_HOME
+# export R_ARCH=/x64
 # note - features SAME as above but DIFFERENT  -Dextra_version is _UCRT64
 # meson setup -Drversion=4.2.3 -DR_HOME='C:\Program Files\R\R-4.2.3' -DR_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_UCRT64 -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 
