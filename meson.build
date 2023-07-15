@@ -399,14 +399,14 @@ if is_msvc_or_is_mingw
 endif
 
 if  is_msvc \
-      and \
+      and   \
     rversion.version_compare('>=4.3.0')
     #
     error('Microsoft Visual C++ can not compile plr using R for Windows of versions 4.3.0 and greater.')
 endif
 
 if   is_msvc_or_is_mingw   \
-       and \
+       and                 \
      rversion.version_compare('>=2.12.0')  \
 
     # Compiler is ( "mingw" or "msvc" ) and the version of "R" is 2.12.0 or greater.
@@ -424,7 +424,6 @@ endif
 if     r_subarchitectures
   win_Rddl_path_subarch   = R_home / R_arch.substring(1)
 endif
-
 if not r_subarchitectures
   win_Rddl_path = win_Rddl_path_nosubarch
 endif
@@ -517,12 +516,6 @@ if host_system == 'windows'
     '--NAME', 'plr',
     '--FILEDESC', 'PL/R - PostgreSQL support for R as a procedural language (PLR)',])
 endif
-
-# Alternative, could have also been
-# plr = build_target('plr',
-#   plr_sources,
-#   target_type : 'shared_module',
-#   implib : true,
 
 plr = shared_module('plr',
   plr_sources,
