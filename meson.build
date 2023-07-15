@@ -556,12 +556,17 @@ if is_not_mingw_and_not_msvc
 endif
 
 if is_msvc_or_is_mingw
-  if not r_subarchitectures
-    dep_R = cc.find_library('libR', dirs: R_home)
-  endif
-  if    r_subarchitectures
-    # actually only ever known to have "R Sub-Architectures" is on Windows
-    dep_R = cc.find_library('libR', dirs: R_home / R_arch.substring(1))
+  # If I create my own libR.pc file
+  dep_R = dependency('libR', required : false)
+  if not dep_R.found()
+    # If I create my own libR.pc file, then THESE SHOULD never reached.
+    if not r_subarchitectures
+      dep_R = cc.find_library('libR', dirs: R_home)
+    endif
+    if    r_subarchitectures
+      # actually only ever known to have "R Sub-Architectures" is on Windows  
+      dep_R = cc.find_library('libR', dirs: R_home / R_arch.substring(1))     # contrib/plr/meson.build:564:15: ERROR: C shared or static library 'libR' not found
+    endif
   endif
 endif
 
