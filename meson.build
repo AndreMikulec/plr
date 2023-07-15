@@ -431,28 +431,31 @@ if    r_subarchitectures
   win_Rddl_path = win_Rddl_path_subarch
 endif
 
-if is_msvc
-
-  # gendef - Can be from
-  # mingw-w64-???-tools-git
-  # https://packages.msys2.org/search?t=binpkg&q=tools-git
-  # How to use it
-  # https://sourceforge.net/p/mingw-w64/wik0i2/gendef/
-  #
-  # NOTE gendef.exe path and file must be known or available
-  #
-  # Unable to use custom_command for tools that only output to stdout #512
-  # https://github.com/mesonbuild/meson/issues/512
-  #
-  # maybe "dumpbin.exe" would also work?
-  custom_target('R def file', capture: true, command: [ 'gendef' ,'-' , win_Rddl_path / 'R.dll' ], output: win_Rddl_path / 'R.def')
-
-  # msvc lib
-  # Target platform
-  # J:\Program Files\Microsoft Visual Studio\2022\Community>lib /?
-  # https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-target-framework-and-target-platform?view=vs-2022
-  r = run_command('lib', '/def:' + win_Rddl_path / 'R.def', '/out:' + win_Rddl_path / 'R.lib', '/MACHINE:' + PlatformTarget)
-endif
+# #
+# # meson MAY DO the right thing and I do not have to manually do this
+# #
+# if is_msvc
+# 
+#   # gendef - Can be from
+#   # mingw-w64-???-tools-git
+#   # https://packages.msys2.org/search?t=binpkg&q=tools-git
+#   # How to use it
+#   # https://sourceforge.net/p/mingw-w64/wik0i2/gendef/
+#   #
+#   # NOTE gendef.exe path and file must be known or available
+#   #
+#   # Unable to use custom_command for tools that only output to stdout #512
+#   # https://github.com/mesonbuild/meson/issues/512
+#   #
+#   # maybe "dumpbin.exe" would also work?
+#   custom_target('R def file', capture: true, command: [ 'gendef' ,'-' , win_Rddl_path / 'R.dll' ], output: win_Rddl_path / 'R.def')
+# 
+#   # msvc lib
+#   # Target platform
+#   # J:\Program Files\Microsoft Visual Studio\2022\Community>lib /?
+#   # https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-target-framework-and-target-platform?view=vs-2022
+#   r = run_command('lib', '/def:' + win_Rddl_path / 'R.def', '/out:' + win_Rddl_path / 'R.lib', '/MACHINE:' + PlatformTarget)
+# endif
 
 plr_deps = []
 
