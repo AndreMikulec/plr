@@ -2,40 +2,53 @@
 
 # PLR is built as a "contrib" of postgres
 
+
 # cygwin setup
 # 
 # rem "Command Prompt" -> Right Click -> Run As Administrator
 # 
-# mkdir "C:\cygwin64.Downloads"
-# cd "C:\cygwin64.Downloads"
+# mkdir "J:\cygwin64.Downloads"
+# cd "J:\cygwin64.Downloads"
 # 
 # # Download the file "setup-x86_64.exe" from https://www.cygwin.com/install.html
-# # Place the file into  "C:\cygwin64.Downloads"
+# # Place the file into  "J:\cygwin64.Downloads"
 # # Rename the file. 
 # 
 # set CYG_ARCH=x64
-# set CYG_ROOT=C:\cygwin64
-# set CYG_CACHE=C:\cygwin64\var\cache\setup
+# set CYG_ROOT=J:\cygwin64
+# set CYG_CACHE=J:\cygwin64\var\cache\setup
 # set CYG_MIRROR=https://mirrors.kernel.org/sourceware/cygwin/
 # 
-# # Choose to install Cygwin into     "C:\cygwin64".
-# # Choose to use the Cygwin cache at "C:\cygwin64.Downloads".
+# # Choose to install Cygwin into     "J:\cygwin64".
+# # Choose to use the Cygwin cache at "J:\cygwin64.Downloads".
+
+# BEGIN
+#
 # setup-x86_64_3.4.7.exe -qnNdO -v -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%"
-# setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P cygrunsrv
-# 
+
 # rem IMPORTANT
 # setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P pkg-config -P meson -P gendef
 # 
+# setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P cygrunsrv
+#
 # setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P gcc-core -P make -P tar -P gzip -P libreadline7 -P zlib -P icu-devel -P bison -P perl
 # setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel
 # setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libintl-devel -P libcrypt-devel
 # setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P p7zip
 
-# (currently debugging problem "R packages, except "base" are not availabe in R(plr)"- uninstalling to try to find the problem
+# Postgres Binding Option
 # REM setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P postgresql-client -P postgresql -P postgresql-devel
 
 # setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpq-devel
 # setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
+#
+# END
+
+# XOR
+# BEGIN - WITHOUT - Postgres Binding Option
+# setup-x86_64_3.4.7.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P pkg-config -P meson -P gendef -P cygrunsrv  -P gcc-core -P make -P tar -P gzip -P libreadline7 -P zlib -P icu-devel -P bison -P perl -P flex -P libreadline-devel -P libssl-devel -P libxml2-devel -P libxslt-devel -P openldap-devel -P zlib-devel -P libintl-devel -P libcrypt-devel -P libintl-devel -P libcrypt-devel -P p7zip -P libpq-devel -P R -P R-debuginfo
+# END
+
 # set SHELL=%CYG_ROOT%\bin\bash
 # shutdown current
 # %SHELL% -login -c "cygrunsrv -E cygserver || true" 
@@ -51,32 +64,34 @@
 
 # Start the Cygwin command prompt METHOD 1
 #
-# %SHELL% -login -c "PATH="""" CHERE_INVOKING=1 ""C:\cygwin64\bin\mintty.exe"" -i /Cygwin-Terminal.ico -"
+# %SHELL% -login -c "PATH="""" CHERE_INVOKING=1 ""J:\cygwin64\bin\mintty.exe"" -i /Cygwin-Terminal.ico -"
 # export PATH=/usr/local/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:.:/usr/lib/lapack
 # 
 # Start the Cygwin command prompt METHOD 2 (BETTER)
 #
 # set PATH=
 # set CHERE_INVOKING=1
-# "C:\cygwin64\bin\mintty.exe" -i /Cygwin-Terminal.ico -
+# "J:\cygwin64\bin\mintty.exe" -i /Cygwin-Terminal.ico -
 
 # Start the Cygwin command prompt METHOD 3 (from a current mintty)
 # 
-# $(cygpath "C:\cygwin64\bin\mintty.exe") -i /Cygwin-Terminal.ico &
+# $(cygpath "J:\cygwin64\bin\mintty.exe") -i /Cygwin-Terminal.ico &
 
 # In minnty do
-# mkdir       /cygdrive/c/tmp
-# export  TMP=/cygdrive/c/tmp
-# export TEMP=/cygdrive/c/tmp
+# mkdir       /cygdrive/j/tmp
+# export  TMP=/cygdrive/j/tmp
+# export TEMP=/cygdrive/j/tmp
 
 
 # modify the libR.pc pkg-config file
 # ----------------------------------
+
+# ### SEE https://linux.die.net/man/1/pkg-config
 # 
 # ### SEE Joe Conway's plr Makefile
 # ### https://github.com/postgres-plr/plr/blob/3305e4fd2acf623744624f2b8f22f2e0076d94cf/Makefile
 # 
-# AnonymousUser@ANONYMOUST /cygdrive/c/postgres-master_e9f15bc_2307081419
+# AnonymousUser@ANONYMOUST /cygdrive/j/postgres-master_e9f15bc_2307081419
 # $ cat /lib/pkgconfig/libR.pc
 # 
 # rhome=/usr/lib/R
@@ -90,10 +105,10 @@
 # Cflags: -I${rincludedir} -I${rincludedir}
 # Libs.private:
 # 
-# AnonymousUser@ANONYMOUST /cygdrive/c/postgres-master_e9f15bc_2307081419
+# AnonymousUser@ANONYMOUST /cygdrive/j/postgres-master_e9f15bc_2307081419
 # $ cp  /lib/pkgconfig/libR.pc  /lib/pkgconfig/libR.pc.original
 # 
-# AnonymousUser@ANONYMOUST /cygdrive/c/postgres-master_e9f15bc_2307081419
+# AnonymousUser@ANONYMOUST /cygdrive/j/postgres-master_e9f15bc_2307081419
 # $ vi  /lib/pkgconfig/libR.pc
 # 
 # rhome=/usr/lib/R
@@ -151,14 +166,14 @@
 # meson setup --prefix /cygdrive/j/PGINSTALL -Drversion=4.3.0 -DR_HOME='/usr/lib/R' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 #
 # optionally run to change the --prefix 
-# meson configure --prefix /cygdrive/c/PGINSTALL
+# meson configure --prefix /cygdrive/j/PGINSTALL
 
 # "R for Windows"(msvc,mingw) + R and PLR (includes "readline")
 # From the windows command prompt
-# set R_HOME=C:\Program Files\R\R-4.2.3
+# set R_HOME=J:\Program Files\R\R-4.2.3
 # set R_ARCH=/x64
 # note readline is enabled
-# meson setup -Drversion=4.2.3 -DR_HOME='C:\Program Files\R\R-4.2.3' -DR_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+# meson setup -Drversion=4.2.3 -DR_HOME='J:\Program Files\R\R-4.2.3' -DR_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_$(pwd) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 
 # not this (because I must do a full build before an incremental build of just "plr")
 #
@@ -177,13 +192,13 @@
 # # (Meson test has no concept of pre-required "test", so this is an EnterprisDB working hack.)
 # meson test -C build --num-processes 1 -v --suite setup  
 # now may be faster
-# meson test -C build --num-processes 1 -v --suite plr
+# meson test -C build --num-processes 1 -v --suite setup --suite plr
 
 # after the full build
 # if I forgot earlier to add the "plr" source folder, then
 #
 # AnonymousUser@ANONYMOUST /cygdrive/j/postgres-REL_16_BETA2
-# $ meson test -C build --num-processes 1 -v --suite plr
+# $ meson test -C build --num-processes 1 -v --suite setup --suite plr
 # ninja: no work to do.
 # No suitable tests defined.
 #
@@ -212,7 +227,7 @@
 # .4 run below
 # meson test -C build --num-processes 1 -v --suite setup
 # .5 run below
-# meson test -C build --num-processes 1 -v --suite plr
+# meson test -C build --num-processes 1 -v --suite setup --suite plr
 #
 
 
@@ -233,10 +248,11 @@
 # rm -Rf /cygdrive/j/PGINSTALL
 
 
+# DONE
 # clean up in the Administrators Prompt
 #
 # shutdown current
-# %SHELL% -login -c "cygrunsrv -E cygserver" 
+# %SHELL% -login -c "cygrunsrv -E cygserver"
 # uninstall previous
 # %SHELL% -login -c "cygrunsrv -R cygserver"
 
@@ -287,6 +303,12 @@
 #   -----------------               -------------                     ---------------                   -----------
 #   errorlogs                       true                              [true, false]                     Whether to print the logs from failing tests
 #   stdsplit                        true                              [true, false]                     Split stdout and stderr in test logs
+
+fs = import('fs')
+
+if fs.is_dir('/lib/pkgconfig/libR.pc')
+  message('pkg-config library libR exists.')
+endif
 
 plr_sources = files(
   'plr.c', 
@@ -360,7 +382,7 @@ endif
 
 # msvc lib 
 # Target platform
-# C:\Program Files\Microsoft Visual Studio\2022\Community>lib /?
+# J:\Program Files\Microsoft Visual Studio\2022\Community>lib /?
 # https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-target-framework-and-target-platform?view=vs-2022
 
 R_arch = get_option('R_ARCH')
@@ -456,6 +478,7 @@ plr_deps = []
 # dep_R = dependency('libR', required : true)
 # manually - in "cygwin" SMALL TESTS - works - "Library R found: YES"
 dep_R = cc.find_library('R', required: true, dirs : ['/usr/lib/R/bin','/usr/lib/R/lib'])
+# alternative location ['/usr/local/lib/R/bin','/usr/local/lib/R/lib']
 
 # Note using the Joe Conway modified: /lib/pkgconfig/libR.pc
 # See the NOTE from ABOVE
@@ -553,10 +576,10 @@ plr = shared_module('plr',
 # -fno-omit-frame-pointer -shared -o plr.dll
 # -Wl,--out-implib=libplr.a plr.o pg_conversion.o
 # pg_backend_support.o pg_userfuncs.o pg_rsupport.o
-# -L/cygdrive/c/PGINSTALL/lib -Wl,--allow-multiple-definition
+# -L/cygdrive/j/PGINSTALL/lib -Wl,--allow-multiple-definition
 # -Wl,--enable-auto-import -L/usr/local/lib -Wl,--as-needed
 # -fvisibility=hidden -L/usr/lib/R/bin -L/usr/lib/R/lib -lR
-# -L/cygdrive/c/PGINSTALL/lib -lpostgres -lpgcommon -lpgport
+# -L/cygdrive/j/PGINSTALL/lib -lpostgres -lpgcommon -lpgport
 # -lz -lreadline
 # 
 # -- SUCCESS (SO FAR - BEFORE TESTS)
@@ -680,7 +703,7 @@ plr = shared_module('plr',
 # plr_transaction opt_window_frame
 # 
 # AnonymousUser@ANONYMOUST /cygdrive/j/postgres-REL_16_BETA2
-# $ meson test -C build --num-processes 1 -v --suite plr
+# $ meson test -C build --num-processes 1 -v --suite setup --suite plr
 # ninja: no work to do.
 # ninja: Entering directory `/cygdrive/j/postgres-REL_16_BETA2/build'
 # ninja: no work to do.
