@@ -379,18 +379,36 @@
 # rem --cache-path MUST BE pre-existing. (The program can not create it.)
 # msys2-x86_64-20230526.exe --verbose --confirm-command --default-answer  --accept-licenses --no-size-checking --root C:\msys64STARTER --cache-path J:\msys64.Downloads install
 # 
+# create pacman configuration and DIRECTORIES for the FIRST TIME
+# MUST BE DONE ON THE C drive - can not be done on the J drive
+# https://www.msys2.org/wiki/MSYS2-installation/
+
+# double click C:\msys64STARTER\msys2_shell.cmd
+# C:\msys64STARTER\msys2_shell.cmd --help
+# run to initialize the pacman support directories
+# pacman --needed -S bash pacman pacman-mirrors msys2-runtime
+
 # rmdir /S /Q J:\msys64
-# xcopy C:\msys64STARTER J:\msys64 /E /H /I
+# xcopy C:\msys64STARTER     J:\msys64 /E /H /I
+# IF CLAIMS THAT I AM OUT OF SPACE, THEN I AM REALLY OUT OF SPACE
+
+# xcopy C:\msys64STARTER\var J:\msys64\var /E /H /I
 # 
 # # MSYS2 never requires Administrator permissions
-# double click J:\msys64\ucrt64.exe
+# # double click J:\msys64\ucrt64.exe
+# double click C:\msys64STARTER\msys2_shell.cmd
 
-# msys2-x86_64-20230526.exe -d -t %MSYS_ROOT% -cp %MSYS_CACHE% -am -da -al -c in  mingw-w64-ucrt-x86_64-pkg-config mingw-w64-ucrt-x86_64-curl git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-make mingw-w64-ucrt-x86_64-gcc tar gzip mingw-w64-ucrt-x86_64-readline mingw-w64-ucrt-x86_64-zlib mingw-w64-ucrt-x86_64-icu icu-devel  git flex       bison      mingw-w64-ucrt-x86_64-perl mingw-w64-ucrt-x86_64-winpty p7zip   tar       zstd
+# NEEDED TO BE INSTALLED
+# pacman --needed -S bash pacman pacman-mirrors msys2-runtime
+# pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-pkg-config mingw-w64-ucrt-x86_64-curl git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-make mingw-w64-ucrt-x86_64-gcc tar gzip mingw-w64-ucrt-x86_64-readline mingw-w64-ucrt-x86_64-zlib mingw-w64-ucrt-x86_64-icu icu-devel git flex bison mingw-w64-ucrt-x86_64-perl mingw-w64-ucrt-x86_64-winpty p7zip tar zstd
 #
-# Just manually double click 
+# Total Download Size:   146.71 MiB
+# Total Installed Size:  951.06 MiB (actually about 311 MB)
+
+# Just manually double click (or run from the command line) 
 # MSYS does not require Administrator Privs 
-# J:\msys64\ucrt64.exe
-#
+# J:\msys64.Downloads>C:\msys64STARTER\msys2_shell.cmd -ucrt64
+# 
 
 # END MSYS2
 
