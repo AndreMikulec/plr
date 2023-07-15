@@ -191,7 +191,7 @@
 #
 # rem J is my RAMDISK
 # rem C is permanent if I want a more permanent SOLUTION : --prefix /cygdrive/c/PGINSTALL
-# note: auto_features is enabled,  buildtype is "release", readline is enabled, PIE is true, Dextra_version is _$(basename $(pwd))
+# note: - features - auto_features is enabled,  buildtype is "release", readline is enabled, PIE is true, -Dextra_version is _$(basename $(pwd))
 #
 # meson setup --prefix /cygdrive/j/PGINSTALL -Drversion=4.3.0 -DR_HOME='/usr/lib/R' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_$(basename $(pwd)) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 #
@@ -200,10 +200,14 @@
 
 # "R for Windows"(msvc,mingw) + R and PLR (includes "readline")
 # From the windows command prompt
-# set R_HOME=J:\Program Files\R\R-4.2.3
+# AnonymousUser@ANONYMOUST UCRT64 /j/postgres-REL_16_BETA2
+#
+# (NOTE: I MAY WANT TO RE-INSTALL R THIS AND PUT IT ON THE J DRIVE)
+# MAKE SURE THAT NO SPACE EXISTS AT THE END OF THE "SET"
+# set R_HOME=C:\Program Files\R\R-4.2.3
 # set R_ARCH=/x64
-# note readline is enabled
-# meson setup -Drversion=4.2.3 -DR_HOME='J:\Program Files\R\R-4.2.3' -DR_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_POSTGRESSTEST -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+# note - features SAME as above but DIFFERENT  -Dextra_version is _UCRT64
+# meson setup -Drversion=4.2.3 -DR_HOME='C:\Program Files\R\R-4.2.3' -DR_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_UCRT64 -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 
 # not this (because I must do a full build before an incremental build of just "plr")
 #
@@ -537,7 +541,9 @@ if is_not_mingw_and_not_msvc and fs.is_file('/lib/pkgconfig/libR.pc')
 endif
 
 dep_R =  dependency('', required : false)
-# NOTE "cc" is from the file pg source code root meson.build
+#
+# NOTE "cc" is a meson variable from the file pg source code root "meson.build"
+#
 if is_not_mingw_and_not_msvc
   # cygwin WORKS
   dep_R = dependency('libR', required : false)
@@ -551,11 +557,11 @@ endif
 
 if is_msvc_or_is_mingw
   if not r_subarchitectures
-    dep_R = find_library('libR', dirs: R_home)
+    dep_R = cc.find_library('libR', dirs: R_home)
   endif
   if    r_subarchitectures
     # actually only ever known to have "R Sub-Architectures" is on Windows
-    dep_R = find_library('libR', dirs: R_home / R_arch.substring(1))
+    dep_R = cc.find_library('libR', dirs: R_home / R_arch.substring(1))
   endif
 endif
 
