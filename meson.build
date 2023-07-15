@@ -270,7 +270,8 @@
 # meson test -C build --num-processes 1 -v --setup running --suite plr-running
 # meson test -C build --list --suite setup-running --suite plr-running
 
-# running postgres required
+# running postgres is required
+#
 # build/src/test/regress/pg_regress --inputdir contrib/plr plr bad_fun opt_window do out_args plr_transaction opt_window_frame
 # # using postmaster on Unix socket, default port
 #   ok 1         - plr                                       917 ms
@@ -342,6 +343,31 @@
 #   -----------------               -------------                     ---------------                   -----------
 #   errorlogs                       true                              [true, false]                     Whether to print the logs from failing tests
 #   stdsplit                        true                              [true, false]                     Split stdout and stderr in test logs
+
+# BEGIN MSYS2
+#
+# rem currenlty not used
+# rem set MSYS_ARCH=x64
+# 
+# set MSYS_ROOT=J
+# set MSYS_CACHE=J:\msys64\var\cache\setup
+# 
+# mkdir %MSYS_ROOT%
+# mkdir %MSYS_ROOT%.Download
+#
+# cd %MSYS_ROOT%.Download
+# # place the file msys2-x86_64-20230526.exe HERE
+# # msys2-x86_64-20230526.exe --help (https://www.msys2.org/ - Download the Installer)
+#
+# msys2-x86_64-20230526.exe -d -t %MSYS_ROOT% -cp %MSYS_CACHE% -am -da -al -c in  mingw-w64-ucrt-x86_64-pkg-config mingw-w64-ucrt-x86_64-curl git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-make mingw-w64-ucrt-x86_64-gcc tar gzip mingw-w64-ucrt-x86_64-readline mingw-w64-ucrt-x86_64-zlib mingw-w64-ucrt-x86_64-icu icu-devel  git flex       bison      mingw-w64-ucrt-x86_64-perl mingw-w64-ucrt-x86_64-winpty p7zip   tar       zstd
+#
+# Just manually double click 
+# MSYS does not require Administrator Privs 
+# J:\msys64\ucrt64.exe
+#
+
+# END MSYS2
+
 
 fs = import('fs')
 
