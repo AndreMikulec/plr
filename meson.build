@@ -12,14 +12,20 @@
 # 89,000 github files
 # https://github.com/search?q=path%3A**%2Fmeson.build&type=code
 
-# Running Cygwin in imdisk RAMDISK J (2G on a 32GB memory machine).
+# Running Cygwin in imdisk RAMDISK J (2G on a 32GB memory machine) using  J_DRIVE_imdisk_2048M
 # Dell machine is an XPS 8910 acquired in December 2015 and it has 4 CPU cores
+# NOTE: Cygwin takes up 1.24 GB 
+# If I want to do BOTH Cygwin and MINGW use J_DRIVE_imdisk_8192M
 
 # Cygwin - everthing must be running on the SAME drive (e.g. J RAMDISK)
 # (including especially minnty.exe,
 # otherwise if PLR(R disk io will fail - and fail to load the package "stats")
 
 # cygwin setup
+
+# because of the TIME involved CONSIDER saving and extracting
+# choose MAX compression
+# C:\Users\AnonymousUser\Downloads\J_cygwin64_postgres-REL_16_BETA2_plr.7z
 #
 # rem "Command Prompt" -> Right Click -> Run As Administrator
 #
@@ -349,16 +355,36 @@
 # rem currenlty not used
 # rem set MSYS_ARCH=x64
 # 
-# set MSYS_ROOT=J:\msys64
+# set  MSYS_ROOT=J:\msys64
 # set MSYS_CACHE=J:\msys64\var\cache\setup
 # 
 # mkdir %MSYS_ROOT%
-# mkdir %MSYS_ROOT%.Download
+# mkdir %MSYS_ROOT%.Downloads
 #
-# cd %MSYS_ROOT%.Download
+# cd %MSYS_ROOT%.Downloads
 # # place the file msys2-x86_64-20230526.exe HERE
 # # msys2-x86_64-20230526.exe --help (https://www.msys2.org/ - Download the Installer)
 #
+# msys2-x86_64-20230526.exe --help
+# 
+# MSYS2 Silent Install (How-To Guide)
+# Written by Jason Bergnerin Software Title
+# 2021 SEEN 2023
+# https://silentinstallhq.com/msys2-silent-install-how-to-guide/
+#
+# https://github.com/msys2/msys2-installer
+
+# rmdir /S /Q C:\msys64STARTER
+# 
+# rem --cache-path MUST BE pre-existing. (The program can not create it.)
+# msys2-x86_64-20230526.exe --verbose --confirm-command --default-answer  --accept-licenses --no-size-checking --root C:\msys64STARTER --cache-path J:\msys64.Downloads install
+# 
+# rmdir /S /Q J:\msys64
+# xcopy C:\msys64STARTER J:\msys64 /E /H /I
+# 
+# # MSYS2 never requires Administrator permissions
+# double click J:\msys64\ucrt64.exe
+
 # msys2-x86_64-20230526.exe -d -t %MSYS_ROOT% -cp %MSYS_CACHE% -am -da -al -c in  mingw-w64-ucrt-x86_64-pkg-config mingw-w64-ucrt-x86_64-curl git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-make mingw-w64-ucrt-x86_64-gcc tar gzip mingw-w64-ucrt-x86_64-readline mingw-w64-ucrt-x86_64-zlib mingw-w64-ucrt-x86_64-icu icu-devel  git flex       bison      mingw-w64-ucrt-x86_64-perl mingw-w64-ucrt-x86_64-winpty p7zip   tar       zstd
 #
 # Just manually double click 
