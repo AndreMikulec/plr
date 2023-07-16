@@ -729,7 +729,7 @@ endif
 # or
 # (2) programmitically create it
 
-libR_dep = cc.find_library('libR',  dirs : '"/c/Program Files/R/R-4.2.3/bin/x64"')
+libR_dep = cc.find_library('R',  dirs : 'C:\Program Files\R\R-4.2.3\bin\x64')
 plr_deps +=  libR_dep
 
 libR_dep_links = declare_dependency(link_args: ['-fopenmp','-lR'])
