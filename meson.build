@@ -466,7 +466,75 @@
 # Total Download Size:   146.71 MiB
 # Total Installed Size:  951.06 MiB (actually about 311 MB)
 #
-# cd "J:\postgres-REL_16_BETA2"
+# pushd "$R_HOME/bin$R_ARCH"
+# gendef - R.dll > R.def
+##  * [R.dll] Found PE+ image
+# export mslib="/c/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.36.32532/bin/HostX64/x64/lib" 
+# "${mslib}" "/def:R.def" "/out:R.lib" "/MACHINE:x64"
+##  Creating library R.lib and object R.exp
+# popd
+
+# AnonymousUser@ANONYMOUST UCRT64 /j/postgres-REL_16_BETA2
+# # meson compile -C build -v contrib/plr/plr:shared_module
+# INFO: autodetecting backend as ninja
+# INFO: calculating backend command to run: C:\msys64PLR\ucrt64\bin/ninja.EXE -C J:/postgres-REL_16_BETA2/build -v contrib/plr/plr.dll
+# ninja: Entering directory `J:/postgres-REL_16_BETA2/build'
+# 
+# [1/1] 
+# "cc" -o contrib/plr/plr.dll
+# contrib/plr/plr.dll.p/win32ver.obj
+# contrib/plr/plr.dll.p/plr.c.obj
+# contrib/plr/plr.dll.p/pg_conversion.c.obj
+# contrib/plr/plr.dll.p /pg_backend_support.c.obj
+# contrib/plr/plr.dll.p/pg_userfuncs.c.obj
+# contrib/plr/plr.dll.p/pg_rsupport.c.obj
+# "-Wl,--allow-shlib-undefined" "-Wl,-O1" "-shared" "-Wl,--s
+# tart-group" "-Wl,--out-implib=contrib/plr/plr.dll.a"
+# "-Wl,--stack,4194304" "-Wl,--allow-multiple-definition"
+# "-Wl,--disable-auto-import" "-fopenmp" "-LC:/msys64PLR/u
+# crt64/lib/x64" "-LC:/msys64PLR/ucrt64/bin/x64" "-lR"
+# "-fvisibility=hidden"
+# "J:/postgres-REL_16_BETA2/build/src/backend/libpostgres.exe.a"
+# "-pthread" "C:/msys64PLR/uc rt64/lib/libssl.dll.a"
+# "C:/msys64PLR/ucrt64/lib/libcrypto.dll.a" "-lws2_32" "-lm"
+# "-lkernel32" "-luser32" "-lgdi32" "-lwinspool" "-lshell32"
+# "-lole32" "-loleaut32" " -luuid" "-lcomdlg32" "-ladvapi32"
+# "-Wl,--end-group"
+# 
+# 
+# FAILED: contrib/plr/plr.dll
+# "cc" -o contrib/plr/plr.dll
+# contrib/plr/plr.dll.p/win32ver.obj
+# contrib/plr/plr.dll.p/plr.c.obj
+# contrib/plr/plr.dll.p/pg_conversion.c.obj
+# contrib/plr/plr.dll.p/pg_backend_support.c.obj
+# contrib/plr/plr.dll.p/pg_userfuncs.c.obj
+# contrib/plr/plr.dll.p/pg_rsupport.c.obj
+# "-Wl,--allow-shlib-undefined" "-Wl,-O1" "-shared"
+# "-Wl,--start-g roup"
+# "-Wl,--out-implib=contrib/plr/plr.dll.a"
+# "-Wl,--stack,4194304" "-Wl,--allow-multiple-definition"
+# "-Wl,--disable-auto-import" "-fopenmp"
+# "-LC:/msys64PLR/ucrt64/ lib/x64"
+# "-LC:/msys64PLR/ucrt64/bin/x64" "-lR" "-fvisibility=hidden"
+# "J:/postgres-REL_16_BETA2/build/src/backend/libpostgres.exe.a"
+# "-pthread" "C:/msys64PLR/ucrt64/l ib/libssl.dll.a"
+# "C:/msys64PLR/ucrt64/lib/libcrypto.dll.a" "-lws2_32" "-lm"
+# "-lkernel32" "-luser32" "-lgdi32" "-lwinspool" "-lshell32"
+# "-lole32" "-loleaut32" "-luuid " "-lcomdlg32" "-ladvapi32"
+# "-Wl,--end-group"
+# 
+# C:/msys64PLR/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe:
+# cannot find -lR: No such file or directory
+# collect2.exe: error: ld returned 1 exit status
+# ninja: build stopped: subcommand failed.
+# 
+
+# TRY WITHOUT -lR"
+# # notepad /ucrt64/lib/pkgconfig/libR.pc
+# 
+
+# pushd "J:\postgres-REL_16_BETA2"
 #
 # cleanup
 # zip it up
@@ -641,8 +709,11 @@ endif
 
 plr_deps +=  dep_R
 
-
-
+# R library is not in a pkg-config (or "cmake" or "auto") location
+# then I can either 
+# (1) put where pkg-config can find it: pkg-config expected locations
+# or
+# (2) 
 
 
 plr_link_args = []
@@ -651,7 +722,7 @@ args_R = []
 plr_link_args += args_R
 
 plr_link_with = []
-# link_R = ['R']
+# link_R = ['R'] # already in pkg-config Rlib.pc
 link_R = []
 plr_link_with += link_R
 
@@ -682,7 +753,7 @@ plr = shared_module('plr',
 
 # COMPARE (TO SUCCESS)
 #
-# make
+# cygwin - make
 # https://github.com/AndreMikulec/plr/blob/8613137fe46337a4d2067fc49a2a6d8295976b7b/Makefile
 # result . .
 # https://ci.appveyor.com/project/AndreMikulec/plr/builds/47456066/job/dywplxs87baufykh?fullLog=true#L9594
@@ -706,7 +777,7 @@ plr = shared_module('plr',
 #
 # -- SUCCESS (SO FAR - BEFORE TESTS)
 #
-# meson
+# cygwin - meson
 #
 # [1/6]
 # cc -Icontrib/plr/plr.dll.p -I/usr/lib/R/include
@@ -824,6 +895,24 @@ plr = shared_module('plr',
 # --port 40001 plr bad_fun opt_window do out_args
 # plr_transaction opt_window_frame
 #
+# BEGIN NOTE
+# In [6/6], the "cygwin R package manager" 
+# 
+# .1 provides "R" the static library "libR.dll.a"
+# .2 provides that file in the default HOST pkg-config location: /usr/lib/[R][/lib]
+# .3 SAME idea with the headers location 
+# 
+# cygwin meson
+# in the cygwin libR.pc, is found 
+# ```
+# Libs: -fopenmp   -L${r_libdir1x} -L${r_libdir2x} -lR
+# ```
+# meson replaces in "meson build or compile (I am not sure which) using
+# ```
+# -fopenmp /usr/lib/R/lib/libR.dll.a
+# ```
+# END NOTE
+
 # AnonymousUser@ANONYMOUST /cygdrive/j/postgres-REL_16_BETA2
 # $ meson test -C build --num-processes 1 -v --suite setup --suite plr
 # ninja: no work to do.
