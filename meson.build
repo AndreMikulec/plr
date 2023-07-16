@@ -461,7 +461,7 @@
 
 # NEEDED TO BE INSTALLED
 # pacman --needed -S bash pacman pacman-mirrors msys2-runtime
-# pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-pkg-config mingw-w64-ucrt-x86_64-curl git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-make mingw-w64-ucrt-x86_64-gcc tar gzip mingw-w64-ucrt-x86_64-readline mingw-w64-ucrt-x86_64-zlib mingw-w64-ucrt-x86_64-icu icu-devel git flex bison mingw-w64-ucrt-x86_64-perl mingw-w64-ucrt-x86_64-winpty p7zip tar zstd mingw-w64-ucrt-x86_64-tools-git
+# pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-pkg-config mingw-w64-ucrt-x86_64-curl git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-make mingw-w64-ucrt-x86_64-gcc tar gzip mingw-w64-ucrt-x86_64-readline mingw-w64-ucrt-x86_64-zlib mingw-w64-ucrt-x86_64-icu icu-devel git flex bison mingw-w64-ucrt-x86_64-perl mingw-w64-ucrt-x86_64-winpty p7zip tar zstd mingw-w64-ucrt-x86_64-tools-git mingw-w64-ucrt-x86_64-binutils
 #
 # Total Download Size:   146.71 MiB
 # Total Installed Size:  951.06 MiB (actually about 311 MB)
