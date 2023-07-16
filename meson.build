@@ -505,6 +505,11 @@
 #  meson compile . . .
 #  WORKS (COMPILES)
 
+# mingw TO COMPILE and PASS TESTS
+# SUMMARY: R is in PATH
+# in /ucrt64/lib [at least] one of R.dll, REDIRECTORS:  R.lib,  Rlib.dll.a (a.k.a Rlib.a) 
+#
+
 # popd
 
 # AnonymousUser@ANONYMOUST UCRT64 /j/postgres-REL_16_BETA2
@@ -534,33 +539,9 @@
 # "-lole32" "-loleaut32" " -luuid" "-lcomdlg32" "-ladvapi32"
 # "-Wl,--end-group"
 # 
-# 
-# FAILED: contrib/plr/plr.dll
-# "cc" -o contrib/plr/plr.dll
-# contrib/plr/plr.dll.p/win32ver.obj
-# contrib/plr/plr.dll.p/plr.c.obj
-# contrib/plr/plr.dll.p/pg_conversion.c.obj
-# contrib/plr/plr.dll.p/pg_backend_support.c.obj
-# contrib/plr/plr.dll.p/pg_userfuncs.c.obj
-# contrib/plr/plr.dll.p/pg_rsupport.c.obj
-# "-Wl,--allow-shlib-undefined" "-Wl,-O1" "-shared"
-# "-Wl,--start-g roup"
-# "-Wl,--out-implib=contrib/plr/plr.dll.a"
-# "-Wl,--stack,4194304" "-Wl,--allow-multiple-definition"
-# "-Wl,--disable-auto-import" "-fopenmp"
-# "-LC:/msys64PLR/ucrt64/ lib/x64"
-# "-LC:/msys64PLR/ucrt64/bin/x64" "-lR" "-fvisibility=hidden"
-# "J:/postgres-REL_16_BETA2/build/src/backend/libpostgres.exe.a"
-# "-pthread" "C:/msys64PLR/ucrt64/l ib/libssl.dll.a"
-# "C:/msys64PLR/ucrt64/lib/libcrypto.dll.a" "-lws2_32" "-lm"
-# "-lkernel32" "-luser32" "-lgdi32" "-lwinspool" "-lshell32"
-# "-lole32" "-loleaut32" "-luuid " "-lcomdlg32" "-ladvapi32"
-# "-Wl,--end-group"
-# 
-# C:/msys64PLR/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe:
-# cannot find -lR: No such file or directory
-# collect2.exe: error: ld returned 1 exit status
-# ninja: build stopped: subcommand failed.
+
+
+
 # 
 
 # TRY WITHOUT -lR"
@@ -746,7 +727,10 @@ plr_deps +=  dep_R
 # then I can either 
 # (1) put where pkg-config can find it: pkg-config expected locations
 # or
-# (2) 
+# (2) programmitically create it
+
+# R_path_dep = declare_dependency(. . . ARGS . . .)
+# plr_deps +=  R_path_dep
 
 
 plr_link_args = []
