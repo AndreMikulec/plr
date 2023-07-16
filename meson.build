@@ -681,47 +681,47 @@ if is_not_mingw_and_not_msvc and fs.is_file('/lib/pkgconfig/libR.pc')
   message('pkg-config library libR exists.')
 endif
 
-dep_R =  dependency('', required : false)
-#
-# NOTE "cc" is a meson variable from the file pg source code root "meson.build"
-#
-if is_not_mingw_and_not_msvc
-  # cygwin WORKS
-  dep_R = dependency('libR', required : false)
-  if not dep_R.found()
-    dep_R = cc.find_library('R', required: false, dirs : ['/usr/lib/R/bin','/usr/lib/R/lib'])
-    if not dep_R.found()
-      dep_R = cc.find_library('R', required: false, dirs : ['/usr/local/lib/R/bin','/usr/local/lib/R/lib'])
-    endif
-  endif
-endif
-
-if is_msvc_or_is_mingw
-  # If I create my own libR.pc file
-  dep_R = dependency('libR', required : false)
-  if not dep_R.found()
-    # If I create my own libR.pc file, then THESE SHOULD never reached.
-    if not r_subarchitectures
-      # TODO if is_mingw, then meson create a "not R subarchitectures" pkg-config.pc
-      # TODO if is_msvc,  then meson create a "not R subarchitectures" cmake
-      # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' ) X
-      dep_R = dependency('libR', required : false)
-    endif
-    if    r_subarchitectures
-      # TODO if is_mingw, then meson create a "R subarchitectures" pkg-config.pc
-      # TODO if is_msvc,  then meson create a "R subarchitectures" cmake
-      # actually only ever known to have "R Sub-Architectures" is on Windows      # Run-time dependency libr found: NO (tried pkgconfig and cmake)
-      # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' / R_arch.substring(1)) # contrib/plr/meson.build:_LINE_:17: ERROR: C shared or static library 'libR' not found X
-      dep_R = dependency('libR', required : false)
-    endif
-  endif
-endif
-
-if not dep_R.found()
-  error('R library is not found.  Check R_HOME [and R_ARCH if applicable] [and rversion if applicable].')
-endif
-
-plr_deps +=  dep_R
+# # dep_R =  dependency('', required : false)
+# # #
+# # # NOTE "cc" is a meson variable from the file pg source code root "meson.build"
+# # #
+# # if is_not_mingw_and_not_msvc
+# #   # cygwin WORKS
+# #   dep_R = dependency('libR', required : false)
+# #   if not dep_R.found()
+# #     dep_R = cc.find_library('R', required: false, dirs : ['/usr/lib/R/bin','/usr/lib/R/lib'])
+# #     if not dep_R.found()
+# #       dep_R = cc.find_library('R', required: false, dirs : ['/usr/local/lib/R/bin','/usr/local/lib/R/lib'])
+# #     endif
+# #   endif
+# # endif
+# # 
+# # if is_msvc_or_is_mingw
+# #   # If I create my own libR.pc file
+# #   dep_R = dependency('libR', required : false)
+# #   if not dep_R.found()
+# #     # If I create my own libR.pc file, then THESE SHOULD never reached.
+# #     if not r_subarchitectures
+# #       # TODO if is_mingw, then meson create a "not R subarchitectures" pkg-config.pc
+# #       # TODO if is_msvc,  then meson create a "not R subarchitectures" cmake
+# #       # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' ) X
+# #       dep_R = dependency('libR', required : false)
+# #     endif
+# #     if    r_subarchitectures
+# #       # TODO if is_mingw, then meson create a "R subarchitectures" pkg-config.pc
+# #       # TODO if is_msvc,  then meson create a "R subarchitectures" cmake
+# #       # actually only ever known to have "R Sub-Architectures" is on Windows      # Run-time dependency libr found: NO (tried pkgconfig and cmake)
+# #       # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' / R_arch.substring(1)) # contrib/plr/meson.build:_LINE_:17: ERROR: C shared or static library 'libR' not found X
+# #       dep_R = dependency('libR', required : false)
+# #     endif
+# #   endif
+# # endif
+# # 
+# # if not dep_R.found()
+# #   error('R library is not found.  Check R_HOME [and R_ARCH if applicable] [and rversion if applicable].')
+# # endif
+# # 
+# # plr_deps +=  dep_R
 
 # R library is not in a pkg-config (or "cmake" or "auto") location
 # then I can either 
@@ -729,8 +729,9 @@ plr_deps +=  dep_R
 # or
 # (2) programmitically create it
 
-# R_path_dep = declare_dependency(. . . ARGS . . .)
-# plr_deps +=  R_path_dep
+
+Rdll_dep = declare_dependency(link_with: '/c/Program Files/R/R-4.2.3/bin/x64/R.dll', link_args: ['-fopenmp','-lR'])
+plr_deps +=  Rdll_dep
 
 
 plr_link_args = []
@@ -928,6 +929,37 @@ plr = shared_module('plr',
 # ```
 # -fopenmp /usr/lib/R/lib/libR.dll.a
 # ```
+
+# SUCCESS (and TESTS)
+# mingw meson R.lib can be R.dll Rlib.dll.a aks Rlib.a
+# 
+# [7/7] 
+# "cc" -o contrib/plr/plr.dll
+# contrib/plr/plr.dll.p/win32ver.obj
+# contrib/plr/plr.dll.p/plr.c.obj
+# contrib/plr/plr.dll.p/pg_conversion.c.obj
+# contrib/plr/plr.dll.p/pg_backend _support.c.obj
+# contrib/plr/plr.dll.p/pg_userfuncs.c.obj
+# contrib/plr/plr.dll.p/pg_rsupport.c.obj
+# "-Wl,--allow-shlib-undefined" "-Wl,-O1" "-shared"
+# "-Wl,--start-group" "-Wl,--out
+# -implib=contrib/plr/plr.dll.a" "-Wl,--stack,4194304"
+# "-Wl,--allow-multiple-definition"
+# "-Wl,--disable-auto-import" "-fopenmp"
+# "C:/msys64PLR/ucrt64/bin/../lib/gcc/x86_64-w64-min
+# gw32/13.1.0/../../../../lib/R.lib" "-fvisibility=hidden"
+# "J:/postgres-REL_16_BETA2/build/src/backend/libpostgres.exe.a"
+# "-pthread" "C:/msys64PLR/ucrt64/lib/libssl.dll.a" "C:/ms
+# ys64PLR/ucrt64/lib/libcrypto.dll.a" "-lws2_32" "-lm"
+# "-lkernel32" "-luser32" "-lgdi32" "-lwinspool" "-lshell32"
+# "-lole32" "-loleaut32" "-luuid" "-lcomdlg32" "-ladvapi32"
+# "-Wl,- -end-group"
+# 
+# REPLACED LINE TO
+# "-fopenmp"
+# "C:/msys64PLR/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/R.lib"
+
+
 # END NOTE
 
 # AnonymousUser@ANONYMOUST /cygdrive/j/postgres-REL_16_BETA2
