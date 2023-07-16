@@ -139,6 +139,10 @@
 # export PKG_CONFIG_SYSTEM_INCLUDE_PATH="/c/Program Files/R/R-4.2.3":${PKG_CONFIG_SYSTEM_INCLUDE_PATH}
 # export PKG_CONFIG_SYSTEM_LIBRARY_PATH="/c/Program Files/R/R-4.2.3/bin":${PKG_CONFIG_SYSTEM_LIBRARY_PATH}
 
+# declare -x PKG_CONFIG_PATH="/ucrt64/lib/pkgconfig:/ucrt64/share/pkgconfig"
+# declare -x PKG_CONFIG_SYSTEM_INCLUDE_PATH="/ucrt64/include"
+# declare -x PKG_CONFIG_SYSTEM_LIBRARY_PATH="/ucrt64/lib"
+
 # export
 
 # non-mingw follows
@@ -455,23 +459,52 @@
 # RUN 
 # C:\msys64PLR\msys2_shell.cmd -ucrt64
  
-# mkdir -p   /cygdrive/j/tmp
+# mkdir -p    /cygdrive/j/tmp
 # export  TMP=/cygdrive/j/tmp
 # export TEMP=/cygdrive/j/tmp
+#
+# export R_HOME="/c/Program Files/R/R-4.2.3"
+# unset RTOOLS43_HOME
+# export | grep R_HOME
+# export R_ARCH=/x64
 
 # NEEDED TO BE INSTALLED
 # pacman --needed -S bash pacman pacman-mirrors msys2-runtime
-# pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-pkg-config mingw-w64-ucrt-x86_64-curl git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-make mingw-w64-ucrt-x86_64-gcc tar gzip mingw-w64-ucrt-x86_64-readline mingw-w64-ucrt-x86_64-zlib mingw-w64-ucrt-x86_64-icu icu-devel git flex bison mingw-w64-ucrt-x86_64-perl mingw-w64-ucrt-x86_64-winpty p7zip tar zstd mingw-w64-ucrt-x86_64-tools-git mingw-w64-ucrt-x86_64-binutils
+# pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-pkg-config mingw-w64-ucrt-x86_64-curl git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-make mingw-w64-ucrt-x86_64-gcc tar gzip mingw-w64-ucrt-x86_64-readline mingw-w64-ucrt-x86_64-zlib mingw-w64-ucrt-x86_64-icu icu-devel git flex bison mingw-w64-ucrt-x86_64-perl mingw-w64-ucrt-x86_64-winpty p7zip tar zstd mingw-w64-ucrt-x86_64-tools-git mingw-w64-ucrt-x86_64-binutils mingw-w64-ucrt-x86_64-diffutils
 #
 # Total Download Size:   146.71 MiB
 # Total Installed Size:  951.06 MiB (actually about 311 MB)
+#
+##  Creating library R.lib and object R.exp
 #
 # pushd "$R_HOME/bin$R_ARCH"
 # gendef - R.dll > R.def
 ##  * [R.dll] Found PE+ image
 # export mslib="/c/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.36.32532/bin/HostX64/x64/lib" 
 # "${mslib}" "/def:R.def" "/out:R.lib" "/MACHINE:x64"
-##  Creating library R.lib and object R.exp
+#
+## Creating mingw "import lib" libR.a
+#
+# dlltool --dllname R.dll --def R.def --output-lib libR.a
+# 
+
+#  copy
+#  C:\Program Files\R\R-4.2.3\bin\x64
+#  R.dll
+#  R.def
+#  R.exp
+#  R.lib
+#  libR.a
+#  to
+#  C:\msys64PLR\ucrt64\lib
+#  
+#  rm -Rf build
+
+#  export PATH="/c/Program Files/R/R-4.2.3/bin/x64":$PATH
+#  meson setup . . .
+#  meson compile . . .
+#  WORKS (COMPILES)
+
 # popd
 
 # AnonymousUser@ANONYMOUST UCRT64 /j/postgres-REL_16_BETA2

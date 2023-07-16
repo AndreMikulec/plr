@@ -681,6 +681,7 @@ jobs:
             zstd
             mingw-w64-${{ env.mingw_env }}-tools-git
             mingw-w64-${{ env.mingw_env }}-binutils
+            mingw-w64-${{ env.mingw_env }}-diffutils
 
       # Needs "tar" and "zstd"
       #
