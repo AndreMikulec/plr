@@ -679,6 +679,7 @@ jobs:
             p7zip   
             tar       
             zstd
+            mingw-w64-${{ env.mingw_env }}-tools-git
 
       # Needs "tar" and "zstd"
       #

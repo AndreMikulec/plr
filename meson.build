@@ -233,32 +233,34 @@
 #
 # pushd "J:\postgres-REL_16_BETA2"
 # rm -Rf build
-#
 # export R_HOME=/usr/lib/R && unset RTOOLS43_HOME
 # export | grep R_HOME
-#
 # rem J is my RAMDISK
 # rem C is permanent if I want a more permanent SOLUTION : --prefix /cygdrive/c/PGINSTALL
 # note: - features - auto_features is enabled,  buildtype is "release", readline is enabled, PIE is true, -Dextra_version is _$(basename $(pwd))
-#
+# #
 # meson setup --prefix /cygdrive/j/PGINSTALL -Drversion=4.3.0 -DR_HOME='/usr/lib/R' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_$(basename $(pwd)) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
-#
-# optionally run to change the --prefix
-# meson configure --prefix /cygdrive/j/PGINSTALL
+
 
 # "R for Windows"(msvc,mingw) + R and PLR (includes "readline")
 # From the windows command prompt
-# AnonymousUser@ANONYMOUST UCRT64 /j/postgres-REL_16_BETA2
 #
-
-# (NOTE: I MAY WANT TO RE-INSTALL R THIS AND PUT IT ON THE "J" DRIVE)
-# 
-# export R_HOME="/c/Program Files/R/R-4.2.3" && unset RTOOLS43_HOME
+# pushd "J:\postgres-REL_16_BETA2"
+#
+# AnonymousUser@ANONYMOUST UCRT64 /j/postgres-REL_16_BETA2
+# mkdir -p    /cygdrive/j/tmp
+# export  TMP=/cygdrive/j/tmp
+# export TEMP=/cygdrive/j/tmp
+#
+# export R_HOME="/c/Program Files/R/R-4.2.3"
+# unset RTOOLS43_HOME
 # export | grep R_HOME
 # export R_ARCH=/x64
 # note - features SAME as above but DIFFERENT  -Dextra_version is _UCRT64
-# meson setup -Drversion=4.2.3 -DR_HOME='C:\Program Files\R\R-4.2.3' -DR_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_UCRT64 -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
-
+# AnonymousUser@ANONYMOUST UCRT64 /j/postgres-REL_16_BETA2
+#
+# meson setup --prefix /cygdrive/j/PGINSTALL -Drversion=4.2.3 -DR_HOME='C:\Program Files\R\R-4.2.3' -DR_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_UCRT64 -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+#
 # not this (because I must do a full build before an incremental build of just "plr")
 #
 # If these is NOT installed (and these MAY BE OLD)
@@ -269,6 +271,10 @@
 # then later
 # meson test -C build --num-processes 1 -v --suite setup
 # ERROR: File 'src/port/libpgport.a' could not be found
+
+#
+# optionally run to change the --prefix
+# meson configure --prefix /cygdrive/j/PGINSTALL
 
 # this
 #
@@ -406,23 +412,23 @@
 
 # BEGIN MSYS2
 #
-Can not install msys2 on FAKE RAMDISK J.
-Msys2 does not allow that.  The disk must be Real (C:)
+# Can not install msys2 on FAKE RAMDISK J.
+# Msys2 does not allow that.  The disk must be Real (C:)
+# 
+# Can not copy msys2 installation from C to J
+# When I compile on J this will happen.
+# This will cause compilation to fail
 
-Can not copy msys2 installation from C to J
-When I compile on J this will happen.
-This will cause compilation to fail
-
-"-LC:/msys64STARTER/ucrt64/lib/x64"
+# "-LC:/msys64STARTER/ucrt64/lib/x64"
 
 # rem currenlty not used
 # rem set MSYS_ARCH=x64
 # 
 # set    MSYS_ROOT=C:\msys64PLR
-# mkdir %MSYS_ROOT%
 # set MSYS_CACHE=%MSYS_ROOT%.var.cache.setup
-# mkdir          %MSYS_ROOT%.var.cache.setup
+# mkdir          %MSYS_CACHE%
 # mkdir          %MSYS_ROOT%.Downloads
+# Place in THERE msys2-x86_64-20230526.exe
 
 # cd %MSYS_ROOT%.Downloads
 # # place the file msys2-x86_64-20230526.exe HERE
@@ -434,31 +440,33 @@ This will cause compilation to fail
 # Written by Jason Bergnerin Software Title
 # 2021 SEEN 2023
 # https://silentinstallhq.com/msys2-silent-install-how-to-guide/
-#
 # https://github.com/msys2/msys2-installer
-
-# 
-# 
-# rem --cache-path MUST BE pre-existing. (The program can not create it.)
+#
+# rem 
+# rem               %MSYS_ROOT% -  MUST NOT BE pre-existing. (The program will    create it.)
+# rem --cache-path %MSYS_CACHE% -  MUST     BE pre-existing. (The program can not create it.)
 # msys2-x86_64-20230526.exe --verbose --confirm-command --default-answer  --accept-licenses --no-size-checking --root %MSYS_ROOT% --cache-path %MSYS_CACHE% install
 # 
 # NOTES
 # https://www.msys2.org/wiki/MSYS2-installation/
 
-# double click C:\msys64PLR\msys2_shell.cmd
 # C:\msys64STARTER\msys2_shell.cmd --help
-# MSYS does not require Administrator Privs 
-# C:\msys64STARTER\msys2_shell.cmd -ucrt64
+# MSYS does not require Administrator Privs
+# RUN 
+# C:\msys64PLR\msys2_shell.cmd -ucrt64
+ 
 # mkdir -p   /cygdrive/j/tmp
 # export  TMP=/cygdrive/j/tmp
 # export TEMP=/cygdrive/j/tmp
 
 # NEEDED TO BE INSTALLED
 # pacman --needed -S bash pacman pacman-mirrors msys2-runtime
-# pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-pkg-config mingw-w64-ucrt-x86_64-curl git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-make mingw-w64-ucrt-x86_64-gcc tar gzip mingw-w64-ucrt-x86_64-readline mingw-w64-ucrt-x86_64-zlib mingw-w64-ucrt-x86_64-icu icu-devel git flex bison mingw-w64-ucrt-x86_64-perl mingw-w64-ucrt-x86_64-winpty p7zip tar zstd
+# pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-pkg-config mingw-w64-ucrt-x86_64-curl git mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-make mingw-w64-ucrt-x86_64-gcc tar gzip mingw-w64-ucrt-x86_64-readline mingw-w64-ucrt-x86_64-zlib mingw-w64-ucrt-x86_64-icu icu-devel git flex bison mingw-w64-ucrt-x86_64-perl mingw-w64-ucrt-x86_64-winpty p7zip tar zstd mingw-w64-ucrt-x86_64-tools-git
 #
 # Total Download Size:   146.71 MiB
 # Total Installed Size:  951.06 MiB (actually about 311 MB)
+#
+# cd "J:\postgres-REL_16_BETA2"
 #
 # cleanup
 # zip it up
