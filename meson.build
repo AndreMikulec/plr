@@ -119,7 +119,11 @@
 # ----------------------------------
 
 # mingw
+# We default to pkgconf as our pkg-config implementation
 # https://www.msys2.org/docs/pkgconfig/
+#
+# PKG_CONFIG_SYSTEM_INCLUDE_PATH
+# https://man.archlinux.org/man/pkgconf.1.en
 
 # AnonymousUser@ANONYMOUST UCRT64 /j/postgres-REL_16_BETA2
 # # export | grep PKG_CONFIG
@@ -127,10 +131,15 @@
 # declare -x PKG_CONFIG_SYSTEM_INCLUDE_PATH="/ucrt64/include"
 # declare -x PKG_CONFIG_SYSTEM_LIBRARY_PATH="/ucrt64/lib"
 
-# export
+# meson does not read environment variable, but maybe meson will read these
+# NO - DID NOT WORK
+# export PKG_CONFIG_SYSTEM_INCLUDE_PATH="/c/Program Files/R/R-4.2.3/include":${PKG_CONFIG_SYSTEM_INCLUDE_PATH}
+# export PKG_CONFIG_SYSTEM_LIBRARY_PATH="/c/Program Files/R/R-4.2.3/bin/x64":${PKG_CONFIG_SYSTEM_LIBRARY_PATH}
+# 
+# export PKG_CONFIG_SYSTEM_INCLUDE_PATH="/c/Program Files/R/R-4.2.3":${PKG_CONFIG_SYSTEM_INCLUDE_PATH}
+# export PKG_CONFIG_SYSTEM_LIBRARY_PATH="/c/Program Files/R/R-4.2.3/bin":${PKG_CONFIG_SYSTEM_LIBRARY_PATH}
 
-# PKG_CONFIG_SYSTEM_INCLUDE_PATH
-# https://man.archlinux.org/man/pkgconf.1.en
+# export
 
 # non-mingw follows
 
@@ -174,7 +183,30 @@
 # Cflags: -I${rincludedir} -I${rincludedir}
 # Libs.private:
 
+# R on Windows case
+# notepad /ucrt64/lib/pkgconfig/libR.pc
+# 
+# rhome=/c/Program Files/R/R-4.2.3
+# rarch=/x64
+# prefix=${rhome}
+# exec_prefix=${prefix}
+# 
+# r_libdir1x=${rhome}/bin${rarch}
+# r_libdir2x=${rhome}/lib${rarch}
+# rincludedir=${rhome}/include
+# 
+# Name: libR
+# Description: R as a library
+# Version: 4.2.3
+# Libs: -fopenmp   -L${r_libdir1x} -L${r_libdir2x} -lR
+# Cflags: -I${rincludedir} -I${rincludedir}
+# Libs.private:
+
+
+
+# UNZIP 
 # expand postgres-REL_16_BETA2.zip to J:\postgres-REL_16_BETA2
+#
 
 # Of postgres REL_16_BETA2 and later . . .
 # In the file contrib\meson.build
@@ -374,15 +406,24 @@
 
 # BEGIN MSYS2
 #
+Can not install msys2 on FAKE RAMDISK J.
+Msys2 does not allow that.  The disk must be Real (C:)
+
+Can not copy msys2 installation from C to J
+When I compile on J this will happen.
+This will cause compilation to fail
+
+"-LC:/msys64STARTER/ucrt64/lib/x64"
+
 # rem currenlty not used
 # rem set MSYS_ARCH=x64
 # 
-# set  MSYS_ROOT=J:\msys64
-# set MSYS_CACHE=J:\msys64\var\cache\setup
-# 
+# set    MSYS_ROOT=C:\msys64PLR
 # mkdir %MSYS_ROOT%
-# mkdir %MSYS_ROOT%.Downloads
-#
+# set MSYS_CACHE=%MSYS_ROOT%.var.cache.setup
+# mkdir          %MSYS_ROOT%.var.cache.setup
+# mkdir          %MSYS_ROOT%.Downloads
+
 # cd %MSYS_ROOT%.Downloads
 # # place the file msys2-x86_64-20230526.exe HERE
 # # msys2-x86_64-20230526.exe --help (https://www.msys2.org/ - Download the Installer)
@@ -396,29 +437,21 @@
 #
 # https://github.com/msys2/msys2-installer
 
-# rmdir /S /Q C:\msys64STARTER
+# 
 # 
 # rem --cache-path MUST BE pre-existing. (The program can not create it.)
-# msys2-x86_64-20230526.exe --verbose --confirm-command --default-answer  --accept-licenses --no-size-checking --root C:\msys64STARTER --cache-path J:\msys64.Downloads install
+# msys2-x86_64-20230526.exe --verbose --confirm-command --default-answer  --accept-licenses --no-size-checking --root %MSYS_ROOT% --cache-path %MSYS_CACHE% install
 # 
-# create pacman configuration and DIRECTORIES for the FIRST TIME
-# MUST BE DONE ON THE C drive - can not be done on the J drive
+# NOTES
 # https://www.msys2.org/wiki/MSYS2-installation/
 
-# double click C:\msys64STARTER\msys2_shell.cmd
+# double click C:\msys64PLR\msys2_shell.cmd
 # C:\msys64STARTER\msys2_shell.cmd --help
-# run to initialize the pacman support directories
-# pacman --needed -S bash pacman pacman-mirrors msys2-runtime
-
-# rmdir /S /Q J:\msys64
-# xcopy C:\msys64STARTER     J:\msys64 /E /H /I
-# IF CLAIMS THAT I AM OUT OF SPACE, THEN I AM REALLY OUT OF SPACE
-
-# xcopy C:\msys64STARTER\var J:\msys64\var /E /H /I
-# 
-# # MSYS2 never requires Administrator permissions
-# # double click J:\msys64\ucrt64.exe
-# double click C:\msys64STARTER\msys2_shell.cmd
+# MSYS does not require Administrator Privs 
+# C:\msys64STARTER\msys2_shell.cmd -ucrt64
+# mkdir -p   /cygdrive/j/tmp
+# export  TMP=/cygdrive/j/tmp
+# export TEMP=/cygdrive/j/tmp
 
 # NEEDED TO BE INSTALLED
 # pacman --needed -S bash pacman pacman-mirrors msys2-runtime
@@ -426,14 +459,14 @@
 #
 # Total Download Size:   146.71 MiB
 # Total Installed Size:  951.06 MiB (actually about 311 MB)
-
-# Just manually double click (or run from the command line) 
-# MSYS does not require Administrator Privs 
-# J:\msys64.Downloads>C:\msys64STARTER\msys2_shell.cmd -ucrt64
-# 
+#
+# cleanup
+# zip it up
+# remove it
+# rmdir /S /Q %MSYS_ROOT%
+# or just leeve it on disk
 
 # END MSYS2
-
 
 fs = import('fs')
 
@@ -579,11 +612,17 @@ if is_msvc_or_is_mingw
   if not dep_R.found()
     # If I create my own libR.pc file, then THESE SHOULD never reached.
     if not r_subarchitectures
-      dep_R = cc.find_library('libR', dirs: R_home / 'bin' )
+      # TODO if is_mingw, then meson create a "not R subarchitectures" pkg-config.pc
+      # TODO if is_msvc,  then meson create a "not R subarchitectures" cmake
+      # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' ) X
+      dep_R = dependency('libR', required : false)
     endif
     if    r_subarchitectures
-      # actually only ever known to have "R Sub-Architectures" is on Windows  
-      dep_R = cc.find_library('libR', dirs: R_home / 'bin' / R_arch.substring(1))     # contrib/plr/meson.build:567:15: ERROR: C shared or static library 'libR' not found
+      # TODO if is_mingw, then meson create a "R subarchitectures" pkg-config.pc
+      # TODO if is_msvc,  then meson create a "R subarchitectures" cmake
+      # actually only ever known to have "R Sub-Architectures" is on Windows      # Run-time dependency libr found: NO (tried pkgconfig and cmake)
+      # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' / R_arch.substring(1)) # contrib/plr/meson.build:_LINE_:17: ERROR: C shared or static library 'libR' not found X
+      dep_R = dependency('libR', required : false)
     endif
   endif
 endif
@@ -593,6 +632,9 @@ if not dep_R.found()
 endif
 
 plr_deps +=  dep_R
+
+
+
 
 
 plr_link_args = []
