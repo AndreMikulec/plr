@@ -947,7 +947,7 @@ endif
 dep_R =  dependency('', required : false)
 
 
-dep_R = cc.find_library('R', required : false, dirs : ['deps/lib/pkgconfig'])
+dep_R = cc.find_library('R', required : false, dirs : [current_source_dir() / 'deps/lib/pkgconfig'])
 # #
 # # NOTE "cc" is a meson variable from the file pg source code root "meson.build"
 # #
