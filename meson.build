@@ -944,41 +944,44 @@ if is_not_mingw_and_not_msvc and fs.is_file('/lib/pkgconfig/libR.pc')
   message('pkg-config library libR exists.')
 endif
 
-dep_R =  dependency('', required : false)
-#
-# NOTE "cc" is a meson variable from the file pg source code root "meson.build"
-#
-if is_not_mingw_and_not_msvc
-  # cygwin WORKS
-  dep_R = dependency('libR', required : false)
-  if not dep_R.found()
-    dep_R = cc.find_library('R', required: false, dirs : ['/usr/lib/R/bin','/usr/lib/R/lib'])
-    if not dep_R.found()
-      dep_R = cc.find_library('R', required: false, dirs : ['/usr/local/lib/R/bin','/usr/local/lib/R/lib'])
-    endif
-  endif
-endif
+# dep_R =  dependency('', required : false)
 
-if is_msvc_or_is_mingw
-  # If I create my own libR.pc file
-  dep_R = dependency('libR', required : false)
-  if not dep_R.found()
-    # If I create my own libR.pc file, then THESE SHOULD never reached.
-    if not r_subarchitectures
-      # TODO if is_mingw, then meson create a "not R subarchitectures" pkg-config.pc
-      # TODO if is_msvc,  then meson create a "not R subarchitectures" cmake
-      # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' ) X
-      dep_R = dependency('libR', required : false)
-    endif
-    if    r_subarchitectures
-      # TODO if is_mingw, then meson create a "R subarchitectures" pkg-config.pc
-      # TODO if is_msvc,  then meson create a "R subarchitectures" cmake
-      # actually only ever known to have "R Sub-Architectures" is on Windows      # Run-time dependency libr found: NO (tried pkgconfig and cmake)
-      # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' / R_arch.substring(1)) # contrib/plr/meson.build:_LINE_:17: ERROR: C shared or static library 'libR' not found X
-      dep_R = dependency('libR', required : false)
-    endif
-  endif
-endif
+
+dep_R = cc.find_library('R', required : false, dirs : ['deps/lib/pkgconfig'])
+# #
+# # NOTE "cc" is a meson variable from the file pg source code root "meson.build"
+# #
+# if is_not_mingw_and_not_msvc
+#   # cygwin WORKS
+#   dep_R = dependency('libR', required : false)
+#   if not dep_R.found()
+#     dep_R = cc.find_library('R', required: false, dirs : ['/usr/lib/R/bin','/usr/lib/R/lib'])
+#     if not dep_R.found()
+#       dep_R = cc.find_library('R', required: false, dirs : ['/usr/local/lib/R/bin','/usr/local/lib/R/lib'])
+#     endif
+#   endif
+# endif
+# 
+# if is_msvc_or_is_mingw
+#   # If I create my own libR.pc file
+#   dep_R = dependency('libR', required : false)
+#   if not dep_R.found()
+#     # If I create my own libR.pc file, then THESE SHOULD never reached.
+#     if not r_subarchitectures
+#       # TODO if is_mingw, then meson create a "not R subarchitectures" pkg-config.pc
+#       # TODO if is_msvc,  then meson create a "not R subarchitectures" cmake
+#       # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' ) X
+#       dep_R = dependency('libR', required : false)
+#     endif
+#     if    r_subarchitectures
+#       # TODO if is_mingw, then meson create a "R subarchitectures" pkg-config.pc
+#       # TODO if is_msvc,  then meson create a "R subarchitectures" cmake
+#       # actually only ever known to have "R Sub-Architectures" is on Windows      # Run-time dependency libr found: NO (tried pkgconfig and cmake)
+#       # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' / R_arch.substring(1)) # contrib/plr/meson.build:_LINE_:17: ERROR: C shared or static library 'libR' not found X
+#       dep_R = dependency('libR', required : false)
+#     endif
+#   endif
+# endif
 
 if not dep_R.found()
   error('R library is not found.  Check R_HOME [and R_ARCH if applicable] [and rversion if applicable].')
