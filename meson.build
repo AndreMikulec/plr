@@ -246,7 +246,7 @@
 # meson setup --prefix /cygdrive/j/PGINSTALL -Drversion=4.3.0 -DR_HOME='/usr/lib/R' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_$(basename $(pwd)) -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 
 
-# "R for Windows"(msvc,mingw) + R and PLR (includes "readline")
+#  mingw AND "R for Windows"(msvc,mingw) + R and PLR (includes "readline")
 # From the windows command prompt
 #
 # pushd "J:\postgres-REL_16_BETA2"
@@ -263,7 +263,9 @@
 # note - features SAME as above but DIFFERENT  -Dextra_version is _UCRT64
 # AnonymousUser@ANONYMOUST UCRT64 /j/postgres-REL_16_BETA2
 #
-# meson setup --prefix /cygdrive/j/PGINSTALL -Drversion=4.2.3 -DR_HOME='C:\Program Files\R\R-4.2.3' -DR_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_UCRT64 -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+# mingw is /j (but cygwin is /cygdrive/j)
+#
+# meson setup --prefix /j/PGINSTALL -Drversion=4.2.3 -DR_HOME='C:\Program Files\R\R-4.2.3' -DR_ARCH='/x64' -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Dextra_version=_UCRT64 -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 #
 # not this (because I must do a full build before an incremental build of just "plr")
 #
@@ -681,47 +683,47 @@ if is_not_mingw_and_not_msvc and fs.is_file('/lib/pkgconfig/libR.pc')
   message('pkg-config library libR exists.')
 endif
 
-# # dep_R =  dependency('', required : false)
-# # #
-# # # NOTE "cc" is a meson variable from the file pg source code root "meson.build"
-# # #
-# # if is_not_mingw_and_not_msvc
-# #   # cygwin WORKS
-# #   dep_R = dependency('libR', required : false)
-# #   if not dep_R.found()
-# #     dep_R = cc.find_library('R', required: false, dirs : ['/usr/lib/R/bin','/usr/lib/R/lib'])
-# #     if not dep_R.found()
-# #       dep_R = cc.find_library('R', required: false, dirs : ['/usr/local/lib/R/bin','/usr/local/lib/R/lib'])
-# #     endif
-# #   endif
-# # endif
-# # 
-# # if is_msvc_or_is_mingw
-# #   # If I create my own libR.pc file
-# #   dep_R = dependency('libR', required : false)
-# #   if not dep_R.found()
-# #     # If I create my own libR.pc file, then THESE SHOULD never reached.
-# #     if not r_subarchitectures
-# #       # TODO if is_mingw, then meson create a "not R subarchitectures" pkg-config.pc
-# #       # TODO if is_msvc,  then meson create a "not R subarchitectures" cmake
-# #       # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' ) X
-# #       dep_R = dependency('libR', required : false)
-# #     endif
-# #     if    r_subarchitectures
-# #       # TODO if is_mingw, then meson create a "R subarchitectures" pkg-config.pc
-# #       # TODO if is_msvc,  then meson create a "R subarchitectures" cmake
-# #       # actually only ever known to have "R Sub-Architectures" is on Windows      # Run-time dependency libr found: NO (tried pkgconfig and cmake)
-# #       # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' / R_arch.substring(1)) # contrib/plr/meson.build:_LINE_:17: ERROR: C shared or static library 'libR' not found X
-# #       dep_R = dependency('libR', required : false)
-# #     endif
-# #   endif
-# # endif
-# # 
-# # if not dep_R.found()
-# #   error('R library is not found.  Check R_HOME [and R_ARCH if applicable] [and rversion if applicable].')
-# # endif
-# # 
-# # plr_deps +=  dep_R
+dep_R =  dependency('', required : false)
+#
+# NOTE "cc" is a meson variable from the file pg source code root "meson.build"
+#
+if is_not_mingw_and_not_msvc
+  # cygwin WORKS
+  dep_R = dependency('libR', required : false)
+  if not dep_R.found()
+    dep_R = cc.find_library('R', required: false, dirs : ['/usr/lib/R/bin','/usr/lib/R/lib'])
+    if not dep_R.found()
+      dep_R = cc.find_library('R', required: false, dirs : ['/usr/local/lib/R/bin','/usr/local/lib/R/lib'])
+    endif
+  endif
+endif
+
+if is_msvc_or_is_mingw
+  # If I create my own libR.pc file
+  dep_R = dependency('libR', required : false)
+  if not dep_R.found()
+    # If I create my own libR.pc file, then THESE SHOULD never reached.
+    if not r_subarchitectures
+      # TODO if is_mingw, then meson create a "not R subarchitectures" pkg-config.pc
+      # TODO if is_msvc,  then meson create a "not R subarchitectures" cmake
+      # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' ) X
+      dep_R = dependency('libR', required : false)
+    endif
+    if    r_subarchitectures
+      # TODO if is_mingw, then meson create a "R subarchitectures" pkg-config.pc
+      # TODO if is_msvc,  then meson create a "R subarchitectures" cmake
+      # actually only ever known to have "R Sub-Architectures" is on Windows      # Run-time dependency libr found: NO (tried pkgconfig and cmake)
+      # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' / R_arch.substring(1)) # contrib/plr/meson.build:_LINE_:17: ERROR: C shared or static library 'libR' not found X
+      dep_R = dependency('libR', required : false)
+    endif
+  endif
+endif
+
+if not dep_R.found()
+  error('R library is not found.  Check R_HOME [and R_ARCH if applicable] [and rversion if applicable].')
+endif
+
+plr_deps +=  dep_R
 
 # R library is not in a pkg-config (or "cmake" or "auto") location
 # then I can either 
@@ -731,12 +733,6 @@ endif
 
 # libR_dep = cc.find_library('R',  dirs : 'C:\RLIBS\R-4.2.3\bin\x64')
 # plr_deps +=  libR_dep
-
-libR_dep = cc.find_library('R.dll',  dirs : '/c/RLIBS/R-4.2.3/bin/x64')
-plr_deps +=  libR_dep
-
-libR_dep_links = declare_dependency(link_args: ['-fopenmp','-lR'])
-plr_deps +=  libR_dep_links
 
 plr_link_args = []
 # args_R = '-lR'
