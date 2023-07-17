@@ -732,12 +732,11 @@ endif
 # libR_dep = cc.find_library('R',  dirs : 'C:\RLIBS\R-4.2.3\bin\x64')
 # plr_deps +=  libR_dep
 
-libR_dep = cc.find_library('R.dll',  dirs : 'C:\RLIBS\R-4.2.3\bin\x64')
+libR_dep = cc.find_library('R.dll',  dirs : '/c/RLIBS/R-4.2.3/bin/x64')
 plr_deps +=  libR_dep
 
 libR_dep_links = declare_dependency(link_args: ['-fopenmp','-lR'])
 plr_deps +=  libR_dep_links
-
 
 plr_link_args = []
 # args_R = '-lR'
