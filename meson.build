@@ -944,7 +944,7 @@ if is_not_mingw_and_not_msvc and fs.is_file('/lib/pkgconfig/libR.pc')
   message('pkg-config library libR exists.')
 endif
 
-# dep_R =  dependency('', required : false)
+dep_R =  dependency('', required : false)
 
 
 dep_R = cc.find_library('R', required : false, dirs : ['deps/lib/pkgconfig'])
