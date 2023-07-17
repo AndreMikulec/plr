@@ -586,8 +586,12 @@
 # Libs.private:
 # 
 # only places plr.lib is PLACED (EXISTS)
-# J:\win\lib
+# SKIP THIS ONE ** J:\win\lib **
 # J:\win\lib\x64
+# 
+# Run-time dependency libr found: YES 4.2.3
+# Detected in "meson setup" when R.lib DOES NOT EXIST ANYWHERE
+# Best deal just leave it JUST ONE in the J:\win\lib\x64" folder.
 # 
 # cd "J:\postgres-REL_16_BETA2"
 # 
