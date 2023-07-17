@@ -732,9 +732,7 @@ endif
 # libR_dep = cc.find_library('R',  dirs : 'C:\RLIBS\R-4.2.3\bin\x64')
 # plr_deps +=  libR_dep
 
-cc2 = meson.get_compiler('c')
-
-libR_dep = cc2.find_library('R',  dirs : 'C:\RLIBS\R-4.2.3\bin\x64')
+libR_dep = cc.find_library('R.dll',  dirs : 'C:\RLIBS\R-4.2.3\bin\x64')
 plr_deps +=  libR_dep
 
 libR_dep_links = declare_dependency(link_args: ['-fopenmp','-lR'])
