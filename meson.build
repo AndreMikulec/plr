@@ -542,14 +542,6 @@
 # "-Wl,--end-group"
 # 
 
-
-
-# 
-
-# TRY WITHOUT -lR"
-# # notepad /ucrt64/lib/pkgconfig/libR.pc
-# 
-
 # pushd "J:\postgres-REL_16_BETA2"
 #
 # cleanup
@@ -559,6 +551,271 @@
 # or just leeve it on disk
 
 # END MSYS2
+
+# BEGIN MSVC
+# 
+# rem NOTICE in the PATH: C:\Program Files\R\R-4.2.3\bin\x64
+# set PATH=C:\ProgramData\chocolatey\bin;C:\Program Files\R\R-4.2.3\bin\x64;C:\Strawberry\perl\bin;C:\ProgramData\chocolatey\bin;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.36.32532\bin\HostX64\x64;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VC\VCPackages;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer;C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\bin\Roslyn;C:\Program Files\Microsoft Visual Studio\2022\Community\Team Tools\Performance Tools\x64;C:\Program Files\Microsoft Visual Studio\2022\Community\Team Tools\Performance Tools;C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\x64\;C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\\x64;C:\Program Files (x86)\Windows Kits\10\bin\\x64;C:\Program Files\Microsoft Visual Studio\2022\Community\\MSBuild\Current\Bin\amd64;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\;C:\ActiveTcl\bin;C:\Python310\Scripts\;C:\Python310\;C:\Users\AnonymousUser\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\Amazon Corretto\jdk11.0.16_8\bin;C:\gtk+-bundle_3.6.4-20130513_win64\bin;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\bin;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\libnvvp;W:\Oracle19cC\bin;W:\Oracle19cB\bin;W:\Oracle19cA\bin;C:\Program Files\Git\bin;C:\Program Files (x86)\sox-14-4-2;C:\ProgramFiles\MIT\Kerberos\bin;C:\Program Files\Perforce\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Gource\cmd;C:\Program Files\TortoiseSVN\bin;C:\Program Files\doxygen\bin;C:\WINDOWS;C:\WINDOWS\system32;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\dotnet\;C:\Program Files\LLVM\bin;C:\ProgramData\Anaconda3;C:\Python27;C:\Users\AnonymousUser\AppData\Local\bin\NASM;W:\depot_tools;C:\Program Files (x86)\Windows Kits\10\Debuggers\x64;C:\Users\AnonymousUser\scoop\shims;C:\OTHERBIN;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\AOMEI\AOMEI Backupper\6.6.1;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\PuTTY\;C:\OTHERBIN\rclone-v1.59.0-windows-amd64;C:\flutter\bin;C:\Users\AnonymousUser\AppData\Local\Programs\Microsoft VS Code;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files (x86)\Calibre2\;C:\Program Files (x86)\GitExtensions\;C:\Program Files\MiKTeX\miktex\bin\x64\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\Meson\;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\Users\AnonymousUser\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Users\AnonymousUser\AppData\Local\Programs\Fiddler;C:\Users\AnonymousUser\AppData\Local\GitHubDesktop\bin;C:\Users\AnonymousUser\AppData\Local\atom\bin;C:\Users\AnonymousUser\AppData\Local\Microsoft\WindowsApps;C:\Users\AnonymousUser\AppData\Roaming\npm;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VC\Linux\bin\ConnectionManagerExe
+# 
+# TEMP=J:\tmp
+# TMP=J:\tmp
+# 
+# R_ARCH=/x64
+# R_HOME=C:\Program Files\R\R-4.2.3
+# 
+# PKG_CONFIG_PATH=J:\win\lib\pkgconfig
+# PKG_CONFIG_SYSTEM_INCLUDE_PATH=J:\win\include
+# PKG_CONFIG_SYSTEM_LIBRARY_PATH=J:\win\lib
+# 
+# type J:\win\lib\pkgconfig\libR.pc
+# 
+# rhome=/c/Program Files/R/R-4.2.3
+# rarch=/x64
+# prefix=${rhome}
+# exec_prefix=${prefix}
+# 
+# r_libdir1x=${rhome}/bin${rarch}
+# r_libdir2x=${rhome}/lib${rarch}
+# rincludedir=${rhome}/include
+# 
+# Name: libR
+# Description: R as a library
+# Version: 4.2.3
+# Libs: -fopenmp   -L${r_libdir1x} -L${r_libdir2x} -lR
+# Cflags: -I${rincludedir} -I${rincludedir}
+# Libs.private:
+# 
+# only places plr.lib is PLACED (EXISTS)
+# J:\win\lib
+# J:\win\lib\x64
+# 
+# cd "J:\postgres-REL_16_BETA2"
+# 
+# rmdir /S /Q build
+# 
+# rem use DOUBLE QUOTES INSTEAD OF SINGLE QUOTES
+# rem readline is disabled, -Dextra_version=_VISUAL_STUDIO
+# 
+# meson setup --backend vs --prefix "J:\PGINSTALL" -Drversion=4.2.3 -DR_HOME="C:\Program Files\R\R-4.2.3" -DR_ARCH="/x64" -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=disabled -Dzlib=disabled -Dextra_version=_VISUAL_STUDIO -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+# 
+# rem Run-time dependency libr found: YES 4.2.3 (GOOD)
+# 
+# meson compile -C build -v 
+# 
+#    221>Done Building Project "J:\postgres-REL_16_BETA2\build\src\test\modules\test_shm_mq\b46f08c@@test_shm_mq@sha.vcxproj" (default targets).
+#      1>Done Building Project "J:\postgres-REL_16_BETA2\build\postgresql.sln" (default targets).
+# 
+# Build succeeded.
+# 
+#        "J:\postgres-REL_16_BETA2\build\postgresql.sln" (default target) (1) ->
+#        "J:\postgres-REL_16_BETA2\build\src\timezone\d05ab38@@tzdata@cus.vcxproj" (default target) (32) ->
+#        (CustomBuild target) ->
+#          C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(248,5): warning MSB8065: Custom build for item "J:\postgres-REL_16_BETA2\
+#        build\meson-private\custom_target.rule" succeeded, but specified output "j:\postgres-rel_16_beta2\build\src\timezone\timezone" has not been created. This may cause incremental build to
+#        work incorrectly. [J:\postgres-REL_16_BETA2\build\src\timezone\d05ab38@@tzdata@cus.vcxproj]
+# 
+# 
+#        "J:\postgres-REL_16_BETA2\build\postgresql.sln" (default target) (1) ->
+#        "J:\postgres-REL_16_BETA2\build\contrib\plr\c0649f9@@plr@sha.vcxproj" (default target) (139) ->
+#        (ClCompile target) ->
+#          J:\postgres-REL_16_BETA2\contrib\plr\pg_conversion.c(1823,10): warning C4068: unknown pragma 'Rf_warning' [J:\postgres-REL_16_BETA2\build\contrib\plr\c0649f9@@plr@sha.vcxproj]
+# 
+# 
+#        "J:\postgres-REL_16_BETA2\build\postgresql.sln" (default target) (1) ->
+#        "J:\postgres-REL_16_BETA2\build\contrib\plr\c0649f9@@plr@sha.vcxproj" (default target) (139) ->
+#        (Link target) ->
+#          LINK : warning LNK4044: unrecognized option '/fopenmp'; ignored [J:\postgres-REL_16_BETA2\build\contrib\plr\c0649f9@@plr@sha.vcxproj]
+# 
+#     3 Warning(s)
+#     0 Error(s)
+# 
+# Time Elapsed 00:03:27.35
+# 
+# J:\postgres-REL_16_BETA2>
+# 
+# meson test -C build --num-processes 1 -v --suite setup --suite plr
+# 
+# 3/3 postgresql:plr / plr/regress          RUNNING
+# 
+# >>>
+# PG_REGRESS=J:\postgres-REL_16_BETA2\build\src/test\regress\pg_regress.exe
+# REGRESS_SHLIB=J:\postgres-REL_16_BETA2\build\src/test\regress\regress.dll
+# PATH=J:/postgres-REL_16_BETA2/build/tmp_install/PGINSTALL/bin;J:\postgres-REL_16_BETA2\build\contrib\plr;C:\ProgramData\chocolatey\bin;C:\Program
+# Files\R\R-4.2.3\bin\x64;C:\Strawberry\perl\bin;C:\ProgramData\chocolatey\bin;C:\Program
+# Files\Microsoft Visual
+# Studio\2022\Community\VC\Tools\MSVC\14.36.32532\bin\HostX64\x64;C:\Program
+# Files\Microsoft Visual
+# Studio\2022\Community\Common7\IDE\VC\VCPackages;C:\Program
+# Files\Microsoft Visual
+# Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program
+# Files\Microsoft Visual
+# Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team
+# Explorer;C:\Program Files\Microsoft Visual
+# Studio\2022\Community\MSBuild\Current\bin\Roslyn;C:\Program
+# Files\Microsoft Visual Studio\2022\Community\Team
+# Tools\Performance Tools\x64;C:\Program Files\Microsoft
+# Visual Studio\2022\Community\Team Tools\Performance
+# Tools;C:\Program Files (x86)\Microsoft
+# SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\x64\;C:\Program
+# Files (x86)\Windows Kits\10\bin\10.0.22621.0\\x64;C:\Program
+# Files (x86)\Windows Kits\10\bin\\x64;C:\Program
+# Files\Microsoft Visual
+# Studio\2022\Community\\MSBuild\Current\Bin\amd64;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program
+# Files\Microsoft Visual
+# Studio\2022\Community\Common7\IDE\;C:\Program
+# Files\Microsoft Visual
+# Studio\2022\Community\Common7\Tools\;C:\ActiveTcl\bin;C:\Python310\Scripts\;C:\Python310\;C:\Users\AnonymousUser\AppData\Local\Android\Sdk\platform-tools;C:\Program
+# Files\Amazon
+# Corretto\jdk11.0.16_8\bin;C:\gtk+-bundle_3.6.4-20130513_win64\bin;C:\Program
+# Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\bin;C:\Program
+# Files\NVIDIA GPU Computing
+# Toolkit\CUDA\v10.1\libnvvp;W:\Oracle19cC\bin;W:\Oracle19cB\bin;W:\Oracle19cA\bin;C:\Program
+# Files\Git\bin;C:\Program Files
+# (x86)\sox-14-4-2;C:\ProgramFiles\MIT\Kerberos\bin;C:\Program
+# Files\Perforce\;C:\WINDOWS\System32\OpenSSH\;C:\Program
+# Files\Gource\cmd;C:\Program Files\TortoiseSVN\bin;C:\Program
+# Files\doxygen\bin;C:\WINDOWS;C:\WINDOWS\system32;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program
+# Files\dotnet\;C:\Program
+# Files\LLVM\bin;C:\ProgramData\Anaconda3;C:\Python27;C:\Users\AnonymousUser\AppData\Local\bin\NASM;W:\depot_tools;C:\Program
+# Files (x86)\Windows
+# Kits\10\Debuggers\x64;C:\Users\AnonymousUser\scoop\shims;C:\OTHERBIN;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program
+# Files (x86)\AOMEI\AOMEI Backupper\6.6.1;C:\Program Files
+# (x86)\Intel\Intel(R) Management Engine
+# Components\DAL;C:\Program Files\Intel\Intel(R) Management
+# Engine Components\DAL;C:\Program
+# Files\PuTTY\;C:\OTHERBIN\rclone-v1.59.0-windows-amd64;C:\flutter\bin;C:\Users\AnonymousUser\AppData\Local\Programs\Microsoft
+# VS Code;C:\Program
+# Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files
+# (x86)\Calibre2\;C:\Program Files
+# (x86)\GitExtensions\;C:\Program
+# Files\MiKTeX\miktex\bin\x64\;C:\Program Files (x86)\Windows
+# Kits\10\Windows Performance Toolkit\;C:\Program
+# Files\Meson\;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\Users\AnonymousUser\AppData\Local\Microsoft\WindowsApps;C:\Program
+# Files\Intel\WiFi\bin\;C:\Program Files\Common
+# Files\Intel\WirelessCommon\;C:\Users\AnonymousUser\AppData\Local\Programs\Fiddler;C:\Users\AnonymousUser\AppData\Local\GitHubDesktop\bin;C:\Users\AnonymousUser\AppData\Local\atom\bin;C:\Users\AnonymousUser\AppData\Local\Microsoft\WindowsApps;C:\Users\AnonymousUser\AppData\Roaming\npm;C:\Program
+# Files\Microsoft Visual
+# Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;C:\Program
+# Files\Microsoft Visual
+# Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program
+# Files\Microsoft Visual
+# Studio\2022\Community\Common7\IDE\VC\Linux\bin\ConnectionManagerExe
+# PG_TEST_EXTRA= MALLOC_PERTURB_=219
+# W:\depot_tools\python3.BAT
+# J:\postgres-REL_16_BETA2\build\..\src/tools/testwrap
+# --basedir J:\postgres-REL_16_BETA2\build --srcdir
+# J:\postgres-REL_16_BETA2\contrib\plr --testgroup plr
+# --testname regress --
+# J:\postgres-REL_16_BETA2\build\src/test\regress\pg_regress.exe
+# --inputdir J:\postgres-REL_16_BETA2\contrib\plr
+# --expecteddir J:\postgres-REL_16_BETA2\contrib\plr --bindir
+# --dlpath J:\postgres-REL_16_BETA2\build\contrib\plr
+# --max-concurrent-tests=20 --dbname regression_plr
+# --outputdir
+# J:/postgres-REL_16_BETA2/build/testrun/plr/regress
+# --temp-instance
+# J:/postgres-REL_16_BETA2/build/testrun/plr/regress/tmp_check
+# --port 40001 plr bad_fun opt_window do out_args
+# plr_transaction opt_window_frame
+# 
+# 
+# ▶ 3/3 - plr                                       740 ms OK
+# ▶ 3/3 - bad_fun                                   254 ms OK
+# ▶ 3/3 - opt_window                                261 ms OK
+# ▶ 3/3 - do                                        252 ms OK
+# ▶ 3/3 - out_args                                  271 ms OK
+# ▶ 3/3 - plr_transaction                           280 ms OK
+# ▶ 3/3 - opt_window_frame                          257 ms OK
+# 3/3 postgresql:plr / plr/regress          OK               10.19s   7 subtests passed
+# 
+# 
+# Ok:                 3
+# Expected Fail:      0
+# Fail:               0
+# Unexpected Pass:    0
+# Skipped:            0
+# Timeout:            0
+# 
+# Full log written to J:\postgres-REL_16_BETA2\build\meson-logs\testlog.txt
+# 
+# J:\postgres-REL_16_BETA2>
+# 
+# J:\postgres-REL_16_BETA2>dir J:\postgres-REL_16_BETA2\build\contrib\plr
+#  Volume in drive J is J_IMDISK__
+#  Volume Serial Number is 54EF-E89D
+# 
+#  Directory of J:\postgres-REL_16_BETA2\build\contrib\plr
+# 
+# 07/17/2023  11:28 AM    <DIR>          .
+# 07/17/2023  11:28 AM    <DIR>          ..
+# 07/17/2023  11:28 AM            16,244 c0649f9@@plr@sha.vcxproj
+# 07/17/2023  11:33 AM    <DIR>          c0649f9@@plr@sha
+# 07/17/2023  11:33 AM            76,800 plr.dll
+#                2 File(s)         93,044 bytes
+#                3 Dir(s)   1,456,181,248 bytes free
+# 
+# J:\postgres-REL_16_BETA2>
+# 
+# 		<IntDir>c0649f9@@plr@sha\</IntDir>
+# 		<TargetName>plr</TargetName>
+# 		<TargetExt>.dll</TargetExt>
+# 
+# 			<AdditionalIncludeDirectories>c0649f9@@plr@sha;C:\Program Files\R\R-4.2.3\include;C:/Program Files/R/R-4.2.3/include;..\..\src\include;..\..\..\src/include;..\..\src\include\port\win32;..\..\..\src/include/port/win32;..\..\src\include\port\win32_msvc;..\..\..\src/include/port/win32_msvc;..\..\src\include\catalog;..\..\src\include\nodes;..\..\src\include\utils;..\..\src\include\storage;%(AdditionalIncludeDirectories);J:/win/include</AdditionalIncludeDirectories>
+# 			<AdditionalDependencies>J:/win/lib/x64/R.lib;J:/postgres-REL_16_BETA2/build/src/backend/postgres.exe.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+# 
+# 			<OutputFile>$(OutDir)plr.dll</OutputFile>
+# 			<SubSystem>Windows</SubSystem>
+# 			<ImportLibrary>plr.lib</ImportLibrary>
+# 			<TargetMachine>MachineX64</TargetMachine>
+# 
+# 	<ItemGroup>
+# 		<CustomBuild Include="..\..\..\src/port/win32ver.rc">
+# 			<Command>&quot;C:\Program Files\Meson\meson.exe&quot; &quot;--internal&quot; &quot;exe&quot; &quot;--unpickle&quot; &quot;J:\postgres-REL_16_BETA2\build\meson-private\meson_exe_rcgen_a2b2bd7e13da5ba9749ade6d697bd226a8f75eed.dat&quot;</Command>
+# 			<Outputs>c0649f9@@plr@sha\win32ver.rc;c0649f9@@plr@sha\win32ver.res</Outputs>
+# 			<AdditionalInputs>J:\postgres-REL_16_BETA2\build\meson-private\meson_exe_rcgen_a2b2bd7e13da5ba9749ade6d697bd226a8f75eed.dat;J:\postgres-REL_16_BETA2\src/tools/rcgen</AdditionalInputs>
+# 		</CustomBuild>
+# 	</ItemGroup>
+# 
+# 	<ItemGroup>
+# 		<None Include="..\..\..\contrib\plr\meson.build"/>
+# 	</ItemGroup
+# 
+# rem DELETE FILES except the PROJECT.vcxproj J:\postgres-REL_16_BETA2\build\contrib\plr\plr.dll -NOT .vcxproj
+# rem NEVER, DO NOT DELETE THE PROJECT
+# 
+# meson compile -C build -v contrib/plr/plr:shared_module
+# ## meson compile -C build -v contrib
+# 
+# Link:
+# C:\Program Files\Microsoft Visual
+# Studio\2022\Community\VC\Tools\MSVC\14.36.32532\bin\HostX64\x64\link.exe
+# /ERRORREPORT:QUEUE /OUT:".\plr.dll" /NOLOGO
+# J:/win/lib/x64/R.lib "J:/postgre
+# s-REL_16_BETA2/build/src/backend/postgres.exe.lib"
+# ws2_32.lib kernel32.lib user32.lib gdi32.lib winspool.lib
+# shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib
+# advapi32.lib kern el32.lib user32.lib gdi32.lib winspool.lib
+# comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib
+# uuid.lib odbc32.lib odbccp32.lib /MANIFEST
+# /MANIFESTUAC:"level='asInvoker' uiAc cess='false'"
+# /manifest:embed /PDB:".\plr.pdb" /SUBSYSTEM:WINDOWS /TLBID:1
+# /RELEASE /DYNAMICBASE /NXCOMPAT /IMPLIB:"plr.lib"
+# /MACHINE:X64 /OPT:REF /DLL /INCREMENTAL:NO /STACK:4194304
+# /NOEXP -fopenmp /NOIMPLIB /DLL
+# "c0649f9@@plr@sha\win32ver.res" "c0649f9@@plr@sha\plr.c.obj"
+# "c0649f9@@plr@sha\pg_conversion.c.obj"
+# "c0649f9@@plr@sha\pg_backend_support.c.obj"
+# "c0649f9@@plr@sha\pg_userfuncs.c.obj"
+# "c0649f9@@plr@sha\pg_rsupport.c.obj"
+# 
+#     2>LINK : warning LNK4044: unrecognized option '/fopenmp'; ignored [J:\postgres-REL_16_BETA2\build\contrib\plr\c0649f9@@plr@sha.vcxproj]
+#     c0649f9@@plr@sha.vcxproj -> J:\postgres-REL_16_BETA2\build\contrib\plr\plr.dll
+#   FinalizeBuildStatus:
+#     Deleting file "c0649f9@@plr@sha\plr.tlog\unsuccessfulbuild".
+#     Touching "c0649f9@@plr@sha\plr.tlog\plr.lastbuildstate".
+# 2>Done Building Project "J:\postgres-REL_16_BETA2\build\contrib\plr\c0649f9@@plr@sha.vcxproj" (default targets).
+# 1>Done Building Project "J:\postgres-REL_16_BETA2\build\postgresql.sln" (contrib\plr\c0649f9__plr_sha target(s)).
+
+# END MSVC
 
 fs = import('fs')
 
