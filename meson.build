@@ -487,7 +487,7 @@
 #
 ## Creating mingw "import lib" libR.a
 #
-# dlltool --dllname R.dll --def R.def --output-lib libR.a
+# dlltool --dllname R.dll --def R.def --output-lib libR.dll.a
 # 
 
 #  copy
@@ -567,6 +567,75 @@
 # PKG_CONFIG_SYSTEM_INCLUDE_PATH=J:\win\include
 # PKG_CONFIG_SYSTEM_LIBRARY_PATH=J:\win\lib
 # 
+# # # extra thoughts
+# #
+# # 
+# # echo "rhome=/c/Program Files/R/R-4.2.3" > home.pc.txt
+# # echo "rarch=/x64                         > arch.pc.txt
+# # echo "Version : 4.23"                    > rversion.pc.txt
+# # cat   home.pc.txt arch.pc.txt middleRlib.pc.txt rversion.pc.txt bottomRlib.pc.txt  > Rlib.pc  
+# # # BUT ALSO need to SET the version - Version: 4.2.3
+# # 
+# # # mingw (NOTE - I CAN NOT SEE THIS ENVIRONMENT VARIABLE)
+# # # declare -x MSYSTEM_PREFIX="/ucrt64"
+# # 
+# # AnonymousUser@ANONYMOUST UCRT64 /j
+# # # export | grep PKG_
+# # declare -x PKG_CONFIG_PATH="/ucrt64/lib/pkgconfig:/ucrt64/share/pkgconfig"
+# # declare -x PKG_CONFIG_SYSTEM_INCLUDE_PATH="/ucrt64/include"
+# # declare -x PKG_CONFIG_SYSTEM_LIBRARY_PATH="/ucrt64/lib"
+# # 
+# # # Required on Windows (Does not pre-exist)
+# # # set                PKG_CONFIG_PATH=J:\win\lib\pkgconfig
+# # # set PKG_CONFIG_SYSTEM_INCLUDE_PATH=J:\win\include
+# # # set PKG_CONFIG_SYSTEM_LIBRARY_PATH=J:\win\lib
+# # 
+# # # If inside - be careful, some things ARE "NOT RAN EARLY"
+# # env = environment()
+# # env.set('PKG_CONFIG_PATH',                'J:\win\lib\pkgconfig')
+# # env.set('PKG_CONFIG_SYSTEM_INCLUDE_PATH','J:\win\include')
+# # env.set('PKG_CONFIG_SYSTEM_LIBRARY_PATH','J:\win\lib')
+# # 
+# # fs   = import('fs')
+# # # BUT right before build.  I may need this early (but I do not think so)
+# # copy = fs.copyfile('R.lib', 'J:\win\lib\x64\R.lib')
+# # 
+# # pkg = import('pkgconfig')
+# # N_dep = dependency('')
+# # libR = library('libR', dependencies : [N_dep])
+# # pkg.generate(libR, 
+# #   variables: ['rhome=/c/Program Files/R/R-4.2.3','rarch=/x64','prefix=${rhome}', 'exec_prefix=${prefix}', 'r_libdir1x=${rhome}/bin${rarch}', 'r_libdir2x=${rhome}/lib${rarch}','rincludedir=${rhome}/include']
+# #   name: 'libR',
+# #   description: 'R as a library'
+# #   version: 4.2.3
+# #   libs: '-fopenmp   -L${r_libdir1x} -L${r_libdir2x} -lR'
+# #   extra_cflags: '-I${rincludedir} -I${rincludedir}'
+# #   libraries_private: ''
+# #   )
+# # fs = import('fs')
+# # copy = fs.copyfile('libR.pc', '/ucrt/lib/pkgconfig/libR.pc')
+# # # or lucky guess
+# # copy = fs.copyfile('libR.pc', '/lib/pkgconfig/libR.pc')
+# 
+# tree /f J:\win
+# 
+# J:\WIN
+# ├───lib
+# │   │   R.lib
+# │   │
+# │   ├───pkgconfig
+# │   │       libR.pc
+# │   │
+# │   └───x64
+# │           R.lib
+# │
+# └───include
+# 
+# J:\postgres-REL_16_BETA2>
+# 
+# J:\postgres-REL_16_BETA2>pkg-config --libs  --msvc-syntax libR
+# /libpath:J:/win/bin/x64.lib /libpath:J:/win/lib/x64.lib -fopenmp R.lib
+#
 # type J:\win\lib\pkgconfig\libR.pc
 # 
 # rhome=/c/Program Files/R/R-4.2.3
@@ -841,147 +910,171 @@ plr_regress = [
   'opt_window_frame',
 ]
 
-is_msvc    = meson.get_compiler('c').get_id() == 'msvc'
-#
-is_gcc     = meson.get_compiler('c').get_id() == 'gcc'
-is_windows = build_machine.system() == 'windows'
-is_mingw   = is_windows and is_gcc
-
-is_not_mingw_and_not_msvc = not is_mingw and not is_msvc
-is_msvc_or_is_mingw       = is_mingw or is_msvc
-
-R_home = get_option('R_HOME')
-if R_home == ''
-  error('One must supply: -DR_HOME=newvalue')
-endif
-
-R_arch = get_option('R_ARCH')
-if is_msvc_or_is_mingw
-  if R_arch == ''
-    message('One has not supplied: -DR_ARCH=newvalue')
-  endif
-endif
-
-if R_arch == '/x64'
-  PlatformTarget = 'x64'
-endif
-if R_arch == '/i386'
-  PlatformTarget = 'x86'
-endif
-
-rversion   = get_option('rversion')
-if is_msvc_or_is_mingw 
-  if rversion == ''
-    error('One must supply: -Drversion=x.y.z')
-  endif
-endif
-
-if  is_msvc \
-      and   \
-    rversion.version_compare('>=4.3.0')
-    #
-    error('Microsoft Visual C++ can not compile plr using R for Windows of versions 4.3.0 and greater.')
-endif
-
-if   is_msvc_or_is_mingw   \
-       and                 \
-     rversion.version_compare('>=2.12.0')  \
-
-    # Compiler is ( "mingw" or "msvc" ) and the version of "R" is 2.12.0 or greater.
-    # R for Windows is Sub-Architectures
-    # (Note R 4.1.3 and greater is still Sub-Archectures with the 32bit part removed.)
-    r_subarchitectures = true
-else
-    # Non Sub-Architecture anywhere else
-    r_subarchitectures = false
-endif
-
-if not r_subarchitectures
-  win_Rddl_path_nosubarch = R_home
-endif
-if     r_subarchitectures
-  win_Rddl_path_subarch   = R_home / R_arch.substring(1)
-endif
-if not r_subarchitectures
-  win_Rddl_path = win_Rddl_path_nosubarch
-endif
-if    r_subarchitectures
-  win_Rddl_path = win_Rddl_path_subarch
-endif
-
-# #
-# # meson MAY DO the right thing and I do not have to manually do this
-# #
-# if is_msvc
-# 
-#   # gendef - Can be from
-#   # mingw-w64-???-tools-git
-#   # https://packages.msys2.org/search?t=binpkg&q=tools-git
-#   # How to use it
-#   # https://sourceforge.net/p/mingw-w64/wik0i2/gendef/
-#   #
-#   # NOTE gendef.exe path and file must be known or available
-#   #
-#   # Unable to use custom_command for tools that only output to stdout #512
-#   # https://github.com/mesonbuild/meson/issues/512
-#   #
-#   # maybe "dumpbin.exe" would also work?
-#   custom_target('R def file', capture: true, command: [ 'gendef' ,'-' , win_Rddl_path / 'R.dll' ], output: win_Rddl_path / 'R.def')
-# 
-#   # msvc lib
-#   # Target platform
-#   # J:\Program Files\Microsoft Visual Studio\2022\Community>lib /?
-#   # https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-target-framework-and-target-platform?view=vs-2022
-#   r = run_command('lib', '/def:' + win_Rddl_path / 'R.def', '/out:' + win_Rddl_path / 'R.lib', '/MACHINE:' + PlatformTarget)
-# endif
-
-plr_deps = []
+# # # is_msvc    = meson.get_compiler('c').get_id() == 'msvc'
+# # # #
+# # # is_gcc     = meson.get_compiler('c').get_id() == 'gcc'
+# # # is_windows = build_machine.system() == 'windows'
+# # # is_mingw   = is_windows and is_gcc
+# # # 
+# # # is_not_mingw_and_not_msvc = not is_mingw and not is_msvc
+# # # is_msvc_or_is_mingw       = is_mingw or is_msvc
+# # # 
+# # # R_home = get_option('R_HOME')
+# # # if R_home == ''
+# # #   error('One must supply: -DR_HOME=newvalue')
+# # # endif
+# # # 
+# # # R_arch = get_option('R_ARCH')
+# # # if is_msvc_or_is_mingw
+# # #   if R_arch == ''
+# # #     message('One has not supplied: -DR_ARCH=newvalue')
+# # #   endif
+# # # endif
+# # # 
+# # # if R_arch == '/x64'
+# # #   PlatformTarget = 'x64'
+# # # endif
+# # # if R_arch == '/i386'
+# # #   PlatformTarget = 'x86'
+# # # endif
+# # # 
+# # # rversion   = get_option('rversion')
+# # # if is_msvc_or_is_mingw 
+# # #   if rversion == ''
+# # #     error('One must supply: -Drversion=x.y.z')
+# # #   endif
+# # # endif
+# # # 
+# # # if  is_msvc \
+# # #       and   \
+# # #     rversion.version_compare('>=4.3.0')
+# # #     #
+# # #     error('Microsoft Visual C++ can not compile plr using R for Windows of versions 4.3.0 and greater.')
+# # # endif
+# # # 
+# # # if   is_msvc_or_is_mingw   \
+# # #        and                 \
+# # #      rversion.version_compare('>=2.12.0')  \
+# # # 
+# # #     # Compiler is ( "mingw" or "msvc" ) and the version of "R" is 2.12.0 or greater.
+# # #     # R for Windows is Sub-Architectures
+# # #     # (Note R 4.1.3 and greater is still Sub-Archectures with the 32bit part removed.)
+# # #     r_subarchitectures = true
+# # # else
+# # #     # Non Sub-Architecture anywhere else
+# # #     r_subarchitectures = false
+# # # endif
+# # # 
+# # # if not r_subarchitectures
+# # #   # cygwin - this is libR.dll.a
+# # #   if is_msvc_or_is_mingw
+# # #     Rddl_path_nosubarch = R_home / 'bin'
+# # #   endif
+# # #   # Not mingw and *Nix-like - expect here - libR.dll.a
+# # #   if is_not_mingw_and_not_msvc
+# # #     Rddl_path_nosubarch = R_home / 'lib'
+# # #   endif
+# # # endif
+# # # #      is_msvc_or_is_mingw
+# # # if     r_subarchitectures
+# # #   Rddl_path_subarch   = R_home / 'bin' /R_arch.substring(1)
+# # # endif
+# # # if not r_subarchitectures
+# # #   Rddl_path = Rddl_path_nosubarch
+# # # endif
+# # # if    r_subarchitectures
+# # #   Rddl_path = Rddl_path_subarch
+# # # endif
+# # # 
+# # # # #
+# # # # # meson MAY DO the right thing and I do not have to manually do this
+# # # # #
+# # # 
+# # # if is_msvc_or_is_mingw  
+# # # 
+# # # #   # NOTE gendef.exe path and file must be known or available
+# # # #
+# # # #   # gendef - Can be from
+# # # #
+# # # #   # mingw-w64-???-tools-git
+# # # #   # https://packages.msys2.org/search?t=binpkg&q=tools-git
+# # # #
+# # # #   # choco install strawberryperl
+# # # #   #   C:\Strawberry\perl\bin\gendef.exe
+# # # #   #   C:\Strawberry\perl\bin\dlltool.exe
+# # # #   # "lib" comes with the Visual Studio prompt environment
+# # # #
+# # # #   # How to use it
+# # # #   # https://sourceforge.net/p/mingw-w64/wik0i2/gendef/
+# # # #   #
+# # # #   #
+# # # #   # Unable to use custom_command for tools that only output to stdout #512
+# # # #   # https://github.com/mesonbuild/meson/issues/512
+# # # #   #
+# # # #   # maybe "dumpbin.exe" would also work?
+# # #     custom_target('R def file', command: [ 'gendef', '-', '@INPUT@', '@OUTPUT@' ] , input:  Rddl_path / 'R.dll' , output: Rddl_path / 'R.def')
+# # #     # ERROR: Program or command 'copy' not found or not executable
+# # #     # r = run_command('copy', Rddl_path / 'R.dll', 'R.dll')
+# # #     # Copied at "build time"
+# # #     copy = fs.copyfile(Rddl_path / 'R.dll', 'R.dll')
+# # # 
+# # # endif
+# # # 
+# # # 
+# # # 
+# # # if is_mingw
+# # # 
+# # # #   # msvc lib
+# # # #   # Target platform
+# # # #   # J:\Program Files\Microsoft Visual Studio\2022\Community>lib /?
+# # # #   # https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-target-framework-and-target-platform?view=vs-2022
+# # #     r = run_command('dlltool', '--dllname',  'R.dll', '--def', 'R.def', '--output-lib', 'libR.dll.a')
+# # #     # Copied at "build time"
+# # #     copy = fs.copyfile('Rlib.dll.a', '/ucrt/lib/Rlib.dll.a')
+# # # 
+# # # endif
+# # # 
+# # # 
+# # # if is_msvc
+# # # 
+# # # #   # msvc lib
+# # # #   # Target platform
+# # # #   # J:\Program Files\Microsoft Visual Studio\2022\Community>lib /?
+# # # #   # https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-target-framework-and-target-platform?view=vs-2022
+# # #     # DID NOT RUN (or OUTPUT was SWALLOWED)
+# # #     r = run_command('lib', '/def:R.def', '/out:R.lib', '/MACHINE:' + PlatformTarget)
+# # #     # Copied at "build time"
+# # #     # ERROR: File R.lib does not exist.
+# # #     copy = fs.copyfile('R.lib', 'J:win\lib' / PlatformTarget / 'R.lib')
+# # # 
+# # # endif
+# # # 
+# # # 
+# # # #
+# # # if is_not_mingw_and_not_msvc and fs.is_file('/lib/pkgconfig/libR.pc')
+# # #   message('pkg-config library libR exists.')
+# # # endif
 
 # Best practice of using pkg-config in meson build system
 # https://stackoverflow.com/questions/68931956/best-practice-of-using-pkg-config-in-meson-build-system
+plr_deps = []
+
+# ran early
+dep_R = dependency('libR', required : false)
+
+# serious bug (or "not-a-bug" and this is ran late.)
+# So, I can not use. Much if-then-else logic is removed.
 #
-if is_not_mingw_and_not_msvc and fs.is_file('/lib/pkgconfig/libR.pc')
-  message('pkg-config library libR exists.')
-endif
-
-dep_R =  dependency('', required : false)
-
-
-dep_R = cc.find_library('R', required : false, dirs : [current_source_dir() / 'deps/lib/pkgconfig'])
-# #
-# # NOTE "cc" is a meson variable from the file pg source code root "meson.build"
-# #
-# if is_not_mingw_and_not_msvc
-#   # cygwin WORKS
-#   dep_R = dependency('libR', required : false)
-#   if not dep_R.found()
-#     dep_R = cc.find_library('R', required: false, dirs : ['/usr/lib/R/bin','/usr/lib/R/lib'])
-#     if not dep_R.found()
-#       dep_R = cc.find_library('R', required: false, dirs : ['/usr/local/lib/R/bin','/usr/local/lib/R/lib'])
-#     endif
-#   endif
-# endif
+# dep_R = cc.find_library('R', required: false)
+# meson setup . . 
+# Run-time dependency libr found: YES 4.2.3
+# ERROR: Problem encountered: R library is not found.  Check R_HOME [and R_ARCH if applicable] [and rversion if applicable].
 # 
-# if is_msvc_or_is_mingw
-#   # If I create my own libR.pc file
-#   dep_R = dependency('libR', required : false)
-#   if not dep_R.found()
-#     # If I create my own libR.pc file, then THESE SHOULD never reached.
-#     if not r_subarchitectures
-#       # TODO if is_mingw, then meson create a "not R subarchitectures" pkg-config.pc
-#       # TODO if is_msvc,  then meson create a "not R subarchitectures" cmake
-#       # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' ) X
-#       dep_R = dependency('libR', required : false)
-#     endif
-#     if    r_subarchitectures
-#       # TODO if is_mingw, then meson create a "R subarchitectures" pkg-config.pc
-#       # TODO if is_msvc,  then meson create a "R subarchitectures" cmake
-#       # actually only ever known to have "R Sub-Architectures" is on Windows      # Run-time dependency libr found: NO (tried pkgconfig and cmake)
-#       # X dep_R = cc.find_library('libR', dirs: R_home / 'bin' / R_arch.substring(1)) # contrib/plr/meson.build:_LINE_:17: ERROR: C shared or static library 'libR' not found X
-#       dep_R = dependency('libR', required : false)
-#     endif
-#   endif
-# endif
+# # common pre-default in if-then-logic
+# dep_R = dependency('', required : false)
+# 
+# dep_R = cc.find_library('R', required: false, dirs : ['/usr/lib/R/bin','/usr/lib/R/lib'])
+# dep_R = cc.find_library('R', required: false, dirs : ['/usr/local/lib/R/bin','/usr/local/lib/R/lib'])
 
 if not dep_R.found()
   error('R library is not found.  Check R_HOME [and R_ARCH if applicable] [and rversion if applicable].')
