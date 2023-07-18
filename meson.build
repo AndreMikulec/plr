@@ -890,8 +890,6 @@
 
 # END MSVC
 
-fs = import('fs')
-
 plr_sources = files(
   'plr.c',
   'pg_conversion.c',
@@ -920,20 +918,31 @@ plr_regress = [
 # # # is_msvc_or_is_mingw       = is_mingw or is_msvc
 # # # 
 
-#  Only need the R_HOME to find the location to "include" the "R" header files
+# R_HOME is only needed to find the location of the "R" "include" header files
 # 
-#  Before, this build, R_HOME, R_ARCH, and rversion 
-#  will be used  to create a custom Rlib.pc
-#  This file Rlib.pc will be place in the 
-#  default pkg-config expectedlocation.
+# Before, this build, R_HOME, R_ARCH, and rversion 
+# will be used  to create a custom Rlib.pc
+# This file Rlib.pc will be place in the 
+# default pkg-config expected location.
 #
-#  Only One "R" installation on disk is allowed.
-#  The locations are the default locations.
+# Only One "R" installation on disk is allowed.
+# The directory locations are the default locations.
 #
-#  libR.dll.a or R.dll will be created by gendef/dlltool/lib.
-#  and placed in the pkg-config platform default locaton.
-#  Or, libR.shared_library will created by compiling "R" 
-#  and "make" and placed by "install".
+# libR.dll.a or R.dll will be created by gendef/dlltool/lib.
+# and placed in the pkg-config platform default locaton.
+# Or, libR.shared_library will created by compiling "R" 
+# and "make" and placed by "install".
+
+# Append the contents of the file "meson_options.txt_postgres_root_additions"
+# to the "meson_options.txt" file in the "PostgreSQL source code root directory"
+#
+# Place the contents ofthe this "plr" folder into the "Postgre contrib" directory
+# Add an entry in "subdir('plr') in the "Postre contrib" directory meson.build file.
+# 
+# Put R in the PATH
+#
+# From that directory, run 
+# "meson setup -dR_HOME="Path|to|R|Home" . . . 
 
 R_home = get_option('R_HOME')
 if R_home == ''
