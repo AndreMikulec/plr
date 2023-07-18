@@ -919,10 +919,27 @@ plr_regress = [
 # # # is_not_mingw_and_not_msvc = not is_mingw and not is_msvc
 # # # is_msvc_or_is_mingw       = is_mingw or is_msvc
 # # # 
-# # # R_home = get_option('R_HOME')
-# # # if R_home == ''
-# # #   error('One must supply: -DR_HOME=newvalue')
-# # # endif
+
+#  Only need the R_HOME to find the location to "include" the "R" header files
+# 
+#  Before, this build, R_HOME, R_ARCH, and rversion 
+#  will be used  to create a custom Rlib.pc
+#  This file Rlib.pc will be place in the 
+#  default pkg-config expectedlocation.
+#
+#  Only One "R" installation on disk is allowed.
+#  The locations are the default locations.
+#
+#  libR.dll.a or R.dll will be created by gendef/dlltool/lib.
+#  and placed in the pkg-config platform default locaton.
+#  Or, libR.shared_library will created by compiling "R" 
+#  and "make" and placed by "install".
+
+R_home = get_option('R_HOME')
+if R_home == ''
+  error('One must supply: -DR_HOME=newvalue')
+endif
+
 # # # 
 # # # R_arch = get_option('R_ARCH')
 # # # if is_msvc_or_is_mingw
