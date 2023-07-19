@@ -1,0 +1,67 @@
+project('plr', 'c',
+  version : '8_4_5',
+  license : 'GNU Public License Version 2',
+)
+
+R_home = get_option('R_HOME')
+if R_home == ''
+  error('One must supply: -DR_HOME=newvalue')
+endif
+
+pg_home = get_option('pg_home')
+if pg_home == ''
+  error('One must supply: -Dpg_home=newvalue')
+endif
+
+plr_sources = files(
+  'plr.c',
+  'pg_conversion.c',
+  'pg_backend_support.c',
+  'pg_userfuncs.c',
+  'pg_rsupport.c',
+)
+
+# run-time dependencies (not compile-time dependancies)
+plr_deps = []
+
+dep_R = dependency('libR', required : true)
+plr_deps += dep_R
+# cc = meson.get_compiler('c')
+# dep_libpq = cc.find_library('libpq', required : true, dirs: ['/j/PGINSTALL/lib/pkgconfig'] )
+dep_libpq = dependency('libpq', required : true)
+plr_deps += dep_libpq
+
+plr_link_args = []
+# args_R = dep_R.get_pkgconfig_variable('libs')
+# plr_link_args += args_R
+# args_libpq = dep_libpq.get_pkgconfig_variable('libs')
+# plr_link_args += args_libpq
+
+args_pg = pg_home / 'lib' / 'libpostgres.exe.a'
+plr_link_args += args_pg
+
+plr_link_with = []
+link_R = []
+plr_link_with += link_R
+
+plr_incdir = []
+
+pg_incdir0= include_directories('.')
+plr_incdir += pg_incdir0
+
+pg_incdir1= include_directories(R_home / 'include')
+plr_incdir += pg_incdir1
+
+pg_incdir2 = include_directories(pg_home / 'include' / 'postgresql' / 'server' )
+plr_incdir += pg_incdir2
+
+pg_incdir3 = include_directories(pg_home / 'include' / 'postgresql' / 'server' / 'port' / 'win32' )
+plr_incdir += pg_incdir3
+
+plr = shared_module('plr',
+  plr_sources,
+  link_args: plr_link_args,
+  link_with: plr_link_with,
+  include_directories: plr_incdir,
+  dependencies: plr_deps,
+)
