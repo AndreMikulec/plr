@@ -21,33 +21,58 @@ plr_sources = files(
   'pg_rsupport.c',
 )
 
-# run-time dependencies (not compile-time dependancies)
 plr_deps = []
 
-dep_R = dependency('libR', required : true)
-plr_deps += dep_R
+dep_libR = dependency('libR', required : true)
+plr_deps += dep_libR
 # cc = meson.get_compiler('c')
-# dep_libpq = cc.find_library('libpq', required : true, dirs: ['/j/PGINSTALL/lib/pkgconfig'] )
+# dep_libpq = cc.find_library('libpq', required : true, dirs: ['/j/PGINSTALLUCRT/lib/pkgconfig'] )
 dep_libpq = dependency('libpq', required : true)
 plr_deps += dep_libpq
 
-plr_link_args = []
-# args_R = dep_R.get_pkgconfig_variable('libs')
+### plr_link_args = []
+
+# args_R = dep_libR.get_pkgconfig_variable('libs')
 # plr_link_args += args_R
 # args_libpq = dep_libpq.get_pkgconfig_variable('libs')
 # plr_link_args += args_libpq
 
-args_pg = pg_home / 'lib' / 'libpostgres.exe.a'
-plr_link_args += args_pg
+### # this works (Just trying NOT to hardcode "libpostgres.exe.a")
+### args_pg = pg_home / 'lib' / 'libpostgres.exe.a'
+### plr_link_args += args_pg
+#
 
-plr_link_with = []
-link_R = []
-plr_link_with += link_R
+# cygwin
+# dep_libpostgres = cc.find_library('libpostgres', required : true, dirs: ['/j/PGINSTALL/lib/pkgconfig'] )
+# mingw
+# NO - did not work - and after I had created the file libpostgres.pc (andhad PKG_ variables to that the pg pkgconfig DIR is in FRONT)
+#  ERROR: C shared or static library 'libpostgres' not found
+# cc = meson.get_compiler('c')
+# dep_libpostgres = cc.find_library('libpostgres', required : true, dirs: ['J:\PGINSTALLUCRT\lib\pkgconfig'] )
+
+# NO - did not work with  a create file libpostgres.pc based on libpq.pc
+# WITH a libpostgres.pc created from libpq.pc 
+# .1 libpq -> libpostgres
+# .2 -lpq  -> -lpostgres
+# if msvc     cp postgres.exe.a -> .lib
+# if not msvc cp postgres.exe.a -> .a
+# Note, this is a hack, to prevent hardcoding 
+    ### # this works (Just trying NOT to hardcode "libpostgres.exe.a")
+    ### args_pg = pg_home / 'lib' / 'libpostgres.exe.a'
+    ### plr_link_args += args_pg
+dep_libpostgres = dependency('libpostgres', required : true)
+plr_deps += dep_libpostgres
+
+# # ## initializing an array is required
+# # plr_link_with = []
+# # link_R = []
+# # plr_link_with += link_R
 
 plr_incdir = []
 
-pg_incdir0= include_directories('.')
-plr_incdir += pg_incdir0
+# TRYING (WORKS WITHOUT THIS) VERIFIED
+# pg_incdir0= include_directories('.')
+# plr_incdir += pg_incdir0
 
 pg_incdir1= include_directories(R_home / 'include')
 plr_incdir += pg_incdir1
@@ -55,13 +80,27 @@ plr_incdir += pg_incdir1
 pg_incdir2 = include_directories(pg_home / 'include' / 'postgresql' / 'server' )
 plr_incdir += pg_incdir2
 
+#  mingw
 pg_incdir3 = include_directories(pg_home / 'include' / 'postgresql' / 'server' / 'port' / 'win32' )
 plr_incdir += pg_incdir3
 
 plr = shared_module('plr',
   plr_sources,
-  link_args: plr_link_args,
-  link_with: plr_link_with,
+  # link_args: plr_link_args,
+  # link_with: plr_link_with,
   include_directories: plr_incdir,
   dependencies: plr_deps,
 )
+
+if meson.version().version_compare('>=0.57')
+
+  summary(
+    {
+      'libR'               : dep_libR,
+      'libpq'              : dep_libpq,
+      'libpostgres (fake)' : dep_libpostgres,
+    },
+    section: 'Required Dependencies',
+  )
+
+endif
