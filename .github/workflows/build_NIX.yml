@@ -1,4 +1,82 @@
 
+
+# ########################
+# ## BEGIN FUTURE REWRITE
+# 
+# Matrix Item Entry values are "auto" and others
+# Missing Matrix Item Entries are "auto"
+# The meaning of "auto" depends upon the Matrix Item.
+# 
+# Multiple Matrix Item Entries exist.
+# Not all combinations work.
+# Originally, I had written if-then-else-endif "combination detectors".
+# However, too much time walls spent writing "combination detectors".
+# Each time, I added a new Matrix Item, then I had to rewrite the "combinaton detectors".
+# Those REWRITES prevented MY TIME from working on real problems.
+# This situation is just "cheaper" to expain the rules (as much as I know them).
+# 
+# I originally had a Matrix Item Entry called "force".
+# For the same reason as "combinaton detectors" (above) 
+# I removed those if-then-else-endif.
+# 
+# The situation just better to explain the rules (as well as I know them).
+# 
+# pgversion . . .
+# 
+# pgversion_src: source version of PostgreSQL from Github - https://github.com/postgres/postgres
+# # acquire the ...
+# "none"    - do not acquire
+# "auto"    - latest tag (latest "x" and not with "_BETA*")
+# "x"       - specific tag e.g. "REL_a_b" - can be "y_BETA1" "y_BETA2" etc
+# "patched" - specific branch
+# "devel"   - latest tag(often is "y_BETA*")
+# "future"  - master branch
+# 
+# pgversion_bin_win: binary version of PostgreSQL - https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+#                                                     columns Windows x86-64 and Windows x86-32
+# 
+# # acquire the ...
+# "none"    - do not acquire 
+#             if "compiler: UCRT64" [or one of the allowed msys mingw variants] or "compiler: msvc"
+#             Note: Github Actions on windows-lastest has at least one "Stopped" "Postgres for Windows"
+#                   https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
+# 
+# "auto"    - highest a.b-c on page and column
+#             https://get.enterprisedb.com/postgresql/postgresql-a.b-c-windows-x64.exe
+#             or
+#             https://get.enterprisedb.com/postgresql/postgresql-a.b-c-windows.exe
+#             xor
+#            "Stopped" "Postgres for Windows"
+# 
+# "x"       - specific a.b-c
+# 
+# This internal variable is eventually determined - "pgversion_version".
+# 
+# 
+# 
+# rversion . . .
+# 
+# rversion_src: source version of "R" from Github - https://github.com/wch/r-source
+# # acquire the ...
+# "auto"     - [do not acquire]
+# "x"        - specific commit (NOT IMPLEMENTED) (This is "hard" to "time correctly". Recommend "patched".) 
+# "patched"  - latest branch (same as "auto")
+# "future"   - "trunc" branch" 
+# 
+# rversion_bin_win: binary version of "R for Windows" from https://cran.r-project.org/bin/windows
+# # acquire the ...
+# "auto"         - R for Windows   - https://cran.r-project.org/bin/windows/base/old/ highest on page R x.y.z
+# "x"            - R for Windows   - https://cran.r-project.org/bin/windows/base/old/ 
+# "patched"      - R patched       - https://cran.r-project.org/bin/windows/base/rpatched.html
+# "future        - R development   - https://cran.r-project.org/bin/windows/base/rdevel.html
+# 
+# This internal variable is eventually is determined - "rversion_version".
+# 
+# ## END OF FUTURE RE-WRITE
+# #########################
+
+
+
 name: plr CI NIX
 contents: write
 
