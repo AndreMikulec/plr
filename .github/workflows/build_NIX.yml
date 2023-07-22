@@ -317,7 +317,7 @@ jobs:
       # 64 or 32 will be determined and overridden.
       # mingw "bit" to be Eventually Used in the absolute path name of msys__
       - name: Windows mingw Compiler Style Environment Variables and programs
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }}
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
           if("${{ env.matrix_Compiler_bit }}" -eq "64") {"
@@ -342,7 +342,7 @@ jobs:
       # 64 or 32 will be determined and determined
       # cygwin "bit" Used in the absolute path name of cygwin__
       - name: Windows cygwin Compiler Style Environment Variables and programs
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'cygwin' }}
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'cygwin' }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
           if("${{ env.matrix_Platform_bit }}" -eq "64") {
@@ -363,7 +363,7 @@ jobs:
 
       # CURRENTLTY NOT USED - meant to be used with a "dragon" old x86 respitory
       - name: Windows cygwin Environment Specific Variables
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'cygwin' }}
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'cygwin' }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
           ${env:CYG_ROOT} = "C:\cygwin${{ env.bit }}"
@@ -434,14 +434,14 @@ jobs:
           echo "SHELL=${SHELL}" >> ${GITHUB_ENV}
 
       - name: mingw or cygwin PG Version
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'cygwin' ) }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'cygwin' ) }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
           if("${{ env.pg }}" -ne "commit") {  ${env:pgversion} = "${{ matrix.pg }}" }
           Set-EnvVar "pgversion=${env:pgversion}"
 
       - name: msvc PG Version
-        if: ${{ matrix.os == 'windows-latest' &&  env.compiler_style = 'msvc'  }}
+        if: ${{ matrix.os == 'windows-latest' &&  env.compiler_style == 'msvc'  }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
           if( ("${{ env.pg }}" -ne "commit" )  {  
@@ -456,7 +456,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Downloadable R for Windows - Version - R not from a Repository
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
           # R-major.minor.patch
@@ -477,14 +477,14 @@ jobs:
           Set-EnvVar "rversionlong=${env:rversionlong}"
 
       - name: Windows R Version and Platform Check
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' && env.rversionlong < 21100 && env.Platform == 'x64' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' && env.rversionlong < 21100 && env.Platform == 'x64' }}
         uses: actions/github-script@v6
         with:
           script: |
             core.setFailed('R for Windows versions earler than 2.11.0 are only x86 and never x64.')
 
       - name: Windows R Version and Platform Check - Older than Oldest
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' && env.rversionlong < 10602  }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' && env.rversionlong < 10602  }}
         uses: actions/github-script@v6
         with:
           script: |
@@ -499,7 +499,7 @@ jobs:
             core.setFailed('Microsoft Visual C++ (msvc) can not compile plr of R version 4.3.0 and later.')
 
       - name: Windows R Version and MSVC Version Check and Platform Check
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'msvc' &&  matrix.rversion != '' && matrix.Platform = 'x86' && env.rversionlong >= 40103 }}
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'msvc' &&  matrix.rversion != '' && matrix.Platform == 'x86' && env.rversionlong >= 40103 }}
         uses: actions/github-script@v6
         with:
           script: |
@@ -508,7 +508,7 @@ jobs:
         # NOTE - mingw does NOT have R in the repository.
         # NOTE - cygwin DOES HAVE R in the repository.
       - name: Downloadable R for Windows - Online Location - R not from a Repository
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
           #
@@ -553,7 +553,7 @@ jobs:
 
         # NOTE - cygwin DOES HAVE R in the repository.
       - name: cygwin R from a Repository location
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
           ${env:cyg_setup_download_url}="http://cygwin.com/setup-${{ env.CYG_ARCH }}.exe"
@@ -574,7 +574,7 @@ jobs:
       # Note - cygwin does not use "R Sub-Architectures"
       # See cran-archive.r-project.org/bin/windows/base/old/2.12.0/CHANGES.R-2.12.0.html
       - name: Windows mingw and msvc R R_ARCH Sub-Architectures
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
           if([int]"${{ env.rversionlong }}" -ge 21200) {
@@ -671,13 +671,13 @@ jobs:
       # https://www.codevoid.net/ruminations/2020/12/28/default-architecture-visual-studio.html
       #
       - name: Prepare Github Actions, MSVC, and Meson
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'msvc' && matrix.bulder = 'meson' }}
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'msvc' && matrix.bulder == 'meson' }}
         uses: bus1/cabuild/action/msdevshell@v1
         with:
           architecture: ${{ env.msvc_architecture }}
 
       - name: Prepare Github Actions and Cygwin
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'cygwin' }}
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'cygwin' }}
         uses: cygwin/cygwin-install-action@v4
         env:
           # Andre Experience
@@ -717,7 +717,7 @@ jobs:
       # EXCEPT NOT SUPPORTING "MSYS" because of inconsistent (non-standard "old" bare) package naming
       #
       - name: Install Windows mingw Software
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style = 'mingw' }}
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'mingw' }}
         uses: msys2/setup-msys2@v2
         with:
           msystem: ${{ matrix.compiler }}
@@ -770,7 +770,7 @@ jobs:
       # older caches will be evicted based on when the cache was last accessed.
       #
       - name: Cache R-x.y.z Windows Installer Exe
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' }}
         id: cache-R.windows.installer.exe
         uses: actions/cache@v3.3.1
         with:
@@ -780,7 +780,7 @@ jobs:
           SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
 
       - name: Download R for Windows R-x.y.z R-rmajor.rminor.rpatch
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' }}
         uses: suisei-cn/actions-download-file@v1.3.0
         id: downloadfileRforWindows 
         name: Download R for Windows
@@ -788,7 +788,7 @@ jobs:
           url: ${{ env.rversionurl }}
 
       - name: Install R for Windows R-x.y.z R-rmajor.rminor.rpatch
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style = 'mingw' || env.compiler_style = 'msvc' ) && matrix.rversion != '' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' }}
         run: |
           function Start-App  {param($X,$Y) Start-Process -NoNewWindow -FilePath "$X" -ArgumentList $Y }
           Start-App "${{ env.rinstexe }}" "/VERYSILENT", "/DIR=${{ env.R_HOME }}",  "/NOICONS", "/TASKS="
@@ -809,7 +809,7 @@ jobs:
       #  .3 Set-EnvVar "pg_binaries_installed_in_system_location=true" (but the name varies and is based on the postgres version)
 
       - name: Downloading "pg" source code
-        if: ${{ env.pg_binaries_compiled_from_source = 'true' }}
+        if: ${{ env.pg_binaries_compiled_from_source == 'true' }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
           echo Using Git
@@ -998,7 +998,7 @@ jobs:
           export
 
       - name: make - Build
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'make' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder == 'make' }}
         env:
           # convert env. to OS Environment Variables
           VARS: ${{ toJSON(vars) }}
@@ -1013,21 +1013,21 @@ jobs:
           # init.sh may modify  "PGROOT", "but these are not anymore used outside of the .sh files.
 
       - name: meson - Build
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder == 'meson' }}
         uses: BSFishy/meson-build@v1.0.3
         with:
           action: build
           options: --verbose
 
       - name: meson - Install
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder == 'meson' }}
         uses: BSFishy/meson-build@v1.0.3
         with:
           action: install
           options: --verbose
 
       - name: make - Test
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'make' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder == 'make' }}
         env:
           # convert env. to OS Environment Variables
           VARS: ${{ toJSON(vars) }}
@@ -1039,7 +1039,7 @@ jobs:
           # init.sh may modify  "PGROOT", but these are not anymore used outside of the .sh files.
 
       - name: meson - Test 
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder == 'meson' }}
         uses: BSFishy/meson-build@v1.0.3
         with:
           action: test
@@ -1047,7 +1047,7 @@ jobs:
           options: --verbose
 
       - name: make - Archive
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'make' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder == 'make' }}
         env:
           # convert env. to OS Environment Variables
           VARS: ${{ toJSON(vars) }}
@@ -1065,7 +1065,7 @@ jobs:
           # "var7z" WILL BE USED outside of the .sh fles AND MAYBE "varpg7z" WILL BE USED outisde of the .sh files
 
       - name: meson - Archiving
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder = 'meson' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' ||  env.compiler_style == 'cygwin' ) && matrix.builder == 'meson' }}
         run: |
           echo Archiving
           echo TODO
