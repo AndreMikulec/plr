@@ -21,19 +21,38 @@
 # 
 # The situation just better to explain the rules (as well as I know them).
 # 
+# shortcuts
+# 
+# auto: auto - pgversion_binary_win: auto
+#              and 
+#              rversion_bin_win: patched
+#
+# auto: devel - pgversion_src: devel 
+#               and 
+#               rversion_bin_win: patched
+
+# auto: future - pgversion_src: future 
+#                and 
+#                rversion_bin_win: future
+#
 # pgversion . . .
 # 
+# "x" may be typically the current version of PostgreSQL
+#
+# "y" may be the next version of PostgreSQL.  
+#  Typically the Github tag may be like "y_BETA#". The has "#" is a number.
+#
 # pgversion_src: source version of PostgreSQL from Github - https://github.com/postgres/postgres
 # # acquire the ...
 # "none"    - do not acquire
-# "auto"    - latest tag (latest "x" and not with "_BETA*")
+# "auto"    - latest tag (latest "x" and not end with "_BETA*")
 # "x"       - specific tag e.g. "REL_a_b" - can be "y_BETA1" "y_BETA2" etc
 # "patched" - specific branch
-# "devel"   - latest tag(often is "y_BETA*")
+# "devel"   - latest tag (next "x" (next "y" and ends with "_BETA#")
 # "future"  - master branch
 # 
 # pgversion_bin_win: binary version of PostgreSQL - https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
-#                                                     columns Windows x86-64 and Windows x86-32
+#                                                   columns "Windows x86-64" and "Windows x86-32"
 # 
 # # acquire the ...
 # "none"    - do not acquire 
