@@ -790,7 +790,7 @@ jobs:
       #
       - name: Cache R-x.y.z Windows Installer Exe
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' }}
-        id: cache-R.windows.installer.exe
+        id: cacheRWindowsInstallerExe
         uses: actions/cache@v3.3.1
         with:
           path: R-${{ matrix.rversion }}-win.exe
@@ -799,7 +799,7 @@ jobs:
           SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
 
       - name: Download R for Windows R-x.y.z R-rmajor.rminor.rpatch
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' && steps.cacheRWindowsInstallerExe.outputs.cache-hit != 'true' }}
         uses: suisei-cn/actions-download-file@v1.3.0
         id: downloadfileRforWindows 
         name: Download R for Windows
@@ -817,7 +817,7 @@ jobs:
         uses: msys2/setup-msys2@v2
         with:
           msystem: ${{ matrix.compiler }}
-          update: true
+          # DO NOT DO "update: true"
           install: postgresql
       #
       # TODO
