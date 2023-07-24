@@ -779,6 +779,9 @@ jobs:
             mingw-w64-${{ env.mingw_env }}-tools-git
             mingw-w64-${{ env.mingw_env }}-binutils
             mingw-w64-${{ env.mingw_env }}-diffutils
+            mingw-w64-${{ env.mingw_env }}-libxml2
+            mingw-w64-${{ env.mingw_env }}-libxslt
+            mingw-w64-${{ env.mingw_env }}-lz4
 
       # Needs "tar" and "zstd"
       #
