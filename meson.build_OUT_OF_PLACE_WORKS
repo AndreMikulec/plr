@@ -8,9 +8,9 @@ if R_home == ''
   error('One must supply: -DR_HOME=newvalue')
 endif
 
-pg_home = get_option('pg_home')
+pg_home = get_option('PG_HOME')
 if pg_home == ''
-  error('One must supply: -Dpg_home=newvalue')
+  error('One must supply: -DPG_HOME=newvalue')
 endif
 
 plr_sources = files(
