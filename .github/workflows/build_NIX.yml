@@ -492,18 +492,26 @@ jobs:
           ${env:rpatch} = $matches[1]
           Set-EnvVar "rpatch=${env:rpatch}"
 
-          ${env:rversionlong} = ([int]"${env:rmajor}" * 10000) + ([int]"${env:rminor}" * 100) + ([int]"${env:rpatch}")
-          Set-EnvVar "rversionlong=${env:rversionlong}"
+          ${env:rversionnumeric} = ([int]"${env:rmajor}" * 10000) + ([int]"${env:rminor}" * 100) + ([int]"${env:rpatch}")
+          Set-EnvVar "rversionnumeric=${env:rversionnumeric}"
 
+      # Notice
+      # Path R-2.11.1-x64
+      # Download Name -R-2.11.1-win64.exe
+      # https://cran-archive.r-project.org/bin/windows/base/old/2.11.1/R-2.11.1-win64.exe
+      # Path R-2.11.1
+      # Download Name - R-2.11.1-win32.exe
+      # https://cran-archive.r-project.org/bin/windows/base/old/2.11.1/R-2.11.1-win32.exe
+      #
       - name: Windows R Version and Platform Check
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' && env.rversionlong < 21100 && env.Platform == 'x64' }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' && env.rversionnumeric < 21100 && env.Platform == 'x64' }}
         uses: actions/github-script@v6
         with:
           script: |
             core.setFailed('R for Windows versions earler than 2.11.0 are only x86 and never x64.')
 
       - name: Windows R Version and Platform Check - Older than Oldest
-        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' && env.rversionlong < 10602  }}
+        if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' && env.rversionnumeric < 10602  }}
         uses: actions/github-script@v6
         with:
           script: |
@@ -511,14 +519,14 @@ jobs:
 
       # https://stackoverflow.com/questions/57903836/how-to-fail-a-job-in-github-actions
       - name: Windows R Version and MSVC Version Check
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'msvc' &&  matrix.rversion != '' && env.rversionlong >= 40300 }}
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'msvc' &&  matrix.rversion != '' && env.rversionnumeric >= 40300 }}
         uses: actions/github-script@v6
         with:
           script: |
             core.setFailed('Microsoft Visual C++ (msvc) can not compile plr of R version 4.3.0 and later.')
 
       - name: Windows R Version and MSVC Version Check and Platform Check
-        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'msvc' &&  matrix.rversion != '' && matrix.Platform == 'x86' && env.rversionlong >= 40103 }}
+        if: ${{ matrix.os == 'windows-latest' && env.compiler_style == 'msvc' &&  matrix.rversion != '' && matrix.Platform == 'x86' && env.rversionnumeric >= 40103 }}
         uses: actions/github-script@v6
         with:
           script: |
@@ -542,22 +550,22 @@ jobs:
           # https://cran-archive.r-project.org/bin/windows/base/old/2.12.0/
           # https://cran-archive.r-project.org/bin/windows/base/old/2.11.1/
           #
-          if([int]"${{ env.rversionlong }}" -ge 21200 ) {
+          if([int]"${{ env.rversionnumeric }}" -ge 21200 ) {
             ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/R-${{ matrix.rversion }}-win.exe"
             ${env:rinstexe} = "${env:GITHUB_WORKSPACE}\R-${{ matrix.rversion }}-win.exe"
           }
           # Old R
-          if([int]"${{ env.rversionlong }}" -ge 21100 -and [int]"${{ env.rversionlong }}" -lt 21200 ) {
+          if([int]"${{ env.rversionnumeric }}" -ge 21100 -and [int]"${{ env.rversionnumeric }}" -lt 21200 ) {
             ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/R-${{ matrix.rversion }}-win${{ env.bit }}.exe"
             ${env:rinstexe} = "${env:GITHUB_WORKSPACE}\R-${{ matrix.rversion }}-win${{ env.bit }}.exe"
           }
           # Older R - Only R for Windows of x86 - "bit" is only "32"
-          if( [int]"${{ env.rversionlong }}" -ge 20200 -and [int]"${{ env.rversionlong }}" -lt 21100 ) {
+          if( [int]"${{ env.rversionnumeric }}" -ge 20200 -and [int]"${{ env.rversionnumeric }}" -lt 21100 ) {
             ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/R-${{ matrix.rversion }}-win${{ env.bit }}.exe"
             ${env:rinstexe} = "${env:GITHUB_WORKSPACE}\R-${{ matrix.rversion }}-win${{ env.bit }}.exe"
           }
           # Oldest R - Only R for Windows of x86
-          if( [int]"${{ env.rversionlong }}" -ge 10602 -and [int]"${{ env.rversionlong }}" -lt 20200 ) {
+          if( [int]"${{ env.rversionnumeric }}" -ge 10602 -and [int]"${{ env.rversionnumeric }}" -lt 20200 ) {
             ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/" + "rw" + "${env:rmajor}" +"${env:rminor}".PadLeft(2,"0") + "${env:rpatch}"  + ".exe"
             ${env:rinstexe} = "${env:GITHUB_WORKSPACE}\" + "rw" + "${env:rmajor}" +"${env:rminor}".PadLeft(2,"0") + "${env:rpatch}"  + ".exe"
           }
@@ -596,7 +604,7 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' && ( env.compiler_style == 'mingw' || env.compiler_style == 'msvc' ) && matrix.rversion != '' }}
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
-          if([int]"${{ env.rversionlong }}" -ge 21200) {
+          if([int]"${{ env.rversionnumeric }}" -ge 21200) {
             if ("${{ env.Platform }}" -eq "x64") { ${env:R_ARCH} =  "/x64" }
             # includes "msys" case
             if ("${{ env.Platform }}" -eq "x86") { ${env:R_ARCH} =  "/i386" }
