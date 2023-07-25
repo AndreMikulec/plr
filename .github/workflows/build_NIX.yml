@@ -550,23 +550,36 @@ jobs:
           # https://cran-archive.r-project.org/bin/windows/base/old/2.12.0/
           # https://cran-archive.r-project.org/bin/windows/base/old/2.11.1/
           #
-          if([int]"${{ env.rversionnumeric }}" -ge 21200 ) {
+          #
+          # 
+          # 
+          # R 3.6.0 (April, 2019)
+          # https://cran.r-project.org/bin/windows/base/old/
+          #
+          # In the CRAN archives (https://cran-archive.r-project.org/bin/windows/base/old/):
+          # R 3.5.3 (March, 2019)
+          # 
+          if([int]"${{ env.rversionnumeric }}" -ge 30600 ) {
             ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/R-${{ matrix.rversion }}-win.exe"
+            ${env:rinstexe} = "${env:GITHUB_WORKSPACE}\R-${{ matrix.rversion }}-win.exe"
+          }
+          if([int]"${{ env.rversionnumeric }}" -ge 21200 -and [int]"${{ env.rversionnumeric }}" -lt 30600) {
+            ${env:rversionurl} = "https://cran-archive.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/R-${{ matrix.rversion }}-win.exe"
             ${env:rinstexe} = "${env:GITHUB_WORKSPACE}\R-${{ matrix.rversion }}-win.exe"
           }
           # Old R
           if([int]"${{ env.rversionnumeric }}" -ge 21100 -and [int]"${{ env.rversionnumeric }}" -lt 21200 ) {
-            ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/R-${{ matrix.rversion }}-win${{ env.bit }}.exe"
+            ${env:rversionurl} = "https://cran-archive.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/R-${{ matrix.rversion }}-win${{ env.bit }}.exe"
             ${env:rinstexe} = "${env:GITHUB_WORKSPACE}\R-${{ matrix.rversion }}-win${{ env.bit }}.exe"
           }
           # Older R - Only R for Windows of x86 - "bit" is only "32"
           if( [int]"${{ env.rversionnumeric }}" -ge 20200 -and [int]"${{ env.rversionnumeric }}" -lt 21100 ) {
-            ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/R-${{ matrix.rversion }}-win${{ env.bit }}.exe"
+            ${env:rversionurl} = "https://cran-archive.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/R-${{ matrix.rversion }}-win${{ env.bit }}.exe"
             ${env:rinstexe} = "${env:GITHUB_WORKSPACE}\R-${{ matrix.rversion }}-win${{ env.bit }}.exe"
           }
           # Oldest R - Only R for Windows of x86
           if( [int]"${{ env.rversionnumeric }}" -ge 10602 -and [int]"${{ env.rversionnumeric }}" -lt 20200 ) {
-            ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/" + "rw" + "${env:rmajor}" +"${env:rminor}".PadLeft(2,"0") + "${env:rpatch}"  + ".exe"
+            ${env:rversionurl} = "https://cran-archive.r-project.org/bin/windows/base/old/${{ matrix.rversion }}/" + "rw" + "${env:rmajor}" +"${env:rminor}".PadLeft(2,"0") + "${env:rpatch}"  + ".exe"
             ${env:rinstexe} = "${env:GITHUB_WORKSPACE}\" + "rw" + "${env:rmajor}" +"${env:rminor}".PadLeft(2,"0") + "${env:rpatch}"  + ".exe"
           }
 
