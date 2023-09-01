@@ -6,6 +6,7 @@ skip_commits:
     # have the extension .md
     - '**/*.md'
 
+
 image: Visual Studio 2015
 clone_depth: 1
 
