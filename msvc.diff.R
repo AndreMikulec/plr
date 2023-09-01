@@ -1,17 +1,11 @@
 
-# see the file(s) msvc.13.diff (and msvc.diff)
+# derived from msvc.diff (PostgreSQL Release 13.2)
 
 ###############################################################################################
-# This R script dynamically creates(replaces) the msvc.diff file on-the-fly (at compile time) #
+# This R script dynamically edits Mkvcbuild.pm and vcregress.pl
 ###############################################################################################
 
-# derived from msvc.13.diff (PostgreSQL Release 13.2)
-# commit
-# https://github.com/AndreMikulec/plr/blob/340005ce48ff8ca98f05eb8788fed8fd5bc459ba/appveyor.yml
-# Appevor run result
-# https://ci.appveyor.com/project/AndreMikulec/plr/builds/38431791/job/ah2pwypilr2rf40l?fullLog=true
-
-# Required get the environment variable - postgresrcroot
+# Required: get the environment variable - postgresrcroot
 #
 # e.g. set postgresrcroot=C:\projects\postgresql
 #
@@ -76,14 +70,14 @@ addProjectCode  <- function(lines) {
 
   # if pgcrypto code exists, then use it to do positioning
   if(any(grepl("GenerateContribSqlFiles\\s*\\(\\s*'pgcrypto'", x = lines , perl = TRUE))) {
-  
+
     LineLastPgCryptoPos <- which(grepl("GenerateContribSqlFiles\\s*\\(\\s*'pgcrypto'", x = lines , perl = TRUE))
     # after BeginPos, first-found line
     LineOnlyPos <- LineLastPgCryptoPos[head(which(LineOnlyBeginPos < LineLastPgCryptoPos),1)]
-    
+
   # insert into the file after(below) the positition
   lines <- append(lines, strsplit(plrProjectText, split = "\n")[[1L]], after =  LineOnlyPos + 1L)
-    
+
   # otherwise, use something else to do positioning
   #
   # pgcrypto: Remove non-OpenSSL support
@@ -94,14 +88,14 @@ addProjectCode  <- function(lines) {
   # https://github.com/postgres-plr/plr/issues/127
   #
   } else {
-  
+
     FirstLineIterSrcTestModules <- which(grepl("foreach\\s+my\\s+\\$subdir\\s*\\(\\s*'contrib'\\s*,\\s*'src/test/modules", x = lines , perl = TRUE))
     # before BeginPos, first-found line
     LineOnlyPos <- FirstLineIterSrcTestModules[head(which(LineOnlyBeginPos < FirstLineIterSrcTestModules),1)]
-  
+
   # insert into the file before(above) the position
   lines <- append(lines, strsplit(plrProjectText, split = "\n")[[1L]], after =  LineOnlyPos - 1L)
-  
+
   }
 
   writeLines("")
