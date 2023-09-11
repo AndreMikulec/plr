@@ -132,6 +132,12 @@ Note, R 4.2.0 and greater is not "single architecture."
 It is still "subarchitecture" with only 64bit.
 32bit has been removed.
 
+### Compiling from source and CRAN R for Windows 4.3.0 and later
+
+PL/R that uses R for Windows 4.3.0 and later can no longer by compiled using Microsoft Visual Studio.
+
+
+Instead compile with MSYS2(UCRT64 or MINGW32).
 
 
 ### Installing from a Pre-Built "plr"
@@ -162,13 +168,10 @@ https://cran.r-project.org/doc/manuals/r-release/NEWS.html
 Acquire UCRT through `Windows Update` or at the following URL query result:
 https://www.google.com/search?q=download+UCRT
 
-In a Windows environment, with a PL/R compiled
-using Microsoft Visual Studio [https://github.com/postgres-plr/plr/releases/latest](https://github.com/postgres-plr/plr/releases/latest),
-with a PostgreSQL compiled
+In a Windows environment, with a PL/R compiled using MSYS2(UCRT64 or MINGW32) or Microsoft Visual Studio 
+[https://github.com/postgres-plr/plr/releases/latest](https://github.com/postgres-plr/plr/releases/latest), with a PostgreSQL compiled
 with Microsoft Visual Studio [https://www.enterprisedb.com/downloads/postgres-postgresql-downloads](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads),
-and an R acquired
-from [https://cran.r-project.org/bin/windows/base/](https://cran.r-project.org/bin/windows/base/)
-do the following.
+and an R acquired from CRAN [https://cran.r-project.org/bin/windows/base/](https://cran.r-project.org/bin/windows/base/) do the following.
 
 
 
