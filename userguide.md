@@ -1451,7 +1451,7 @@ FROM test_data ORDER BY fyear, eps;
 For optimization reasons, constant expressions are not expanded.
 
 The corresponding `farg2`  in the `Winsorize` example above is passes with NULL value.
-Compatibility reasons exist, so that other arguments are not shifted, in functions users 
+Compatibility reasons exist, so that other arguments are not shifted, in functions users
 created with previous versions of PL/R.
 
 
@@ -1730,7 +1730,7 @@ CREATE OR REPLACE PROCEDURE transaction_test1() AS '
   for(i in 0:9)
   {
     pg.spi.exec(paste(''INSERT INTO test1 (a) VALUES ('', i, '');''))
-    if (i %% 2 == 0) 
+    if (i %% 2 == 0)
     {
       pg.spi.commit()
     } else {
@@ -1743,13 +1743,13 @@ CALL transaction_test1();
 
 SELECT * FROM test1;
 
- a | b 
+ a | b
 ---+---
- 0 | 
- 2 | 
- 4 | 
- 6 | 
- 8 | 
+ 0 |
+ 2 |
+ 4 |
+ 6 |
+ 8 |
 (5 rows)
 ```
 
@@ -1761,26 +1761,26 @@ PL/R version 8.4.2 (or later) is required.
 
 ```postgresql
 CREATE OR REPLACE FUNCTION fast_win_frame(r int, t record) RETURNS bool AS '
-identical(parent.frame(), .GlobalEnv) && 
+identical(parent.frame(), .GlobalEnv) &&
   pg.throwerror(''Parent env is global'')
-exists(''plr_window_frame'', parent.frame(), inherits=FALSE) || 
+exists(''plr_window_frame'', parent.frame(), inherits=FALSE) ||
   pg.throwerror(''No window frame data found'')
 r == farg2[[prownum, 2]][3]
 ' LANGUAGE plr WINDOW;
 
 SELECT s.r, s.p, fast_win_frame(NULLIF(r,4), (s.r, s.q)) OVER w
-FROM (SELECT r, r % 2 AS p, array_fill(CASE WHEN r=7 THEN 77 ELSE r END, ARRAY[3]) AS q 
+FROM (SELECT r, r % 2 AS p, array_fill(CASE WHEN r=7 THEN 77 ELSE r END, ARRAY[3]) AS q
       FROM generate_series(1,10) r) s
-WINDOW w AS (PARTITION BY p ORDER BY r ROWS BETWEEN UNBOUNDED PRECEDING AND 
+WINDOW w AS (PARTITION BY p ORDER BY r ROWS BETWEEN UNBOUNDED PRECEDING AND
                                                     UNBOUNDED FOLLOWING)
 ORDER BY s.r;
 
- r  | p | fast_win_frame 
+ r  | p | fast_win_frame
 ----+---+----------------
   1 | 1 | t
   2 | 0 | t
   3 | 1 | t
-  4 | 0 | 
+  4 | 0 |
   5 | 1 | t
   6 | 0 | t
   7 | 1 | f
