@@ -146,13 +146,11 @@ Status: CLOSED WONTFIX
 
 Instead, for PL/R that uses R for Windows 4.3.0 and later, compile PL/R with MSYS2(UCRT64 or MINGW32).
 
-
 ### Compiling from source using the meson build system
 
 Needed is the PostgreSQL version 16 or later source code, libR installed, PATH set, and R_HOME set. One passes -DR_HOME=value to the `meson setup` command.
 
-Alternately, needed are the PostgreSQL pre-compiled binaries. PostgreSQL can be a version lower than 16. Also needed are the libR installed, libpq installed, libpostgres configured and installed, PATH set, and R_HOME set. 
-
+Alternately, needed are the PostgreSQL pre-compiled binaries. PostgreSQL can be a version lower than 16. Also needed are the libR installed, libpq installed, libpostgres configured and installed, PATH set, and R_HOME set.  One passes -DR_HOME=value and -DPG_HOME=value2 to the `meson setup` command.
 
 ### Installing from a Pre-Built "plr"
 
@@ -182,7 +180,7 @@ https://cran.r-project.org/doc/manuals/r-release/NEWS.html
 Acquire UCRT through `Windows Update` or at the following URL query result:
 https://www.google.com/search?q=download+UCRT
 
-In a Windows environment, with a PL/R compiled using MSYS2(UCRT64 or MINGW32) or Microsoft Visual Studio 
+In a Windows environment, with a PL/R compiled using MSYS2(UCRT64 or MINGW32) or Microsoft Visual Studio
 [https://github.com/postgres-plr/plr/releases/latest](https://github.com/postgres-plr/plr/releases/latest), with a PostgreSQL compiled
 with Microsoft Visual Studio [https://www.enterprisedb.com/downloads/postgres-postgresql-downloads](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads),
 and an R acquired from CRAN [https://cran.r-project.org/bin/windows/base/](https://cran.r-project.org/bin/windows/base/) do the following.
