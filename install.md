@@ -132,13 +132,19 @@ Note, R 4.2.0 and greater is not "single architecture."
 It is still "subarchitecture" with only 64bit.
 32bit has been removed.
 
-### Compiling from source and CRAN R for Windows 4.3.0 and later
+### Compiling from source and using R for Windows 4.3.0 and later
 
 PL/R that uses R for Windows 4.3.0 and later can no longer by compiled using Microsoft Visual Studio.
+One may read the following.
 
+Status: CLOSED WONTFIX
+[Bug 18544 - private_data_c Visual Studio 2022 R-4.3.0 Complex.h(81,21): syntax error: missing ';' before identifier 'private_data_c'](https://bugs.r-project.org/show_bug.cgi?id=18544)
 
-Instead compile with MSYS2(UCRT64 or MINGW32).
+[The new definition does not work with MSVC compilers because they don't support the C99 _Complex type](https://learn.microsoft.com/en-us/cpp/c-runtime-library/complex-math-support?view=msvc-170)
 
+[C Complex Numbers in C++?](https://stackoverflow.com/questions/10540228/c-complex-numbers-in-c)
+
+Instead, for PL/R that uses R for Windows 4.3.0 and later, compile PL/R with MSYS2(UCRT64 or MINGW32).
 
 ### Installing from a Pre-Built "plr"
 
