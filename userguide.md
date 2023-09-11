@@ -198,7 +198,25 @@ Note, R 4.2.0 and greater is not "single architecture."
 It is still "subarchitecture" with only 64bit.
 32bit has been removed.
 
+### Compiling from source and using R for Windows 4.3.0 and later
 
+PL/R that uses R for Windows 4.3.0 and later can no longer be compiled using Microsoft Visual Studio.
+One may read the following.
+
+Status: CLOSED WONTFIX
+[Bug 18544 - private_data_c Visual Studio 2022 R-4.3.0 Complex.h(81,21): syntax error: missing ';' before identifier 'private_data_c'](https://bugs.r-project.org/show_bug.cgi?id=18544)
+
+[The new definition does not work with MSVC compilers because they don't support the C99 _Complex type](https://learn.microsoft.com/en-us/cpp/c-runtime-library/complex-math-support?view=msvc-170)
+
+[C Complex Numbers in C++?](https://stackoverflow.com/questions/10540228/c-complex-numbers-in-c)
+
+Instead, for PL/R that uses R for Windows 4.3.0 and later, compile PL/R with MSYS2(UCRT64 or MINGW32).
+
+### Compiling from source using the meson build system
+
+Needed is the PostgreSQL version 16 or later source code, libR installed, PATH set, and R_HOME set. One passes -DR_HOME=value to the `meson setup` command.
+
+Alternately, needed are the PostgreSQL pre-compiled binaries. PostgreSQL can be a version lower than 16. Also needed are the libR installed, libpq installed, libpostgres configured and installed, PATH set, and R_HOME set.  One passes -DR_HOME=value and -DPG_HOME=value2 to the `meson setup` command.
 
 ### Installing from a Pre-Built "plr"
 
@@ -228,13 +246,10 @@ https://cran.r-project.org/doc/manuals/r-release/NEWS.html
 Acquire UCRT through `Windows Update` or at the following URL query result:
 https://www.google.com/search?q=download+UCRT
 
-In a Windows environment, with a PL/R compiled
-using Microsoft Visual Studio [https://github.com/postgres-plr/plr/releases/latest](https://github.com/postgres-plr/plr/releases/latest),
-with a PostgreSQL compiled
+In a Windows environment, with a PL/R compiled using MSYS2(UCRT64 or MINGW32) or Microsoft Visual Studio
+[https://github.com/postgres-plr/plr/releases/latest](https://github.com/postgres-plr/plr/releases/latest), with a PostgreSQL compiled
 with Microsoft Visual Studio [https://www.enterprisedb.com/downloads/postgres-postgresql-downloads](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads),
-and an R acquired
-from [https://cran.r-project.org/bin/windows/base/](https://cran.r-project.org/bin/windows/base/)
-do the following.
+and an R acquired from CRAN [https://cran.r-project.org/bin/windows/base/](https://cran.r-project.org/bin/windows/base/) do the following.
 
 
 

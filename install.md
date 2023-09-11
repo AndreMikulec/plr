@@ -134,7 +134,7 @@ It is still "subarchitecture" with only 64bit.
 
 ### Compiling from source and using R for Windows 4.3.0 and later
 
-PL/R that uses R for Windows 4.3.0 and later can no longer by compiled using Microsoft Visual Studio.
+PL/R that uses R for Windows 4.3.0 and later can no longer be compiled using Microsoft Visual Studio.
 One may read the following.
 
 Status: CLOSED WONTFIX
