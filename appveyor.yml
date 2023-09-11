@@ -79,19 +79,19 @@ init:
 # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
 - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
 - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
-  - if     "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" echo APPVEYOR_BUILD_WORKER_IMAGE is 2015
-  - ps: |
-      ${env:msvcversion} = "2015"
-      ${env:msvcproductid} = "unknown"
-      if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
-        ${env:msvcversion}   = $(& "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion)
-        ${env:msvcproductid} = $(& "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId)
-      }
-      if([int]"${env:msvcversion}" -ge 2019) {
-        ${env:msvc_age} = "2019_or_younger"
-      } else {
-        ${env:msvc_age} = "2017_or_older"
-      }
+- if     "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" echo APPVEYOR_BUILD_WORKER_IMAGE is 2015
+- ps: |
+    ${env:msvcversion} = "2015"
+    ${env:msvcproductid} = "unknown"
+    if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
+      ${env:msvcversion}   = $(& "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion)
+      ${env:msvcproductid} = $(& "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId)
+    }
+    if([int]"${env:msvcversion}" -ge 2019) {
+      ${env:msvc_age} = "2019_or_younger"
+    } else {
+      ${env:msvc_age} = "2017_or_older"
+    }
 
 # Make %x64% available for caching
 - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
