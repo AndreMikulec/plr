@@ -74,7 +74,7 @@ You may explicitly include the path of pg_config to `PATH`, such as
 ```bash
 cd plr
 PATH=/usr/pgsql-16/bin/:$PATH; USE_PGXS=1 make
-echo "PATH=/usr/pgsql-15/bin/:$PATH; USE_PGXS=1 make install" | sudo sh
+echo "PATH=/usr/pgsql-16/bin/:$PATH; USE_PGXS=1 make install" | sudo sh
 ```
 If you want to use git to pull the repository, run the following command before the make command:
 
@@ -95,7 +95,7 @@ USE_PGXS=1 make install
 In MSYS:
 ```
 export R_HOME=/c/progra~1/R/R-4.3.1
-export PATH=$PATH:/c/progra~1/PostgreSQL/15/bin
+export PATH=$PATH:/c/progra~1/PostgreSQL/16/bin
 USE_PGXS=1 make
 USE_PGXS=1 make install
 ```
