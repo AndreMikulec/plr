@@ -48,7 +48,6 @@ jobs:
       PG: ${{ matrix.pg }}
     strategy:
       matrix:
-        pg: [15, 14, 13, 12, 11, 10]
         include:
           - pg: 15
           - pg: 14
