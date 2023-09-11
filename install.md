@@ -146,6 +146,14 @@ Status: CLOSED WONTFIX
 
 Instead, for PL/R that uses R for Windows 4.3.0 and later, compile PL/R with MSYS2(UCRT64 or MINGW32).
 
+
+### Compiling from source using the meson build system
+
+Needed is the PostgreSQL version 16 or later source code, libR installed, PATH set, and R_HOME set. One passes -DR_HOME=value to the `meson setup` command.
+
+Alternately, needed are the PostgreSQL pre-compiled binaries. PostgreSQL can be a version lower than 16. Also needed are the libR installed, libpq installed, libpostgres configured and installed, PATH set, and R_HOME set. 
+
+
 ### Installing from a Pre-Built "plr"
 
 Win32 - adjust paths according to your own setup, and be sure to restart the PostgreSQL service after
