@@ -1374,19 +1374,21 @@ artifacts:
 
 deploy:
 
-  #
-  - provider: GitHub
-    release: 0.0.0.0.0.GITHUBCACHE
-    draft: false
-    prerelease: false
-    artifact: pg_7z
-    auth_token:
-      secure: DpxrjrmF0pQsm3G/F8m7EDVz6yhBQhlwXWOtqxgQTmUMiofL1PZD+9Q1dAqyKh9Z
-    # non - "branch, tag, or commit" will still be expected "false" ( githubcache != true )
-    # and never find a pg-*.7z to deploy - and that is OK.
+#   # If the "release" does not pre-exist and thus "secure" will try to create the release
+#   # and if "secure" does not have permission to create a release, then an ERROR will occur,
+#   # then Appveyor will ERROR.
+#   - provider: GitHub
+#     release: 0.0.0.0.0.GITHUBCACHE
+#     draft: false
+#     prerelease: false
+#     artifact: pg_7z
+#     auth_token:
+#       secure: DpxrjrmF0pQsm3G/F8m7EDVz6yhBQhlwXWOtqxgQTmUMiofL1PZD+9Q1dAqyKh9Z
+#     # non - "branch, tag, or commit" will still be expected "false" ( githubcache != true )
+#     # and never find a pg-*.7z to deploy - and that is OK.
 
   #
-  # second, last of Github deployments, to try to appear as "latest"
+  # last of Github deployments, to try to appear as "latest"
   #
   - provider: GitHub
     release: $(APPVEYOR_REPO_TAG_NAME)
