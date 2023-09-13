@@ -56,6 +56,7 @@ jobs:
             compilerExe: gcc
             Platform: x64
             Configuration: Debug
+            #
             rversion:  devel
             R_HOME: 'D:\RINSTALL'
             R_ARCH: /x64
@@ -78,6 +79,7 @@ jobs:
             compilerExe: gcc
             Platform: x64
             Configuration: Debug
+            #
             rversion:  devel
             R_HOME: 'D:\RINSTALL'
             R_ARCH: /x64
@@ -102,6 +104,7 @@ jobs:
             compilerExe: gcc
             Platform: x64
             Configuration: Release
+            #
             rversion: 4.3.1
             R_HOME: 'D:\RINSTALL'
             R_ARCH: /x64
@@ -173,49 +176,56 @@ jobs:
             #
             MSYS2testonpgWIN: true
 
-          - os: windows-latest
-            GithubActionsIgnoreFail: false
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Release
-            #
-            rversion: 4.3.1
-            R_HOME: 'D:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: REL_12_16
-            PG_SOURCE: 'D:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: make
-            PG_HOME: 'D:\PGINSTALL'
-            #
-            pgWINversion: 12.16-1
-            #
-            MSYS2testonpgWIN: true
+          # PG 12 x64 and PG 11 x64
+          # R 4.3.1 PGsrc REL_12_16 PGbin 12.16-1 UCRT64 x64 windows-latest Release
+          # https://github.com/AndreMikulec/plr/actions/runs/6166564347/job/16737092810#step:33:773
+          # #
+          # FUTURE - investigate and solve
+          # config_info.c:128:54: error: incomplete universal character name \uc
 
-          - os: windows-latest
-            GithubActionsIgnoreFail: false
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Release
-            #
-            rversion: 4.3.1
-            R_HOME: 'D:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: REL_11_21
-            PG_SOURCE: 'D:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: make
-            PG_HOME: 'D:\PGINSTALL'
-            #
-            pgWINversion: 11.21-1
-            #
-            MSYS2testonpgWIN: true
+##        - os: windows-latest
+##          GithubActionsIgnoreFail: false
+##          compilerEnv: UCRT64
+##          shellEnv: msys2 {0}
+##          compilerExe: gcc
+##          Platform: x64
+##          Configuration: Release
+##          #
+##          rversion: 4.3.1
+##          R_HOME: 'D:\RINSTALL'
+##          R_ARCH: /x64
+##          #
+##          pgSRCversion: REL_12_16
+##          PG_SOURCE: 'D:\PGSOURCE'
+##          buildpgFromSRC: true
+##          buildpgFromSRCmethod: make
+##          PG_HOME: 'D:\PGINSTALL'
+##          #
+##          pgWINversion: 12.16-1
+##          #
+##          MSYS2testonpgWIN: true
+
+##        - os: windows-latest
+##          GithubActionsIgnoreFail: false
+##          compilerEnv: UCRT64
+##          shellEnv: msys2 {0}
+##          compilerExe: gcc
+##          Platform: x64
+##          Configuration: Release
+##          #
+##          rversion: 4.3.1
+##          R_HOME: 'D:\RINSTALL'
+##          R_ARCH: /x64
+##          #
+##          pgSRCversion: REL_11_21
+##          PG_SOURCE: 'D:\PGSOURCE'
+##          buildpgFromSRC: true
+##          buildpgFromSRCmethod: make
+##          PG_HOME: 'D:\PGINSTALL'
+##          #
+##          pgWINversion: 11.21-1
+##          #
+##          MSYS2testonpgWIN: true
 
           - os: windows-latest
             GithubActionsIgnoreFail: false
