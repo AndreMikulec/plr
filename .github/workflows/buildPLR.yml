@@ -1,6 +1,5 @@
 name: Meson Builds PL/R
 run-name: Meson Builds PL/R - ${{ github.event.head_commit.message }}
-
 on: [push, pull_request, workflow_dispatch]
 jobs:
   build_test_install:
