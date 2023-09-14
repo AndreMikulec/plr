@@ -184,6 +184,14 @@ environment:
     rversion: 4.2.3
     compiler: msvc
 
+  - pg: 16.0-1
+    PlatformToolset: v143
+    Configuration: Release
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.2.3
+    compiler: msvc
+
   - pg: 15.4-1
     PlatformToolset: v143
     Configuration: Release

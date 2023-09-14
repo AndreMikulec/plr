@@ -94,7 +94,9 @@ jobs:
             buildpgANDplrInSRCcontrib: true
             PG_HOME: 'D:\PGINSTALL'
             #
-            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL 16 for Windows" exists anywhere.
+            pgWINversion: 16.0-1
+            # 
+            MSYS2testonpgWIN: true
 
           - os: windows-latest
             GithubActionsIgnoreFail: false
