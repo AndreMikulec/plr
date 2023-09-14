@@ -23,7 +23,7 @@ environment:
     rversion: 4.2.3
     compiler: msvc
 
-  - pg: REL_16_RC1 # static commit - from git
+  - pg: REL_16_0 # static commit - from git
     PlatformToolset: v143
     Configuration: Debug
     Platform: x64

@@ -84,7 +84,7 @@ jobs:
             R_HOME: 'D:\RINSTALL'
             R_ARCH: /x64
             #
-            pgSRCversion: REL_16_RC1
+            pgSRCversion: REL_16_0
             PG_SOURCE: 'D:\PGSOURCE'
             #
             # buildpgFromSRC: true
