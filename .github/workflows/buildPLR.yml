@@ -1,5 +1,5 @@
-name: Create PL/R using meson
-run-name: Meson Builds PL/R
+name: Meson Builds PL/R
+run-name: Meson Builds PL/R - ${{ github.event.head_commit.message }}
 
 on: [push, pull_request, workflow_dispatch]
 jobs:
