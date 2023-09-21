@@ -52,6 +52,7 @@ jobs:
     strategy:
       matrix:
         include:
+          - pg: 16
           - pg: 15
           - pg: 14
           - pg: 13
