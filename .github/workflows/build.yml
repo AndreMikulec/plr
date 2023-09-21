@@ -1,7 +1,7 @@
 name: plr CI
 run-name: plr CI - ${{ github.event.head_commit.message }}
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 jobs:
   master:
     runs-on: ubuntu-latest
