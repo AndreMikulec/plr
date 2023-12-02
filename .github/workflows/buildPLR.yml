@@ -1227,11 +1227,13 @@ jobs:
           sudo apt-get install postgresql-$PG
           sudo apt-get install postgresql-server-dev-$PG
           #
-          find / -name '*.pc' -print 2>/dev/null
+          find / -name 'libpq.pc' -print 2>/dev/null || true
+          find / -name '*.pc' -print 2>/dev/null || true
           # Did not help me find libpq.pc.
           sudo apt-get install libpq-dev
           echo AFTER APT-GET INSALL LIBPQ-DEV
-          find / -name '*.pc' -print 2>/dev/null
+          find / -name 'libpq.pc' -print 2>/dev/null || true
+          find / -name '*.pc' -print 2>/dev/null || true
           #
           echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/$PG/main/pg_hba.conf > /dev/null
           # Builds under "runner"
