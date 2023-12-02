@@ -1220,20 +1220,15 @@ jobs:
           sudo apt-get install -qq r-base-dev acl
           # TODO repeat all other elsewhere in NIX
           sudo R --version
+          find / -name 'libR.pc' -print 2>/dev/null || true
+          # GENERAL IDEA
+          find / -name '*.pc' -print 2>/dev/null || true
           #
           sudo /etc/init.d/postgresql stop
           sudo apt-get remove --purge postgresql\*
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           sudo apt-get install postgresql-$PG
           sudo apt-get install postgresql-server-dev-$PG
-          #
-          find / -name 'libpq.pc' -print 2>/dev/null || true
-          find / -name '*.pc' -print 2>/dev/null || true
-          # Did not help me find libpq.pc.
-          sudo apt-get install libpq-dev
-          echo AFTER APT-GET INSALL LIBPQ-DEV
-          find / -name 'libpq.pc' -print 2>/dev/null || true
-          find / -name '*.pc' -print 2>/dev/null || true
           #
           echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/$PG/main/pg_hba.conf > /dev/null
           # Builds under "runner"
@@ -2103,6 +2098,9 @@ jobs:
 
           if [ ! "${ERRORLEVEL}" == "0" ]; then echo ERROR - No pg_config found in the PATH - ${PATH}; exit 1;fi
 
+          echo pg_config
+          pg_config
+
           # had been already on the PATH
           export BINDIR=$(pg_config | grep "^BINDIR" | sed "s/ = /=/" | sed "s/^.*=//")
           export BINDIR=$(cygpath $(cygpath -wl "${BINDIR}"))
@@ -2637,7 +2635,7 @@ jobs:
 
           if [ ! "${ERRORLEVEL}" == "0" ]; then echo ERROR - No pg_config found in the PATH - ${PATH}; exit 1;fi
 
-          echo ALL OF PGCONFIG
+          echo pg_config
           pg_config
 
           # had been already on the PATH
