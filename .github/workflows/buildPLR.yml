@@ -60,7 +60,8 @@ jobs:
           - os: ubuntu-latest
             GithubActionsIgnoreFail: false
             compilerEnv: ubuntu
-            Platform: x64 # currently, only information into "Upload artifacts" and "[Prep] PL/R Artifact for Release"
+            # Of Github Actions images ubuntu-*, the User is not allowed to set the Platform.
+            # Platform: x64
             Configuration: Release
             # Repository has multiple versions available
             pgBINversion: 16
@@ -335,6 +336,12 @@ jobs:
         shell: cmd
         run: |
           systeminfo
+
+      - name: Non-Windows Machine Stats systeminfo
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        shell: cmd
+        run: |
+          sudo cat /proc/cpuinfo
 
       - name: Windows Prepare to Download Files from Github
         if: ${{ matrix.os == 'windows-latest' }}
@@ -1221,7 +1228,11 @@ jobs:
           sudo apt-get install postgresql-$PG
           sudo apt-get install postgresql-server-dev-$PG
           #
+          find / -name '*.pc' -print 2>/dev/null
+          # Did not help me find libpq.pc.
           sudo apt-get install libpq-dev
+          echo AFTER APT-GET INSALL LIBPQ-DEV
+          find / -name '*.pc' -print 2>/dev/null
           #
           echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/$PG/main/pg_hba.conf > /dev/null
           # Builds under "runner"
@@ -2451,13 +2462,37 @@ jobs:
           Configuration: ${{ env.Configuration }}
           #
           R_HOME: ${{ env.R_HOME }}
-          Platform: ${{ env.Platform }} # currently, only information into "Upload artifacts" and "[Prep] PL/R Artifact for Release"
+          Platform: ${{ env.Platform }}
           R_ARCH: ${{ env.R_ARCH }}
           rversion: ${{ env.rversion }}
           PG_HOME: ${{ env.PG_HOME }} # different
         run: |
           echo "Non-Windows non-msvc Meson PL/R Setup Compile and Non-Meson Manual Test"
           set -x -v -e
+
+          if [ ! "${Platform}" == "" ] && [ ! "${Platform}" == "notset" ]
+          then
+            echo "Of Github Actions images ubuntu-*, the User is not allowed to set the Platform." 
+            exit 1;
+          fi
+
+          # unix.stackexchange.com/questions/47020/difference-between-machine-hardware-processor-type-and-hardware-platform
+          export HardwarePlatform=$(uname -i)
+
+          if [ "${HardwarePlatform}" == "i686" ] || [ "${HardwarePlatform}" == "i386" ]
+          then
+            export  Platform="x86"
+            echo   "Platform=${Platform}" >> ${GITHUB_ENV}
+            echo   "Platform: ${Platform}"
+          fi
+
+          if [ "${HardwarePlatform}" == "x86_64" ]
+          then
+            export Platform="x64"
+            echo   "Platform=${Platform}" >> ${GITHUB_ENV}
+            echo   "Platform: ${Platform}"
+          fi
+
           if [ "${OperatingSystem}" == "" ]; then export OperatingSystem=$(uname -o); fi
           echo "OperatingSystem: ${OperatingSystem}"
 
@@ -2600,6 +2635,9 @@ jobs:
           which pg_config || export ERRORLEVEL=$?
 
           if [ ! "${ERRORLEVEL}" == "0" ]; then echo ERROR - No pg_config found in the PATH - ${PATH}; exit 1;fi
+
+          echo ALL OF PGCONFIG
+          pg_config
 
           # had been already on the PATH
           export BINDIR=$(pg_config | grep "^BINDIR" | sed "s/ = /=/" | sed "s/^.*=//")
