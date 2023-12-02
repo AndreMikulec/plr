@@ -1220,6 +1220,9 @@ jobs:
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           sudo apt-get install postgresql-$PG
           sudo apt-get install postgresql-server-dev-$PG
+          #
+          sudo apt-get install libpq-dev-$PG
+          #
           echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/$PG/main/pg_hba.conf > /dev/null
           # Builds under "runner"
           # Github Actions require elevated priviledges
