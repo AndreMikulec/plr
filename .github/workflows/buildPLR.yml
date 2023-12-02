@@ -66,199 +66,199 @@ jobs:
             # Repository has multiple versions available
             pgBINversion: 16
 
-##          # plr for "R 4.3.0 (and later) for Windows" can not be compiled with Microsoft Visual Studio.
-##          # Therefore, here, plr for "R 4.3.0 (and later) for Windows" is compiled with MSYS2(UCRT64/MINGW32).
-##          # It is regression tested twice.
-##          #
-##          #   The first regression test is within PostgreSQL on MSYS2.
-##          #
-##          #   The second regression test is within PostgreSQL that had been compiled with Microsoft Visual Studio
-##          #   from EnterpriseDB (if available: master _RC* and _BETA* versions are often not available).
-##          #
-##          # Here are the reasons why plr for "R 4.3.0 (and later) for Windows"
-##          # can not be compiled with Microsoft Visual Studio.
-##          #
-##          # Bug 18544 - private_data_c Visual Studio 2022 R-4.3.0 Complex.h(81,21): syntax error: missing ';' before identifier 'private_data_c'
-##          # Status: CLOSED WONTFIX
-##          # https://bugs.r-project.org/show_bug.cgi?id=18544
-##          #
-##          # The new definition does not work with MSVC compilers because they don't support the C99 _Complex type
-##          # https://learn.microsoft.com/en-us/cpp/c-runtime-library/complex-math-support?view=msvc-170
-##          #
-##          # C Complex Numbers in C++?
-##          # https://stackoverflow.com/questions/10540228/c-complex-numbers-in-c
-##          #
-##          # bleeding edge R and bleeding edge PostgreSQL
-##          - os: windows-latest
-##            GithubActionsIgnoreFail: true
-##            compilerEnv: UCRT64
-##            shellEnv: msys2 {0}
-##            compilerExe: gcc
-##            Platform: x64
-##            Configuration: Debug
-##            #
-##            rversion:  devel
-##            R_HOME: 'D:\RINSTALL'
-##            R_ARCH: /x64
-##            #
-##            pgSRCversion: master
-##            PG_SOURCE: 'D:\PGSOURCE'
-##            buildpgFromSRC: true
-##            buildpgFromSRCmethod: meson
-##            PG_HOME: 'D:\PGINSTALL'
-##            #
-##            # pgWINversion: master.future-future
-##            #
-##            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL master for Windows" exists anywhere.
-##
-##          # bleeding edge R and next PostgreSQL
-##          - os: windows-latest
-##            GithubActionsIgnoreFail: false
-##            compilerEnv: UCRT64
-##            shellEnv: msys2 {0}
-##            compilerExe: gcc
-##            Platform: x64
-##            Configuration: Debug
-##            #
-##            rversion:  devel
-##            R_HOME: 'D:\RINSTALL'
-##            R_ARCH: /x64
-##            #
-##            # A HUMAN must manually see the VERSION here. (seen November 24 2023 EST)
-##            # Because this is "next PostgreSQL",
-##            # if available are/is 'release candidate' REL_AA_RC#
-##            # and/or 'beta' REL_AA_BETA# version(s)
-##            # then choose that 'latest' version;
-##            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
-##            # Otherwise, just choose the latest REL_XX_Y.
-##            pgSRCversion: REL_16_1
-##            PG_SOURCE: 'D:\PGSOURCE'
-##            #
-##            # buildpgFromSRC: true
-##            # buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
-##            #   Add meson build system (Andres Freund, Nazir Bilal Yavuz, Peter Eisentraut)
-##            #   https://www.postgresql.org/docs/16/release-16.html
-##            # xor
-##            buildpgANDplrInSRCcontrib: true
-##            PG_HOME: 'D:\PGINSTALL'
-##            #
-##            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-##            pgWINversion: 16.1-1
-##            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-##            MSYS2testonpgWIN: true
-##
-##          - os: windows-latest
-##            GithubActionsIgnoreFail: false
-##            compilerEnv: UCRT64
-##            shellEnv: msys2 {0}
-##            compilerExe: gcc
-##            Platform: x64
-##            Configuration: Release
-##            #
-##            rversion: 4.3.2
-##            R_HOME: 'D:\RINSTALL'
-##            R_ARCH: /x64
-##            #
-##            # November 2023 - MSYS2 PostgreSQL version is 16.1
-##            #
-##            # A HUMAN must manually see the VERSION here. (seen November 24 2023 EST)
-##            # See the UCRT repository postgreSQL version
-##            # Build Date: 2023-11-11 17:52:53
-##            # Version: 16.1-1
-##            # https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-postgresql
-##            #
-##            # pgSRCversion: REL_16_1
-##            # PG_SOURCE: 'D:\PGSOURCE'
-##            # buildpgFromSRC: true
-##            # buildpgFromSRCmethod: make
-##            # PG_HOME: 'D:\PGINSTALL'
-##            #
-##            # download from EnterpriseDB - PostgreSQL for Windows
-##            pgWINversion: 16.1-1
-##            #
-##            MSYS2testonpgWIN: true
-##
-##          - os: windows-latest
-##            GithubActionsIgnoreFail: false
-##            compilerEnv: UCRT64
-##            shellEnv: msys2 {0}
-##            compilerExe: gcc
-##            Platform: x64
-##            Configuration: Release
-##            #
-##            rversion: 4.3.2
-##            R_HOME: 'D:\RINSTALL'
-##            R_ARCH: /x64
-##            #
-##            pgSRCversion: REL_15_5
-##            PG_SOURCE: 'D:\PGSOURCE'
-##            buildpgFromSRC: true
-##            buildpgFromSRCmethod: make
-##            PG_HOME: 'D:\PGINSTALL'
-##            #
-##            pgWINversion: 15.5-1
-##            #
-##            MSYS2testonpgWIN: true
-##
-##          - os: windows-latest
-##            GithubActionsIgnoreFail: false
-##            compilerEnv: UCRT64
-##            shellEnv: msys2 {0}
-##            compilerExe: gcc
-##            Platform: x64
-##            Configuration: Release
-##            #
-##            rversion: 4.3.2
-##            R_HOME: 'D:\RINSTALL'
-##            R_ARCH: /x64
-##            #
-##            pgSRCversion: REL_14_10
-##            PG_SOURCE: 'D:\PGSOURCE'
-##            buildpgFromSRC: true
-##            buildpgFromSRCmethod: make
-##            PG_HOME: 'D:\PGINSTALL'
-##            #
-##            # EnterpriseDB PostgreSQL for Windows
-##            # pgWINversion: 14.x-y
-##            #
-##            # A HUMAN must manually see the VERSION here. (seen November 24 2023 EST)
-##            # November 2023 - Pre-installed Github Actions PostgreSQL for Windows version is x64-14
-##            # ServiceName postgresql-x64-14
-##            # Version 14.8
-##            # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
-##            # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-software
-##            #
-##            MSYS2testonpgWIN: true
-##
-##          - os: windows-latest
-##            GithubActionsIgnoreFail: false
-##            compilerEnv: UCRT64
-##            shellEnv: msys2 {0}
-##            compilerExe: gcc
-##            Platform: x64
-##            Configuration: Release
-##            #
-##            rversion: 4.3.2
-##            R_HOME: 'D:\RINSTALL'
-##            R_ARCH: /x64
-##            #
-##            pgSRCversion: REL_13_13
-##            PG_SOURCE: 'D:\PGSOURCE'
-##            buildpgFromSRC: true
-##            buildpgFromSRCmethod: make
-##            PG_HOME: 'D:\PGINSTALL'
-##            #
-##            pgWINversion: 13.13-1
-##            #
-##            MSYS2testonpgWIN: true
-##
-##          # PG 12 x64 and PG 11 x64
-##          # R 4.3.1 PGsrc REL_12_16 PGbin 12.16-1 UCRT64 x64 windows-latest Release
-##          # https://github.com/AndreMikulec/plr/actions/runs/6166564347/job/16737092810#step:33:773
-##          # #
-##          # FUTURE - investigate and solve
-##          # config_info.c:128:54: error: incomplete universal character name \uc
-##
+          # plr for "R 4.3.0 (and later) for Windows" can not be compiled with Microsoft Visual Studio.
+          # Therefore, here, plr for "R 4.3.0 (and later) for Windows" is compiled with MSYS2(UCRT64/MINGW32).
+          # It is regression tested twice.
+          #
+          #   The first regression test is within PostgreSQL on MSYS2.
+          #
+          #   The second regression test is within PostgreSQL that had been compiled with Microsoft Visual Studio
+          #   from EnterpriseDB (if available: master _RC* and _BETA* versions are often not available).
+          #
+          # Here are the reasons why plr for "R 4.3.0 (and later) for Windows"
+          # can not be compiled with Microsoft Visual Studio.
+          #
+          # Bug 18544 - private_data_c Visual Studio 2022 R-4.3.0 Complex.h(81,21): syntax error: missing ';' before identifier 'private_data_c'
+          # Status: CLOSED WONTFIX
+          # https://bugs.r-project.org/show_bug.cgi?id=18544
+          #
+          # The new definition does not work with MSVC compilers because they don't support the C99 _Complex type
+          # https://learn.microsoft.com/en-us/cpp/c-runtime-library/complex-math-support?view=msvc-170
+          #
+          # C Complex Numbers in C++?
+          # https://stackoverflow.com/questions/10540228/c-complex-numbers-in-c
+          #
+          # bleeding edge R and bleeding edge PostgreSQL
+          - os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            #
+            rversion:  devel
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            #
+            pgSRCversion: master
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: meson
+            PG_HOME: 'D:\PGINSTALL'
+            #
+            # pgWINversion: master.future-future
+            #
+            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL master for Windows" exists anywhere.
+
+          # bleeding edge R and next PostgreSQL
+          - os: windows-latest
+            GithubActionsIgnoreFail: false
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            #
+            rversion:  devel
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            #
+            # A HUMAN must manually see the VERSION here. (seen November 24 2023 EST)
+            # Because this is "next PostgreSQL",
+            # if available are/is 'release candidate' REL_AA_RC#
+            # and/or 'beta' REL_AA_BETA# version(s)
+            # then choose that 'latest' version;
+            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
+            # Otherwise, just choose the latest REL_XX_Y.
+            pgSRCversion: REL_16_1
+            PG_SOURCE: 'D:\PGSOURCE'
+            #
+            # buildpgFromSRC: true
+            # buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
+            #   Add meson build system (Andres Freund, Nazir Bilal Yavuz, Peter Eisentraut)
+            #   https://www.postgresql.org/docs/16/release-16.html
+            # xor
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+            #
+            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
+            pgWINversion: 16.1-1
+            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
+            MSYS2testonpgWIN: true
+
+          - os: windows-latest
+            GithubActionsIgnoreFail: false
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Release
+            #
+            rversion: 4.3.2
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            #
+            # November 2023 - MSYS2 PostgreSQL version is 16.1
+            #
+            # A HUMAN must manually see the VERSION here. (seen November 24 2023 EST)
+            # See the UCRT repository postgreSQL version
+            # Build Date: 2023-11-11 17:52:53
+            # Version: 16.1-1
+            # https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-postgresql
+            #
+            # pgSRCversion: REL_16_1
+            # PG_SOURCE: 'D:\PGSOURCE'
+            # buildpgFromSRC: true
+            # buildpgFromSRCmethod: make
+            # PG_HOME: 'D:\PGINSTALL'
+            #
+            # download from EnterpriseDB - PostgreSQL for Windows
+            pgWINversion: 16.1-1
+            #
+            MSYS2testonpgWIN: true
+
+          - os: windows-latest
+            GithubActionsIgnoreFail: false
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Release
+            #
+            rversion: 4.3.2
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            #
+            pgSRCversion: REL_15_5
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: make
+            PG_HOME: 'D:\PGINSTALL'
+            #
+            pgWINversion: 15.5-1
+            #
+            MSYS2testonpgWIN: true
+
+          - os: windows-latest
+            GithubActionsIgnoreFail: false
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Release
+            #
+            rversion: 4.3.2
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            #
+            pgSRCversion: REL_14_10
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: make
+            PG_HOME: 'D:\PGINSTALL'
+            #
+            # EnterpriseDB PostgreSQL for Windows
+            # pgWINversion: 14.x-y
+            #
+            # A HUMAN must manually see the VERSION here. (seen November 24 2023 EST)
+            # November 2023 - Pre-installed Github Actions PostgreSQL for Windows version is x64-14
+            # ServiceName postgresql-x64-14
+            # Version 14.8
+            # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
+            # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-software
+            #
+            MSYS2testonpgWIN: true
+
+          - os: windows-latest
+            GithubActionsIgnoreFail: false
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Release
+            #
+            rversion: 4.3.2
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            #
+            pgSRCversion: REL_13_13
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: make
+            PG_HOME: 'D:\PGINSTALL'
+            #
+            pgWINversion: 13.13-1
+            #
+            MSYS2testonpgWIN: true
+
+          # PG 12 x64 and PG 11 x64
+          # R 4.3.1 PGsrc REL_12_16 PGbin 12.16-1 UCRT64 x64 windows-latest Release
+          # https://github.com/AndreMikulec/plr/actions/runs/6166564347/job/16737092810#step:33:773
+          # #
+          # FUTURE - investigate and solve
+          # config_info.c:128:54: error: incomplete universal character name \uc
+
 ####        - os: windows-latest
 ####          GithubActionsIgnoreFail: false
 ####          compilerEnv: UCRT64
@@ -302,28 +302,28 @@ jobs:
 ####          pgWINversion: 11.22-1
 ####          #
 ####          MSYS2testonpgWIN: true
-##
-##          - os: windows-latest
-##            GithubActionsIgnoreFail: false
-##            compilerEnv: MINGW32
-##            shellEnv: msys2 {0}
-##            compilerExe: gcc
-##            Platform: x86
-##            Configuration: Release
-##            #
-##            rversion: 4.1.3
-##            R_HOME: 'D:\RINSTALL'
-##            R_ARCH: /i386
-##            #
-##            pgSRCversion: REL_10_23
-##            PG_SOURCE: 'D:\PGSOURCE'
-##            buildpgFromSRC: true
-##            buildpgFromSRCmethod: make
-##            PG_HOME: 'D:\PGINSTALL'
-##            #
-##            pgWINversion: 10.23-1
-##            #
-##            MSYS2testonpgWIN: true
+
+          - os: windows-latest
+            GithubActionsIgnoreFail: false
+            compilerEnv: MINGW32
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x86
+            Configuration: Release
+            #
+            rversion: 4.1.3
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /i386
+            #
+            pgSRCversion: REL_10_23
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: make
+            PG_HOME: 'D:\PGINSTALL'
+            #
+            pgWINversion: 10.23-1
+            #
+            MSYS2testonpgWIN: true
 
     defaults:
       run:
@@ -2127,7 +2127,7 @@ jobs:
           # For artifact naming, determine the Compiler Supplied pgversion.
           #
           # export pgversion=$(pg_config | grep "^VERSION" | sed "s/ = /=/" | sed "s/^.*=//" | grep -oP '[ ].*$' | grep -oP '\d.*$')
-          export pgversion=$(pg_config | grep "^VERSION" | sed "s/ = /=/" | sed "s/^.*=//" | grep -oP '[ ].*$' | grep -oP '\d+[.]\d+' | head -n 1')
+          export pgversion=$(pg_config | grep "^VERSION" | sed "s/ = /=/" | sed "s/^.*=//" | grep -oP '[ ].*$' | grep -oP '\d+[.]\d+' | head -n 1)
           # potential override
           echo "pgversion=${pgversion}" >> ${GITHUB_ENV}
           echo "pg_config VERSION pgversion: ${pgversion}"
@@ -2672,7 +2672,7 @@ jobs:
           # For artifact naming, determine the Compiler Supplied pgversion.
           #
           # export pgversion=$(pg_config | grep "^VERSION" | sed "s/ = /=/" | sed "s/^.*=//" | grep -oP '[ ].*$' | grep -oP '\d.*$')
-          export pgversion=$(pg_config | grep "^VERSION" | sed "s/ = /=/" | sed "s/^.*=//" | grep -oP '[ ].*$' | grep -oP '\d+[.]\d+' | head -n 1')
+          export pgversion=$(pg_config | grep "^VERSION" | sed "s/ = /=/" | sed "s/^.*=//" | grep -oP '[ ].*$' | grep -oP '\d+[.]\d+' | head -n 1)
           # potential override
           echo "pgversion=${pgversion}" >> ${GITHUB_ENV}
           echo "pg_config VERSION pgversion: ${pgversion}"
