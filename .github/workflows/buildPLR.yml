@@ -2128,6 +2128,12 @@ jobs:
           #
           # export pgversion=$(pg_config | grep "^VERSION" | sed "s/ = /=/" | sed "s/^.*=//" | grep -oP '[ ].*$' | grep -oP '\d.*$')
           export pgversion=$(pg_config | grep "^VERSION" | sed "s/ = /=/" | sed "s/^.*=//" | grep -oP '[ ].*$' | grep -oP '\d+[.]\d+' | head -n 1)
+          # Try to capture DDdevel.
+          if [ "${pgversion}" == "" ]
+          then
+            export pgversion=$(pg_config | grep "^VERSION" | sed "s/ = /=/" | sed "s/^.*=//" | grep -oP '[ ].*$' | grep -oP '\d.*$')
+          fi
+
           # potential override
           echo "pgversion=${pgversion}" >> ${GITHUB_ENV}
           echo "pg_config VERSION pgversion: ${pgversion}"
@@ -2673,6 +2679,11 @@ jobs:
           #
           # export pgversion=$(pg_config | grep "^VERSION" | sed "s/ = /=/" | sed "s/^.*=//" | grep -oP '[ ].*$' | grep -oP '\d.*$')
           export pgversion=$(pg_config | grep "^VERSION" | sed "s/ = /=/" | sed "s/^.*=//" | grep -oP '[ ].*$' | grep -oP '\d+[.]\d+' | head -n 1)
+          # Try to capture DDdevel.
+          if [ "${pgversion}" == "" ]
+          then
+            export pgversion=$(pg_config | grep "^VERSION" | sed "s/ = /=/" | sed "s/^.*=//" | grep -oP '[ ].*$' | grep -oP '\d.*$')
+          fi
           # potential override
           echo "pgversion=${pgversion}" >> ${GITHUB_ENV}
           echo "pg_config VERSION pgversion: ${pgversion}"
