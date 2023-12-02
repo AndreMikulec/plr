@@ -2698,6 +2698,11 @@ jobs:
 
           echo "pg_config SHAREDIR: ${SHAREDIR}"
 
+          export LIBDIR=$(pg_config | grep "^LIBDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+          export LIBDIR="${LIBDIR}"
+
+          echo "pg_config LIBDIR: ${LIBDIR}"
+
           #### END PG_HOME SECTION ####
 
           #### BEGIN PKGCONFIG SECTION ####
@@ -2733,7 +2738,7 @@ jobs:
           # We do not want to use that old "libpg" when compiling PL/R.
           # Therefore, the PostgreSQL pkgconfig goes in front at the head.
           #
-          export PKG_CONFIG_PATH="${PG_HOME}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+          export PKG_CONFIG_PATH="${LIBDIR}/pkgconfig:${PG_HOME}/lib/pkgconfig:${PKG_CONFIG_PATH}"
           export PKG_CONFIG_SYSTEM_INCLUDE_PATH="${PG_HOME}/include:${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
           export PKG_CONFIG_SYSTEM_LIBRARY_PATH="${PG_HOME}/bin:${PG_HOME}/lib:${PKG_CONFIG_SYSTEM_LIBRARY_PATH}"
 
@@ -2749,7 +2754,8 @@ jobs:
           # From the libpq.pc file, create a libpostgres.pc file.
           if [ ! -f "${PG_HOME}/lib/pkgconfig/libpostgres.pc" ]
           then
-            cat "${PG_HOME}/lib/pkgconfig/libpq.pc" | sed "s/libpq/libpostgres/g" | sed "s/-lpq/-lpostgres/" > "${PG_HOME}/lib/pkgconfig/libpostgres.pc"
+            # cat "${PG_HOME}/lib/pkgconfig/libpq.pc" | sed "s/libpq/libpostgres/g" | sed "s/-lpq/-lpostgres/" > "${PG_HOME}/lib/pkgconfig/libpostgres.pc"
+            cat "${LIBDIR}/pkgconfig/libpq.pc" | sed "s/libpq/libpostgres/g" | sed "s/-lpq/-lpostgres/" > "${PG_HOME}/lib/pkgconfig/libpostgres.pc"
           fi
 
           # This is Part 2 of 2 of a hack to make "meson" think that "libpostgres" is a library
