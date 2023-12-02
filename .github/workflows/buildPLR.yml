@@ -2153,6 +2153,16 @@ jobs:
 
           echo "pg_config LIBDIR: ${LIBDIR}"
 
+          export INCLUDEDIR=$(pg_config | grep "^INCLUDEDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+          export INCLUDEDIR="${INCLUDEDIR}"
+
+          echo "pg_config INCLUDEDIR: ${INCLUDEDIR}"
+
+          export BINDIR=$(pg_config | grep "^BINDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+          export BINDIR="${BINDIR}"
+
+          echo "pg_config BINDIR: ${BINDIR}"
+
           #### END PG_HOME SECTION ####
 
           #### BEGIN PKGCONFIG SECTION ####
@@ -2196,8 +2206,8 @@ jobs:
           #
           # export PKG_CONFIG_PATH="${PG_HOME}/lib/pkgconfig:${PKG_CONFIG_PATH}"
           export PKG_CONFIG_PATH="${LIBDIR}/pkgconfig:${PG_HOME}/lib/pkgconfig:${PKG_CONFIG_PATH}"
-          export PKG_CONFIG_SYSTEM_INCLUDE_PATH="${PG_HOME}/include:${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
-          export PKG_CONFIG_SYSTEM_LIBRARY_PATH="${PG_HOME}/bin:${PG_HOME}/lib:${PKG_CONFIG_SYSTEM_LIBRARY_PATH}"
+          export PKG_CONFIG_SYSTEM_INCLUDE_PATH="${INCLUDEDIR}:${PG_HOME}/include:${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
+          export PKG_CONFIG_SYSTEM_LIBRARY_PATH="${BINDIR}:${LIBDIR}:${PG_HOME}/bin:${PG_HOME}/lib:${PKG_CONFIG_SYSTEM_LIBRARY_PATH}"
 
           echo "PKG_CONFIG_PATH: ${PKG_CONFIG_PATH}"
           echo "PKG_CONFIG_SYSTEM_INCLUDE_PATH: ${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
@@ -2703,6 +2713,16 @@ jobs:
 
           echo "pg_config LIBDIR: ${LIBDIR}"
 
+          export INCLUDEDIR=$(pg_config | grep "^INCLUDEDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+          export INCLUDEDIR="${INCLUDEDIR}"
+
+          echo "pg_config INCLUDEDIR: ${INCLUDEDIR}"
+
+          export BINDIR=$(pg_config | grep "^BINDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+          export BINDIR="${BINDIR}"
+
+          echo "pg_config BINDIR: ${BINDIR}"
+
           #### END PG_HOME SECTION ####
 
           #### BEGIN PKGCONFIG SECTION ####
@@ -2739,8 +2759,8 @@ jobs:
           # Therefore, the PostgreSQL pkgconfig goes in front at the head.
           #
           export PKG_CONFIG_PATH="${LIBDIR}/pkgconfig:${PG_HOME}/lib/pkgconfig:${PKG_CONFIG_PATH}"
-          export PKG_CONFIG_SYSTEM_INCLUDE_PATH="${PG_HOME}/include:${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
-          export PKG_CONFIG_SYSTEM_LIBRARY_PATH="${PG_HOME}/bin:${PG_HOME}/lib:${PKG_CONFIG_SYSTEM_LIBRARY_PATH}"
+          export PKG_CONFIG_SYSTEM_INCLUDE_PATH="${INCLUDEDIR}:${PG_HOME}/include:${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
+          export PKG_CONFIG_SYSTEM_LIBRARY_PATH="${BINDIR}:${LIBDIR}:${PG_HOME}/bin:${PG_HOME}/lib:${PKG_CONFIG_SYSTEM_LIBRARY_PATH}"
 
           echo "PKG_CONFIG_PATH: ${PKG_CONFIG_PATH}"
           echo "PKG_CONFIG_SYSTEM_INCLUDE_PATH: ${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
