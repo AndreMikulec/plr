@@ -2163,6 +2163,11 @@ jobs:
 
           echo "pg_config BINDIR: ${BINDIR}"
 
+          export PKGINCLUDEDIR=$(pg_config | grep "^PKGINCLUDEDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+          export PKGINCLUDEDIR="${PKGINCLUDEDIR}"
+
+          echo "pg_config PKGINCLUDEDIR: ${PKGINCLUDEDIR}"
+
           #### END PG_HOME SECTION ####
 
           #### BEGIN PKGCONFIG SECTION ####
@@ -2206,8 +2211,8 @@ jobs:
           #
           # export PKG_CONFIG_PATH="${PG_HOME}/lib/pkgconfig:${PKG_CONFIG_PATH}"
           export PKG_CONFIG_PATH="${LIBDIR}/pkgconfig:${PG_HOME}/lib/pkgconfig:${PKG_CONFIG_PATH}"
-          export PKG_CONFIG_SYSTEM_INCLUDE_PATH="${INCLUDEDIR}:${PG_HOME}/include:${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
-          export PKG_CONFIG_SYSTEM_LIBRARY_PATH="${BINDIR}:${LIBDIR}:${PG_HOME}/bin:${PG_HOME}/lib:${PKG_CONFIG_SYSTEM_LIBRARY_PATH}"
+          export PKG_CONFIG_SYSTEM_INCLUDE_PATH="${PKGINCLUDEDIR}:${INCLUDEDIR}:${PG_HOME}/include:${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
+          export PKG_CONFIG_SYSTEM_LIBRARY_PATH="${PKGLIBDIR}:${BINDIR}:${LIBDIR}:${PG_HOME}/bin:${PG_HOME}/lib:${PKG_CONFIG_SYSTEM_LIBRARY_PATH}"
 
           echo "PKG_CONFIG_PATH: ${PKG_CONFIG_PATH}"
           echo "PKG_CONFIG_SYSTEM_INCLUDE_PATH: ${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
@@ -2723,6 +2728,11 @@ jobs:
 
           echo "pg_config BINDIR: ${BINDIR}"
 
+          export PKGINCLUDEDIR=$(pg_config | grep "^PKGINCLUDEDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+          export PKGINCLUDEDIR="${PKGINCLUDEDIR}"
+
+          echo "pg_config PKGINCLUDEDIR: ${PKGINCLUDEDIR}"
+
           #### END PG_HOME SECTION ####
 
           #### BEGIN PKGCONFIG SECTION ####
@@ -2759,8 +2769,8 @@ jobs:
           # Therefore, the PostgreSQL pkgconfig goes in front at the head.
           #
           export PKG_CONFIG_PATH="${LIBDIR}/pkgconfig:${PG_HOME}/lib/pkgconfig:${PKG_CONFIG_PATH}"
-          export PKG_CONFIG_SYSTEM_INCLUDE_PATH="${INCLUDEDIR}:${PG_HOME}/include:${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
-          export PKG_CONFIG_SYSTEM_LIBRARY_PATH="${BINDIR}:${LIBDIR}:${PG_HOME}/bin:${PG_HOME}/lib:${PKG_CONFIG_SYSTEM_LIBRARY_PATH}"
+          export PKG_CONFIG_SYSTEM_INCLUDE_PATH="${PKGINCLUDEDIR}:${INCLUDEDIR}:${PG_HOME}/include:${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
+          export PKG_CONFIG_SYSTEM_LIBRARY_PATH="${PKGLIBDIR}:${BINDIR}:${LIBDIR}:${PG_HOME}/bin:${PG_HOME}/lib:${PKG_CONFIG_SYSTEM_LIBRARY_PATH}"
 
           echo "PKG_CONFIG_PATH: ${PKG_CONFIG_PATH}"
           echo "PKG_CONFIG_SYSTEM_INCLUDE_PATH: ${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
@@ -2769,6 +2779,10 @@ jobs:
           #### END PKGCONFIG SECTION ####
 
           #### BEGIN MAKE POSTGRES INTO A LIBRARY ####
+
+          # TESTING TEMP
+          echo cat "LIBDIR/pkgconfig/libpq.pc"
+          cat "${LIBDIR}/pkgconfig/libpq.pc"
 
           # This is Part 1 of 2 of a hack to make "meson" think that "libpostgres" is a library.
           # From the libpq.pc file, create a libpostgres.pc file.
