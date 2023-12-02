@@ -339,7 +339,6 @@ jobs:
 
       - name: Non-Windows Machine Stats systeminfo
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        shell: cmd
         run: |
           sudo cat /proc/cpuinfo
 
