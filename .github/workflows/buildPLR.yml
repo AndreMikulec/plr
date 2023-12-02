@@ -17,10 +17,10 @@ jobs:
       # Repository/Virtual_Machine PostgreSQL binaries are not known automatically.
       # (See far below in the matrix.)
       #
-      # In two matrix items, already-compiled repository found 
-      # PostreSQL already compiled binaries are used. 
+      # In two matrix items, already-compiled repository found
+      # PostreSQL already compiled binaries are used.
       #
-      # The repository PostgreSQL version in HERE 
+      # The repository PostgreSQL version in HERE
       # is not [easily] detectable ahead of the build method.
       # Therefore, a HUMAN, must often check and set the build matrix versions
       # in the Github Actions build matrix, before the Github Action runs.
@@ -57,16 +57,24 @@ jobs:
             Platform: x64
             Configuration: Release
 
+          - os: ubuntu-latest
+            GithubActionsIgnoreFail: false
+            compilerEnv: ubuntu
+            Platform: x64 # currently, only information into "Upload artifacts" and "[Prep] PL/R Artifact for Release"
+            Configuration: Release
+            # Repository has multiple versions available
+            pgBINversion: 16
+
 ##          # plr for "R 4.3.0 (and later) for Windows" can not be compiled with Microsoft Visual Studio.
 ##          # Therefore, here, plr for "R 4.3.0 (and later) for Windows" is compiled with MSYS2(UCRT64/MINGW32).
-##          # It is regression tested twice.  
+##          # It is regression tested twice.
 ##          #
 ##          #   The first regression test is within PostgreSQL on MSYS2.
 ##          #
-##          #   The second regression test is within PostgreSQL that had been compiled with Microsoft Visual Studio 
+##          #   The second regression test is within PostgreSQL that had been compiled with Microsoft Visual Studio
 ##          #   from EnterpriseDB (if available: master _RC* and _BETA* versions are often not available).
 ##          #
-##          # Here are the reasons why plr for "R 4.3.0 (and later) for Windows" 
+##          # Here are the reasons why plr for "R 4.3.0 (and later) for Windows"
 ##          # can not be compiled with Microsoft Visual Studio.
 ##          #
 ##          # Bug 18544 - private_data_c Visual Studio 2022 R-4.3.0 Complex.h(81,21): syntax error: missing ';' before identifier 'private_data_c'
@@ -116,11 +124,11 @@ jobs:
 ##            R_ARCH: /x64
 ##            #
 ##            # A HUMAN must manually see the VERSION here. (seen November 24 2023 EST)
-##            # Because this is "next PostgreSQL", 
-##            # if available are/is 'release candidate' REL_AA_RC# 
+##            # Because this is "next PostgreSQL",
+##            # if available are/is 'release candidate' REL_AA_RC#
 ##            # and/or 'beta' REL_AA_BETA# version(s)
 ##            # then choose that 'latest' version;
-##            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers. 
+##            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
 ##            # Otherwise, just choose the latest REL_XX_Y.
 ##            pgSRCversion: REL_16_1
 ##            PG_SOURCE: 'D:\PGSOURCE'
@@ -154,7 +162,7 @@ jobs:
 ##            #
 ##            # A HUMAN must manually see the VERSION here. (seen November 24 2023 EST)
 ##            # See the UCRT repository postgreSQL version
-##            # Build Date: 2023-11-11 17:52:53 
+##            # Build Date: 2023-11-11 17:52:53
 ##            # Version: 16.1-1
 ##            # https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-postgresql
 ##            #
@@ -334,7 +342,7 @@ jobs:
           git config --global core.autocrlf input
           git config --global advice.detachedHead false
 
-      - name: Matrix Variables
+      - name: Windows Matrix Variables
         if: matrix.os == 'windows-latest'
         shell: powershell
         run: |
@@ -457,7 +465,6 @@ jobs:
           Set-EnvVar "compilerClass=${env:compilerClass}"
 
           echo "compilerClass: ${env:compilerClass}"
-
 
           ${env:compilerExe} = "${{ matrix.compilerExe }}"
           if("${env:compilerExe}" -eq ""){${env:compilerExe} = "notset"}
@@ -625,7 +632,7 @@ jobs:
           echo "PGROOT2: ${env:PGROOT2}"
 
 
-      - name: Matrix Windows Platform Specific Variables
+      - name: Windows Matrix Platform Specific Variables
         if: ${{ env.os == 'windows-latest' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'msvc' ) }}
         shell: powershell
         run: |
@@ -666,6 +673,89 @@ jobs:
           Set-EnvVar "CRAN_R_DOWNLOAD_URL=${env:CRAN_R_DOWNLOAD_URL}"
 
           echo "CRAN_R_DOWNLOAD_URL: ${env:CRAN_R_DOWNLOAD_URL}"
+
+
+
+      - name: Non-Windows Matrix Variables
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          echo "Non-Windows Matrix Variables"
+          set -x -v -e
+
+          export HEAD8_GITHUB_SHA=$(echo ${GITHUB_SHA} | head -c 8)
+          echo "HEAD8_GITHUB_SHA=${HEAD8_GITHUB_SHA}" >> ${GITHUB_ENV}
+
+          echo "HEAD8_GITHUB_SHA: ${HEAD8_GITHUB_SHA}"
+
+          export os="${{ matrix.os }}"
+          if [ "${os}" == "" ]; then export os="notset"; fi
+          echo "os=${os}" >> ${GITHUB_ENV}
+
+          echo "os: ${os}"
+
+          export Platform="${{ matrix.Platform }}"
+          if [ "${Platform}" == "" ]; then export Platform="notset"; fi
+          echo "Platform=${Platform}" >> ${GITHUB_ENV}
+
+          echo "Platform: ${Platform}"
+
+          export Configuration="${{ matrix.Configuration }}"
+          if [ "${Configuration}" == "" ]; then export Configuration="notset"; fi
+          echo "Configuration=${Configuration}" >> ${GITHUB_ENV}
+
+          echo "Configuration: ${Configuration}"
+
+          export rversion="${{ matrix.rversion }}"
+          if [ "${rversion}" == "" ]; then export rversion="notset"; fi
+          echo "rversion=${rversion}" >> ${GITHUB_ENV}
+
+          echo "rversion: ${rversion}"
+
+          export R_HOME="${{ matrix.R_HOME }}"
+          if [ "${R_HOME}" == "" ]; then export R_HOME="notset"; fi
+          echo "R_HOME=${R_HOME}" >> ${GITHUB_ENV}
+
+          echo "R_HOME: ${R_HOME}"
+
+          export R_ARCH="${{ matrix.R_ARCH }}"
+          if [ "${R_ARCH}" == "" ]; then export R_ARCH="notset"; fi
+          echo "R_ARCH=${R_ARCH}" >> ${GITHUB_ENV}
+
+          echo "R_ARCH: ${R_ARCH}"
+
+          export compilerEnv="${{ matrix.compilerEnv }}"
+          if [ "${compilerEnv}" == "" ]; then export compilerEnv="notset"; fi
+          echo "compilerEnv=${compilerEnv}" >> ${GITHUB_ENV}
+
+          echo "compiler ${compilerEnv}"
+
+          if [ "${compilerEnv}" == "ubuntu" ]
+          then
+            export compilerClass="ubuntu"
+          fi
+          echo "compilerClass=${compilerClass}" >> ${GITHUB_ENV}
+
+          echo "compilerClass: ${compilerClass}"
+
+          export pgBINversion="${{ matrix.pgBINversion }}"
+          if [ "${pgBINversion}" == "" ]; then export pgBINversion="notset"; fi
+          echo "pgBINversion=${pgBINversion}" >> ${GITHUB_ENV}
+
+          echo "pgBINversion: ${pgBINversion}"
+
+          export buildpgANDplrInSRCcontrib="${{ matrix.buildpgANDplrInSRCcontrib }}"
+          if [ "${buildpgANDplrInSRCcontrib}" == "" ]; then export buildpgANDplrInSRCcontrib="notset"; fi
+          echo "buildpgANDplrInSRCcontrib=${buildpgANDplrInSRCcontrib}" >> ${GITHUB_ENV}
+
+          echo "buildpgANDplrInSRCcontrib: ${buildpgANDplrInSRCcontrib}"
+
+          export PG_HOME="${{ matrix.PG_HOME }}"
+          if [ "${PG_HOME}" == "" ]; then export PG_HOME="notset"; fi
+          echo "PG_HOME=${PG_HOME}" >> ${GITHUB_ENV}
+
+          echo "PG_HOME: ${PG_HOME}"
+
+
 
       - name: Checkout Code of This Repository
         uses: actions/checkout@v3
@@ -1093,6 +1183,42 @@ jobs:
              libpq-devel
              R  R-debuginfo
 
+      - name: Set up Ubuntu
+        if: ${{ env.os == 'ubuntu-latest' && env.compilerClass == 'ubuntu' }}
+        env:
+          msystem: ${{ env.compilerEnv }}
+          PG: ${{ env.pgBINversion }}
+        run: |
+          echo "Set up Ubuntu"
+          set -x -v -e
+          #
+          sudo apt-get update -qq
+          # dlltool - command-not-found.com/dlltool
+          sudo apt-get install -qq binutils-mingw-w64-x86-64
+          sudo apt-get install -qq meson ninja-build
+          sudo apt-get install -qq p7zip-full p7zip-rar
+          #
+          echo Building plr with PostgreSQL $PG
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          sudo apt-get update -qq
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+          sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+          sudo apt-get install -qq r-base-dev acl
+          # TODO repeat all other elsewhere in NIX
+          sudo R --version
+          #
+          sudo /etc/init.d/postgresql stop
+          sudo apt-get remove --purge postgresql\*
+          sudo rm -rf /etc/postgresql /var/lib/postgresql
+          sudo apt-get install postgresql-$PG
+          sudo apt-get install postgresql-server-dev-$PG
+          echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/$PG/main/pg_hba.conf > /dev/null
+          # Builds under "runner"
+          # Github Actions require elevated priviledges
+          sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner
+          sudo pg_ctlcluster $PG main reload
+
       # If the PostgreSQL version is 16 or greater, I can compile PostgreSQL using meson.
       - name: Compile PG using pgSRCversion and PG_SOURCE and Install to here PG_HOME
         if: ${{ env.os == 'windows-latest' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgFromSRC == 'true' }}
@@ -1290,7 +1416,7 @@ jobs:
         run: |
           echo "Windows non-msvc Meson PG and Meson PL/R Setup Compile and Meson Test"
           set -x -v -e
-          echo "Windows non-msvc Meson PL/R Setup Compile and Non-Meson Manual Test"
+          echo "Windows non-msvc Meson PG and Meson PL/R Setup Compile and Meson Test"
           set -x -v -e
           if [ "${OperatingSystem}" == "" ]; then export OperatingSystem=$(uname -o); fi
           echo "OperatingSystem: ${OperatingSystem}"
@@ -2307,6 +2433,453 @@ jobs:
             fi
           fi
 
+      - name: Non-Windows non-msvc Meson PL/R Setup Compile and Non-Meson Manual Test
+        if: ${{ env.os == 'ubuntu-latest' && env.compilerClass == 'ubuntu' && env.buildpgANDplrInSRCcontrib != 'true' }}
+        env:
+          # Msys shell variable
+          msystem: ${{ env.compilerEnv }}
+          Configuration: ${{ env.Configuration }}
+          #
+          R_HOME: ${{ env.R_HOME }}
+          Platform: ${{ env.Platform }} # currently, only information into "Upload artifacts" and "[Prep] PL/R Artifact for Release"
+          R_ARCH: ${{ env.R_ARCH }}
+          rversion: ${{ env.rversion }}
+          PG_HOME: ${{ env.PG_HOME }} # different
+        run: |
+          echo "Non-Windows non-msvc Meson PL/R Setup Compile and Non-Meson Manual Test"
+          set -x -v -e
+          if [ "${OperatingSystem}" == "" ]; then export OperatingSystem=$(uname -o); fi
+          echo "OperatingSystem: ${OperatingSystem}"
+
+          uname -a
+          echo "compilerEnv: ${{ env.compilerEnv }}"
+          echo "bash: $(which bash)"
+          echo "Present Working Directory: $(pwd)"
+          #
+          #
+          echo "R_HOME: ${R_HOME}"
+          echo "Platform: ${Platform}"
+          echo "R_ARCH: ${R_ARCH}"
+          echo "rversion: ${rversion}"
+          echo "PG_HOME: ${PG_HOME}"
+
+          export WORKSPACE=$(pwd)
+          echo "WORKSPACE ${WORKSPACE}"
+
+          #### BEGIN R SECTION ####
+
+          #
+          # Trying smartly and hard to find the R_HOME
+          #
+          if [ ! "${R_HOME}" == "notset" ] && [ ! "${R_HOME}" == "" ]
+          then
+            # user supplied variable
+            echo "R_HOME: ${R_HOME}"
+
+            # PATHs are needed for the proper compile and runtime
+            # find "libraries"
+            # R Non-Sub-Architectures
+            export PATH="${R_HOME}/bin:${PATH}"
+
+          fi
+
+          export ERRORLEVEL=0
+          which R || export ERRORLEVEL=$?
+          if [ ! "${ERRORLEVEL}" == "0" ]; then echo ERROR - No R found in the PATH - ${PATH}; exit 1;fi
+
+          if [ "${R_HOME}" == "notset" ] || [ "${R_HOME}" == "" ]
+          then
+            # I CAN NOT FIGURE OUT HOW TO extract the R_HOME into an
+            # Environment Variable on Github Actions
+            #
+            # THIS DOES NOT EXTRACT
+            # Rscript . . . cat(Sys.getenv("R_HOME"))
+
+            # Temporary workarounds
+
+            if [ "${OperatingSystem}" == "GNU/Linux" ]
+            then
+              # dangerously assumes that
+              # 1. R is installed and 2. R is installed in the DEFAULT location
+              export R_HOME=/usr/lib/R
+              echo "Ubuntu assume R_HOME: ${R_HOME}"
+              echo "R_HOME=${R_HOME}" >> ${GITHUB_ENV}
+            fi
+
+            # PATHs are needed for the proper compile and runtime
+            # find "libraries"
+            # R Non-Sub-Architectures
+            export PATH="${R_HOME}/bin:${PATH}"
+          fi
+
+          # determine rversion xor verify user supplied rversion
+          #
+          # For artifact naming, match and verify the Compiler Supplied rversion.
+          #
+          export rversion_supplied=${rversion}
+          echo "rversion_supplied: ${rversion_supplied}"
+          if [ "${rversion_supplied}" == "notset" ] || [ "${rversion_supplied}" == "" ]
+          then
+            # For artifact naming, determine the Compiler Supplied rversion.
+            #
+            # OLD_R_HOME part - OperatingSystem "Ubuntu"
+            #
+            export OLD_R_HOME=${R_HOME}
+            unset               R_HOME
+            export  rversion=$(Rscript --version | grep -oP "\d+[.]\d+[.]\d+")
+            echo   "rversion: ${rversion}"
+            echo   "rversion=${rversion}" >> ${GITHUB_ENV}
+            echo   "R --version: ${rversion}"
+            export R_HOME=${OLD_R_HOME}
+            unset OLD_R_HOME
+          fi
+          # Fail if the user supplied rversion does not match the true rversion
+          #
+          if [ ! "${rversion_supplied}" == "notset" ] && [ ! "${rversion_supplied}" == "" ]
+          then
+            if [ ! "${rversion_supplied}" == "${rversion}" ]
+            then
+              echo "WARNING rversion_supplied ${rversion_supplied} != rversion ${rversion}"
+            fi
+          fi
+
+          if [ "${rversion}" == "notset" ] || [ "${rversion}" == "" ]
+          then
+            echo ERROR - No user supplied rversion and no determined rversion - ${rversion}
+            exit 1
+          fi
+
+          #
+          # verify user supplied R_ARCH or determine the R_ARCH
+          #
+          if [ "${R_ARCH}" == "notset" ] || [ "${R_ARCH}" == "" ]
+          then
+            if [ "${OperatingSystem}" == "GNU/Linux" ]
+            then
+              unset R_ARCH
+            fi
+          fi
+
+          #### END R SECTION ####
+
+          #### BEGIN PG_HOME SECTION ####
+
+          #
+          # Trying smartly and hard to find the PG_HOME
+          #
+          if [ ! "${PG_HOME}" == "notset" ] && [ ! "${PG_HOME}" == "" ]
+          then
+            export PG_HOME="${PG_HOME}"
+
+            # determined variable
+            echo "PG_HOME: ${PG_HOME}"
+
+            export ERRORLEVEL=0
+            ls -alrt "${PG_HOME}/bin/pg_config" || export ERRORLEVEL=$?
+            if [ ! "${ERRORLEVEL}" == "0" ]; then echo ERROR - No pg_config found at "${PG_HOME}/bin/pg_config"; exit 1;fi
+
+            # can find PG "libraries"
+            export PATH="${PG_HOME}/lib:${PATH}"
+            #
+            # can find PG "libraries" (and the CORRECT pg_config is found)
+            export PATH="${PG_HOME}/bin:${PATH}"
+
+          fi
+
+          export ERRORLEVEL=0
+          which pg_config || export ERRORLEVEL=$?
+
+          if [ ! "${ERRORLEVEL}" == "0" ]; then echo ERROR - No pg_config found in the PATH - ${PATH}; exit 1;fi
+
+          # had been already on the PATH
+          export BINDIR=$(pg_config | grep "^BINDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+          export BINDIR="${BINDIR}"
+
+          echo "pg_config BINDIR: ${BINDIR}"
+
+          if [ "${PG_HOME}" == "notset" ] || [ "${PG_HOME}" == "" ]
+          then
+            export PG_HOME=$(dirname "${BINDIR}")
+            echo "determined PG_HOME: ${PG_HOME}"
+            echo "PG_HOME=${PG_HOME}" >> $GITHUB_ENV}
+
+            # found variable
+            echo "pg_config PG_HOME: ${PG_HOME}"
+
+            # can find PG "libraries"
+            export PATH="${PG_HOME}/lib:${PATH}"
+            #
+            # can find PG "libraries" (and the CORRECT pg_config is found)
+            export PATH="${PG_HOME}/bin:${PATH}"
+          fi
+
+          #
+          # For artifact naming, determine the Compiler Supplied pgversion.
+          #
+          export pgversion=$(pg_config | grep "^VERSION" | sed "s/ = /=/" | sed "s/^.*=//" | grep -oP '[ ].*$' | grep -oP '\d.*$')
+          # potential override
+          echo "pgversion=${pgversion}" >> ${GITHUB_ENV}
+          echo "pg_config VERSION pgversion: ${pgversion}"
+
+          export PKGLIBDIR=$(pg_config | grep "^PKGLIBDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+          export PKGLIBDIR="${PKGLIBDIR}"
+
+          echo "pg_config PKGLIBDIR: ${PKGLIBDIR}"
+
+          export SHAREDIR=$(pg_config | grep "^SHAREDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+          export SHAREDIR="${SHAREDIR}"
+
+          echo "pg_config SHAREDIR: ${SHAREDIR}"
+
+          #### END PG_HOME SECTION ####
+
+          #### BEGIN PKGCONFIG SECTION ####
+
+          echo "PKG_CONFIG_PATH: ${PKG_CONFIG_PATH}"
+          echo "PKG_CONFIG_SYSTEM_INCLUDE_PATH: ${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
+          echo "PKG_CONFIG_SYSTEM_LIBRARY_PATH: ${PKG_CONFIG_SYSTEM_LIBRARY_PATH}"
+
+          # This case handles Ubuntu.
+          if [ "${PKG_CONFIG_PATH}" == "" ];                then export PKG_CONFIG_PATH="/usr/lib/pkgconfig"; fi
+          if [ "${PKG_CONFIG_SYSTEM_INCLUDE_PATH}" == "" ]; then export PKG_CONFIG_SYSTEM_INCLUDE_PATH="/usr/include"; fi
+          if [ "${PKG_CONFIG_SYSTEM_LIBRARY_PATH}" == "" ]; then export PKG_CONFIG_SYSTEM_LIBRARY_PATH="/usr/lib"; fi
+
+          export PKG_CONFIG_PATH_ORIG=$(echo "${PKG_CONFIG_PATH}" |  grep -o '^[^:]*')
+          echo "PKG_CONFIG_PATH_ORIG: ${PKG_CONFIG_PATH}"
+
+          export PKG_CONFIG_SYSTEM_INCLUDE_PATH_ORIG=$(echo "${PKG_CONFIG_SYSTEM_INCLUDE_PATH}" |  grep -o '^[^:]*')
+          echo "PKG_CONFIG_SYSTEM_INCLUDE_PATH_ORIG: ${PKG_CONFIG_SYSTEM_INCLUDE_PATH_ORIG}"
+
+          # For R environment variable R_ARCH and Rlib.so.
+          # Need ONE single leftmost headish important library path.
+          export PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG=$(echo "${PKG_CONFIG_SYSTEM_LIBRARY_PATH}" |  grep -o '^[^:]*')
+          #
+          #
+          echo "PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG: ${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}"
+
+          echo "PKG_CONFIG_PATH: ${PKG_CONFIG_PATH}"
+          echo "PKG_CONFIG_SYSTEM_INCLUDE_PATH: ${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
+          echo "PKG_CONFIG_SYSTEM_LIBRARY_PATH: ${PKG_CONFIG_SYSTEM_LIBRARY_PATH}"
+
+          # Garantee to find the PostgreSQL libraries.
+          # Some packages may also install an old "libpq" that is located in the default install location.
+          # We do not want to use that old "libpg" when compiling PL/R.
+          # Therefore, the PostgreSQL pkgconfig goes in front at the head.
+          #
+          export PKG_CONFIG_PATH="${PG_HOME}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+          export PKG_CONFIG_SYSTEM_INCLUDE_PATH="${PG_HOME}/include:${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
+          export PKG_CONFIG_SYSTEM_LIBRARY_PATH="${PG_HOME}/bin:${PG_HOME}/lib:${PKG_CONFIG_SYSTEM_LIBRARY_PATH}"
+
+          echo "PKG_CONFIG_PATH: ${PKG_CONFIG_PATH}"
+          echo "PKG_CONFIG_SYSTEM_INCLUDE_PATH: ${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
+          echo "PKG_CONFIG_SYSTEM_LIBRARY_PATH: ${PKG_CONFIG_SYSTEM_LIBRARY_PATH}"
+
+          #### END PKGCONFIG SECTION ####
+
+          #### BEGIN MAKE POSTGRES INTO A LIBRARY ####
+
+          # This is Part 1 of 2 of a hack to make "meson" think that "libpostgres" is a library.
+          # From the libpq.pc file, create a libpostgres.pc file.
+          if [ ! -f "${PG_HOME}/lib/pkgconfig/libpostgres.pc" ]
+          then
+            cat "${PG_HOME}/lib/pkgconfig/libpq.pc" | sed "s/libpq/libpostgres/g" | sed "s/-lpq/-lpostgres/" > "${PG_HOME}/lib/pkgconfig/libpostgres.pc"
+          fi
+
+          # This is Part 2 of 2 of a hack to make "meson" think that "libpostgres" is a library
+          # libpostgres.a     is     recognized as a static library
+          #                         # typical software repository default install
+          if [ ! -f "${PG_HOME}/lib/libpostgres.a" ]
+          then
+            pushd "${PG_HOME}/lib"
+            dlltool --dllname postgres.so --output-def postgres.def --output-exp postgres.exp --output-lib libpostgres.a
+            popd # from "${PG_HOME}/lib"
+          fi
+
+          ls -alrt "${PG_HOME}"/lib/libpostgres*
+
+          #### END MAKE POSTGRES INTO A LIBRARY ####
+
+          #### BEGIN MAKE R INTO A LIBRARY ####
+
+          # Make R into a library
+          if [ ! -d "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}/pkgconfig" ]
+          then
+            mkdir "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}/pkgconfig"
+          fi
+
+          if [ ! -f "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}/pkgconfig/libR.pc" ]
+          then
+            # Uses the provided template file "libR.pc"
+            # This template file is "based" off of the "R for Cygwin" file /lib/pkgconfig/libR.pc.
+            cat "libR.pc" | sed "s|R_HOME|${R_HOME}|" | sed "s|R_ARCH|${R_ARCH}|" | sed "s/rversion/${rversion}/" > "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}/pkgconfig/libR.pc"
+          fi
+
+          # Ubuntu already has the file /usr/lib/R/lib/libR.a
+          # Compilers require libR.a.
+          # That file is created by ddltool program parameter "--output-lib".
+          #
+          if [ ! -d "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}" ]
+          then
+            mkdir   "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}"
+          fi
+
+          # Create and Move, or, Copy, the R static library,
+          # to the target location - "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}/libR.a"
+          if [ ! -f "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}/libR.a" ]
+          then
+            #
+            # These should? be exclusive cases.
+            #
+            # Ubuntu Repository R install case.
+            # Do I need to do this at all?
+            # If I am not given the R.so, then THEY must provide the static library libR.a.
+            if [ -f         "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}/R/lib/libR.a" ]
+            then
+              pushd         "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}/R/lib"
+              cp libR.a     "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}/libR.a"
+              popd # from   "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}/R/lib"
+            fi
+            #
+            # If I am given the R.so, then I can myself, create the static library libR.a.
+            if [ -f "${R_HOME}/bin${R_ARCH}/R.so" ]
+            then
+              pushd "${R_HOME}/bin${R_ARCH}"
+              dlltool --dllname R.so --output-def R.def --output-exp R.exp --output-lib libR.a
+              #
+              # Put libR.a into the general library location {...ORIG}${R_ARCH}/libR.a
+              mv libR.a "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}/libR.a"
+              popd # from "${R_HOME}/bin${R_ARCH}"
+            fi
+          fi
+
+          #### END MAKE R INTO A LIBRARY ####
+
+          #### BEGIN CREATE THE PLR DIRECTORY ####
+
+          # Create the contribplr directory parallel to contrib.
+          # Copy all of the PL/R source code into contribplr.
+          #
+          mkdir     "${PG_HOME}/contrib"
+          #
+          mkdir     "${PG_HOME}/contribplr"
+          cp -R   * "${PG_HOME}/contribplr"
+          #
+          pushd     "${PG_HOME}/contribplr"
+
+          #### END CREATE THE PLR DIRECTORY ####
+
+          #### BEGIN SETUP MESON.BUILD FILES AND OPTIONS ####
+
+          mv  meson.build __meson.build.ROOT_CONTRIB_METHOD.HIDDEN
+          mv _meson.build   meson.build
+          mv _meson_options.txt meson_options.txt
+
+          #### END CREATE THE PLR DIRECTORY ####
+
+          #### BEGIN BUILD PLR AND TEST PLR ####
+
+          if [ "${Configuration}" == "Debug" ]
+          then
+            meson setup --prefix="${PG_HOME}/contrib/plr"                                   -Db_pie=true -DR_HOME="${R_HOME}" -DPG_HOME="${PG_HOME}" ../contrib/plr
+          fi
+
+          if [ "${Configuration}" == "Release" ]
+          then
+            meson setup --prefix="${PG_HOME}/contrib/plr" -Dbuildtype=release -Ddebug=false -Db_pie=true -DR_HOME="${R_HOME}" -DPG_HOME="${PG_HOME}" ../contrib/plr
+          fi
+
+          meson compile -C ../contrib/plr  -v
+
+          # install GOOD or BAD artifacts into NIX PG plr.so and plr.a.
+          #
+          if [ -f "../contrib/plr/plr.so" ]
+          then
+            echo "plr.so is found"
+            cp ../contrib/plr/plr.so   "${PKGLIBDIR}"
+            ls -alrt                    "${PKGLIBDIR}/plr.so"
+          fi
+          #
+          if [ -f "../contrib/plr/plr.a" ]
+            echo "plr.a is found"
+            then cp ../contrib/plr/plr.a "${PKGLIBDIR}"
+            ls -alrt                     "${PKGLIBDIR}/plr.a"
+          fi
+
+          #
+          # install GOOD OR BAD artifacts into NIX PG - support file - plr.control
+          #
+          cp plr.control "${SHAREDIR}/extension"
+          ls -alrt       "${SHAREDIR}/extension/plr.control"
+
+          #
+          # install GOOD OR BAD artifacts  into NIX PG - SQL support files - versioning "sql"
+          #
+          cp plr--*.sql  "${SHAREDIR}/extension"
+          ls -alrt        ${SHAREDIR}/extension/plr--*.sql
+
+          echo "whoami: $(whoami)"
+
+          #
+          # Create and start the cluster before
+          # the non-setup regression test (see FAR below).
+          #
+          initdb -D ${WORKSPACE}/PGDATA
+          pg_ctl -D ${WORKSPACE}/PGDATA -l logfile start
+
+          # non-setup regression test
+          # Directories of testing "sql" and testing "expected" results exist here
+          #
+          # Some environments require it
+          export PGUSER=$(whoami)
+          echo "PGUSER: ${PGUSER}"
+          "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${PG_HOME}/bin" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame || (cat regression.diffs && false)
+
+          # Stop the cluster after
+          # the non-setup regression test (see above).
+          #
+          pg_ctl -D ${WORKSPACE}/PGDATA -l logfile stop
+
+          popd # from "${PG_HOME}/contribplr"
+          # back into WORKSPACE
+
+          #### END BUILD PG AND PLR AND TEST PLR ####
+
+          # save GOOD artifact plr.so
+          #
+          if [ -f "${PG_HOME}/contrib/plr/plr.so" ]
+          then
+            echo "Save plr.so to be an artifact."
+            mkdir -p                                ${WORKSPACE}/tmp/lib
+            cp    LICENSE                           ${WORKSPACE}/tmp/PLR_LICENSE
+            cp    "${PG_HOME}/contrib/plr/plr.so"   ${WORKSPACE}/tmp/lib
+            ls -alrt                                ${WORKSPACE}/tmp/lib/plr.so
+            mkdir -p                                ${WORKSPACE}/tmp/share/extension
+            cp    *.control                         ${WORKSPACE}/tmp/share/extension
+            cp    *.sql                             ${WORKSPACE}/tmp/share/extension
+          fi
+
+          #
+          # save GOOD artifact plr.a
+          #
+          if [ -f "${PG_HOME}/contrib/plr/plr.a" ]
+          then
+            echo "Save plr.a to be an artifact."
+            mkdir -p                                  ${WORKSPACE}/tmp/lib
+            cp    "${PG_HOME}/contrib/plr/plr.a"      ${WORKSPACE}/tmp/lib
+            ls -alrt                                  ${WORKSPACE}/tmp/lib/plr.a
+          fi
+
+          # 7z GOOD PL/R Artifact for LATER Release
+          echo "7z: $(which 7z)"
+          echo 7z a -r ${WORKSPACE}/plr-artifact.zip  ${WORKSPACE}/tmp/*
+          if [ -f "${WORKSPACE}/tmp/PLR_LICENSE" ]
+          then
+            echo "Create PL/R Artifact .zip for future Release"
+            7z a -r ${WORKSPACE}/plr-artifact.zip  ${WORKSPACE}/tmp/*
+          fi
+
+
+
       - name: Windows     msvc Meson PL/R Setup Compile and Non-Meson Manual Test
         if: ${{ env.os == 'windows-latest' && env.compilerClass == 'msvc' }}
         env:
@@ -2352,7 +2925,7 @@ jobs:
             Write-Error 'PGVER2 is missing. Please supply the PGVER2.' -ErrorAction Stop
           }
 
-      - name: Try to Upload artifacts plr.dll and plr.dll.a for export for LOCAL testing
+      - name: Try to Upload artifacts plr dynamic and plr static for export for LOCAL testing
         if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
@@ -2435,10 +3008,10 @@ jobs:
           if "%Platform%"=="x86" (net stop postgresql-%PGVER2%)
           if "%Platform%"=="notset" (echo Platform is not set, therefore no net stop happens.)
 
-      - name: Windows Prep PL/R Artifact for Release
-        if: ${{ env.os == 'windows-latest' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' || env.compilerClass == 'msvc' ) }}
+      - name: Prep PL/R Artifact for Release
+        if: ${{ env.compilerClass == 'ubuntu' || env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' || env.compilerClass == 'msvc' }}
         env:
-          PGVER2: ${{ env.PGVER2 }}
+          # PGVER2: ${{ env.PGVER2 }}
           Platform: ${{ env.Platform }}
         shell: cmd
         run: |
