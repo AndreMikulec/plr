@@ -58,10 +58,9 @@ jobs:
           # jammy (22.04, LTS)
           # https://wiki.postgresql.org/wiki/Apt
           # https://apt.postgresql.org/pub/repos/apt/dists/
-          # 18/ - 03-Jul-2024 08:48
           # https://apt.postgresql.org/pub/repos/apt/dists/jammy-pgdg/
-          - pg: 18
-          - pg: 17
+          # Source: postgresql-??
+          # https://apt.postgresql.org/pub/repos/apt/dists/jammy-pgdg/main/binary-amd64/Packages
           - pg: 16
           - pg: 15
           - pg: 14
