@@ -3,7 +3,7 @@ run-name: Meson Builds PL/R - ${{ github.event.head_commit.message }}
 on: [push, pull_request, workflow_dispatch]
 jobs:
   build_test_install:
-    name: R ${{ matrix.rversion }} PGsrc ${{ matrix.pgSRCversion }} PGbin ${{ matrix.pgWINversion }} ${{ matrix.compilerEnv }} ${{ matrix.Platform }}  ${{ matrix.os }} ${{ matrix.Configuration }}
+    name: R ${{ matrix.rversion }} PGsrc ${{ matrix.pgSRCversion }} PGbin ${{ matrix.pgWINversion }} ${{ matrix.compilerEnv }} ${{ matrix.Platform }}  ${{ matrix.os }} ${{ matrix.Configuration }} PGSRC ${{ matrix.buildpgFromSRC }} PGSRCMETH ${{ matrix.buildpgFromSRCmethod }} SRCCTB ${{ matrix.buildpgANDplrInSRCcontrib }}
     runs-on: ${{ matrix.os }}
     # With "continue-on-error" (and with "fail-fast") emulate Appveyor "allow_failures"
     # Prevents a workflow run from failing when a job fails. Set to true to allow a workflow run to pass when this job fails.
@@ -132,7 +132,7 @@ jobs:
             #
             # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL master for Windows" exists anywhere.
 
-          # 4
+          # 4 (FOR SOME STRANGE REASON - ACCIDENTALLY RUNS THIS TWICE - 1st FAIL - 2nd SUCCESS)
           # pg REL_17_BETA2 - just exists to try to determine this success . . .
           #   bleeding edge R and bleeding edge PostgreSQL
           # R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
