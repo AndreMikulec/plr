@@ -17,10 +17,10 @@ jobs:
       # Repository/Virtual_Machine PostgreSQL binaries are not known automatically.
       # (See far below in the matrix.)
       #
-      # In two matrix items, already-compiled repository found 
-      # PostreSQL already compiled binaries are used. 
+      # In two matrix items, already-compiled repository found
+      # PostreSQL already compiled binaries are used.
       #
-      # The repository PostgreSQL version in HERE 
+      # The repository PostgreSQL version in HERE
       # is not [easily] detectable ahead of the build method.
       # Therefore, a HUMAN, must often check and set the build matrix versions
       # in the Github Actions build matrix, before the Github Action runs.
@@ -59,14 +59,14 @@ jobs:
 
           # plr for "R 4.3.0 (and later) for Windows" can not be compiled with Microsoft Visual Studio.
           # Therefore, here, plr for "R 4.3.0 (and later) for Windows" is compiled with MSYS2(UCRT64/MINGW32).
-          # It is regression tested twice.  
+          # It is regression tested twice.
           #
           #   The first regression test is within PostgreSQL on MSYS2.
           #
-          #   The second regression test is within PostgreSQL that had been compiled with Microsoft Visual Studio 
+          #   The second regression test is within PostgreSQL that had been compiled with Microsoft Visual Studio
           #   from EnterpriseDB (if available: master _RC* and _BETA* versions are often not available).
           #
-          # Here are the reasons why plr for "R 4.3.0 (and later) for Windows" 
+          # Here are the reasons why plr for "R 4.3.0 (and later) for Windows"
           # can not be compiled with Microsoft Visual Studio.
           #
           # Bug 18544 - private_data_c Visual Studio 2022 R-4.3.0 Complex.h(81,21): syntax error: missing ';' before identifier 'private_data_c'
@@ -115,14 +115,15 @@ jobs:
             R_HOME: 'D:\RINSTALL'
             R_ARCH: /x64
             #
-            # A HUMAN must manually see the VERSION here. (seen November 24 2023 EST)
-            # Because this is "next PostgreSQL", 
-            # if available are/is 'release candidate' REL_AA_RC# 
+            # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
+            # Because this is "next PostgreSQL",
+            # if available are/is 'release candidate' REL_AA_RC#
             # and/or 'beta' REL_AA_BETA# version(s)
             # then choose that 'latest' version;
-            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers. 
+            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
             # Otherwise, just choose the latest REL_XX_Y.
-            pgSRCversion: REL_16_1
+            # https://github.com/postgres/postgres/tags
+            pgSRCversion: REL_17_BETA2
             PG_SOURCE: 'D:\PGSOURCE'
             #
             # buildpgFromSRC: true
@@ -134,9 +135,9 @@ jobs:
             PG_HOME: 'D:\PGINSTALL'
             #
             # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            pgWINversion: 16.1-1
+            # pgWINversion: 17.?-?
             # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            MSYS2testonpgWIN: true
+            # MSYS2testonpgWIN: true
 
           - os: windows-latest
             GithubActionsIgnoreFail: false
@@ -146,26 +147,26 @@ jobs:
             Platform: x64
             Configuration: Release
             #
-            rversion: 4.3.2
+            rversion: 4.4.1
             R_HOME: 'D:\RINSTALL'
             R_ARCH: /x64
             #
-            # November 2023 - MSYS2 PostgreSQL version is 16.1
+            # Jul 2024 - MSYS2 PostgreSQL version is 16.2
             #
-            # A HUMAN must manually see the VERSION here. (seen November 24 2023 EST)
+            # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
             # See the UCRT repository postgreSQL version
-            # Build Date: 2023-11-11 17:52:53 
-            # Version: 16.1-1
+            # Build Date: 2024-05-28 23:29:50
+            # Version: 16.2-2
             # https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-postgresql
             #
-            # pgSRCversion: REL_16_1
+            # pgSRCversion: REL_16_2
             # PG_SOURCE: 'D:\PGSOURCE'
             # buildpgFromSRC: true
             # buildpgFromSRCmethod: make
             # PG_HOME: 'D:\PGINSTALL'
             #
             # download from EnterpriseDB - PostgreSQL for Windows
-            pgWINversion: 16.1-1
+            pgWINversion: 16.2-1
             #
             MSYS2testonpgWIN: true
 
@@ -177,17 +178,17 @@ jobs:
             Platform: x64
             Configuration: Release
             #
-            rversion: 4.3.2
+            rversion: 4.4.1
             R_HOME: 'D:\RINSTALL'
             R_ARCH: /x64
             #
-            pgSRCversion: REL_15_5
+            pgSRCversion: REL_15_7
             PG_SOURCE: 'D:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: make
             PG_HOME: 'D:\PGINSTALL'
             #
-            pgWINversion: 15.5-1
+            pgWINversion: 15.7-2
             #
             MSYS2testonpgWIN: true
 
@@ -199,11 +200,11 @@ jobs:
             Platform: x64
             Configuration: Release
             #
-            rversion: 4.3.2
+            rversion: 4.4.1
             R_HOME: 'D:\RINSTALL'
             R_ARCH: /x64
             #
-            pgSRCversion: REL_14_10
+            pgSRCversion: REL_14_12
             PG_SOURCE: 'D:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: make
@@ -212,11 +213,11 @@ jobs:
             # EnterpriseDB PostgreSQL for Windows
             # pgWINversion: 14.x-y
             #
-            # A HUMAN must manually see the VERSION here. (seen November 24 2023 EST)
-            # November 2023 - Pre-installed Github Actions PostgreSQL for Windows version is x64-14
+            # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
+            # Jul 2024 - Pre-installed Github Actions PostgreSQL for Windows version is x64-14
             # ServiceName postgresql-x64-14
-            # Version 14.8
-            # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
+            # Version 14.12
+            # https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
             # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-software
             #
             MSYS2testonpgWIN: true
@@ -229,17 +230,17 @@ jobs:
             Platform: x64
             Configuration: Release
             #
-            rversion: 4.3.2
+            rversion: 4.4.1
             R_HOME: 'D:\RINSTALL'
             R_ARCH: /x64
             #
-            pgSRCversion: REL_13_13
+            pgSRCversion: REL_13_15
             PG_SOURCE: 'D:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: make
             PG_HOME: 'D:\PGINSTALL'
             #
-            pgWINversion: 13.13-1
+            pgWINversion: 13.15-2
             #
             MSYS2testonpgWIN: true
 
@@ -668,7 +669,7 @@ jobs:
           echo "CRAN_R_DOWNLOAD_URL: ${env:CRAN_R_DOWNLOAD_URL}"
 
       - name: Checkout Code of This Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # running Meson on GitHub Actions will end up using GCC rather than MSVC
       #
@@ -686,7 +687,7 @@ jobs:
 
       - name: Checkout PostgreSQL Code
         if: ${{ env.pgSRCversion != 'notset' }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: 'postgres/postgres'
 
@@ -728,7 +729,7 @@ jobs:
       #
       - name: Cache R-x.y.z Windows Installer Exe
         if: ${{ env.os == 'windows-latest' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'msvc' ) && env.rversion != 'devel' }}
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cacheRWindowsInstallerExe
         with:
           path: ${{ env.rversionlong }}.exe
@@ -741,7 +742,7 @@ jobs:
           ${{ env.os == 'windows-latest' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'msvc' ) && env.pgWINversion != 'notset' &&
           (( env.PGVER2 == '14' && env.Platform == 'x86' ) || ( env.PGVER2 != '14' ))
           }}
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cachePGWindowsInstallerExe
         with:
           path: ${{ env.pgWINversionlong }}.exe
@@ -751,7 +752,7 @@ jobs:
 
       - name: Cache GNU diffutils for Test on PostgreSQL for Windows
         if: ${{ ( env.os == 'windows-latest' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) || ( env.os == 'windows-latest' && env.compilerClass == 'msvc' ) }}
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cacheDiffutilsZip
         with:
           path: diffutils-2.8.7-1-bin.zip
@@ -761,7 +762,7 @@ jobs:
 
       - name: Cache pkgconfiglite for Compile using msvc and meson
         if: ${{ env.os == 'windows-latest' && env.compilerClass == 'msvc' }}
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cachePkgConfigLiteZip
         with:
           path: pkg-config-lite-0.28-1_bin-win32.zip
@@ -771,7 +772,7 @@ jobs:
 
       - name: Cache winflexbison for Compile using msvc
         if: ${{ env.os == 'windows-latest' && env.compilerClass == 'msvc' }}
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cacheWinFlexBisonZip
         with:
           path: win_flex_bison-2.5.24.zip
@@ -781,7 +782,7 @@ jobs:
 
       - name: Cache meson for Compile using msvc and meson
         if: ${{ env.os == 'windows-latest' && env.compilerClass == 'msvc' }}
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cacheMesonMsi
         with:
           path: meson-1.2.1-64.msi
@@ -803,7 +804,7 @@ jobs:
           ${{ env.os == 'windows-latest' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'msvc' ) &&
           steps.cacheRWindowsInstallerExe.outputs.cache-hit != 'true'
           }}
-        uses: suisei-cn/actions-download-file@v1.4.0
+        uses: suisei-cn/actions-download-file@v1.6.0
         id: downloadfileRforWindows
         with:
           url: ${{ env.CRAN_R_DOWNLOAD_URL }}
@@ -814,14 +815,14 @@ jobs:
           (( env.PGVER2 == '14' && env.Platform == 'x86' ) || ( env.PGVER2 != '14' )) &&
           steps.cachePGWindowsInstallerExe.outputs.cache-hit != 'true'
           }}
-        uses: suisei-cn/actions-download-file@v1.4.0
+        uses: suisei-cn/actions-download-file@v1.6.0
         id: downloadfilePGforWindows
         with:
           url: ${{ env.ENTDB_PG_DOWNLOAD_URL }}
 
-#     # The "crazy-max/ghaction-chocolatey@v2" "install SOMEHING_AT_SOURCEFORGE" file download often times-out.
+#     # The "crazy-max/ghaction-chocolatey@v3" "install SOMEHING_AT_SOURCEFORGE" file download often times-out.
 #     - name: Choco Install GNU diffutils for Test on PostgreSQL for Windows
-#       uses: crazy-max/ghaction-chocolatey@v2
+#       uses: crazy-max/ghaction-chocolatey@v3
 #       with:
 #         args: install diffutils
 
@@ -829,10 +830,12 @@ jobs:
         if: ${{ ( ( env.os == 'windows-latest' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) || ( env.os == 'windows-latest' && env.compilerClass == 'msvc' ) ) &&
           steps.cacheDiffutilsZip.outputs.cache-hit != 'true'
           }}
-        uses: suisei-cn/actions-download-file@v1.4.0
+        uses: suisei-cn/actions-download-file@v1.6.0
         id: downloadDiffutilsZip
         with:
           retry-times: 1
+          # verified Jul 13 2024
+          # last file update 2004-05-24
           url: https://zenlayer.dl.sourceforge.net/project/gnuwin32/diffutils/2.8.7-1/diffutils-2.8.7-1-bin.zip
 
       - name: Download pkgconfiglite for Compile using msvc and meson
@@ -840,10 +843,12 @@ jobs:
           ${{ env.os == 'windows-latest' && env.compilerClass == 'msvc' &&
           steps.cachePkgConfigLiteZip.outputs.cache-hit != 'true'
           }}
-        uses: suisei-cn/actions-download-file@v1.4.0
+        uses: suisei-cn/actions-download-file@v1.6.0
         id: downloadPkgConfigLiteZip
         with:
           retry-times: 1
+          # verified Jul 13 2024
+          # last file update 2013-01-26
           url: http://downloads.sourceforge.net/project/pkgconfiglite/0.28-1/pkg-config-lite-0.28-1_bin-win32.zip
 
       - name: Download winflexbison for Compile using msvc
@@ -851,23 +856,31 @@ jobs:
           ${{ env.os == 'windows-latest' && env.compilerClass == 'msvc' &&
           steps.cacheWinFlexBisonZip.outputs.cache-hit != 'true'
           }}
-        uses: suisei-cn/actions-download-file@v1.4.0
+        uses: suisei-cn/actions-download-file@v1.6.0
         id: downloadWinFlexBisonZip
         with:
           retry-times: 1
+          # verified Jul 13 2024
+          # last file update 2021-01-06
           url: https://sourceforge.net/projects/winflexbison/files/win_flex_bison-2.5.24.zip
-
 
       - name: Download meson for Compile using msvc and meson
         if: >-
           ${{ env.os == 'windows-latest' && env.compilerClass == 'msvc' &&
           steps.cacheMesonMsi.outputs.cache-hit != 'true'
           }}
-        uses: suisei-cn/actions-download-file@v1.4.0
+        uses: suisei-cn/actions-download-file@v1.6.0
         id: downloadMesonMsi
         with:
           retry-times: 1
-          url: https://github.com/mesonbuild/meson/releases/download/1.2.1/meson-1.2.1-64.msi
+          # verified Jul 13 2024
+          # We provide an MSI installer on the GitHub release page
+          # https://mesonbuild.com/Getting-meson.html
+          # BUT this is the last .msi build and no .msi builds for 1.4.2 and 1.5.0 - STRANGE
+          # last file update May 30 2024
+          # https://github.com/mesonbuild/meson/releases/download/1.4.1/meson-1.4.1-64.msi
+          # https://github.com/mesonbuild/meson/releases/tag/1.4.1
+          url: https://github.com/mesonbuild/meson/releases/download/1.4.1/meson-1.4.1-64.msi
 
       - name: Install R for Windows R-x.y.z R-rmajor.rminor.rpatch
         if: ${{ env.os == 'windows-latest' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'msvc' ) }}
@@ -885,12 +898,12 @@ jobs:
           "${{ env.rversionlong }}.exe" /VERYSILENT /COMPONENTS=main,%R_ARCHplat% /DIR=%R_HOME% /NOICONS /TASKS=
           dir "%R_HOME%"
 
-      # Github Actions provided PostgreSQL x64-14 (as of November 2023)
+      # Github Actions provided PostgreSQL x64-14 (as of Jul 2024)
       #
-      # # August 2023
+      # # Jul 2024
       # # The PL/R extension was built using PostreSQL 15
       # ServiceName postgresql-x64-14
-      # Version 14.8
+      # Version 14.12
       # ServiceStatus Stopped
       # ServiceStartType Disabled
       # EnvironmentVariables PGBIN=C:\Program Files\PostgreSQL\14\bin
@@ -900,7 +913,7 @@ jobs:
       # UserName postgres
       # Password root
       # #
-      # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
+      # https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
       # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-software
       #
       - name: From Disabled, Enable PostgreSQL x64-14 for Windows and Start and Stop
@@ -960,7 +973,7 @@ jobs:
       - name: Choco Install support software about PL/R compiling using msvc for Windows
         if: ${{ env.os == 'windows-latest' && env.compilerClass == 'msvc' }}
         # Keep v2.  v2.2.0 may have connection to Sourceforge problems
-        uses: crazy-max/ghaction-chocolatey@v2
+        uses: crazy-max/ghaction-chocolatey@v3
         with:
           args: >-
             install sed gzip strawberryperl
@@ -1012,14 +1025,14 @@ jobs:
           printf                                          "C:\\OTHERBIN\\winflexbison" >> %GITHUB_PATH%
 
       # Choco Install meson
-      # BUT the "crazy-max/ghaction-chocolatey@v2" "install meson" msiexec.exe Exit code was '3010'.
+      # BUT the "crazy-max/ghaction-chocolatey@v3" "install meson" msiexec.exe Exit code was '3010'.
       - name: Install meson and add meson directory to the PATH for Compile using msvc and meson
         if: ${{ env.os == 'windows-latest' && env.compilerClass == 'msvc' }}
         shell: cmd
         run: |
-          msiexec.exe /i meson-1.2.1-64.msi /qn /norestart /l*v meson.1.2.1.MsiInstall.log
+          msiexec.exe /i meson-1.4.1-64.msi /qn /norestart /l*v meson.1.4.1.MsiInstall.log
           printf "C:\Program Files\Meson" >> %GITHUB_PATH%
-          type meson.1.2.1.MsiInstall.log
+          type meson.1.4.1.MsiInstall.log
 
       # 34 seconds with zero packages
       # 2 minutes and seven(7) seconds with everything
@@ -1264,7 +1277,7 @@ jobs:
 
       - name: Upload artifact PG for export for LOCAL testing
         if: ${{ env.os == 'windows-latest' &&  env.compilerClass == 'MSYS2' && env.buildpgFromSRC == 'true' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pg-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}
           path: |
@@ -2354,7 +2367,7 @@ jobs:
 
       - name: Try to Upload artifacts plr.dll and plr.dll.a for export for LOCAL testing
         if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: plr-${{ env.HEAD8_GITHUB_SHA }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}
           # default

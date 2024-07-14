@@ -12,13 +12,19 @@ on:
     - cron:  '30 1 * * *'
 jobs:
   master:
+    # SEEN JUL 2024
+    # Ubuntu 22.04	ubuntu-latest
+    # https://github.com/actions/runner-images
+    # jammy (22.04, LTS)
+    # https://wiki.postgresql.org/wiki/Apt
+    # https://apt.postgresql.org/pub/repos/apt/dists/
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
         run: echo building master
 
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: checkout postgres
         run: |

@@ -52,14 +52,16 @@ jobs:
     strategy:
       matrix:
         include:
-          # SEEN SEP 2023
+          # SEEN JUL 2024
           # Ubuntu 22.04	ubuntu-latest
           # https://github.com/actions/runner-images
           # jammy (22.04, LTS)
           # https://wiki.postgresql.org/wiki/Apt
           # https://apt.postgresql.org/pub/repos/apt/dists/
-          # 16/ - 14-Sep-2023 12:35  
+          # 18/ - 03-Jul-2024 08:48
           # https://apt.postgresql.org/pub/repos/apt/dists/jammy-pgdg/
+          - pg: 18
+          - pg: 17
           - pg: 16
           - pg: 15
           - pg: 14
@@ -72,7 +74,7 @@ jobs:
         run: echo PG $PG
 
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Before Script
         run: |
