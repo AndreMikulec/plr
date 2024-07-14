@@ -52,6 +52,7 @@ jobs:
           # https://www.cygwin.com/packages/summary/postgresql.html
           #
           # 1
+          # R PGsrc PGbin cygwin x64 windows-latest Release
           - os: windows-latest
             GithubActionsIgnoreFail: false
             compilerEnv: cygwin
