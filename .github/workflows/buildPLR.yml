@@ -1189,7 +1189,7 @@ jobs:
       # 34 seconds with zero packages
       # 2 minutes and seven(7) seconds with everything
       - name: Install Windows mingw Software
-        if: ${{ env.os == 'windows-latest' && env.compilerClass == 'MSYS2' && env:compilerEnv != 'MINGW32' }}
+        if: ${{ env.os == 'windows-latest' && env.compilerClass == 'MSYS2' && env.compilerEnv != 'MINGW32' }}
         uses: msys2/setup-msys2@v2
         with:
           # By default, the installation is not updated; hence package versions are those of the installation tarball.
