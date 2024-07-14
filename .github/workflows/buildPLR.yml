@@ -51,6 +51,7 @@ jobs:
           # Package: postgresql
           # https://www.cygwin.com/packages/summary/postgresql.html
           #
+          # 1
           - os: windows-latest
             GithubActionsIgnoreFail: false
             compilerEnv: cygwin
@@ -79,7 +80,9 @@ jobs:
           # C Complex Numbers in C++?
           # https://stackoverflow.com/questions/10540228/c-complex-numbers-in-c
           #
+          # 2
           # bleeding edge R and bleeding edge PostgreSQL
+          # R devel PGsrc master PGbin UCRT64 x64 windows-latest Debug
           - os: windows-latest
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -102,6 +105,86 @@ jobs:
             #
             # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL master for Windows" exists anywhere.
 
+          # 3
+          # R 4.4.1 - just exists to try to determine this success . . .
+          #   bleeding edge R and bleeding edge PostgreSQL
+          # R 4.4.1 PGsrc master PGbin UCRT64 x64 windows-latest Debug
+          - os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            #
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            #
+            pgSRCversion: master
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: meson
+            PG_HOME: 'D:\PGINSTALL'
+            #
+            # pgWINversion: master.future-future
+            #
+            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL master for Windows" exists anywhere.
+
+          # 4
+          # pg REL_17_BETA2 - just exists to try to determine this success . . .
+          #   bleeding edge R and bleeding edge PostgreSQL
+          # R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+          - os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            #
+            rversion:  devel
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            #
+            pgSRCversion: REL_17_BETA2
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: meson
+            PG_HOME: 'D:\PGINSTALL'
+            #
+            # pgWINversion: REL_17_STABLE.future-future
+            #
+            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL REL_17_STABLE for Windows" exists anywhere.
+
+          # 5
+          # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
+          #   bleeding edge R and bleeding edge PostgreSQL
+          # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+          - os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            #
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            #
+            pgSRCversion: REL_17_BETA2
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: meson
+            PG_HOME: 'D:\PGINSTALL'
+            #
+            # pgWINversion: REL_17_STABLE.future-future
+            #
+            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL REL_17_STABLE for Windows" exists anywhere.
+
+
+          # 6
           # bleeding edge R and next PostgreSQL
           - os: windows-latest
             GithubActionsIgnoreFail: false
@@ -139,7 +222,7 @@ jobs:
             # This may not be available if pgSRCversion is 'RC' or 'BETA'.
             # MSYS2testonpgWIN: true
 
-
+          # 7
           # REL_16_3 - just exists to try to determine this failure . . .
           #   bleeding edge R and next PostgreSQL
           # R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
@@ -179,7 +262,7 @@ jobs:
             # This may not be available if pgSRCversion is 'RC' or 'BETA'.
             MSYS2testonpgWIN: true
 
-
+          # 8
           # R 4.4.1 REL_16_3 - just exists to try to determine this failure . . .
           #   bleeding edge R and next PostgreSQL
           # R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
@@ -219,6 +302,7 @@ jobs:
             # This may not be available if pgSRCversion is 'RC' or 'BETA'.
             MSYS2testonpgWIN: true
 
+          # 9
           # 4.4.1 - just exists to try to determine this failure . . .
           #   bleeding edge R and next PostgreSQL
           # R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
