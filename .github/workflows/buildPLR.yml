@@ -1156,7 +1156,7 @@ jobs:
       # 34 seconds with zero packages
       # 2 minutes and seven(7) seconds with everything
       - name: Install Windows mingw Software
-        if: ${{ env.os == 'windows-latest' && env.compilerClass == 'MSYS2' }}
+        if: ${{ env.os == 'windows-latest' && env.compilerClass == 'MSYS2' && env:compilerEnv != 'MINGW32' }}
         uses: msys2/setup-msys2@v2
         with:
           # By default, the installation is not updated; hence package versions are those of the installation tarball.
@@ -1195,6 +1195,48 @@ jobs:
             ${{ env.MINGW_PACKAGE_PREFIX }}-libxml2
             ${{ env.MINGW_PACKAGE_PREFIX }}-libxslt
             ${{ env.MINGW_PACKAGE_PREFIX }}-lz4
+
+      # 34 seconds with zero packages
+      # 2 minutes and seven(7) seconds with everything
+      - name: Install Windows mingw Software
+        if: ${{ env.os == 'windows-latest' && env.compilerClass == 'MSYS2' && env:compilerEnv == 'MINGW32' }}
+        uses: msys2/setup-msys2@v2
+        with:
+          # By default, the installation is not updated; hence package versions are those of the installation tarball.
+          # Faster without the "update"
+          # update: true
+          update: true
+          # do not inherit anything from the PATH
+          path-type: strict
+          msystem: ${{ env.compilerEnv }}
+          #
+          install: >-
+            ${{ env.MINGW_PACKAGE_PREFIX }}-pkg-config
+            ${{ env.MINGW_PACKAGE_PREFIX }}-curl
+            git
+            ${{ env.MINGW_PACKAGE_PREFIX }}-meson
+            ${{ env.MINGW_PACKAGE_PREFIX }}-make
+            make
+            ${{ env.MINGW_PACKAGE_PREFIX }}-${{ env.compilerExe }}
+            tar
+            gzip
+            ${{ env.MINGW_PACKAGE_PREFIX }}-readline
+            ${{ env.MINGW_PACKAGE_PREFIX }}-zlib
+            ${{ env.MINGW_PACKAGE_PREFIX }}-icu
+            icu-devel
+            git
+            flex
+            bison
+            p7zip
+            tar
+            zstd
+            ${{ env.MINGW_PACKAGE_PREFIX }}-tools-git
+            ${{ env.MINGW_PACKAGE_PREFIX }}-binutils
+            ${{ env.MINGW_PACKAGE_PREFIX }}-diffutils
+            ${{ env.MINGW_PACKAGE_PREFIX }}-libxml2
+            ${{ env.MINGW_PACKAGE_PREFIX }}-libxslt
+            ${{ env.MINGW_PACKAGE_PREFIX }}-lz4
+
 
       - name: Install Windows mingw Software Repository PostgreSQL
         if: ${{ env.os == 'windows-latest' && env.compilerClass == 'MSYS2' && env.buildpgFromSRC != 'true' }}
