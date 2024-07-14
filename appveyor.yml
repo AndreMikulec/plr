@@ -176,6 +176,14 @@ environment:
     rversion: 4.2.3
     compiler: msvc
 
+  - pg: REL_17_BETA2 # static commit - from git
+    PlatformToolset: v143
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    rversion: 4.2.3
+    compiler: msvc
+
   - pg: REL_16_3 # static commit - from git
     PlatformToolset: v143
     Configuration: Debug
