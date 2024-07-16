@@ -168,7 +168,7 @@ environment:
 #   # msvc - late November 2023 - the rest are 64bit builds
 #   # msvc
 
-# In Jul 2024 REL_17 [and master] does not work
+# In Jul 2024 Appveyor msvc REL_17 [and master] attempted builds do not build
 #
 # - pg: master # non-static commit - from git
 #   PlatformToolset: v143
