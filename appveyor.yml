@@ -168,7 +168,8 @@ environment:
 #   # msvc - late November 2023 - the rest are 64bit builds
 #   # msvc
 
-# In Jul 2024 Appveyor msvc REL_17 [and master] attempted builds do not build
+# In Jul 2024 Appveyor msvc - REL_17 [and master] attempted builds do not build
+#  cannot open file 'C:/projects/postgresql/src/tools/msvc/Mkvcbuild.pm': No such file or directory
 #
 # - pg: master # non-static commit - from git
 #   PlatformToolset: v143
