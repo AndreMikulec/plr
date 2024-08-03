@@ -1627,7 +1627,7 @@ jobs:
       #
       - name: Upload artifact PG for export for LOCAL testing
         if: ${{ env.os == 'windows-latest' &&  env.compilerClass == 'MSYS2' && env.buildpgFromSRC == 'true' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: pg-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}
           path: |
