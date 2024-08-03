@@ -64,17 +64,6 @@ jobs:
           sudo apt-get remove --purge postgresql\*
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           git ls-remote --tags https://github.com/postgres/postgres.git | cut -c 52- | grep -e 'REL_17_[0-9]'
-          case "$?" in
-            "0")
-              echo "Lithuanian"
-              ;;
-            "1")
-              echo "Romanian"
-              ;;
-            *)
-              echo "unknown"
-              ;;
-          esac
           export GITTAG=REL_17_BETA2
           echo $GITTAG
           git clone --branch $GITTAG --depth=1 https://github.com/postgres/postgres.git
