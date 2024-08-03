@@ -101,7 +101,6 @@ jobs:
             fi
           fi
           git clone --branch $GITTAG --depth=1 https://github.com/postgres/postgres.git
-          git clone --depth=1 https://github.com/postgres/postgres.git
           pushd postgres
           ./configure
           make
