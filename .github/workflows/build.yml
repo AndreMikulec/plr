@@ -63,45 +63,30 @@ jobs:
           sudo /etc/init.d/postgresql stop
           sudo apt-get remove --purge postgresql\*
           sudo rm -rf /etc/postgresql /var/lib/postgresql
-          (git ls-remote --tags https://github.com/postgres/postgres.git | cut -c 52- | grep -e 'REL_17_[0-9]') ; RET=$?
-          case "$RET" in
-            "0")
-              echo -n "Release(s) are found.  Taking the last Release . . . "
-              export GITTAG=$(git ls-remote --tags https://github.com/postgres/postgres.git | cut -c 52- | grep -e 'REL_17_[0-9]' | tail -n 1)
-              ;;
-            "1")
-              echo "Release(s) are not found.  Trying Release Candidates."
-              (git ls-remote --tags https://github.com/postgres/postgres.git | cut -c 52- | grep -e 'REL_17_RC[0-9]') ; RET=$?
-              case "$RET" in
-                "0")
-                  echo -n "Release Candidate(s) are found.  Taking the last Release Candidate . . . "
-                  export GITTAG=$(git ls-remote --tags https://github.com/postgres/postgres.git | cut -c 52- | grep -e 'REL_17_RC[0-9]' | tail -n 1)
-                  ;;
-                "1")
-                  echo "Release Candidate(s) are not found. Trying Betas."
-                  (git ls-remote --tags https://github.com/postgres/postgres.git | cut -c 52- | grep -e 'REL_17_BETA[0-9]') ; RET=$?
-                  case "$RET" in
-                    "0")
-                      echo -n "Beta(s) are found. Taking the last Beta . . . "
-                      export GITTAG=$(git ls-remote --tags https://github.com/postgres/postgres.git | cut -c 52- | grep -e 'REL_17_BETA[0-9]' | tail -n 1)
-                      ;;
-                    "1")
-                      echo "Beta(s) are not found."
-                      ;;
-                    *)
-                      echo "Beta Search unknown grep error."
-                      ;;
-                  esac
-                  ;;
-                *)
-                  echo "Release Candidate Search unknown grep error."
-                  ;;
-              esac
-              ;;
-            *)
-              echo "Release Search unknown grep error."
-              ;;
-          esac
+          export RET=$(git ls-remote --tags https://github.com/postgres/postgres.git | cut -c 52- | grep -c 'REL_17_[0-9]')
+          if [ "${RET}" -gt "0" ]
+          then
+            echo -n "Release(s) are found.  Taking the last Release . . . "
+            export GITTAG=$(git ls-remote --tags https://github.com/postgres/postgres.git | cut -c 52- | grep -e 'REL_17_[0-9]' | tail -n 1)
+          else
+            echo "Release(s) are not found.  Trying Release Candidates."
+            export RET=$(git ls-remote --tags https://github.com/postgres/postgres.git | cut -c 52- | grep -c 'REL_17_RC[0-9]')
+            if [ "${RET}" -gt "0" ]
+            then
+              echo -n "Release Candidate(s) are found.  Taking the last Release Candidate . . . "
+              export GITTAG=$(git ls-remote --tags https://github.com/postgres/postgres.git | cut -c 52- | grep -e 'REL_17_RC[0-9]' | tail -n 1)
+            else
+              echo "Release Candidate(s) are not found. Trying Betas."
+              export RET=$(git ls-remote --tags https://github.com/postgres/postgres.git | cut -c 52- | grep -c 'REL_17_BETA[0-9]')
+              if [ "${RET}" -gt "0" ]
+              then
+                echo -n "Beta(s) are found. Taking the last Beta . . . "
+                export GITTAG=$(git ls-remote --tags https://github.com/postgres/postgres.git | cut -c 52- | grep -e 'REL_17_BETA[0-9]' | tail -n 1)
+              else
+                echo "Beta(s) are not found."
+              fi
+            fi
+          fi
           echo $GITTAG
           git clone --branch $GITTAG --depth=1 https://github.com/postgres/postgres.git
           pushd postgres
