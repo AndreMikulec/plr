@@ -708,31 +708,31 @@ jobs:
 ##          pgWINversion: 11.22-1
 ##          #
 ##          MSYS2testonpgWIN: true
-
-          # Exact same as Fall 2023 (but not working in Jul 2024+)
-          # 16
-          - matid: 16
-            os: windows-latest
-            GithubActionsIgnoreFail: true
-            compilerEnv: MINGW32
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x86
-            Configuration: Release
-            #
-            rversion: 4.1.3
-            R_HOME: 'D:\RINSTALL'
-            R_ARCH: /i386
-            #
-            pgSRCversion: REL_10_STABLE
-            PG_SOURCE: 'D:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: make
-            PG_HOME: 'D:\PGINSTALL'
-            #
-            pgWINversion: 10.23-1
-            #
-            MSYS2testonpgWIN: true
+##  
+##          # Exact same as Fall 2023 (but not working in Jul 2024+)
+##          # 16
+##          - matid: 16
+##            os: windows-latest
+##            GithubActionsIgnoreFail: true
+##            compilerEnv: MINGW32
+##            shellEnv: msys2 {0}
+##            compilerExe: gcc
+##            Platform: x86
+##            Configuration: Release
+##            #
+##            rversion: 4.1.3
+##            R_HOME: 'D:\RINSTALL'
+##            R_ARCH: /i386
+##            #
+##            pgSRCversion: REL_10_STABLE
+##            PG_SOURCE: 'D:\PGSOURCE'
+##            buildpgFromSRC: true
+##            buildpgFromSRCmethod: make
+##            PG_HOME: 'D:\PGINSTALL'
+##            #
+##            pgWINversion: 10.23-1
+##            #
+##            MSYS2testonpgWIN: true
 
     defaults:
       run:
