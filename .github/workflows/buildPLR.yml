@@ -230,85 +230,6 @@ jobs:
 ####          # MSYS2testonpgWIN: true
 
 
-          # 7 - MYSTERY - Github Actions duplicates this job
-          # R 4.4.1 and next PostgreSQL
-          - matid: 8
-            os: windows-latest
-            GithubActionsIgnoreFail: true
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Debug
-            #
-            rversion: 4.4.1
-            R_HOME: 'D:\RINSTALL'
-            R_ARCH: /x64
-            #
-            # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
-            # Because this is "next PostgreSQL",
-            # if available are/is 'release candidate' REL_AA_RC#
-            # and/or 'beta' REL_AA_BETA# version(s)
-            # then choose that 'latest' version;
-            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
-            # Otherwise, just choose the latest REL_XX_Y.
-            # https://github.com/postgres/postgres/tags
-            pgSRCversion: REL_17_STABLE
-            PG_SOURCE: 'D:\PGSOURCE'
-            #
-            # buildpgFromSRC: true
-            # buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
-            #   Add meson build system (Andres Freund, Nazir Bilal Yavuz, Peter Eisentraut)
-            #   https://www.postgresql.org/docs/16/release-16.html
-            # xor
-            buildpgANDplrInSRCcontrib: true
-            PG_HOME: 'D:\PGINSTALL'
-            #
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # pgWINversion: 17.?-?
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # MSYS2testonpgWIN: true
-
-
-          # 7 - MYSTERY - Github Actions duplicates this job
-          # R 4.4.1 and next PostgreSQL
-          - matid: 7
-            os: windows-latest
-            GithubActionsIgnoreFail: true
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Debug
-            #
-            rversion: 4.4.1
-            R_HOME: 'D:\RINSTALL'
-            R_ARCH: /x64
-            #
-            # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
-            # Because this is "next PostgreSQL",
-            # if available are/is 'release candidate' REL_AA_RC#
-            # and/or 'beta' REL_AA_BETA# version(s)
-            # then choose that 'latest' version;
-            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
-            # Otherwise, just choose the latest REL_XX_Y.
-            # https://github.com/postgres/postgres/tags
-            pgSRCversion: REL_17_BETA2
-            PG_SOURCE: 'D:\PGSOURCE'
-            #
-            # buildpgFromSRC: true
-            # buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
-            #   Add meson build system (Andres Freund, Nazir Bilal Yavuz, Peter Eisentraut)
-            #   https://www.postgresql.org/docs/16/release-16.html
-            # xor
-            buildpgANDplrInSRCcontrib: true
-            PG_HOME: 'D:\PGINSTALL'
-            #
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # pgWINversion: 17.?-?
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # MSYS2testonpgWIN: true
-
 
           # 7 - MYSTERY - Github Actions duplicates this job
           # R 4.4.1 and next PostgreSQL
@@ -333,7 +254,7 @@ jobs:
             # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
             # Otherwise, just choose the latest REL_XX_Y.
             # https://github.com/postgres/postgres/tags
-            pgSRCversion: REL_17_BETA1
+            pgSRCversion: d3a38318ac614f20a9e2e163bba083d15be54f06 # 7/31/2023
             PG_SOURCE: 'D:\PGSOURCE'
             #
             # buildpgFromSRC: true
@@ -352,7 +273,7 @@ jobs:
 
           # 7 - MYSTERY - Github Actions duplicates this job
           # R 4.4.1 and next PostgreSQL
-          - matid: 4
+          - matid: 5
             os: windows-latest
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -373,9 +294,8 @@ jobs:
             # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
             # Otherwise, just choose the latest REL_XX_Y.
             # https://github.com/postgres/postgres/tags
-            pgSRCversion: 1141e29b61e9bf82b045540d41b27581fc3207ec
-            #              Revert "pg_stat_statements: Add coverage for entry_dealloc()"
-            #              12/31/2023 9:30:57 AM
+            pgSRCversion: f47004add16041a9cbd19aef29775ca4d9d6001e # 4/29/2023
+
 
             PG_SOURCE: 'D:\PGSOURCE'
             #
