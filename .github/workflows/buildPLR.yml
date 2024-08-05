@@ -2100,11 +2100,16 @@ jobs:
           # https://github.com/postgres/postgres/blame/75534436a477474ea05004b7fbed21e20cea774a/.cirrus.tasks.yml#L112
           # https://github.com/postgres/postgres/commit/252dcb32397f64a5e1ceac05b29a271ab19aa960
 
-          meson test --print-errorlogs --no-rebuild -C build --suite setup || true
-          meson test --print-errorlogs --no-rebuild -C build --num-processes 1 cube/regress || true
+          ### meson test --print-errorlogs --no-rebuild -C build --suite setup || true
+          ### meson test --print-errorlogs --no-rebuild -C build --num-processes 1 cube/regress || true
 
-          meson test --print-errorlogs --no-rebuild -C build --suite setup
-          meson test --print-errorlogs --no-rebuild -C build --num-processes 1 plr/regress
+          ### meson test --print-errorlogs --no-rebuild -C build --suite setup
+          ### meson test --print-errorlogs --no-rebuild -C build --num-processes 1 plr/regress
+
+          # wiki.postgresql.org/index.php?title=Meson&diff=39209&oldid=38340
+          
+          meson test -C build --num-processes 1 --no-rebuild --print-errorlogs --suite setup --suite cube
+          meson test -C build --num-processes 1 --no-rebuild --print-errorlogs --suite setup --suite plr
 
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
