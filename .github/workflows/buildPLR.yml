@@ -231,7 +231,7 @@ jobs:
 
           # 7 - MYSTERY - Github Actions duplicates this job
           # R 4.4.1 and next PostgreSQL
-          - matid: "f66fcc5c - 11/30/2023 11:52:13 PM"
+          - matid: "f66fcc5c_231130"
             os: windows-latest
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -271,7 +271,7 @@ jobs:
 
           # 7 - MYSTERY - Github Actions duplicates this job
           # R 4.4.1 and next PostgreSQL
-          - matid: "6ec62b77 - 10/31/2023 1:18:42 PM"
+          - matid: "6ec62b77_231031"
             os: windows-latest
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -313,7 +313,7 @@ jobs:
 
           # 7 - MYSTERY - Github Actions duplicates this job
           # R 4.4.1 and next PostgreSQL
-          - matid: "b1a8dc84 - 9/30/2023 3:10:47 PM"
+          - matid: "b1a8dc84_230930"
             os: windows-latest
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -353,7 +353,7 @@ jobs:
 
           # 7 - MYSTERY - Github Actions duplicates this job
           # R 4.4.1 and next PostgreSQL
-          - matid: "e8d74ad6 - 8/31/2023 6:02:15 AM"
+          - matid: "e8d74ad6_230831"
             os: windows-latest
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
