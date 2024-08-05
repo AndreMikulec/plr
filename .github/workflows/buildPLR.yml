@@ -2082,7 +2082,6 @@ jobs:
           # sometimes the "plr" regression test fails if an "easier" regression test did not come before it.
           # true - cube failed its regression test and blocked plr - R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
 
-
           # replace "-v" with "q --print-errorlogs"
           # pg 17+ ONLY? - wiki.postgresql.org/index.php?title=Meson&diff=39209&oldid=38340
 
@@ -2102,10 +2101,10 @@ jobs:
           # https://github.com/postgres/postgres/commit/252dcb32397f64a5e1ceac05b29a271ab19aa960
 
           meson test --print-errorlogs --no-rebuild -C build --suite setup || true
-          meson test --print-errorlogs --no-rebuild -C build --num-processes 1 cube/regress pg_ctl/001_start_stop || true
+          meson test --print-errorlogs --no-rebuild -C build --num-processes 1 cube/regress || true
 
           meson test --print-errorlogs --no-rebuild -C build --suite setup
-          meson test --print-errorlogs --no-rebuild -C build --num-processes 1 plr/regress pg_ctl/001_start_stop
+          meson test --print-errorlogs --no-rebuild -C build --num-processes 1 plr/regress
 
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
