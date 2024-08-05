@@ -252,7 +252,7 @@ jobs:
             # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
             # Otherwise, just choose the latest REL_XX_Y.
             # https://github.com/postgres/postgres/tags
-            pgSRCversion: f66fcc5c
+            pgSRCversion: f66fcc5cd616da8d81a2d2f9b80a9f080796f4b6
             PG_SOURCE: 'D:\PGSOURCE'
             #
             # buildpgFromSRC: true
@@ -292,7 +292,7 @@ jobs:
             # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
             # Otherwise, just choose the latest REL_XX_Y.
             # https://github.com/postgres/postgres/tags
-            pgSRCversion: 6ec62b77
+            pgSRCversion: 6ec62b779907e2fa49283a7d1dbd761fb64675f1
 
 
             PG_SOURCE: 'D:\PGSOURCE'
@@ -334,7 +334,7 @@ jobs:
             # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
             # Otherwise, just choose the latest REL_XX_Y.
             # https://github.com/postgres/postgres/tags
-            pgSRCversion: b1a8dc84
+            pgSRCversion: b1a8dc846da4d96d903dcb5733f68a1e02d82a23
             PG_SOURCE: 'D:\PGSOURCE'
             #
             # buildpgFromSRC: true
@@ -374,7 +374,7 @@ jobs:
             # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
             # Otherwise, just choose the latest REL_XX_Y.
             # https://github.com/postgres/postgres/tags
-            pgSRCversion: e8d74ad6
+            pgSRCversion: e8d74ad625f7344f6b715254d3869663c1569a51
 
 
             PG_SOURCE: 'D:\PGSOURCE'
