@@ -2185,7 +2185,10 @@ jobs:
           # Some environments require it
           export PGUSER=$(whoami)
           echo "PGUSER: ${PGUSER}"
+
+          pushd        "${PG_HOME}/contrib/plr"
           "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${PG_HOME}/bin" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame || (cat regression.diffs && false)
+          popd  # from "${PG_HOME}/contrib/plr"
 
           # Stop the cluster after
           # the non-setup regression test (see above).
