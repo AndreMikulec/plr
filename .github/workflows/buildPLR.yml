@@ -236,7 +236,7 @@ jobs:
           # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
           - matid: 230731_nonmesontest_REL_17_STABLE_d3a38318ac614f20a9e2e163bba083d15be54f06
             os: windows-latest
-            GithubActionsIgnoreFail: true
+            GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
             shellEnv: msys2 {0}
             compilerExe: gcc
@@ -263,7 +263,7 @@ jobs:
           # R 4.4.1 and next PostgreSQL
           - matid: 230731_mesontest_REL_17_STABLE_d3a38318ac614f20a9e2e163bba083d15be54f06
             os: windows-latest
-            GithubActionsIgnoreFail: true
+            GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
             shellEnv: msys2 {0}
             compilerExe: gcc
