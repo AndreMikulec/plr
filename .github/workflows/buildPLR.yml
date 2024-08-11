@@ -234,7 +234,7 @@ jobs:
           # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
           #   bleeding edge R and bleeding edge PostgreSQL
           # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
-          - matid: 230629_nonmesontest_first_REL_17_STABLE_5bcc7e6dc8cb6fb6ab16c118a1e710fc85096f76
+          - matid: 230731_nonmesontest_REL_17_STABLE_d3a38318ac614f20a9e2e163bba083d15be54f06
             os: windows-latest
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -247,7 +247,7 @@ jobs:
             R_HOME: 'D:\RINSTALL'
             R_ARCH: /x64
             #
-            pgSRCversion: 5bcc7e6dc8cb6fb6ab16c118a1e710fc85096f76
+            pgSRCversion: d3a38318ac614f20a9e2e163bba083d15be54f06
             PG_SOURCE: 'D:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
@@ -261,7 +261,7 @@ jobs:
 
           # 7 - MYSTERY - Github Actions duplicates this job
           # R 4.4.1 and next PostgreSQL
-          - matid: 230629_mesontest_first_REL_17_STABLE_5bcc7e6dc8cb6fb6ab16c118a1e710fc85096f76
+          - matid: 230731_mesontest_REL_17_STABLE_d3a38318ac614f20a9e2e163bba083d15be54f06
             os: windows-latest
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -282,7 +282,7 @@ jobs:
             # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
             # Otherwise, just choose the latest REL_XX_Y.
             # https://github.com/postgres/postgres/tags
-            pgSRCversion: 5bcc7e6dc8cb6fb6ab16c118a1e710fc85096f76
+            pgSRCversion: d3a38318ac614f20a9e2e163bba083d15be54f06
 
 
             PG_SOURCE: 'D:\PGSOURCE'
