@@ -229,9 +229,12 @@ jobs:
 ##            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
 ####          # MSYS2testonpgWIN: true
 
-          # 7 - MYSTERY - Github Actions duplicates this job
-          # R 4.4.1 and next PostgreSQL
-          - matid: 240805_REL_17_STABLE
+
+          # 5
+          # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
+          #   bleeding edge R and bleeding edge PostgreSQL
+          # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+          - matid: 230629_nonmesontest_first_REL_17_STABLE_5bcc7e6dc8cb6fb6ab16c118a1e710fc85096f76
             os: windows-latest
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -244,33 +247,21 @@ jobs:
             R_HOME: 'D:\RINSTALL'
             R_ARCH: /x64
             #
-            # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
-            # Because this is "next PostgreSQL",
-            # if available are/is 'release candidate' REL_AA_RC#
-            # and/or 'beta' REL_AA_BETA# version(s)
-            # then choose that 'latest' version;
-            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
-            # Otherwise, just choose the latest REL_XX_Y.
-            # https://github.com/postgres/postgres/tags
-            pgSRCversion: REL_17_STABLE
+            pgSRCversion: 5bcc7e6dc8cb6fb6ab16c118a1e710fc85096f76
             PG_SOURCE: 'D:\PGSOURCE'
-            #
-            # buildpgFromSRC: true
-            # buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
-            #   Add meson build system (Andres Freund, Nazir Bilal Yavuz, Peter Eisentraut)
-            #   https://www.postgresql.org/docs/16/release-16.html
-            # xor
-            buildpgANDplrInSRCcontrib: true
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: meson
             PG_HOME: 'D:\PGINSTALL'
             #
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # pgWINversion: 17.?-?
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # MSYS2testonpgWIN: true
+            # pgWINversion: REL_17_STABLE.future-future
+            #
+            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL REL_17_STABLE for Windows" exists anywhere.
+
+
 
           # 7 - MYSTERY - Github Actions duplicates this job
           # R 4.4.1 and next PostgreSQL
-          - matid: REL_17_BETA2
+          - matid: 230629_mesontest_first_REL_17_STABLE_5bcc7e6dc8cb6fb6ab16c118a1e710fc85096f76
             os: windows-latest
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -291,86 +282,7 @@ jobs:
             # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
             # Otherwise, just choose the latest REL_XX_Y.
             # https://github.com/postgres/postgres/tags
-            pgSRCversion: REL_17_BETA2
-            PG_SOURCE: 'D:\PGSOURCE'
-            #
-            # buildpgFromSRC: true
-            # buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
-            #   Add meson build system (Andres Freund, Nazir Bilal Yavuz, Peter Eisentraut)
-            #   https://www.postgresql.org/docs/16/release-16.html
-            # xor
-            buildpgANDplrInSRCcontrib: true
-            PG_HOME: 'D:\PGINSTALL'
-            #
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # pgWINversion: 17.?-?
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # MSYS2testonpgWIN: true
-
-          # 7 - MYSTERY - Github Actions duplicates this job
-          # R 4.4.1 and next PostgreSQL
-          - matid: 230831_e8d74ad625f7344f6b715254d3869663c1569a51
-            os: windows-latest
-            GithubActionsIgnoreFail: true
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Debug
-            #
-            rversion: 4.4.1
-            R_HOME: 'D:\RINSTALL'
-            R_ARCH: /x64
-            #
-            # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
-            # Because this is "next PostgreSQL",
-            # if available are/is 'release candidate' REL_AA_RC#
-            # and/or 'beta' REL_AA_BETA# version(s)
-            # then choose that 'latest' version;
-            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
-            # Otherwise, just choose the latest REL_XX_Y.
-            # https://github.com/postgres/postgres/tags
-            pgSRCversion: e8d74ad625f7344f6b715254d3869663c1569a51
-            PG_SOURCE: 'D:\PGSOURCE'
-            #
-            # buildpgFromSRC: true
-            # buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
-            #   Add meson build system (Andres Freund, Nazir Bilal Yavuz, Peter Eisentraut)
-            #   https://www.postgresql.org/docs/16/release-16.html
-            # xor
-            buildpgANDplrInSRCcontrib: true
-            PG_HOME: 'D:\PGINSTALL'
-            #
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # pgWINversion: 17.?-?
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # MSYS2testonpgWIN: true
-
-
-          # 7 - MYSTERY - Github Actions duplicates this job
-          # R 4.4.1 and next PostgreSQL
-          - matid: 230824_9efcf442b9a4035be2692525be81a23224288d1b
-            os: windows-latest
-            GithubActionsIgnoreFail: true
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Debug
-            #
-            rversion: 4.4.1
-            R_HOME: 'D:\RINSTALL'
-            R_ARCH: /x64
-            #
-            # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
-            # Because this is "next PostgreSQL",
-            # if available are/is 'release candidate' REL_AA_RC#
-            # and/or 'beta' REL_AA_BETA# version(s)
-            # then choose that 'latest' version;
-            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
-            # Otherwise, just choose the latest REL_XX_Y.
-            # https://github.com/postgres/postgres/tags
-            pgSRCversion: 9efcf442b9a4035be2692525be81a23224288d1b
+            pgSRCversion: 5bcc7e6dc8cb6fb6ab16c118a1e710fc85096f76
 
 
             PG_SOURCE: 'D:\PGSOURCE'
@@ -704,7 +616,7 @@ jobs:
 ##          pgWINversion: 11.22-1
 ##          #
 ##          MSYS2testonpgWIN: true
-##  
+##
 ##          # Exact same as Fall 2023 (but not working in Jul 2024+)
 ##          # 16
 ##          - matid: 16
@@ -2160,14 +2072,24 @@ jobs:
           # sometimes the "plr" regression test fails if an "easier" regression test did not come before it.
           # true - cube failed its regression test and blocked plr - R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
 
+          # classic of 2023 and pg16
+          meson test -C build --num-processes 1 -v --suite setup --suite cube || true
+          meson test -C build --num-processes 1 -v --suite setup --suite plr  || true
+
           # replace "-v" with "q --print-errorlogs"
           # pg 17+ ONLY? - wiki.postgresql.org/index.php?title=Meson&diff=39209&oldid=38340
 
-          # meson test -C build --num-processes 1 -v --suite setup --suite cube || true
-          ## meson test -C build --num-processes 1 -q --print-errorlogs --suite setup --suite cube || true
+          meson test -C build --num-processes 1 -v --suite setup --suite cube || true
+          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube || true
 
-          # meson test -C build --num-processes 1 -v --suite setup --suite plr
-          ## meson test -C build --num-processes 1 -q --print-errorlogs --suite setup --suite plr
+          meson test -C build --num-processes 1 -v --suite setup --suite plr || true
+          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr || true
+
+          # Revision as of 21:30, 13 June 2024
+          # wiki.postgresql.org/index.php?title=Meson&diff=39209&oldid=38340
+
+          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube || true
+          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr || true
 
           # AUG 24 2023 - by -  change 252dcb3, made on Aug 24, 2023
           # anarazel
@@ -2176,18 +2098,28 @@ jobs:
           # LAST OF THREAD DISCUSSION: https://www.postgresql.org/message-id/20230805222639.npbht6inelpn34hr%40awork3.anarazel.de
           # https://github.com/postgres/postgres/blob/75534436a477474ea05004b7fbed21e20cea774a/.cirrus.tasks.yml#L114
           # https://github.com/postgres/postgres/blame/75534436a477474ea05004b7fbed21e20cea774a/.cirrus.tasks.yml#L112
+          # Use "template" data directory in tests
           # https://github.com/postgres/postgres/commit/252dcb32397f64a5e1ceac05b29a271ab19aa960
 
-          ### meson test --print-errorlogs --no-rebuild -C build --suite setup || true
-          ### meson test --print-errorlogs --no-rebuild -C build --num-processes 1 cube/regress || true
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup || true
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  cube/regress || true
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/regress || true
 
-          ### meson test --print-errorlogs --no-rebuild -C build --suite setup
-          ### meson test --print-errorlogs --no-rebuild -C build --num-processes 1 plr/regress
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup || true
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  plr/regress || true
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/plr || true
 
-          # wiki.postgresql.org/index.php?title=Meson&diff=39209&oldid=38340
-          
-          meson test -C build --num-processes 1 --no-rebuild --print-errorlogs --suite setup --suite cube || true
-          meson test -C build --num-processes 1 --no-rebuild --print-errorlogs --suite setup --suite plr
+          echo ls -alrt build
+          ls -alrt build
+
+          echo "PG_HOME: ${PG_HOME}"
+          # borrowed only if I want to MANUALLY run a REGRESSION TEST
+          export PKGLIBDIR=$(${PG_HOME}/bin/pg_config | grep "^PKGLIBDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+          export PKGLIBDIR=$(cygpath $(cygpath -wl "${PKGLIBDIR}"))
+          echo "PKGLIBDIR: ${PKGLIBDIR}"
+
+          # stop here on failure
+          "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${PG_HOME}/bin" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame || (cat regression.diffs && false)
 
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
