@@ -2068,50 +2068,11 @@ jobs:
             cygrunsrv -S cygserver
           fi
 
-          # meson has no "test" pre-req system.  So this "ordered" implentation is a kind of "hack".
-          # sometimes the "plr" regression test fails if an "easier" regression test did not come before it.
-          # true - cube failed its regression test and blocked plr - R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
-
-          # classic of 2023 and pg16
-          meson test -C build --num-processes 1 -v --suite setup --suite cube
-          meson test -C build --num-processes 1 -v --suite setup --suite plr
-
-          # replace "-v" with "q --print-errorlogs"
-          # pg 17+ ONLY? - wiki.postgresql.org/index.php?title=Meson&diff=39209&oldid=38340
-
-          meson test -C build --num-processes 1 -v --suite setup --suite cube
-          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube
-
-          meson test -C build --num-processes 1 -v --suite setup --suite plr
-          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr
-
-          # Revision as of 21:30, 13 June 2024
-          # wiki.postgresql.org/index.php?title=Meson&diff=39209&oldid=38340
-
-          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube
-          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr
-
-          # AUG 24 2023 - by -  change 252dcb3, made on Aug 24, 2023
-          # anarazel
-          # Andres Freund
-          # Discussion: https://postgr.es/m/20220120021859.3zpsfqn4z7ob7afz@alap3.anarazel.de
-          # LAST OF THREAD DISCUSSION: https://www.postgresql.org/message-id/20230805222639.npbht6inelpn34hr%40awork3.anarazel.de
-          # https://github.com/postgres/postgres/blob/75534436a477474ea05004b7fbed21e20cea774a/.cirrus.tasks.yml#L114
-          # https://github.com/postgres/postgres/blame/75534436a477474ea05004b7fbed21e20cea774a/.cirrus.tasks.yml#L112
-          # Use "template" data directory in tests
-          # https://github.com/postgres/postgres/commit/252dcb32397f64a5e1ceac05b29a271ab19aa960
-
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  cube/regress
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/regress
-
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  plr/regress
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/plr
-
           # BEGIN MANUAL REGRESSION TEST #################################
 
+          set +x +v +e
           meson install -C build --no-rebuild
+          set -x -v -e
 
           export WORKSPACE=$(pwd)
           echo "WORKSPACE ${WORKSPACE}"
@@ -2196,6 +2157,48 @@ jobs:
           pg_ctl -D ${WORKSPACE}/PGDATA -l logfile stop
 
           # END MANUAL REGRESSION TEST #################################
+
+          # meson has no "test" pre-req system.  So this "ordered" implentation is a kind of "hack".
+          # sometimes the "plr" regression test fails if an "easier" regression test did not come before it.
+          # true - cube failed its regression test and blocked plr - R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+
+          # classic of 2023 and pg16
+          meson test -C build --num-processes 1 -v --suite setup --suite cube
+          meson test -C build --num-processes 1 -v --suite setup --suite plr
+
+          # replace "-v" with "q --print-errorlogs"
+          # pg 17+ ONLY? - wiki.postgresql.org/index.php?title=Meson&diff=39209&oldid=38340
+
+          meson test -C build --num-processes 1 -v --suite setup --suite cube
+          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube
+
+          meson test -C build --num-processes 1 -v --suite setup --suite plr
+          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr
+
+          # Revision as of 21:30, 13 June 2024
+          # wiki.postgresql.org/index.php?title=Meson&diff=39209&oldid=38340
+
+          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube
+          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr
+
+          # AUG 24 2023 - by -  change 252dcb3, made on Aug 24, 2023
+          # anarazel
+          # Andres Freund
+          # Discussion: https://postgr.es/m/20220120021859.3zpsfqn4z7ob7afz@alap3.anarazel.de
+          # LAST OF THREAD DISCUSSION: https://www.postgresql.org/message-id/20230805222639.npbht6inelpn34hr%40awork3.anarazel.de
+          # https://github.com/postgres/postgres/blob/75534436a477474ea05004b7fbed21e20cea774a/.cirrus.tasks.yml#L114
+          # https://github.com/postgres/postgres/blame/75534436a477474ea05004b7fbed21e20cea774a/.cirrus.tasks.yml#L112
+          # Use "template" data directory in tests
+          # https://github.com/postgres/postgres/commit/252dcb32397f64a5e1ceac05b29a271ab19aa960
+
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  cube/regress
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/regress
+
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  plr/regress
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/plr
+
 
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
