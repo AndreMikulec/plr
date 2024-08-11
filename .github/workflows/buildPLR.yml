@@ -2073,23 +2073,23 @@ jobs:
           # true - cube failed its regression test and blocked plr - R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
 
           # classic of 2023 and pg16
-          meson test -C build --num-processes 1 -v --suite setup --suite cube || true
-          meson test -C build --num-processes 1 -v --suite setup --suite plr  || true
+          meson test -C build --num-processes 1 -v --suite setup --suite cube
+          meson test -C build --num-processes 1 -v --suite setup --suite plr
 
           # replace "-v" with "q --print-errorlogs"
           # pg 17+ ONLY? - wiki.postgresql.org/index.php?title=Meson&diff=39209&oldid=38340
 
-          meson test -C build --num-processes 1 -v --suite setup --suite cube || true
-          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube || true
+          meson test -C build --num-processes 1 -v --suite setup --suite cube
+          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube
 
-          meson test -C build --num-processes 1 -v --suite setup --suite plr || true
-          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr || true
+          meson test -C build --num-processes 1 -v --suite setup --suite plr
+          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr
 
           # Revision as of 21:30, 13 June 2024
           # wiki.postgresql.org/index.php?title=Meson&diff=39209&oldid=38340
 
-          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube || true
-          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr || true
+          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube
+          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr
 
           # AUG 24 2023 - by -  change 252dcb3, made on Aug 24, 2023
           # anarazel
@@ -2101,13 +2101,13 @@ jobs:
           # Use "template" data directory in tests
           # https://github.com/postgres/postgres/commit/252dcb32397f64a5e1ceac05b29a271ab19aa960
 
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup || true
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  cube/regress || true
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/regress || true
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  cube/regress
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/regress
 
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup || true
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  plr/regress || true
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/plr || true
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  plr/regress
+          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/plr
 
           echo ls -alrt build
           ls -alrt build
@@ -2119,7 +2119,7 @@ jobs:
           echo "PKGLIBDIR: ${PKGLIBDIR}"
 
           # stop here on failure
-          "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${PG_SOURCE}/build/src/bin" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame || (cat regression.diffs && false)
+          "${PG_SOURCE}/build/src/bin/pg_regress/pg_regress" --bindir="${PG_SOURCE}/build/src/bin" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame || (cat regression.diffs && false)
 
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
