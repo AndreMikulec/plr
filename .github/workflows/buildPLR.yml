@@ -2109,17 +2109,90 @@ jobs:
           meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  plr/regress
           meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/plr
 
-          echo ls -alrt build
-          ls -alrt build
+          # BEGIN MANUAL REGRESSION TEST #################################
 
-          echo "PG_HOME: ${PG_HOME}"
-          # borrowed only if I want to MANUALLY run a REGRESSION TEST
-          export PKGLIBDIR=$(${PG_SOURCE}/build/src/bin/pg_config/pg_config | grep "^PKGLIBDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+          meson install -C build --no-rebuild
+
+          export WORKSPACE=$(pwd)
+          echo "WORKSPACE ${WORKSPACE}"
+
+          #
+          # Trying smartly and hard to find the PG_HOME
+          #
+          if [ ! "${PG_HOME}" == "notset" ] && [ ! "${PG_HOME}" == "" ]
+          then
+            export PG_HOME=$(cygpath "${PG_HOME}")
+
+            # determined variable
+            echo "cygpath PG_HOME: ${PG_HOME}"
+
+            export ERRORLEVEL=0
+            ls -alrt "${PG_HOME}/bin/pg_config" || export ERRORLEVEL=$?
+            if [ ! "${ERRORLEVEL}" == "0" ]; then echo ERROR - No pg_config found at "${PG_HOME}/bin/pg_config"; exit 1;fi
+
+            # can find PG "libraries"
+            export PATH="${PG_HOME}/lib:${PATH}"
+            #
+            # can find PG "libraries" (and the CORRECT pg_config is found)
+            export PATH="${PG_HOME}/bin:${PATH}"
+
+          fi
+
+          export ERRORLEVEL=0
+          which pg_config || export ERRORLEVEL=$?
+
+          if [ ! "${ERRORLEVEL}" == "0" ]; then echo ERROR - No pg_config found in the PATH - ${PATH}; exit 1;fi
+
+          # had been already on the PATH
+          export BINDIR=$(pg_config | grep "^BINDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+          export BINDIR=$(cygpath $(cygpath -wl "${BINDIR}"))
+
+          echo "pg_config BINDIR: ${BINDIR}"
+
+          if [ "${PG_HOME}" == "notset" ] || [ "${PG_HOME}" == "" ]
+          then
+            export PG_HOME=$(dirname "${BINDIR}")
+            echo "determined PG_HOME: ${PG_HOME}"
+            echo "PG_HOME=$(cygpath -w ${PG_HOME})" >> $GITHUB_ENV}
+
+            # found variable
+            echo "pg_config PG_HOME: ${PG_HOME}"
+
+            # can find PG "libraries"
+            export PATH="${PG_HOME}/lib:${PATH}"
+            #
+            # can find PG "libraries" (and the CORRECT pg_config is found)
+            export PATH="${PG_HOME}/bin:${PATH}"
+          fi
+
+          export PKGLIBDIR=$(pg_config | grep "^PKGLIBDIR" | sed "s/ = /=/" | sed "s/^.*=//")
           export PKGLIBDIR=$(cygpath $(cygpath -wl "${PKGLIBDIR}"))
-          echo "PKGLIBDIR: ${PKGLIBDIR}"
 
-          # stop here on failure
-          "${PG_SOURCE}/build/src/bin/pg_regress/pg_regress" --bindir="${PG_SOURCE}/build/src/bin" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame || (cat regression.diffs && false)
+          echo "pg_config PKGLIBDIR: ${PKGLIBDIR}"
+
+          echo "whoami: $(whoami)"
+
+          #
+          # Create and start the cluster before
+          # the non-setup regression test (see FAR below).
+          #
+          initdb -D ${WORKSPACE}/PGDATA
+          pg_ctl -D ${WORKSPACE}/PGDATA -l logfile start
+
+          # non-setup regression test
+          # Directories of testing "sql" and testing "expected" results exist here
+          #
+          # Some environments require it
+          export PGUSER=$(whoami)
+          echo "PGUSER: ${PGUSER}"
+          "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${PG_HOME}/bin" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame || (cat regression.diffs && false)
+
+          # Stop the cluster after
+          # the non-setup regression test (see above).
+          #
+          pg_ctl -D ${WORKSPACE}/PGDATA -l logfile stop
+
+          # END MANUAL REGRESSION TEST #################################
 
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
