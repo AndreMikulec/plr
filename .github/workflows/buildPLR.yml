@@ -2114,12 +2114,12 @@ jobs:
 
           echo "PG_HOME: ${PG_HOME}"
           # borrowed only if I want to MANUALLY run a REGRESSION TEST
-          export PKGLIBDIR=$(${PG_HOME}/bin/pg_config | grep "^PKGLIBDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+          export PKGLIBDIR=$(${PG_SOURCE}/build/src/bin/pg_config/pg_config | grep "^PKGLIBDIR" | sed "s/ = /=/" | sed "s/^.*=//")
           export PKGLIBDIR=$(cygpath $(cygpath -wl "${PKGLIBDIR}"))
           echo "PKGLIBDIR: ${PKGLIBDIR}"
 
           # stop here on failure
-          "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${PG_HOME}/bin" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame || (cat regression.diffs && false)
+          "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${PG_SOURCE}/build/src/bin" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame || (cat regression.diffs && false)
 
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
