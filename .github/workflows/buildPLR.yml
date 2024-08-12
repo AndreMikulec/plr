@@ -356,6 +356,21 @@ jobs:
             pgSRCversion: f4b54e1ed9853ab9aff524494866823f951b1e7f
 
 
+            PG_SOURCE: 'D:\PGSOURCE'
+            #
+            # buildpgFromSRC: true
+            # buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
+            #   Add meson build system (Andres Freund, Nazir Bilal Yavuz, Peter Eisentraut)
+            #   https://www.postgresql.org/docs/16/release-16.html
+            # xor
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+            #
+            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
+            # pgWINversion: 17.?-?
+            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
+            # MSYS2testonpgWIN: true
+
 
           # 5
           # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
