@@ -2228,27 +2228,20 @@ jobs:
 
           # END MANUAL REGRESSION TEST #################################
 
-          # meson has no "test" pre-req system.  So this "ordered" implentation is a kind of "hack".
-          # sometimes the "plr" regression test fails if an "easier" regression test did not come before it.
-          # true - cube failed its regression test and blocked plr - R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
-
-          # classic of 2023 and pg16
-          meson test -C build --num-processes 1 -v --suite setup --suite cube
-          meson test -C build --num-processes 1 -v --suite setup --suite plr
-
           # replace "-v" with "q --print-errorlogs"
           # pg 17+ ONLY? - wiki.postgresql.org/index.php?title=Meson&diff=39209&oldid=38340
-
-          meson test -C build --num-processes 1 -v --suite setup --suite cube
-          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube
-
-          meson test -C build --num-processes 1 -v --suite setup --suite plr
-          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr
-
           # Revision as of 21:30, 13 June 2024
           # wiki.postgresql.org/index.php?title=Meson&diff=39209&oldid=38340
 
           meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube
+          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr
+
+          # split
+
+          meson test -C build --num-processes 1 -v --suite setup --suite cube
+          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube
+
+          meson test -C build --num-processes 1 -v --suite setup --suite plr
           meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr
 
           # AUG 24 2023 - by -  change 252dcb3, made on Aug 24, 2023
@@ -2268,6 +2261,14 @@ jobs:
           meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup
           meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  plr/regress
           meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/plr
+
+          # meson has no "test" pre-req system.  So this "ordered" implentation is a kind of "hack".
+          # sometimes the "plr" regression test fails if an "easier" regression test did not come before it.
+          # true - cube failed its regression test and blocked plr - R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+
+          # classic of 2023 and pg16
+          meson test -C build --num-processes 1 -v --suite setup --suite cube
+          meson test -C build --num-processes 1 -v --suite setup --suite plr
 
 
           if [ "${OperatingSystem}" == "Cygwin" ]
