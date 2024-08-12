@@ -234,7 +234,7 @@ jobs:
           # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
           #   bleeding edge R and bleeding edge PostgreSQL
           # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
-          - matid: 230831_nonmesontest_REL_17_STABLE_e8d74ad625f7344f6b715254d3869663c1569a51
+          - matid: 230831_nonmesontest_REL_17_STABLE
             os: windows-latest
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
@@ -247,7 +247,7 @@ jobs:
             R_HOME: 'D:\RINSTALL'
             R_ARCH: /x64
             #
-            pgSRCversion: e8d74ad625f7344f6b715254d3869663c1569a51
+            pgSRCversion: REL_17_STABLE
             PG_SOURCE: 'D:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
@@ -261,7 +261,7 @@ jobs:
 
           # 7 - MYSTERY - Github Actions duplicates this job
           # R 4.4.1 and next PostgreSQL
-          - matid: 230831_mesontest_REL_17_STABLE_e8d74ad625f7344f6b715254d3869663c1569a51
+          - matid: 230831_mesontest_REL_17_STABLE
             os: windows-latest
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
@@ -282,7 +282,151 @@ jobs:
             # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
             # Otherwise, just choose the latest REL_XX_Y.
             # https://github.com/postgres/postgres/tags
-            pgSRCversion: e8d74ad625f7344f6b715254d3869663c1569a51
+            pgSRCversion: REL_17_STABLE
+
+
+            PG_SOURCE: 'D:\PGSOURCE'
+            #
+            # buildpgFromSRC: true
+            # buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
+            #   Add meson build system (Andres Freund, Nazir Bilal Yavuz, Peter Eisentraut)
+            #   https://www.postgresql.org/docs/16/release-16.html
+            # xor
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+            #
+            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
+            # pgWINversion: 17.?-?
+            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
+            # MSYS2testonpgWIN: true
+
+
+
+          # 5
+          # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
+          #   bleeding edge R and bleeding edge PostgreSQL
+          # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+          - matid: 230824_template_nonmesontest_REL_17_STABLE_252dcb32397f64a5e1ceac05b29a271ab19aa960
+            os: windows-latest
+            GithubActionsIgnoreFail: false
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            #
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            #
+            pgSRCversion: 252dcb32397f64a5e1ceac05b29a271ab19aa960
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: meson
+            PG_HOME: 'D:\PGINSTALL'
+            #
+            # pgWINversion: REL_17_STABLE.future-future
+            #
+            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL REL_17_STABLE for Windows" exists anywhere.
+
+
+
+          # 7 - MYSTERY - Github Actions duplicates this job
+          # R 4.4.1 and next PostgreSQL
+          - matid: 230824_template_mesontest_REL_17_STABLE_252dcb32397f64a5e1ceac05b29a271ab19aa960
+            os: windows-latest
+            GithubActionsIgnoreFail: false
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            #
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            #
+            # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
+            # Because this is "next PostgreSQL",
+            # if available are/is 'release candidate' REL_AA_RC#
+            # and/or 'beta' REL_AA_BETA# version(s)
+            # then choose that 'latest' version;
+            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
+            # Otherwise, just choose the latest REL_XX_Y.
+            # https://github.com/postgres/postgres/tags
+            pgSRCversion: 252dcb32397f64a5e1ceac05b29a271ab19aa960
+
+
+            PG_SOURCE: 'D:\PGSOURCE'
+            #
+            # buildpgFromSRC: true
+            # buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
+            #   Add meson build system (Andres Freund, Nazir Bilal Yavuz, Peter Eisentraut)
+            #   https://www.postgresql.org/docs/16/release-16.html
+            # xor
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+            #
+            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
+            # pgWINversion: 17.?-?
+            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
+            # MSYS2testonpgWIN: true
+
+
+
+
+          # 5
+          # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
+          #   bleeding edge R and bleeding edge PostgreSQL
+          # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+          - matid: 230824_Bump_MESSAGE_WIDTH_nonmesontest_REL_17_STABLE_9625845532ae03e7da3fc8fc592c6ec333b93166
+            os: windows-latest
+            GithubActionsIgnoreFail: false
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            #
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            #
+            pgSRCversion: 9625845532ae03e7da3fc8fc592c6ec333b93166
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: meson
+            PG_HOME: 'D:\PGINSTALL'
+            #
+            # pgWINversion: REL_17_STABLE.future-future
+            #
+            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL REL_17_STABLE for Windows" exists anywhere.
+
+
+          # 7 - MYSTERY - Github Actions duplicates this job
+          # R 4.4.1 and next PostgreSQL
+          - matid: 230824_Bump_MESSAGE_WIDTH_mesontest_REL_17_STABLE_9625845532ae03e7da3fc8fc592c6ec333b93166
+            os: windows-latest
+            GithubActionsIgnoreFail: false
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            #
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            #
+            # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
+            # Because this is "next PostgreSQL",
+            # if available are/is 'release candidate' REL_AA_RC#
+            # and/or 'beta' REL_AA_BETA# version(s)
+            # then choose that 'latest' version;
+            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
+            # Otherwise, just choose the latest REL_XX_Y.
+            # https://github.com/postgres/postgres/tags
+            pgSRCversion: 9625845532ae03e7da3fc8fc592c6ec333b93166
 
 
             PG_SOURCE: 'D:\PGSOURCE'
@@ -372,147 +516,6 @@ jobs:
             # MSYS2testonpgWIN: true
 
 
-          # 5
-          # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
-          #   bleeding edge R and bleeding edge PostgreSQL
-          # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
-          - matid: 230822_Before_Macros_nonmesontest_REL_17_STABLE_711479115836b2180f50c00bbf0773220848a7f5
-            os: windows-latest
-            GithubActionsIgnoreFail: false
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Debug
-            #
-            rversion: 4.4.1
-            R_HOME: 'D:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: 711479115836b2180f50c00bbf0773220848a7f5
-            PG_SOURCE: 'D:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: meson
-            PG_HOME: 'D:\PGINSTALL'
-            #
-            # pgWINversion: REL_17_STABLE.future-future
-            #
-            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL REL_17_STABLE for Windows" exists anywhere.
-
-
-
-          # 7 - MYSTERY - Github Actions duplicates this job
-          # R 4.4.1 and next PostgreSQL
-          - matid: 230822_Before_Macros_mesontest_REL_17_STABLE_711479115836b2180f50c00bbf0773220848a7f5
-            os: windows-latest
-            GithubActionsIgnoreFail: false
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Debug
-            #
-            rversion: 4.4.1
-            R_HOME: 'D:\RINSTALL'
-            R_ARCH: /x64
-            #
-            # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
-            # Because this is "next PostgreSQL",
-            # if available are/is 'release candidate' REL_AA_RC#
-            # and/or 'beta' REL_AA_BETA# version(s)
-            # then choose that 'latest' version;
-            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
-            # Otherwise, just choose the latest REL_XX_Y.
-            # https://github.com/postgres/postgres/tags
-            pgSRCversion: 711479115836b2180f50c00bbf0773220848a7f5
-
-
-            PG_SOURCE: 'D:\PGSOURCE'
-            #
-            # buildpgFromSRC: true
-            # buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
-            #   Add meson build system (Andres Freund, Nazir Bilal Yavuz, Peter Eisentraut)
-            #   https://www.postgresql.org/docs/16/release-16.html
-            # xor
-            buildpgANDplrInSRCcontrib: true
-            PG_HOME: 'D:\PGINSTALL'
-            #
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # pgWINversion: 17.?-?
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # MSYS2testonpgWIN: true
-
-
-
-
-          # 5
-          # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
-          #   bleeding edge R and bleeding edge PostgreSQL
-          # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
-          - matid: 230731_nonmesontest_REL_17_STABLE_d3a38318ac614f20a9e2e163bba083d15be54f06
-            os: windows-latest
-            GithubActionsIgnoreFail: false
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Debug
-            #
-            rversion: 4.4.1
-            R_HOME: 'D:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: d3a38318ac614f20a9e2e163bba083d15be54f06
-            PG_SOURCE: 'D:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: meson
-            PG_HOME: 'D:\PGINSTALL'
-            #
-            # pgWINversion: REL_17_STABLE.future-future
-            #
-            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL REL_17_STABLE for Windows" exists anywhere.
-
-
-          # 7 - MYSTERY - Github Actions duplicates this job
-          # R 4.4.1 and next PostgreSQL
-          - matid: 230731_mesontest_REL_17_STABLE_d3a38318ac614f20a9e2e163bba083d15be54f06
-            os: windows-latest
-            GithubActionsIgnoreFail: false
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Debug
-            #
-            rversion: 4.4.1
-            R_HOME: 'D:\RINSTALL'
-            R_ARCH: /x64
-            #
-            # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
-            # Because this is "next PostgreSQL",
-            # if available are/is 'release candidate' REL_AA_RC#
-            # and/or 'beta' REL_AA_BETA# version(s)
-            # then choose that 'latest' version;
-            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
-            # Otherwise, just choose the latest REL_XX_Y.
-            # https://github.com/postgres/postgres/tags
-            pgSRCversion: d3a38318ac614f20a9e2e163bba083d15be54f06
-
-
-            PG_SOURCE: 'D:\PGSOURCE'
-            #
-            # buildpgFromSRC: true
-            # buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
-            #   Add meson build system (Andres Freund, Nazir Bilal Yavuz, Peter Eisentraut)
-            #   https://www.postgresql.org/docs/16/release-16.html
-            # xor
-            buildpgANDplrInSRCcontrib: true
-            PG_HOME: 'D:\PGINSTALL'
-            #
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # pgWINversion: 17.?-?
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # MSYS2testonpgWIN: true
 
 
 ##
