@@ -301,13 +301,67 @@ jobs:
             # MSYS2testonpgWIN: true
 
 
+          # 5
+          # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
+          #   bleeding edge R and bleeding edge PostgreSQL
+          # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+          - matid: 230822_Now_Macros_nonmesontest_REL_17_STABLE_f4b54e1ed9853ab9aff524494866823f951b1e7f
+            os: windows-latest
+            GithubActionsIgnoreFail: false
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            #
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            #
+            pgSRCversion: f4b54e1ed9853ab9aff524494866823f951b1e7f
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: meson
+            PG_HOME: 'D:\PGINSTALL'
+            #
+            # pgWINversion: REL_17_STABLE.future-future
+            #
+            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL REL_17_STABLE for Windows" exists anywhere.
+
+
+
+          # 7 - MYSTERY - Github Actions duplicates this job
+          # R 4.4.1 and next PostgreSQL
+          - matid: 230822_Now_Macros_mesontest_REL_17_STABLE_f4b54e1ed9853ab9aff524494866823f951b1e7f
+            os: windows-latest
+            GithubActionsIgnoreFail: false
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            #
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            #
+            # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
+            # Because this is "next PostgreSQL",
+            # if available are/is 'release candidate' REL_AA_RC#
+            # and/or 'beta' REL_AA_BETA# version(s)
+            # then choose that 'latest' version;
+            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
+            # Otherwise, just choose the latest REL_XX_Y.
+            # https://github.com/postgres/postgres/tags
+            pgSRCversion: f4b54e1ed9853ab9aff524494866823f951b1e7f
+
 
 
           # 5
           # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
           #   bleeding edge R and bleeding edge PostgreSQL
           # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
-          - matid: 230822_nonmesontest_REL_17_STABLE_711479115836b2180f50c00bbf0773220848a7f5
+          - matid: 230822_Before_Macros_nonmesontest_REL_17_STABLE_711479115836b2180f50c00bbf0773220848a7f5
             os: windows-latest
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
@@ -334,7 +388,7 @@ jobs:
 
           # 7 - MYSTERY - Github Actions duplicates this job
           # R 4.4.1 and next PostgreSQL
-          - matid: 230822_mesontest_REL_17_STABLE_711479115836b2180f50c00bbf0773220848a7f5
+          - matid: 230822_Before_Macros_mesontest_REL_17_STABLE_711479115836b2180f50c00bbf0773220848a7f5
             os: windows-latest
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
