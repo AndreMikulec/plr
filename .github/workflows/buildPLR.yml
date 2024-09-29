@@ -136,9 +136,9 @@ jobs:
 ##            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL master for Windows" exists anywhere.
 ##
 ##          # 4
-##          # pg REL_17_BETA2 - just exists to try to determine this success . . .
+##          # pg REL_17_STABLE - just exists to try to determine this success . . .
 ##          #   bleeding edge R and bleeding edge PostgreSQL
-##          # R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+##          # R devel PGsrc REL_17_STABLE PGbin UCRT64 x64 windows-latest Debug
 ##          - matid: 4
 ##            os: windows-latest
 ##            GithubActionsIgnoreFail: true
@@ -152,7 +152,7 @@ jobs:
 ##            R_HOME: 'D:\RINSTALL'
 ##            R_ARCH: /x64
 ##            #
-##            pgSRCversion: REL_17_BETA2
+##            pgSRCversion: REL_17_STABLE
 ##            PG_SOURCE: 'D:\PGSOURCE'
 ##            buildpgFromSRC: true
 ##            buildpgFromSRCmethod: meson
@@ -163,9 +163,9 @@ jobs:
 ##            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL REL_17_STABLE for Windows" exists anywhere.
 ##
 ##          # 5
-##          # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
+##          # R pg REL_17_STABLE R 4.4.1 - just exists to try to determine this success . . .
 ##          #   bleeding edge R and bleeding edge PostgreSQL
-##          # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+##          # R 4.4.1 PGsrc REL_17_STABLE PGbin UCRT64 x64 windows-latest Debug
 ##          - matid: 5
 ##            os: windows-latest
 ##            GithubActionsIgnoreFail: true
@@ -179,7 +179,7 @@ jobs:
 ##            R_HOME: 'D:\RINSTALL'
 ##            R_ARCH: /x64
 ##            #
-##            pgSRCversion: REL_17_BETA2
+##            pgSRCversion: REL_17_STABLE
 ##            PG_SOURCE: 'D:\PGSOURCE'
 ##            buildpgFromSRC: true
 ##            buildpgFromSRCmethod: meson
@@ -213,7 +213,7 @@ jobs:
 ##            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
 ##            # Otherwise, just choose the latest REL_XX_Y.
 ##            # https://github.com/postgres/postgres/tags
-##            pgSRCversion: REL_17_BETA2
+##            pgSRCversion: REL_17_STABLE
 ##            PG_SOURCE: 'D:\PGSOURCE'
 ##            #
 ##            # buildpgFromSRC: true
@@ -231,9 +231,9 @@ jobs:
 
 
           # 5
-          # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
+          # R pg REL_17_STABLE R 4.4.1 - just exists to try to determine this success . . .
           #   bleeding edge R and bleeding edge PostgreSQL
-          # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+          # R 4.4.1 PGsrc REL_17_STABLE PGbin UCRT64 x64 windows-latest Debug
           - matid: REL_17_STABLE_nonmesontest_REL_17_STABLE
             os: windows-latest
             GithubActionsIgnoreFail: false
@@ -303,9 +303,9 @@ jobs:
 
 
           # 5
-          # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
+          # R pg REL_17_STABLE R 4.4.1 - just exists to try to determine this success . . .
           #   bleeding edge R and bleeding edge PostgreSQL
-          # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+          # R 4.4.1 PGsrc REL_17_STABLE PGbin UCRT64 x64 windows-latest Debug
           - matid: 230824_template_nonmesontest_REL_17_STABLE_252dcb32397f64a5e1ceac05b29a271ab19aa960
             os: windows-latest
             GithubActionsIgnoreFail: false
@@ -376,9 +376,9 @@ jobs:
 
 
           # 5
-          # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
+          # R pg REL_17_STABLE R 4.4.1 - just exists to try to determine this success . . .
           #   bleeding edge R and bleeding edge PostgreSQL
-          # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+          # R 4.4.1 PGsrc REL_17_STABLE PGbin UCRT64 x64 windows-latest Debug
           - matid: 230824_Bump_MESSAGE_WIDTH_nonmesontest_REL_17_STABLE_9625845532ae03e7da3fc8fc592c6ec333b93166
             os: windows-latest
             GithubActionsIgnoreFail: false
@@ -446,9 +446,9 @@ jobs:
 
 
           # 5
-          # R pg REL_17_BETA2 R 4.4.1 - just exists to try to determine this success . . .
+          # R pg REL_17_STABLE R 4.4.1 - just exists to try to determine this success . . .
           #   bleeding edge R and bleeding edge PostgreSQL
-          # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+          # R 4.4.1 PGsrc REL_17_STABLE PGbin UCRT64 x64 windows-latest Debug
           - matid: 230822_Now_Macros_nonmesontest_REL_17_STABLE_f4b54e1ed9853ab9aff524494866823f951b1e7f
             os: windows-latest
             GithubActionsIgnoreFail: false
@@ -520,9 +520,9 @@ jobs:
 
 ##
 ##          # 8
-##          # REL_16_3 - just exists to try to determine this failure . . .
+##          # REL_16_STABLE - just exists to try to determine this failure . . .
 ##          #   bleeding edge R and next PostgreSQL
-##          # R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+##          # R devel PGsrc REL_16_STABLE PGbin UCRT64 x64 windows-latest Debug
 ##          - matid: 8
 ##            os: windows-latest
 ##            GithubActionsIgnoreFail: false
@@ -544,7 +544,7 @@ jobs:
 ##            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
 ##            # Otherwise, just choose the latest REL_XX_Y.
 ##            # https://github.com/postgres/postgres/tags
-##            pgSRCversion: REL_16_3
+##            pgSRCversion: REL_16_STABLE
 ##            PG_SOURCE: 'D:\PGSOURCE'
 ##            #
 ##            # buildpgFromSRC: true
@@ -561,9 +561,9 @@ jobs:
 ##            MSYS2testonpgWIN: true
 ##
 ##          # 9
-##          # R 4.4.1 REL_16_3 - just exists to try to determine this failure . . .
+##          # R 4.4.1 REL_16_STABLE - just exists to try to determine this failure . . .
 ##          #   bleeding edge R and next PostgreSQL
-##          # R 4.4.1 PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+##          # R 4.4.1 PGsrc REL_16_STABLE PGbin UCRT64 x64 windows-latest Debug
 ##          - matid: 9
 ##            os: windows-latest
 ##            GithubActionsIgnoreFail: false
@@ -585,7 +585,7 @@ jobs:
 ##            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
 ##            # Otherwise, just choose the latest REL_XX_Y.
 ##            # https://github.com/postgres/postgres/tags
-##            pgSRCversion: REL_16_3
+##            pgSRCversion: REL_16_STABLE
 ##            PG_SOURCE: 'D:\PGSOURCE'
 ##            #
 ##            # buildpgFromSRC: true
@@ -605,7 +605,7 @@ jobs:
 ####        # 10 - NEVER RUNS AS A JOB ???
 ####        # 4.4.1 - just exists to try to determine this failure . . .
 ####        #   bleeding edge R and next PostgreSQL
-####        # R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
+####        # R devel PGsrc REL_17_STABLE PGbin UCRT64 x64 windows-latest Debug
 ####        - matid: 10
 ####          os: windows-latest
 ####          GithubActionsIgnoreFail: false
@@ -627,7 +627,7 @@ jobs:
 ####          # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
 ####          # Otherwise, just choose the latest REL_XX_Y.
 ####          # https://github.com/postgres/postgres/tags
-####          pgSRCversion: REL_17_BETA2
+####          pgSRCversion: REL_17_STABLE
 ####          PG_SOURCE: 'D:\PGSOURCE'
 ####          #
 ####          # buildpgFromSRC: true
@@ -666,7 +666,7 @@ jobs:
 ##            # Version: 16.2-2
 ##            # https://packages.msys2.org/package/mingw-w64-ucrt-x86_64-postgresql
 ##            #
-##            # pgSRCversion: REL_16_2
+##            # pgSRCversion: REL_16_STABLE
 ##            # PG_SOURCE: 'D:\PGSOURCE'
 ##            # buildpgFromSRC: true
 ##            # buildpgFromSRCmethod: make
@@ -784,7 +784,7 @@ jobs:
 ##            MSYS2testonpgWIN: true
 
           # PG 12 x64 and PG 11 x64
-          # R 4.3.1 PGsrc REL_12_16 PGbin 12.16-1 UCRT64 x64 windows-latest Release
+          # R 4.3.1 PGsrc REL_12_STABLE PGbin 12.16-1 UCRT64 x64 windows-latest Release
           # https://github.com/AndreMikulec/plr/actions/runs/6166564347/job/16737092810#step:33:773
           # #
           # FUTURE - investigate and solve
@@ -802,7 +802,7 @@ jobs:
 ##          R_HOME: 'D:\RINSTALL'
 ##          R_ARCH: /x64
 ##          #
-##          pgSRCversion: REL_12_17
+##          pgSRCversion: REL_12_STABLE
 ##          PG_SOURCE: 'D:\PGSOURCE'
 ##          buildpgFromSRC: true
 ##          buildpgFromSRCmethod: make
@@ -824,7 +824,7 @@ jobs:
 ##          R_HOME: 'D:\RINSTALL'
 ##          R_ARCH: /x64
 ##          #
-##          pgSRCversion: REL_11_22
+##          pgSRCversion: REL_11_STABLE
 ##          PG_SOURCE: 'D:\PGSOURCE'
 ##          buildpgFromSRC: true
 ##          buildpgFromSRCmethod: make
@@ -1247,6 +1247,7 @@ jobs:
 
           # # non-statics
           # master
+          # REL_17_STABLE
           # REL_16_STABLE
           # REL_15_STABLE
           #
