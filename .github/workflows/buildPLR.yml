@@ -106,10 +106,6 @@ jobs:
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
             PG_HOME: 'D:\PGINSTALL'
-            #
-            # pgWINversion: master.future-future
-            #
-            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL master for Windows" exists anywhere.
 
 
           # R latest and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
@@ -131,10 +127,6 @@ jobs:
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
             PG_HOME: 'D:\PGINSTALL'
-            #
-            # pgWINversion: master.future-future
-            #
-            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL master for Windows" exists anywhere.
 
 
           # R latest and PostgreSQL bleeding edge (buildpgANDplrInSRCcontrib true)
@@ -170,15 +162,6 @@ jobs:
             # buildpgANDplrInSRCcontrib: true
             buildpgANDplrInSRCcontrib: true
             PG_HOME: 'D:\PGINSTALL'
-            #
-            # pgWINversion: REL_X_Y.future-future
-            #
-            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL REL_X_Y for Windows" exists anywhere.
-            #
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # pgWINversion: x.y-z
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # MSYS2testonpgWIN: true 
 
 
           # R bleeding edge and PostgreSQL latest (buildpgFromSRCmethod meson)
@@ -206,15 +189,17 @@ jobs:
             # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL REL_X_Y for Windows" exists anywhere.
             #
             # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            pgWINversion: 17.0-1
+            # pgWINversion: x.y-z
             # This may not be available if pgSRCversion is 'RC' or 'BETA'.
+            # MSYS2testonpgWIN: true 
+            pgWINversion: 17.0-1
             MSYS2testonpgWIN: true 
 
 
           # R latest and PostgreSQL latest (buildpgFromSRCmethod meson)
           - matid: 6
             os: windows-latest
-            GithubActionsIgnoreFail: true
+            GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
             shellEnv: msys2 {0}
             compilerExe: gcc
@@ -231,20 +216,14 @@ jobs:
             buildpgFromSRCmethod: meson
             PG_HOME: 'D:\PGINSTALL'
             #
-            # pgWINversion: REL_X_Y.future-future
-            #
-            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL REL_X_Y for Windows" exists anywhere.
-            #
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
             pgWINversion: 17.0-1
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
             MSYS2testonpgWIN: true 
 
 
           # R latest and PostgreSQL latest (buildpgANDplrInSRCcontrib true)
           - matid: 7
             os: windows-latest
-            GithubActionsIgnoreFail: true
+            GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
             shellEnv: msys2 {0}
             compilerExe: gcc
@@ -260,13 +239,7 @@ jobs:
             buildpgANDplrInSRCcontrib: true
             PG_HOME: 'D:\PGINSTALL'
             #
-            # pgWINversion: REL_X_Y.future-future
-            #
-            # not "MSYS2testonpgWIN: true" - because no existing "PostgreSQL REL_X_Y for Windows" exists anywhere.
-            #
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
             pgWINversion: 17.0-1
-            # This may not be available if pgSRCversion is 'RC' or 'BETA'.
             MSYS2testonpgWIN: true 
 
 
