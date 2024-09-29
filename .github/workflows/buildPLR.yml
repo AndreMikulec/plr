@@ -608,7 +608,7 @@ jobs:
           ${env:PGROOT2}     = "notset"
           if("${env:Platform}" -eq "x64") {
             ${env:PGBIN2}      = "C:\Program Files\PostgreSQL\${env:pgwinmajor}\bin"
-            if([int]${env:pgWINversion} -ge 17) {
+            if([int]${env:pgwinmajor} -ge 17) {
               ${env:PGREGRESS2}  = "C:\Program Files\PostgreSQL\${env:pgwinmajor}\lib\pgxs\src\test\regress"
             } else {
               ${env:PGREGRESS2}  = "C:\Program Files\PostgreSQL\${env:pgwinmajor}\bin"
@@ -618,7 +618,7 @@ jobs:
           }
           if("${env:Platform}" -eq "x86") {
             ${env:PGBIN2}      = "C:\Program Files (x86)\PostgreSQL\${env:pgwinmajor}\bin"
-            if([int]${env:pgWINversion} -ge 17) {
+            if([int]${env:pgwinmajor} -ge 17) {
               ${env:PGREGRESS2}  = "C:\Program Files (x86)\PostgreSQL\${env:pgwinmajor}\lib\pgxs\src\test\regress"
             } else {
               ${env:PGREGRESS2}  = "C:\Program Files (x86)\PostgreSQL\${env:pgwinmajor}\bin"
