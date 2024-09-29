@@ -11,7 +11,7 @@ This presumes you installed PostgreSQL using the PGDG repositories found [here](
 yum install plr-nn
 ```
 
-Where nn is the major version number such as 16 for PostgreSQL version 16.x
+Where nn is the major version number such as 17 for PostgreSQL version 17.x
 
 To set R_HOME for use by PostgreSQL.
 
