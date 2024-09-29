@@ -1,9 +1,9 @@
 name: Meson Builds PL/R
 run-name: Meson Builds PL/R - ${{ github.event.head_commit.message }}
 
-on: 
+on:
    push:
-   pull_request: 
+   pull_request:
    workflow_dispatch:
 
 jobs:
@@ -191,9 +191,9 @@ jobs:
             # This may not be available if pgSRCversion is 'RC' or 'BETA'.
             # pgWINversion: x.y-z
             # This may not be available if pgSRCversion is 'RC' or 'BETA'.
-            # MSYS2testonpgWIN: true 
+            # MSYS2testonpgWIN: true
             pgWINversion: 17.0-1
-            MSYS2testonpgWIN: true 
+            MSYS2testonpgWIN: true
 
 
           # R latest and PostgreSQL latest (buildpgFromSRCmethod meson)
@@ -217,7 +217,7 @@ jobs:
             PG_HOME: 'D:\PGINSTALL'
             #
             pgWINversion: 17.0-1
-            MSYS2testonpgWIN: true 
+            MSYS2testonpgWIN: true
 
 
           # R latest and PostgreSQL latest (buildpgANDplrInSRCcontrib true)
@@ -240,7 +240,7 @@ jobs:
             PG_HOME: 'D:\PGINSTALL'
             #
             pgWINversion: 17.0-1
-            MSYS2testonpgWIN: true 
+            MSYS2testonpgWIN: true
 
 
           - matid: 8
@@ -602,29 +602,43 @@ jobs:
 
           echo "PGVER2: ${env:PGVER2}"
 
-          ${env:PGBIN2}  = "notset"
-          ${env:PGDATA2} = "notset"
-          ${env:PGROOT2} = "notset"
+          ${env:PGBIN2}      = "notset"
+          ${env:PGREGRESS2}  = "notset"
+          ${env:PGDATA2}     = "notset"
+          ${env:PGROOT2}     = "notset"
           if("${env:Platform}" -eq "x64") {
-            ${env:PGBIN2}  = "C:\Program Files\PostgreSQL\${env:pgwinmajor}\bin"
-            ${env:PGDATA2} = "C:\Program Files\PostgreSQL\${env:pgwinmajor}\data"
-            ${env:PGROOT2} = "C:\Program Files\PostgreSQL\${env:pgwinmajor}"
+            ${env:PGBIN2}      = "C:\Program Files\PostgreSQL\${env:pgwinmajor}\bin"
+            if([int]${env:pgWINversion} -ge 17) {
+              ${env:PGREGRESS2}  = "C:\Program Files\PostgreSQL\${env:pgwinmajor}\lib\pgxs\src\test\regress"
+            } else {
+              ${env:PGREGRESS2}  = "C:\Program Files\PostgreSQL\${env:pgwinmajor}\bin"
+            }
+            ${env:PGDATA2}     = "C:\Program Files\PostgreSQL\${env:pgwinmajor}\data"
+            ${env:PGROOT2}     = "C:\Program Files\PostgreSQL\${env:pgwinmajor}"
           }
           if("${env:Platform}" -eq "x86") {
-            ${env:PGBIN2}  = "C:\Program Files (x86)\PostgreSQL\${env:pgwinmajor}\bin"
-            ${env:PGDATA2} = "C:\Program Files (x86)\PostgreSQL\${env:pgwinmajor}\data"
-            ${env:PGROOT2} = "C:\Program Files (x86)\PostgreSQL\${env:pgwinmajor}"
+            ${env:PGBIN2}      = "C:\Program Files (x86)\PostgreSQL\${env:pgwinmajor}\bin"
+            if([int]${env:pgWINversion} -ge 17) {
+              ${env:PGREGRESS2}  = "C:\Program Files (x86)\PostgreSQL\${env:pgwinmajor}\lib\pgxs\src\test\regress"
+            } else {
+              ${env:PGREGRESS2}  = "C:\Program Files (x86)\PostgreSQL\${env:pgwinmajor}\bin"
+            }
+            ${env:PGDATA2}     = "C:\Program Files (x86)\PostgreSQL\${env:pgwinmajor}\data"
+            ${env:PGROOT2}     = "C:\Program Files (x86)\PostgreSQL\${env:pgwinmajor}"
           }
           if("${env:Platform}" -eq "notset") {
-            ${env:PGBIN2}  = "notset"
-            ${env:PGDATA2} = "notset"
-            ${env:PGROOT2} = "notset"
+            ${env:PGBIN2}      = "notset"
+            ${env:PGREGRESS2}  = "notset"
+            ${env:PGDATA2}     = "notset"
+            ${env:PGROOT2}     = "notset"
           }
           Set-EnvVar "PGBIN2=${env:PGBIN2}"
+          Set-EnvVar "PGREGRESS2=${env:PGREGRESS2}"
           Set-EnvVar "PGDATA2=${env:PGDATA2}"
           Set-EnvVar "PGROOT2=${env:PGROOT2}"
 
-          echo " PGBIN2: ${env:PGBIN2}"
+          echo "PGBIN2: ${env:PGBIN2}"
+          echo "PGREGRESS2: ${env:PGREGRESS2}"
           echo "PGDATA2: ${env:PGDATA2}"
           echo "PGROOT2: ${env:PGROOT2}"
 
@@ -2606,18 +2620,20 @@ jobs:
           #
           PG_HOME: ${{ env.PGROOT2 }} # different
           PGBIN2: ${{ env.PGBIN2 }}
+          PGREGRESS2: ${{ env.PGREGRESS2 }}
           #
           PGVER2: ${{ env.PGVER2 }}
           Platform: ${{ env.Platform }}
         shell: cmd
         run: |
           echo on
-          echo R_HOME   - %R_HOME%
-          echo R_ARCH   - %R_ARCH%
-          echo PG_HOME  - %PG_HOME%
-          echo PGVER2   - %PGVER2%
-          echo PGBIN2   - %PGBIN2%
-          echo Platform - %Platform%
+          echo R_HOME       - %R_HOME%
+          echo R_ARCH       - %R_ARCH%
+          echo PG_HOME      - %PG_HOME%
+          echo PGVER2       - %PGVER2%
+          echo PGBIN2       - %PGBIN2%
+          echo PGREGRESS2   - %PGREGRESS2%
+          echo Platform     - %Platform%
 
           echo off
           rem R     Sub-Architectures
@@ -2640,7 +2656,7 @@ jobs:
           echo M_PATH - %PATH%
 
           rem Put MY pg_regress in the local PATH, in front of OTHER pg_regress that MAY BE installed.
-          set PATH=%PG_HOME%\bin;%PATH%
+          set PATH=%PGREGRESS2%;%PATH%
 
           echo on
           echo PGVER2   - %PGVER2%
@@ -2652,7 +2668,7 @@ jobs:
 
           set PGUSER=postgres
           set PGPASSWORD=root
-          "%PGBIN2%\pg_regress" --bindir="%PGBIN2%" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame || (type regression.diffs && call)
+          "%PGREGRESS2%\pg_regress" --bindir="%PGBIN2%" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame || (type regression.diffs && call)
           if "%ERRORLEVEL%"=="1" exit 1
 
       - name: Stop PostgreSQL for Windows
