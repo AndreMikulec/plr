@@ -1370,7 +1370,7 @@ jobs:
           path: |
             pg-matid-${{ matrix.matid }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
 
-      - name: Windows non-msvc Meson PG and Meson PL/R Setup Compile and Meson Test
+      - name: Windows non-msvc Meson PG and Meson PL/R Setup Compile and Non-Meson Manual Test
         if: ${{ env.os == 'windows-latest' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib == 'true' }}
         env:
           # Cygwin shell variables
@@ -1863,21 +1863,21 @@ jobs:
           # Use "template" data directory in tests
           # https://github.com/postgres/postgres/commit/252dcb32397f64a5e1ceac05b29a271ab19aa960
 
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  cube/regress
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/regress
+          # meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup
+          # meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  cube/regress
+          # meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/regress
 
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  plr/regress
-          meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/plr
+          # meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup
+          # meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  plr/regress
+          # meson test -C build --num-processes 1 -v --print-errorlogs --no-rebuild  --suite setup --suite cube/plr
 
           # meson has no "test" pre-req system.  So this "ordered" implentation is a kind of "hack".
           # sometimes the "plr" regression test fails if an "easier" regression test did not come before it.
           # true - cube failed its regression test and blocked plr - R devel PGsrc REL_17_BETA2 PGbin UCRT64 x64 windows-latest Debug
 
           # classic of 2023 and pg16
-          meson test -C build --num-processes 1 -v --suite setup --suite cube
-          meson test -C build --num-processes 1 -v --suite setup --suite plr
+          # meson test -C build --num-processes 1 -v --suite setup --suite cube
+          # meson test -C build --num-processes 1 -v --suite setup --suite plr
 
 
           if [ "${OperatingSystem}" == "Cygwin" ]
