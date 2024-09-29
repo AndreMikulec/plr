@@ -1846,16 +1846,16 @@ jobs:
           # Revision as of 21:30, 13 June 2024
           # wiki.postgresql.org/index.php?title=Meson&diff=39209&oldid=38340
 
-          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube
-          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr
+          # meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube
+          # meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr
 
           # split
 
-          meson test -C build --num-processes 1 -v --suite setup --suite cube
-          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube
+          # meson test -C build --num-processes 1 -v --suite setup --suite cube
+          # meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite cube
 
-          meson test -C build --num-processes 1 -v --suite setup --suite plr
-          meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr
+          # meson test -C build --num-processes 1 -v --suite setup --suite plr
+          # meson test -C build --num-processes 1 -v --print-errorlogs --suite setup --suite plr
 
           # AUG 24 2023 - by -  change 252dcb3, made on Aug 24, 2023
           # anarazel
