@@ -1382,9 +1382,6 @@ jobs:
           if exist pg-artifact.7z copy pg-artifact.7z pg-matid-${{ matrix.matid }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
           if exist pg-artifact.7z dir                 pg-matid-${{ matrix.matid }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
 
-##      ## temporaryily keep at v3
-##      # actions/upload-artifact@v3
-##      # is scheduled for deprecation on November 30, 2024
 ##      # @v4 - Due to how Artifacts are created in this new version,
 ##      # it is no longer possible to upload to the same named Artifact multiple times.
 ##      # MAY 2024
@@ -1392,7 +1389,7 @@ jobs:
 ##      #
 ##      - name: Upload artifact PG for export for LOCAL testing
 ##        if: ${{ env.os == 'windows-latest' &&  env.compilerClass == 'MSYS2' && env.buildpgFromSRC == 'true' }}
-##        uses: actions/upload-artifact@v3
+##        uses: actions/upload-artifact@v4
 ##        with:
 ##          name: pg-matid-${{ matrix.matid }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}
 ##          path: |
@@ -2607,9 +2604,6 @@ jobs:
             Write-Error 'PGVER2 is missing. Please supply the PGVER2.' -ErrorAction Stop
           }
 
-##      ## temporaryily keep at v3
-##      # actions/upload-artifact@v3
-##      # is scheduled for deprecation on November 30, 2024
 ##      # @v4 - Due to how Artifacts are created in this new version,
 ##      # it is no longer possible to upload to the same named Artifact multiple times.
 ##      # MAY 2024
@@ -2617,7 +2611,7 @@ jobs:
 ##      #
 ##      - name: Try to Upload artifacts plr.dll and plr.dll.a for export for LOCAL testing
 ##        if: ${{ always() }}
-##        uses: actions/upload-artifact@v3
+##        uses: actions/upload-artifact@v4
 ##        with:
 ##          name: plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}
 ##          # default
