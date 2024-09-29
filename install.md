@@ -270,21 +270,21 @@ Restart the PostgreSQL cluster, do:
 At a Command Prompt run (and you may have to be in an Administrator Command Prompt):
 Use the service name of whatever service your PostgreSQL is running under.
 ```
-net stop postgresql-x64-16
+net stop postgresql-x64-17
 ```
 Alternately, do the following:
 Control Panel -> Administrative Tools -> Services
-Find postgresql-x64-16 (or whatever service your PostgreSQL is running under).
+Find postgresql-x64-17 (or whatever service your PostgreSQL is running under).
 Right click and choose "Stop"
 
 At a Command Prompt run (and you may have to be in an Administrator Command Prompt):
 Use the service name of whatever service your PostgreSQL is running under.
 ```
-net start postgresql-x64-16
+net start postgresql-x64-17
 ```
 Alternately, do the following:
 Control Panel -> Administrative Tools -> Services
-Find postgresql-x64-16 (or whatever service your PostgreSQL is running under).
+Find postgresql-x64-17 (or whatever service your PostgreSQL is running under).
 Right click and choose "Start"
 
 
