@@ -2690,6 +2690,7 @@ jobs:
         shell: cmd
         run: |
           echo on
+          dir
           if exist plr-artifact.zip copy plr-artifact.zip plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
           if exist plr-artifact.zip dir                   plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
 
