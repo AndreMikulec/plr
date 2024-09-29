@@ -1365,6 +1365,7 @@ jobs:
         shell: cmd
         run: |
           echo on
+          dir
           if exist pg-artifact.7z copy pg-artifact.7z pg-matid-${{ matrix.matid }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
           if exist pg-artifact.7z dir                 pg-matid-${{ matrix.matid }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
 
@@ -1910,13 +1911,13 @@ jobs:
           if [ -f "${PG_SOURCE}/build/contrib/plr/plr.dll" ]
           then
             echo "Save plr.dll to be an artifact."
-            mkdir -p                                             ${WORKSPACE}/tmp/lib
-            cp    LICENSE                                        ${WORKSPACE}/tmp/PLR_LICENSE
-            cp    "${PG_SOURCE}/build/contrib/plr/plr.dll"       ${WORKSPACE}/tmp/lib
-            ls -alrt                                             ${WORKSPACE}/tmp/lib/plr.dll
-            mkdir -p                                             ${WORKSPACE}/tmp/share/extension
-            cp    *.control                                      ${WORKSPACE}/tmp/share/extension
-            cp    *.sql                                          ${WORKSPACE}/tmp/share/extension
+            mkdir -p                                             ${GITHUB_WORKSPACE}/tmp/lib
+            cp    LICENSE                                        ${GITHUB_WORKSPACE}/tmp/PLR_LICENSE
+            cp    "${PG_SOURCE}/build/contrib/plr/plr.dll"       ${GITHUB_WORKSPACE}/tmp/lib
+            ls -alrt                                             ${GITHUB_WORKSPACE}/tmp/lib/plr.dll
+            mkdir -p                                             ${GITHUB_WORKSPACE}/tmp/share/extension
+            cp    *.control                                      ${GITHUB_WORKSPACE}/tmp/share/extension
+            cp    *.sql                                          ${GITHUB_WORKSPACE}/tmp/share/extension
           fi
 
           #
@@ -1925,18 +1926,18 @@ jobs:
           if [ -f "${PG_SOURCE}/build/contrib/plr/plr.dll.a" ]
           then
             echo "Save plr.dll.a to be an artifact."
-            mkdir -p                                               ${WORKSPACE}/tmp/lib
-            cp    "${PG_SOURCE}/build/contrib/plr/plr.dll.a"       ${WORKSPACE}/tmp/lib
-            ls -alrt                                               ${WORKSPACE}/tmp/lib/plr.dll.a
+            mkdir -p                                               ${GITHUB_WORKSPACE}/tmp/lib
+            cp    "${PG_SOURCE}/build/contrib/plr/plr.dll.a"       ${GITHUB_WORKSPACE}/tmp/lib
+            ls -alrt                                               ${GITHUB_WORKSPACE}/tmp/lib/plr.dll.a
           fi
 
           # 7z GOOD PL/R Artifact for LATER Release
           echo "7z: $(which 7z)"
-          echo 7z a -r ${WORKSPACE}/plr-artifact.zip  ${WORKSPACE}/tmp/*
-          if [ -f "${WORKSPACE}/tmp/PLR_LICENSE" ]
+          echo 7z a -r ${GITHUB_WORKSPACE}/plr-artifact.zip  ${GITHUB_WORKSPACE}/tmp/*
+          if [ -f "${GITHUB_WORKSPACE}/tmp/PLR_LICENSE" ]
           then
             echo "Create PL/R Artifact .zip for future Release"
-            7z a -r ${WORKSPACE}/plr-artifact.zip  ${WORKSPACE}/tmp/*
+            7z a -r ${GITHUB_WORKSPACE}/plr-artifact.zip  ${GITHUB_WORKSPACE}/tmp/*
           fi
 
           # if "PostgreSQL for Windows" exists, then
