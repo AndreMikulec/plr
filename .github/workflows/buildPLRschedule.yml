@@ -2669,6 +2669,8 @@ jobs:
 
           echo M_PATH - %PATH%
 
+          rem Required DLLs in the PATH
+          set PATH=%PGBIN2%;%PATH%
           rem Put MY pg_regress in the local PATH, in front of OTHER pg_regress that MAY BE installed.
           set PATH=%PGREGRESS2%;%PATH%
 
