@@ -1330,6 +1330,10 @@ jobs:
       # https://github.com/postgres/postgres/commit/b3f0be788afc17d2206e1ae1c731d8aeda1f2f59
       # pacman -S libcurl
       # pacman -S mingw-w64-ucrt-x86_64-python
+      # . . .
+      # REVERT - HAD NO AFFECT
+      # libcurl
+      # ${{ env.MINGW_PACKAGE_PREFIX }}-python
       #
       # 34 seconds with zero packages
       # 2 minutes and seven(7) seconds with everything
@@ -1347,7 +1351,6 @@ jobs:
           #
           install: >-
             ${{ env.MINGW_PACKAGE_PREFIX }}-pkg-config
-            libcurl
             ${{ env.MINGW_PACKAGE_PREFIX }}-curl
             git
             ${{ env.MINGW_PACKAGE_PREFIX }}-meson
@@ -1372,7 +1375,6 @@ jobs:
             ${{ env.MINGW_PACKAGE_PREFIX }}-libxml2
             ${{ env.MINGW_PACKAGE_PREFIX }}-libxslt
             ${{ env.MINGW_PACKAGE_PREFIX }}-lz4
-            ${{ env.MINGW_PACKAGE_PREFIX }}-python
 
 
       - name: Install Windows mingw Software Repository PostgreSQL
