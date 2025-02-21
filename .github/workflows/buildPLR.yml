@@ -1321,6 +1321,16 @@ jobs:
             ${{ env.MINGW_PACKAGE_PREFIX }}-libxslt
             ${{ env.MINGW_PACKAGE_PREFIX }}-lz4
 
+      # Add support for OAUTHBEARER SASL mechanism FEB 20 2025 AT 10:25 AM EST
+      #   iddawc v0.9.9 [2], library and dev headers, for client support
+      #   Python 3, for the test suite only
+      #   https://www.postgresql.org/message-id/d1b467a78e0e36ed85a09adf979d04cf124a9d4b.camel@vmware.com
+      # libcurl for the client side support
+      # run the tests, Python is required
+      # https://github.com/postgres/postgres/commit/b3f0be788afc17d2206e1ae1c731d8aeda1f2f59
+      # pacman -S libcurl
+      # pacman -S mingw-w64-ucrt-x86_64-python
+      #
       # 34 seconds with zero packages
       # 2 minutes and seven(7) seconds with everything
       - name: Install Windows mingw Software - same as above - but omit software - perl winpty
@@ -1337,6 +1347,7 @@ jobs:
           #
           install: >-
             ${{ env.MINGW_PACKAGE_PREFIX }}-pkg-config
+            libcurl
             ${{ env.MINGW_PACKAGE_PREFIX }}-curl
             git
             ${{ env.MINGW_PACKAGE_PREFIX }}-meson
@@ -1361,6 +1372,7 @@ jobs:
             ${{ env.MINGW_PACKAGE_PREFIX }}-libxml2
             ${{ env.MINGW_PACKAGE_PREFIX }}-libxslt
             ${{ env.MINGW_PACKAGE_PREFIX }}-lz4
+            ${{ env.MINGW_PACKAGE_PREFIX }}-python
 
 
       - name: Install Windows mingw Software Repository PostgreSQL
