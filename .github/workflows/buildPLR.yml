@@ -164,6 +164,199 @@ jobs:
             PG_HOME: 'D:\PGINSTALL'
 
 
+          - matid: 4.1 4aa6fa3cd0a2422f1bb47db837b82f2b53d4c065 publications
+            os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            pgSRCversion: 4aa6fa3cd0a2422f1bb47db837b82f2b53d4c065
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+
+          - matid: 4.2 525392d5727f469e9a5882e1d728917a4be56147 not lock
+            os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            pgSRCversion: 525392d5727f469e9a5882e1d728917a4be56147
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+
+          - matid: 4.3 7da344b9f84f0c63590a34136f3fa5d0ab128657 improve errdetail
+            os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            pgSRCversion: 7da344b9f84f0c63590a34136f3fa5d0ab128657
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+
+          - matid: 4.4 1fd1bd871012732e3c6c482667d2f2c56f1a9395 transfer statistics
+            os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            pgSRCversion: 1fd1bd871012732e3c6c482667d2f2c56f1a9395
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+
+          - matid: 4.5 b3f0be788afc17d2206e1ae1c731d8aeda1f2f59 Add support for OAUTHBEARER
+            os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            pgSRCversion: b3f0be788afc17d2206e1ae1c731d8aeda1f2f59
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+
+          - matid: 4.6 9d9a71002a1c1a04005c40d9cd5a6d3db50d32b0 cirrus
+            os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            pgSRCversion: 9d9a71002a1c1a04005c40d9cd5a6d3db50d32b0
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+
+          - matid: 4.7 8e4d72573cc8b8bdc081661c0a3a76d6573eaa38 ignore blank lines
+            os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            pgSRCversion: 8e4d72573cc8b8bdc081661c0a3a76d6573eaa38
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+
+          - matid: 4.8 ab84d0ff806dd791ea9da5f1ca302daf3cf42980 upgrades
+            os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            pgSRCversion: ab84d0ff806dd791ea9da5f1ca302daf3cf42980
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+
+          - matid: 4.9 3e4d868615408370fe6c2977c32f45a47c372b00 removing unnessary
+            os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            pgSRCversion: 3e4d868615408370fe6c2977c32f45a47c372b00
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+
+          - matid: 4.10 2c53dec7f4407c022f8b83e1a63fe0ae1bbb4dc2 oath validator
+            os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            pgSRCversion: 2c53dec7f4407c022f8b83e1a63fe0ae1bbb4dc2
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+
+          - matid: 4.11 40af897eb777bc8a6afca14195587e79e57a5c06 braces for if block
+            os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            pgSRCversion: 40af897eb777bc8a6afca14195587e79e57a5c06
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+
+          - matid: 4.12 41625ab8ea3d0a2656dd0f067f1f0b61df63af97 add support for pipelines
+            os: windows-latest
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            rversion: 4.4.1
+            R_HOME: 'D:\RINSTALL'
+            R_ARCH: /x64
+            pgSRCversion: 41625ab8ea3d0a2656dd0f067f1f0b61df63af97
+            PG_SOURCE: 'D:\PGSOURCE'
+            buildpgANDplrInSRCcontrib: true
+            PG_HOME: 'D:\PGINSTALL'
+
+
           # R bleeding edge and PostgreSQL latest (buildpgFromSRCmethod meson)
           - matid: 5
             os: windows-latest
