@@ -1264,7 +1264,7 @@ jobs:
 
       - name: Set up Cygwin
         if: ${{ env.os == 'windows-latest' && env.compilerClass == 'cygwin' }}
-        uses: cygwin/cygwin-install-action@v4
+        uses: cygwin/cygwin-install-action@v5
         with:
           # x86 or x86_64
           #         GitHub offers ternary operator like behaviour that you can use in expressions
