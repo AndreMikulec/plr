@@ -1295,6 +1295,18 @@ jobs:
              pkg-config
 
       - name: Start Cygwin cygserver 
+        if: ${{ env.os == 'windows-latest' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgFromSRC == 'true' }}
+        env:
+          # Cygwin OS variables
+          SHELLOPTS: igncr
+          CHERE_INVOKING: 1
+          # Msys OS variable
+          msystem: ${{ env.compilerEnv }}
+          Configuration: ${{ env.Configuration }}
+          #
+          PG_SOURCE: ${{ env.PG_SOURCE }}
+          PG_HOME: ${{ env.PG_HOME }}
+          buildpgFromSRCmethod: ${{ env.buildpgFromSRCmethod }}
         run: |
           echo "Start Cygwin cygserver"
           set -x -v -e
@@ -1306,6 +1318,18 @@ jobs:
           cygrunsrv -Q cygserver
 
       - name: Start Cygwin cygserver Again
+        if: ${{ env.os == 'windows-latest' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgFromSRC == 'true' }}
+        env:
+          # Cygwin OS variables
+          SHELLOPTS: igncr
+          CHERE_INVOKING: 1
+          # Msys OS variable
+          msystem: ${{ env.compilerEnv }}
+          Configuration: ${{ env.Configuration }}
+          #
+          PG_SOURCE: ${{ env.PG_SOURCE }}
+          PG_HOME: ${{ env.PG_HOME }}
+          buildpgFromSRCmethod: ${{ env.buildpgFromSRCmethod }}
         run: |
           echo "Start Cygwin cygserver Again"
           set -x -v -e
