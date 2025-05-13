@@ -1294,6 +1294,29 @@ jobs:
              cygrunsrv
              pkg-config
 
+      - name: Start Cygwin cygserver 
+        run: |
+          echo "Start Cygwin cygserver"
+          set -x -v -e
+          cygserver-config --yes
+          echo kern.ipc.shmall 4096 >>     /etc/defaults/etc/cygserver.conf
+          echo kern.ipc.shmmax 16777216 >> /etc/defaults/etc/cygserver.conf
+          # start
+          cygrunsrv -S cygserver
+          cygrunsrv -Q cygserver
+
+      - name: Start Cygwin cygserver Again
+        run: |
+          echo "Start Cygwin cygserver Again"
+          set -x -v -e
+          cygserver-config --yes
+          echo kern.ipc.shmall 4096 >>     /etc/defaults/etc/cygserver.conf
+          echo kern.ipc.shmmax 16777216 >> /etc/defaults/etc/cygserver.conf
+          # start
+          cygrunsrv -S cygserver
+          cygrunsrv -Q cygserver
+
+
       # If the PostgreSQL version is 16 or greater, I can compile PostgreSQL using meson.
       - name: Compile PG using pgSRCversion and PG_SOURCE and Install to here PG_HOME
         if: ${{ env.os == 'windows-latest' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgFromSRC == 'true' }}
@@ -1463,6 +1486,7 @@ jobs:
           dir
           if exist pg-artifact.7z copy pg-artifact.7z pg-matid-${{ matrix.matid }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
           if exist pg-artifact.7z dir                 pg-matid-${{ matrix.matid }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
+
 
       # @v4 - Due to how Artifacts are created in this new version,
       # it is no longer possible to upload to the same named Artifact multiple times.
@@ -1851,7 +1875,6 @@ jobs:
             echo kern.ipc.shmmax 16777216 >> /etc/defaults/etc/cygserver.conf
             
             # start
-            cygrunsrv -Q cygserver
             cygrunsrv -S cygserver
           fi
 
@@ -2537,9 +2560,8 @@ jobs:
             #### cygrunsrv -E cygserver || true
             # uninstall previous
             #### cygrunsrv -R cygserver || true
-            # sinstall
-            cygrunsrv -Q cygserver
-            # cygserver-config --yes
+            # install
+            cygserver-config --yes
             # postgresql failing with below error on lion os x
             # https://stackoverflow.com/questions/6861945/postgresql-failing-with-below-error-on-lion-os-x#:~:text=Failed%20system%20call%20was%20shmget,the%20kernel%20with%20larger%20SHMMAX.
             echo kern.ipc.shmall 4096 >>     /etc/defaults/etc/cygserver.conf
