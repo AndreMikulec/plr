@@ -1836,8 +1836,9 @@ jobs:
             # https://stackoverflow.com/questions/6861945/postgresql-failing-with-below-error-on-lion-os-x#:~:text=Failed%20system%20call%20was%20shmget,the%20kernel%20with%20larger%20SHMMAX.
             echo kern.ipc.shmall 4096 >>     /etc/defaults/etc/cygserver.conf
             echo kern.ipc.shmmax 16777216 >> /etc/defaults/etc/cygserver.conf
-
-            cygrunsrv -S cygserver
+            
+            # try to stop OR start
+            cygrunsrv -E cygserver || cygrunsrv -S cygserver
           fi
 
           # BEGIN MANUAL REGRESSION TEST #################################
