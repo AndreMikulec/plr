@@ -2523,7 +2523,8 @@ jobs:
             #### cygrunsrv -E cygserver || true
             # uninstall previous
             #### cygrunsrv -R cygserver || true
-            # install
+            # stop and install
+            cygrunsrv -E cygserver
             cygserver-config --yes
             # postgresql failing with below error on lion os x
             # https://stackoverflow.com/questions/6861945/postgresql-failing-with-below-error-on-lion-os-x#:~:text=Failed%20system%20call%20was%20shmget,the%20kernel%20with%20larger%20SHMMAX.
@@ -2531,7 +2532,7 @@ jobs:
             echo kern.ipc.shmmax 16777216 >> /etc/defaults/etc/cygserver.conf
 
             # start
-            # cygrunsrv -S cygserver || true
+            cygrunsrv -S cygserver
           fi
 
           echo "whoami: $(whoami)"
