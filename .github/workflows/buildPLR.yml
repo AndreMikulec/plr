@@ -2531,7 +2531,7 @@ jobs:
             echo kern.ipc.shmmax 16777216 >> /etc/defaults/etc/cygserver.conf
 
             # start
-            cygrunsrv -S cygserver || true
+            # cygrunsrv -S cygserver || true
           fi
 
           echo "whoami: $(whoami)"
