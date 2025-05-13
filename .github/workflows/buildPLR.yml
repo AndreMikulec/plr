@@ -1832,7 +1832,7 @@ jobs:
             #### cygrunsrv -E cygserver || true
             # uninstall previous
             #### cygrunsrv -R cygserver || true
-            # install
+            # install 2
             which cygserver
             cygrunsrv -I cygserver --path /usr/sbin/cygserver
             cygrunsrv -Q cygserver
