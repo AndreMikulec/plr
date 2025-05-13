@@ -2534,8 +2534,8 @@ jobs:
 
             set +x +v +e
             # start
-            cygrunsrv -Q cygserver
-            cygrunsrv -S cygserver
+            # cygrunsrv -Q cygserver
+            # cygrunsrv -S cygserver
             set -x -v -e
           fi
 
