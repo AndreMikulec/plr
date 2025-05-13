@@ -2531,7 +2531,8 @@ jobs:
             echo kern.ipc.shmmax 16777216 >> /etc/defaults/etc/cygserver.conf
 
             # try to stop OR start
-            cygrunsrv -E cygserver || cygrunsrv -S cygserver
+            cygrunsrv -E cygserver
+            cygrunsrv -S cygserver
           fi
 
           echo "whoami: $(whoami)"
