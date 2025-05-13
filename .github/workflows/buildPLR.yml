@@ -1825,7 +1825,7 @@ jobs:
 
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
-            echo "cygrunsrv START"
+            echo "cygrunsrv START 1"
             # shutdown current
             #### cygrunsrv -E cygserver || true
             # uninstall previous
@@ -2520,7 +2520,7 @@ jobs:
 
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
-            echo "cygrunsrv START"
+            echo "cygrunsrv START 2"
             # shutdown current
             #### cygrunsrv -E cygserver || true
             # uninstall previous
