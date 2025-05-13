@@ -1837,7 +1837,8 @@ jobs:
             echo kern.ipc.shmall 4096 >>     /etc/defaults/etc/cygserver.conf
             echo kern.ipc.shmmax 16777216 >> /etc/defaults/etc/cygserver.conf
 
-            # start
+            # if running stop, then start
+            cygrunsrv -L | (while read S; do cygrunsrv -E ${S}; done)
             cygrunsrv -S cygserver
           fi
 
