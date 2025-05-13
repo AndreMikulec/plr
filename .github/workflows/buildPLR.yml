@@ -1825,18 +1825,15 @@ jobs:
 
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
-            echo "cygrunsrv START"
-            # shutdown current
-            #### cygrunsrv -E cygserver || true
-            # uninstall previous
-            #### cygrunsrv -R cygserver || true
-            # install
-            cygserver-config --yes
+            echo "cygrunsrv START 1"
+            cygrunsrv -I cygserver --path /usr/sbin/cygserver || true
+            echo "which cygserver: $(which cygserver)"
+            cygrunsrv -E cygserver
+            cygserver-config --yes || true
             # postgresql failing with below error on lion os x
             # https://stackoverflow.com/questions/6861945/postgresql-failing-with-below-error-on-lion-os-x#:~:text=Failed%20system%20call%20was%20shmget,the%20kernel%20with%20larger%20SHMMAX.
             echo kern.ipc.shmall 4096 >>     /etc/defaults/etc/cygserver.conf
             echo kern.ipc.shmmax 16777216 >> /etc/defaults/etc/cygserver.conf
-
             # start
             cygrunsrv -S cygserver
           fi
@@ -2519,11 +2516,6 @@ jobs:
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
             echo "cygrunsrv START 2"
-            # shutdown current
-            #### cygrunsrv -E cygserver || true
-            # uninstall previous
-            #### cygrunsrv -R cygserver || true
-            # install
             cygrunsrv -I cygserver --path /usr/sbin/cygserver || true
             echo "which cygserver: $(which cygserver)"
             cygrunsrv -E cygserver
@@ -2532,7 +2524,6 @@ jobs:
             # https://stackoverflow.com/questions/6861945/postgresql-failing-with-below-error-on-lion-os-x#:~:text=Failed%20system%20call%20was%20shmget,the%20kernel%20with%20larger%20SHMMAX.
             echo kern.ipc.shmall 4096 >>     /etc/defaults/etc/cygserver.conf
             echo kern.ipc.shmmax 16777216 >> /etc/defaults/etc/cygserver.conf
-
             # start
             cygrunsrv -S cygserver
           fi
