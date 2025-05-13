@@ -1262,25 +1262,6 @@ jobs:
           set -x -v -e
           pacman -S --needed --noconfirm ${{ env.MINGW_PACKAGE_PREFIX }}-postgresql
 
-##    - name: Set up Cygwin
-##      if: ${{ env.os == 'windows-latest' && env.compilerClass == 'cygwin' }}
-##      uses: cygwin/cygwin-install-action@v5
-##      with:
-##        # x86 or x86_64
-##        #         GitHub offers ternary operator like behaviour that you can use in expressions
-##        platform: ${{ env.Platform == 'x64' && 'x86_64' || 'x86' }}
-##        # REQUIRED def true - otherwise the default install MING64 "bash" will be found
-##        # add-to-path: true
-##        packages: >-
-##           cygrunsrv pkg-config  meson  gendef
-##           gcc-core  make  tar  gzip  libreadline7  zlib  icu-devel  bison  perl
-##           flex  libreadline-devel  libssl-devel  libxml2-devel  libxslt-devel  openldap-devel  zlib-devel
-##           libintl-devel  libcrypt-devel
-##           p7zip
-##           postgresql-client  postgresql  postgresql-devel
-##           libpq-devel
-##           R  R-debuginfo
-
       - name: Set up Cygwin
         if: ${{ env.os == 'windows-latest' && env.compilerClass == 'cygwin' }}
         uses: cygwin/cygwin-install-action@v5
@@ -1291,54 +1272,14 @@ jobs:
           # REQUIRED def true - otherwise the default install MING64 "bash" will be found
           # add-to-path: true
           packages: >-
-             cygrunsrv
-             pkg-config
-
-      - name: Start Cygwin cygserver 
-        if: ${{ env.os == 'windows-latest' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgFromSRC == 'true' }}
-        env:
-          # Cygwin OS variables
-          SHELLOPTS: igncr
-          CHERE_INVOKING: 1
-          # Msys OS variable
-          msystem: ${{ env.compilerEnv }}
-          Configuration: ${{ env.Configuration }}
-          #
-          PG_SOURCE: ${{ env.PG_SOURCE }}
-          PG_HOME: ${{ env.PG_HOME }}
-          buildpgFromSRCmethod: ${{ env.buildpgFromSRCmethod }}
-        run: |
-          echo "Start Cygwin cygserver"
-          set -x -v -e
-          cygserver-config --yes
-          echo kern.ipc.shmall 4096 >>     /etc/defaults/etc/cygserver.conf
-          echo kern.ipc.shmmax 16777216 >> /etc/defaults/etc/cygserver.conf
-          # start
-          cygrunsrv -S cygserver
-          cygrunsrv -Q cygserver
-
-      - name: Start Cygwin cygserver Again
-        if: ${{ env.os == 'windows-latest' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgFromSRC == 'true' }}
-        env:
-          # Cygwin OS variables
-          SHELLOPTS: igncr
-          CHERE_INVOKING: 1
-          # Msys OS variable
-          msystem: ${{ env.compilerEnv }}
-          Configuration: ${{ env.Configuration }}
-          #
-          PG_SOURCE: ${{ env.PG_SOURCE }}
-          PG_HOME: ${{ env.PG_HOME }}
-          buildpgFromSRCmethod: ${{ env.buildpgFromSRCmethod }}
-        run: |
-          echo "Start Cygwin cygserver Again"
-          set -x -v -e
-          cygserver-config --yes
-          echo kern.ipc.shmall 4096 >>     /etc/defaults/etc/cygserver.conf
-          echo kern.ipc.shmmax 16777216 >> /etc/defaults/etc/cygserver.conf
-          # start
-          cygrunsrv -S cygserver
-          cygrunsrv -Q cygserver
+             cygrunsrv pkg-config  meson  gendef
+             gcc-core  make  tar  gzip  libreadline7  zlib  icu-devel  bison  perl
+             flex  libreadline-devel  libssl-devel  libxml2-devel  libxslt-devel  openldap-devel  zlib-devel
+             libintl-devel  libcrypt-devel
+             p7zip
+             postgresql-client  postgresql  postgresql-devel
+             libpq-devel
+             R  R-debuginfo
 
 
       # If the PostgreSQL version is 16 or greater, I can compile PostgreSQL using meson.
@@ -1892,9 +1833,13 @@ jobs:
             # uninstall previous
             #### cygrunsrv -R cygserver || true
             # install
+            which cygserver
+            cygrunsrv -I cygserver --path /usr/sbin/cygserver
+            cygrunsrv -Q cygserver
             cygserver-config --yes
             # postgresql failing with below error on lion os x
             # https://stackoverflow.com/questions/6861945/postgresql-failing-with-below-error-on-lion-os-x#:~:text=Failed%20system%20call%20was%20shmget,the%20kernel%20with%20larger%20SHMMAX.
+            
             echo kern.ipc.shmall 4096 >>     /etc/defaults/etc/cygserver.conf
             echo kern.ipc.shmmax 16777216 >> /etc/defaults/etc/cygserver.conf
             
