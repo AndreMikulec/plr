@@ -1463,8 +1463,8 @@ jobs:
         run: |
           echo on
           dir
-          if exist pg-artifact.7z copy pg-artifact.7z pg-matid-${{ matrix.matid }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
-          if exist pg-artifact.7z dir                 pg-matid-${{ matrix.matid }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
+          if exist pg-artifact.7z copy pg-artifact.7z pg-matid-${{ matrix.matid }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
+          if exist pg-artifact.7z dir                 pg-matid-${{ matrix.matid }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
 
       # @v4 - Due to how Artifacts are created in this new version,
       # it is no longer possible to upload to the same named Artifact multiple times.
@@ -1475,9 +1475,9 @@ jobs:
         if: ${{ env.os == 'windows-2025' &&  env.compilerClass == 'MSYS2' && env.buildpgFromSRC == 'true' }}
         uses: actions/upload-artifact@v4
         with:
-          name: pg-matid-${{ matrix.matid }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}
+          name: pg-matid-${{ matrix.matid }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}
           path: |
-            pg-matid-${{ matrix.matid }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
+            pg-matid-${{ matrix.matid }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
 
       - name: Windows non-msvc Meson PG and Meson PL/R Setup Compile and Non-Meson Manual Test
         if: ${{ env.os == 'windows-2025' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib == 'true' }}
@@ -2700,7 +2700,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}
+          name: plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}
           # default
           if-no-files-found: warn
           path: |
@@ -2792,8 +2792,8 @@ jobs:
         run: |
           echo on
           dir
-          if exist plr-artifact.zip copy plr-artifact.zip plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
-          if exist plr-artifact.zip dir                   plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
+          if exist plr-artifact.zip copy plr-artifact.zip plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
+          if exist plr-artifact.zip dir                   plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
 
       # Testing is not done here.
       # Pushing this tag assumes that the previous Github Actions workflow run had all 'successes'.
@@ -2806,5 +2806,5 @@ jobs:
           # "artifacts" means "paths" and "files"
           # set of paths representing artifacts to upload to the release
           artifacts: |
-            plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.os }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
+            plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
           token: ${{ secrets.ACTIONS_CREATE_RELEASE_REPO_SECRET }}
