@@ -1277,13 +1277,15 @@ jobs:
 
       - name: Set up Cygwin
         if: ${{ env.os == 'windows-2025' && env.compilerClass == 'cygwin' }}
-        uses: cygwin/cygwin-install-action@v5
+        uses: cygwin/cygwin-install-action@v6
         with:
           # x86 or x86_64
           #         GitHub offers ternary operator like behaviour that you can use in expressions
           platform: ${{ env.Platform == 'x64' && 'x86_64' || 'x86' }}
+          install-dir: 'C:\cygwin'
           # REQUIRED def true - otherwise the default install MING64 "bash" will be found
           # add-to-path: true
+          work-vol: 'C:'
           packages: >-
              cygrunsrv pkg-config  meson  gendef
              gcc-core  make  tar  gzip  libreadline7  zlib  icu-devel  bison  perl
