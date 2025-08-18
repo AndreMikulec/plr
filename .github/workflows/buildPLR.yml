@@ -103,14 +103,14 @@ jobs:
             Configuration: Debug
             #
             rversion:  devel
-            R_HOME: 'D:\RINSTALL'
+            R_HOME: 'C:\RINSTALL'
             R_ARCH: /x64
             #
             pgSRCversion: master
-            PG_SOURCE: 'D:\PGSOURCE'
+            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
-            PG_HOME: 'D:\PGINSTALL'
+            PG_HOME: 'C:\PGINSTALL'
 
 
           # R latest and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
@@ -124,14 +124,14 @@ jobs:
             Configuration: Debug
             #
             rversion: 4.5.1
-            R_HOME: 'D:\RINSTALL'
+            R_HOME: 'C:\RINSTALL'
             R_ARCH: /x64
             #
             pgSRCversion: master
-            PG_SOURCE: 'D:\PGSOURCE'
+            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
-            PG_HOME: 'D:\PGINSTALL'
+            PG_HOME: 'C:\PGINSTALL'
 
 
           # R latest and PostgreSQL bleeding edge (buildpgANDplrInSRCcontrib true)
@@ -145,7 +145,7 @@ jobs:
             Configuration: Debug
             #
             rversion: 4.5.1
-            R_HOME: 'D:\RINSTALL'
+            R_HOME: 'C:\RINSTALL'
             R_ARCH: /x64
             #
             # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
@@ -157,7 +157,7 @@ jobs:
             # Otherwise, just choose the latest REL_XX_Y or better just REL_XX_STABLE
             # https://github.com/postgres/postgres/tags
             pgSRCversion: master
-            PG_SOURCE: 'D:\PGSOURCE'
+            PG_SOURCE: 'C:\PGSOURCE'
             #
             # buildpgFromSRC: true
             # buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
@@ -166,7 +166,7 @@ jobs:
             # xor
             # buildpgANDplrInSRCcontrib: true
             buildpgANDplrInSRCcontrib: true
-            PG_HOME: 'D:\PGINSTALL'
+            PG_HOME: 'C:\PGINSTALL'
 
           # R bleeding edge and PostgreSQL latest (buildpgFromSRCmethod meson)
           - matid: 5
@@ -179,14 +179,14 @@ jobs:
             Configuration: Debug
             #
             rversion:  devel
-            R_HOME: 'D:\RINSTALL'
+            R_HOME: 'C:\RINSTALL'
             R_ARCH: /x64
             #
             pgSRCversion: REL_18_STABLE
-            PG_SOURCE: 'D:\PGSOURCE'
+            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
-            PG_HOME: 'D:\PGINSTALL'
+            PG_HOME: 'C:\PGINSTALL'
             #
             # pgWINversion: REL_X_Y.future-future
             #
@@ -211,14 +211,14 @@ jobs:
             Configuration: Release
             #
             rversion: 4.5.1
-            R_HOME: 'D:\RINSTALL'
+            R_HOME: 'C:\RINSTALL'
             R_ARCH: /x64
             #
             pgSRCversion: REL_18_STABLE
-            PG_SOURCE: 'D:\PGSOURCE'
+            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
-            PG_HOME: 'D:\PGINSTALL'
+            PG_HOME: 'C:\PGINSTALL'
             #
             # pgWINversion: 18.?-?
             MSYS2testonpgWIN: false
@@ -235,13 +235,13 @@ jobs:
             Configuration: Release
             #
             rversion: 4.5.1
-            R_HOME: 'D:\RINSTALL'
+            R_HOME: 'C:\RINSTALL'
             R_ARCH: /x64
             #
             pgSRCversion: REL_18_STABLE
-            PG_SOURCE: 'D:\PGSOURCE'
+            PG_SOURCE: 'C:\PGSOURCE'
             buildpgANDplrInSRCcontrib: true
-            PG_HOME: 'D:\PGINSTALL'
+            PG_HOME: 'C:\PGINSTALL'
             #
             # pgWINversion: 18.?-?
             MSYS2testonpgWIN: false
@@ -258,14 +258,14 @@ jobs:
             Configuration: Debug
             #
             rversion:  devel
-            R_HOME: 'D:\RINSTALL'
+            R_HOME: 'C:\RINSTALL'
             R_ARCH: /x64
             #
             pgSRCversion: REL_17_STABLE
-            PG_SOURCE: 'D:\PGSOURCE'
+            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
-            PG_HOME: 'D:\PGINSTALL'
+            PG_HOME: 'C:\PGINSTALL'
             #
             # EnterpriseDB PostgreSQL for Windows
             # windows-2025 and pgWINversion: 17.x-y
@@ -297,14 +297,14 @@ jobs:
             Configuration: Release
             #
             rversion: 4.5.1
-            R_HOME: 'D:\RINSTALL'
+            R_HOME: 'C:\RINSTALL'
             R_ARCH: /x64
             #
             pgSRCversion: REL_17_STABLE
-            PG_SOURCE: 'D:\PGSOURCE'
+            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
-            PG_HOME: 'D:\PGINSTALL'
+            PG_HOME: 'C:\PGINSTALL'
             #
             # Note, BELOW Github Actions has installed a lower version (17.5),
             # than what is available at EnterpriseDB 17.6-1 (Aug 19 2025)
@@ -324,13 +324,13 @@ jobs:
             Configuration: Release
             #
             rversion: 4.5.1
-            R_HOME: 'D:\RINSTALL'
+            R_HOME: 'C:\RINSTALL'
             R_ARCH: /x64
             #
             pgSRCversion: REL_17_STABLE
-            PG_SOURCE: 'D:\PGSOURCE'
+            PG_SOURCE: 'C:\PGSOURCE'
             buildpgANDplrInSRCcontrib: true
-            PG_HOME: 'D:\PGINSTALL'
+            PG_HOME: 'C:\PGINSTALL'
             #
             # Note, BELOW Github Actions has installed a lower version (17.5),
             # than what is available at EnterpriseDB 17.6-1 (Aug 19 2025)
@@ -349,13 +349,13 @@ jobs:
             Configuration: Release
             #
             rversion: 4.5.1
-            R_HOME: 'D:\RINSTALL'
+            R_HOME: 'C:\RINSTALL'
             R_ARCH: /x64
             #
             pgSRCversion: REL_16_STABLE
-            PG_SOURCE: 'D:\PGSOURCE'
+            PG_SOURCE: 'C:\PGSOURCE'
             buildpgANDplrInSRCcontrib: true
-            PG_HOME: 'D:\PGINSTALL'
+            PG_HOME: 'C:\PGINSTALL'
             #
             pgWINversion: 16.10-1
             MSYS2testonpgWIN: true
@@ -371,14 +371,14 @@ jobs:
             Configuration: Release
             #
             rversion: 4.5.1
-            R_HOME: 'D:\RINSTALL'
+            R_HOME: 'C:\RINSTALL'
             R_ARCH: /x64
             #
             pgSRCversion: REL_15_STABLE
-            PG_SOURCE: 'D:\PGSOURCE'
+            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: make
-            PG_HOME: 'D:\PGINSTALL'
+            PG_HOME: 'C:\PGINSTALL'
             #
             pgWINversion: 15.14-1
             MSYS2testonpgWIN: true
@@ -394,14 +394,14 @@ jobs:
             Configuration: Release
             #
             rversion: 4.5.1
-            R_HOME: 'D:\RINSTALL'
+            R_HOME: 'C:\RINSTALL'
             R_ARCH: /x64
             #
             pgSRCversion: REL_14_STABLE
-            PG_SOURCE: 'D:\PGSOURCE'
+            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: make
-            PG_HOME: 'D:\PGINSTALL'
+            PG_HOME: 'C:\PGINSTALL'
             #
             # EnterpriseDB PostgreSQL for Windows
             # windows-2022 and pgWINversion: 14.x-y
