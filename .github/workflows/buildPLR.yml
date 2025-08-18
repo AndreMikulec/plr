@@ -291,7 +291,7 @@ jobs:
             #
             pgSRCversion: REL_16_STABLE
             PG_SOURCE: 'C:\PGSOURCE'
-           buildpgFromSRC: true
+            buildpgFromSRC: true
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
             #
