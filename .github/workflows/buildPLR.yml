@@ -784,7 +784,7 @@ jobs:
           echo "CRAN_R_DOWNLOAD_URL: ${env:CRAN_R_DOWNLOAD_URL}"
 
       - name: Checkout Code of This Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # running Meson on GitHub Actions will end up using GCC rather than MSVC
       #
@@ -802,7 +802,7 @@ jobs:
 
       - name: Checkout PostgreSQL Code
         if: ${{ env.pgSRCversion != 'notset' }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: 'postgres/postgres'
 
