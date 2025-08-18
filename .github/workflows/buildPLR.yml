@@ -57,12 +57,13 @@ jobs:
           # https://www.cygwin.com/packages/summary/postgresql.html
           #
           # current Cygwin repository
-          - matid: 1
+          - matid: 01
             os: windows-2025
             GithubActionsIgnoreFail: false
             compilerEnv: cygwin
             Platform: x64
             Configuration: Release
+
 
           # plr for "R 4.3.0 (and later) for Windows" can not be compiled with Microsoft Visual Studio.
           # Therefore, here, plr for "R 4.3.0 (and later) for Windows" is compiled with MSYS2(UCRT64/MINGW32).
@@ -93,7 +94,7 @@ jobs:
           # https://github.com/actions/runner-images
 
           # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
-          - matid: 2
+          - matid: 02
             os: windows-2025
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -114,7 +115,7 @@ jobs:
 
 
           # R latest and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
-          - matid: 3
+          - matid: 03
             os: windows-2025
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -135,7 +136,7 @@ jobs:
 
 
           # R latest and PostgreSQL bleeding edge (buildpgANDplrInSRCcontrib true)
-          - matid: 4
+          - matid: 04
             os: windows-2025
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -168,8 +169,9 @@ jobs:
             buildpgANDplrInSRCcontrib: true
             PG_HOME: 'C:\PGINSTALL'
 
+
           # R bleeding edge and PostgreSQL latest (buildpgFromSRCmethod meson)
-          - matid: 5
+          - matid: 05
             os: windows-2025
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -201,7 +203,7 @@ jobs:
 
 
           # R latest and PostgreSQL latest (buildpgFromSRCmethod meson)
-          - matid: 6
+          - matid: 06
             os: windows-2025
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
@@ -225,7 +227,7 @@ jobs:
 
 
           # R latest and PostgreSQL latest (buildpgANDplrInSRCcontrib true)
-          - matid: 7
+          - matid: 07
             os: windows-2025
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
@@ -245,49 +247,10 @@ jobs:
             #
             # pgWINversion: 18.?-?
             MSYS2testonpgWIN: false
-
-
-          # R bleeding edge and PostgreSQL latest (buildpgFromSRCmethod meson)
-          - matid: 8
-            os: windows-2025
-            GithubActionsIgnoreFail: true
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Debug
-            #
-            rversion:  devel
-            R_HOME: 'C:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: REL_17_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: meson
-            PG_HOME: 'C:\PGINSTALL'
-            #
-            # EnterpriseDB PostgreSQL for Windows
-            # windows-2025 and pgWINversion: 17.x-y
-            # (if MANUAL would be: 17.5)
-            #
-            # A HUMAN must manually see the VERSION here. (seen Aug 17 2024 EST)
-            # Aug 2025 - Pre-installed Github Actions PostgreSQL for Windows version is x64-17
-            # ServiceName postgresql-x64-17
-            # Version 17.5
-            # REAFFIRMED AUG 17 2025
-            # https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md
-            # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-software
-            #
-            # Note, BELOW Github Actions has installed a lower version (17.5),
-            # than what is available at EnterpriseDB 17.6-1 (Aug 19 2025)
-            #
-            # pgWINversion: 17.5-1
-            MSYS2testonpgWIN: true
 
 
           # R latest and PostgreSQL latest (buildpgFromSRCmethod meson)
-          - matid: 9
+          - matid: 08
             os: windows-2025
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
@@ -313,33 +276,7 @@ jobs:
             MSYS2testonpgWIN: true
 
 
-          # R latest and PostgreSQL latest (buildpgANDplrInSRCcontrib true)
-          - matid: 10
-            os: windows-2025
-            GithubActionsIgnoreFail: false
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Release
-            #
-            rversion: 4.5.1
-            R_HOME: 'C:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: REL_17_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
-            buildpgANDplrInSRCcontrib: true
-            PG_HOME: 'C:\PGINSTALL'
-            #
-            # Note, BELOW Github Actions has installed a lower version (17.5),
-            # than what is available at EnterpriseDB 17.6-1 (Aug 19 2025)
-            #
-            # pgWINversion: 17.5-1
-            MSYS2testonpgWIN: true
-
-
-          - matid: 11
+          - matid: 09
             os: windows-2025
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
@@ -354,14 +291,15 @@ jobs:
             #
             pgSRCversion: REL_16_STABLE
             PG_SOURCE: 'C:\PGSOURCE'
-            buildpgANDplrInSRCcontrib: true
+           buildpgFromSRC: true
+            buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
             #
             pgWINversion: 16.10-1
             MSYS2testonpgWIN: true
 
 
-          - matid: 12
+          - matid: 10
             os: windows-2025
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
@@ -384,7 +322,7 @@ jobs:
             MSYS2testonpgWIN: true
 
 
-          - matid: 13
+          - matid: 11
             os: windows-2025
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
