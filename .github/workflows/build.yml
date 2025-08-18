@@ -14,7 +14,7 @@ jobs:
         run: echo building master
 
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: checkout postgres
         run: |
@@ -50,10 +50,10 @@ jobs:
           USE_PGXS: 1
 
   REL_18_:
-    # SEEN MAY 2025
-    # Ubuntu 24.04	ubuntu-latest
+    # SEEN AUG 2025
+    # Ubuntu 24.04 - ubuntu-latest or ubuntu-24.04
     # https://github.com/actions/runner-images
-    # noble (24.04, LTS)
+    # noble (24.04, LTS), plucky (25.04, amd64 only)
     # https://wiki.postgresql.org/wiki/Apt
     # https://apt.postgresql.org/pub/repos/apt/dists/
     runs-on: ubuntu-latest
@@ -62,7 +62,7 @@ jobs:
         run: echo building master
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: checkout postgres
         run: |
@@ -128,10 +128,10 @@ jobs:
     strategy:
       matrix:
         include:
-          # SEEN MAY 2025
-          # Ubuntu 24.04	ubuntu-latest
+          # SEEN AUG 2025
+          # Ubuntu 24.04 - ubuntu-latest or ubuntu-24.04
           # https://github.com/actions/runner-images
-          # noble (24.04, LTS)
+          # noble (24.04, LTS), plucky (25.04, amd64 only)
           # https://wiki.postgresql.org/wiki/Apt
           # https://apt.postgresql.org/pub/repos/apt/dists/
           # ##
@@ -151,7 +151,7 @@ jobs:
         run: echo PG $PG
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Before Script
         run: |
