@@ -100,9 +100,8 @@ jobs:
 ##          # https://stackoverflow.com/questions/10540228/c-complex-numbers-in-c
 ##          #
 ##
-##          # SEEN MAY 2025 (not yet SWITCHING to windows-2025 - need to modify HARDCODED yaml from 14 to 17)
 ##          # windows-2025 (uses PG 17)
-##          # windows-2025 or windows-2025 (uses PG 14)
+##          # windows-2022 (uses PG 14)
 ##          # https://github.com/actions/runner-images
 
           # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
