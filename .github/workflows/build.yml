@@ -1,4 +1,4 @@
-name: plr CI
+name: plr CI 
 run-name: plr CI - ${{ github.event.head_commit.message }}
 
 on: 
@@ -50,7 +50,7 @@ jobs:
           USE_PGXS: 1
 
   REL_18_:
-    # SEEN AUG 2025
+    # SEEN SEP 2025
     # Ubuntu 24.04 - ubuntu-latest or ubuntu-24.04
     # https://github.com/actions/runner-images
     # noble (24.04, LTS), plucky (25.04, amd64 only)
@@ -128,7 +128,7 @@ jobs:
     strategy:
       matrix:
         include:
-          # SEEN AUG 2025
+          # SEEN SEP 2025
           # Ubuntu 24.04 - ubuntu-latest or ubuntu-24.04
           # https://github.com/actions/runner-images
           # noble (24.04, LTS), plucky (25.04, amd64 only)
@@ -136,8 +136,9 @@ jobs:
           # https://apt.postgresql.org/pub/repos/apt/dists/
           # ##
           # https://ftp.postgresql.org/pub/repos/apt/dists/noble-pgdg/
-          # Regular expression search - "Package: postgresql-17$"
+          # Regular expression search - "Package: postgresql-18$"
           # https://ftp.postgresql.org/pub/repos/apt/dists/noble-pgdg/main/binary-amd64/Packages
+          - pg: 18
           - pg: 17
           - pg: 16
           - pg: 15

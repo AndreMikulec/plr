@@ -136,13 +136,14 @@ environment:
     # msvc/msys2? - "pg" 10     - last version "pg" supports x86
     # msvc/msys2? - "r"   4.1.3 - last version "r"  supports x86
 
-  - pg: REL_10_STABLE # static commit - from git
-    PlatformToolset: v143
-    Configuration: Debug
-    Platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-    rversion: 4.1.3
-    compiler: msys2
+##  # configure: error: C compiler cannot create executables (seen SEP 29 2025)
+##  - pg: REL_10_STABLE # static commit - from git
+##    PlatformToolset: v143
+##    Configuration: Debug
+##    Platform: x86
+##    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+##    rversion: 4.1.3
+##    compiler: msys2
 
 #   # msvc - late November 2023
 #   # msvc
@@ -312,7 +313,6 @@ for:
   - if not defined pglinkbinoldurl set pglinkbinoldurl=none
   # not (yet) used in compiler cygwin
   # - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
-  - if not defined rversion_more set rversion_more=-nodetails
 
   install:
   - echo compiler cygwin install
@@ -590,7 +590,6 @@ for:
   - if not defined pglinkbinoldurl set pglinkbinoldurl=none
   - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
   - if not defined rversionurl set rversionurl=https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
-  - if not defined rversion_more set rversion_more=-nodetails
 
   install:
   - echo compiler msys2 install
@@ -870,7 +869,6 @@ for:
   - if not defined pghint      set pghint=none
   - if not defined  rlinkbinoldurl set  rlinkbinoldurl=none
   - if not defined rversionurl set rversionurl=https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
-  - if not defined rversion_more set rversion_more=-nodetails
 
   install:
   - echo compiler msvc install
@@ -1252,7 +1250,7 @@ for:
   - copy %dll% tmp\lib
   - copy %dll:.dll=.pdb% tmp\symbols
   - dir tmp
-  - set var7z=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%%rversion_more%-%Platform%-%Configuration%-%compiler%.7z
+  - set var7z=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%Platform%-%Configuration%-%compiler%.7z
   - 7z a -t7z -mmt24 -mx7 -r %var7z% .\tmp\* > nul
   - dir "%var7z%"
   - echo appveyor PushArtifact "%var7z%"

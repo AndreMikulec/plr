@@ -88,9 +88,8 @@ jobs:
           # https://stackoverflow.com/questions/10540228/c-complex-numbers-in-c
           #
 
-          # SEEN MAY 2025 (not yet SWITCHING to windows-2025 - need to modify HARDCODED yaml from 14 to 17)
           # windows-2025 (uses PG 17)
-          # windows-2025 or windows-2025 (uses PG 14)
+          # windows-2022 (uses PG 14)
           # https://github.com/actions/runner-images
 
           # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
@@ -198,8 +197,11 @@ jobs:
             # pgWINversion: x.y-z
             # This may not be available if pgSRCversion is 'RC' or 'BETA'.
             # MSYS2testonpgWIN: true
-            # pgWINversion: 18.?-?
-            MSYS2testonpgWIN: false
+            #
+            #   pgWINversion: 18.?-?
+            #   MSYS2testonpgWIN: false
+            pgWINversion: 18.0-1
+            MSYS2testonpgWIN: true
 
 
           # R latest and PostgreSQL latest (buildpgFromSRCmethod meson)
@@ -222,8 +224,10 @@ jobs:
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
             #
-            # pgWINversion: 18.?-?
-            MSYS2testonpgWIN: false
+            #   pgWINversion: 18.?-?
+            #   MSYS2testonpgWIN: false
+            pgWINversion: 18.0-1
+            MSYS2testonpgWIN: true
 
 
           # R latest and PostgreSQL latest (buildpgANDplrInSRCcontrib true)
@@ -245,8 +249,10 @@ jobs:
             buildpgANDplrInSRCcontrib: true
             PG_HOME: 'C:\PGINSTALL'
             #
-            # pgWINversion: 18.?-?
-            MSYS2testonpgWIN: false
+            #   pgWINversion: 18.?-?
+            #   MSYS2testonpgWIN: false
+            pgWINversion: 18.0-1
+            MSYS2testonpgWIN: true
 
 
           # R latest and PostgreSQL latest (buildpgFromSRCmethod meson)
