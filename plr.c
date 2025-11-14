@@ -56,8 +56,6 @@ static bool	plr_be_init_done = false;
 /* namespace OID for the PL/R language handler function */
 static Oid plr_nspOid = InvalidOid;
 
-int R_SignalHandlers = 1;  /* Exposed in R_interface.h */
-
 /*
  * defines
  */
@@ -522,6 +520,7 @@ plr_init(void)
 	 * When initialization fails, R currently exits. Check the return
 	 * value anyway in case this ever gets fixed
 	 */
+	
 	if (!Rf_initEmbeddedR(rargc, rargv))
 		ereport(ERROR,
 				(errcode(ERRCODE_OBJECT_NOT_IN_PREREQUISITE_STATE),
