@@ -744,6 +744,7 @@ jobs:
           rem A comma at the end is O.K
           rem Component "notset" is ignored
           "${{ env.rversionlong }}.exe" /VERYSILENT /COMPONENTS=main,%R_ARCHplat% /DIR=%R_HOME% /NOICONS /TASKS=
+          "%R_HOME%\bin\R" --version
           dir "%R_HOME%"
 
       # Github Actions provided PostgreSQL x64-17 (as of Aug 2025)
@@ -1004,6 +1005,16 @@ jobs:
              postgresql-client  postgresql  postgresql-devel
              libpq-devel
              R  R-debuginfo
+
+      - name: View Cygwin R Version
+        if: ${{ env.os == 'windows-2025' && env.compilerClass == 'cygwin' }}
+        env:
+          # Msys OS variable
+          msystem: ${{ env.compilerEnv }}
+        run: |
+          echo "View Cygwin R Version"
+          set -x -v -e
+          R --version
 
       # If the PostgreSQL version is 16 or greater, I can compile PostgreSQL using meson.
       - name: Compile PG using pgSRCversion and PG_SOURCE and Install to here PG_HOME

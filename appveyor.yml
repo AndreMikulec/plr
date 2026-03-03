@@ -521,6 +521,7 @@ for:
   # only linking to the "R from cygwin"
   ### - if "%pg%"=="none" ( )
   - setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
+  - R --version
 
   build_script:
   #
@@ -628,6 +629,8 @@ for:
       }
   #
   - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
+  - "%R_HOME%\bin\R" --version
+
 
   # From the version
   - ps: |
@@ -904,6 +907,7 @@ for:
       }
   #
   - R-%rversion%-win.exe /VERYSILENT
+  - "%pf%\R\R-%rversion%\bin\R" --version
   #
 
   - set mingw=C:\msys64\mingw
