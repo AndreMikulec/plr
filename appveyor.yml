@@ -629,7 +629,7 @@ for:
       }
   #
   - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
-  - "%R_HOME%\bin\R" --version
+  - "%R_HOME%\\bin\\R" --version
 
 
   # From the version
@@ -907,7 +907,7 @@ for:
       }
   #
   - R-%rversion%-win.exe /VERYSILENT
-  - "%pf%\R\R-%rversion%\bin\R" --version
+  - "%pf%\\R\\R-%rversion%\\bin\\R" --version
   #
 
   - set mingw=C:\msys64\mingw
