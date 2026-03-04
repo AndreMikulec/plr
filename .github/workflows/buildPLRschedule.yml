@@ -124,7 +124,7 @@ jobs:
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
 
-          # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
+          # R 4.5.2 and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
           - matid: 020452
             os: windows-2025
             GithubActionsIgnoreFail: false
@@ -143,8 +143,8 @@ jobs:
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
-
-          # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
+  
+          # R 4.4.3 and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
           - matid: 020443
             os: windows-2025
             GithubActionsIgnoreFail: false
@@ -163,9 +163,9 @@ jobs:
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
-
-          # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
-          - matid: 0204000
+  
+          # R 4.00 and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
+          - matid: 020400
             os: windows-2025
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
