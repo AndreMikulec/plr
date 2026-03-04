@@ -1250,7 +1250,8 @@ jobs:
           msystem: ${{ env.compilerEnv }}
         run: |
           echo "View Cygwin R Version"
-          R --version
+          # cygwin query R package version
+          cygcheck -c R
 
       # If the PostgreSQL version is 16 or greater, I can compile PostgreSQL using meson.
       - name: Compile PG using pgSRCversion and PG_SOURCE and Install to here PG_HOME
