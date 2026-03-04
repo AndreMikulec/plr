@@ -849,11 +849,11 @@ r_get_tuple(SEXP rval, plr_function *function, FunctionCallInfo fcinfo)
 	int			i, min_length;
 
 	/*
-	* The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
-	* https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
-	* Remove Rf_isFrame.
-	* https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
-	*/
+	 * The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
+	 * https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
+	 * Remove Rf_isFrame.
+	 * https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
+	 */
 #if (R_SVN_REVISION >= 89488) /* R_VERSION >= 4.6.0 */
 	if (!(isDataFrame(rval) || isNewList(rval) || isList(rval)))
 #else
@@ -948,11 +948,11 @@ get_trigger_tuple(SEXP rval, plr_function *function, FunctionCallInfo fcinfo, bo
 	}
 
 	/*
-	* The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
-	* https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
-	* Remove Rf_isFrame.
-	* https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
-	*/
+	 * The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
+	 * https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
+	 * Remove Rf_isFrame.
+	 * https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
+	 */
 #if (R_SVN_REVISION >= 89488) /* R_VERSION >= 4.6.0 */
 	if (isDataFrame(rval))
 #else
@@ -1122,11 +1122,11 @@ get_tuplestore(SEXP rval, plr_function *function, FunctionCallInfo fcinfo, bool 
 						"allowed in this context")));
 
 	/*
-	* The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
-	* https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
-	* Remove Rf_isFrame.
-	* https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
-	*/
+	 * The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
+	 * https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
+	 * Remove Rf_isFrame.
+	 * https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
+	 */
 #if (R_SVN_REVISION >= 89488) /* R_VERSION >= 4.6.0 */
 	if (isDataFrame(rval))
 #else
@@ -1166,11 +1166,11 @@ get_tuplestore(SEXP rval, plr_function *function, FunctionCallInfo fcinfo, bool 
 	rsinfo->returnMode = SFRM_Materialize;
 
 	/*
-	* The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
-	* https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
-	* Remove Rf_isFrame.
-	* https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
-	*/
+	 * The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
+	 * https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
+	 * Remove Rf_isFrame.
+	 * https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
+	 */
 #if (R_SVN_REVISION >= 89488) /* R_VERSION >= 4.6.0 */
 	if (isDataFrame(rval) || isList(rval) || isNewList(rval))
 #else
@@ -2079,11 +2079,11 @@ get_frame_tuplestore(SEXP rval,
 	 * Otherwise, stop at one row.
 	 */
 	/*
-	* The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
-	* https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
-	* Remove Rf_isFrame.
-	* https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
-	*/
+	 * The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
+	 * https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
+	 * Remove Rf_isFrame.
+	 * https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
+	 */
 #if (R_SVN_REVISION >= 89488) /* R_VERSION >= 4.6.0 */
 	if (isDataFrame(rval))
 #else

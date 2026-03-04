@@ -521,7 +521,7 @@ for:
   # only linking to the "R from cygwin"
   ### - if "%pg%"=="none" ( )
   - setup.exe %unsupported_flag% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
-  - R --version
+
 
   build_script:
   #
