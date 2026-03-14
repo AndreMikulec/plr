@@ -848,7 +848,7 @@ r_get_tuple(SEXP rval, plr_function *function, FunctionCallInfo fcinfo)
 	bool	   *isnull;
 	int			i, min_length;
 
-	if (!(isFrame(rval) || isNewList(rval) || isList(rval)))
+	if (!(IS_DATAFRAME(rval) || isNewList(rval) || isList(rval)))
 		elog(ERROR, "Only list alike is expected");
 
 	if (TYPEFUNC_COMPOSITE != get_call_result_type(fcinfo, &oid, &tupdesc))
@@ -937,7 +937,7 @@ get_trigger_tuple(SEXP rval, plr_function *function, FunctionCallInfo fcinfo, bo
 		return (Datum) 0;
 	}
 
-	if (isFrame(rval))
+	if (IS_DATAFRAME(rval))
 		nc = length(rval);
 	else if (isMatrix(rval))
 		nc = ncols(rval);
@@ -1101,7 +1101,7 @@ get_tuplestore(SEXP rval, plr_function *function, FunctionCallInfo fcinfo, bool 
 				 errmsg("materialize mode required, but it is not "
 						"allowed in this context")));
 
-	if (isFrame(rval))
+	if (IS_DATAFRAME(rval))
 		nc = length(rval);
 	else if (isList(rval) || isNewList(rval))
 		nc = length(rval);
@@ -1135,7 +1135,7 @@ get_tuplestore(SEXP rval, plr_function *function, FunctionCallInfo fcinfo, bool 
 	/* OK, go to work */
 	rsinfo->returnMode = SFRM_Materialize;
 
-	if (isFrame(rval) || isList(rval) || isNewList(rval))
+	if (IS_DATAFRAME(rval) || isList(rval) || isNewList(rval))
 		rsinfo->setResult = get_frame_tuplestore(rval, function, attinmeta, per_query_ctx);
 	else if (isMatrix(rval))
 		rsinfo->setResult = get_matrix_tuplestore(rval, function, attinmeta, per_query_ctx);
@@ -1269,7 +1269,7 @@ get_array_datum(SEXP rval, plr_function *function, int col, bool *isnull)
 	if (objlen > 0)
 	{
 		/* two supported special cases */
-		if (isFrame(rval))
+		if (IS_DATAFRAME(rval))
 			return get_frame_array_datum(rval, function,  col, isnull);
 		else if (isMatrix(rval))
 			return get_md_array_datum(rval, 2 /* matrix is 2D */, function, col, isnull);
@@ -2028,7 +2028,7 @@ get_frame_tuplestore(SEXP rval,
 	 * If we return a set, get number of rows by examining the first column.
 	 * Otherwise, stop at one row.
 	 */
-	if (isFrame(rval))
+	if (IS_DATAFRAME(rval))
 	{
 		PROTECT(dfcol = VECTOR_ELT(rval, 0));
 		nr = length(dfcol);
