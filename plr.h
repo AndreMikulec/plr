@@ -119,6 +119,18 @@ extern int R_SignalHandlers;
 #include "Rdevices.h"
 #endif
 
+/*
+ * The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
+ * https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
+ * Remove Rf_isFrame.
+ * https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
+ */
+#if (R_SVN_REVISION >= 89488) /* R_VERSION >= 4.6.0 */
+#define IS_DATAFRAME(rval) isDataFrame(rval)
+#else
+#define IS_DATAFRAME(rval) isFrame(rval)
+#endif
+
 /* Restore the Postgres headers */
 
 #ifdef ERROR
