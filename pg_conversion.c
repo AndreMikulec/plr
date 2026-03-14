@@ -848,17 +848,7 @@ r_get_tuple(SEXP rval, plr_function *function, FunctionCallInfo fcinfo)
 	bool	   *isnull;
 	int			i, min_length;
 
-	/*
-	 * The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
-	 * https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
-	 * Remove Rf_isFrame.
-	 * https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
-	 */
-#if (R_SVN_REVISION >= 89488) /* R_VERSION >= 4.6.0 */
-	if (!(isDataFrame(rval) || isNewList(rval) || isList(rval)))
-#else
 	if (!(isFrame(rval) || isNewList(rval) || isList(rval)))
-#endif
 		elog(ERROR, "Only list alike is expected");
 
 	if (TYPEFUNC_COMPOSITE != get_call_result_type(fcinfo, &oid, &tupdesc))
@@ -947,17 +937,7 @@ get_trigger_tuple(SEXP rval, plr_function *function, FunctionCallInfo fcinfo, bo
 		return (Datum) 0;
 	}
 
-	/*
-	 * The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
-	 * https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
-	 * Remove Rf_isFrame.
-	 * https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
-	 */
-#if (R_SVN_REVISION >= 89488) /* R_VERSION >= 4.6.0 */
-	if (isDataFrame(rval))
-#else
 	if (isFrame(rval))
-#endif
 		nc = length(rval);
 	else if (isMatrix(rval))
 		nc = ncols(rval);
@@ -1121,17 +1101,7 @@ get_tuplestore(SEXP rval, plr_function *function, FunctionCallInfo fcinfo, bool 
 				 errmsg("materialize mode required, but it is not "
 						"allowed in this context")));
 
-	/*
-	 * The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
-	 * https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
-	 * Remove Rf_isFrame.
-	 * https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
-	 */
-#if (R_SVN_REVISION >= 89488) /* R_VERSION >= 4.6.0 */
-	if (isDataFrame(rval))
-#else
 	if (isFrame(rval))
-#endif
 		nc = length(rval);
 	else if (isList(rval) || isNewList(rval))
 		nc = length(rval);
@@ -1165,17 +1135,7 @@ get_tuplestore(SEXP rval, plr_function *function, FunctionCallInfo fcinfo, bool 
 	/* OK, go to work */
 	rsinfo->returnMode = SFRM_Materialize;
 
-	/*
-	 * The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
-	 * https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
-	 * Remove Rf_isFrame.
-	 * https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
-	 */
-#if (R_SVN_REVISION >= 89488) /* R_VERSION >= 4.6.0 */
-	if (isDataFrame(rval) || isList(rval) || isNewList(rval))
-#else
 	if (isFrame(rval) || isList(rval) || isNewList(rval))
-#endif
 		rsinfo->setResult = get_frame_tuplestore(rval, function, attinmeta, per_query_ctx);
 	else if (isMatrix(rval))
 		rsinfo->setResult = get_matrix_tuplestore(rval, function, attinmeta, per_query_ctx);
@@ -1309,17 +1269,7 @@ get_array_datum(SEXP rval, plr_function *function, int col, bool *isnull)
 	if (objlen > 0)
 	{
 		/* two supported special cases */
-		/*
-		* The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
-		* https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
-		* Remove Rf_isFrame.
-		* https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
-		*/
-#if (R_SVN_REVISION >= 89488) /* R_VERSION >= 4.6.0 */
-		if (isDataFrame(rval))
-#else
 		if (isFrame(rval))
-#endif
 			return get_frame_array_datum(rval, function,  col, isnull);
 		else if (isMatrix(rval))
 			return get_md_array_datum(rval, 2 /* matrix is 2D */, function, col, isnull);
@@ -2078,17 +2028,7 @@ get_frame_tuplestore(SEXP rval,
 	 * If we return a set, get number of rows by examining the first column.
 	 * Otherwise, stop at one row.
 	 */
-	/*
-	 * The function Rf_isFrame has been removed; use Rf_isDataFrame instead.
-	 * https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (to become R 4.6.0)
-	 * Remove Rf_isFrame.
-	 * https://github.com/wch/r-source/commit/ed5b0de133af71bc80ef110b738861457d00db44#diff-788284f8cfbf5d10400569f32a80fd157c22f994cf8f9f4de91df4289caa724dL922
-	 */
-#if (R_SVN_REVISION >= 89488) /* R_VERSION >= 4.6.0 */
-	if (isDataFrame(rval))
-#else
 	if (isFrame(rval))
-#endif
 	{
 		PROTECT(dfcol = VECTOR_ELT(rval, 0));
 		nr = length(dfcol);
