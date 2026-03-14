@@ -24,7 +24,7 @@ jobs:
         run: echo building master
 
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: checkout postgres
         run: |
@@ -71,7 +71,7 @@ jobs:
         run: echo building master
 
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: checkout postgres
         run: |

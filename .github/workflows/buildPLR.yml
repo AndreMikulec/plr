@@ -731,7 +731,7 @@ jobs:
           echo "CRAN_R_DOWNLOAD_URL: ${env:CRAN_R_DOWNLOAD_URL}"
 
       - name: Checkout Code of This Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       # running Meson on GitHub Actions will end up using GCC rather than MSVC
       #
@@ -749,7 +749,7 @@ jobs:
 
       - name: Checkout PostgreSQL Code
         if: ${{ env.pgSRCversion != 'notset' }}
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: 'postgres/postgres'
 
@@ -792,7 +792,7 @@ jobs:
       #
       - name: Cache R-x.y.z Windows Installer Exe
         if: ${{ env.os == 'windows-2025' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'msvc' ) && env.rversion != 'devel' }}
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: cacheRWindowsInstallerExe
         with:
           path: ${{ env.rversionlong }}.exe
@@ -805,7 +805,7 @@ jobs:
           ${{ env.os == 'windows-2025' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'msvc' ) && env.pgWINversion != 'notset' &&
           (( env.PGVER2 == '17' && env.Platform == 'x86' ) || ( env.PGVER2 != '17' ))
           }}
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: cachePGWindowsInstallerExe
         with:
           path: ${{ env.pgWINversionlong }}.exe
@@ -815,7 +815,7 @@ jobs:
 
       - name: Cache GNU diffutils for Test on PostgreSQL for Windows
         if: ${{ ( env.os == 'windows-2025' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) || ( env.os == 'windows-2025' && env.compilerClass == 'msvc' ) }}
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: cacheDiffutilsZip
         with:
           path: diffutils-2.8.7-1-bin.zip
@@ -825,7 +825,7 @@ jobs:
 
       - name: Cache pkgconfiglite for Compile using msvc and meson
         if: ${{ env.os == 'windows-2025' && env.compilerClass == 'msvc' }}
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: cachePkgConfigLiteZip
         with:
           path: pkg-config-lite-0.28-1_bin-win32.zip
@@ -835,7 +835,7 @@ jobs:
 
       - name: Cache winflexbison for Compile using msvc
         if: ${{ env.os == 'windows-2025' && env.compilerClass == 'msvc' }}
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: cacheWinFlexBisonZip
         with:
           path: win_flex_bison-2.5.24.zip
@@ -845,7 +845,7 @@ jobs:
 
       - name: Cache meson for Compile using msvc and meson
         if: ${{ env.os == 'windows-2025' && env.compilerClass == 'msvc' }}
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: cacheMesonMsi
         with:
           path: meson-1.2.1-64.msi
@@ -855,7 +855,7 @@ jobs:
 
       - name: Cache StrawberryPerl
         if: ${{ env.os == 'windows-2025' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' }}
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: cacheStrawberryPerlMsi
         with:
           path: strawberry-perl-5.38.2.2-64bit.msi
@@ -877,7 +877,7 @@ jobs:
           ${{ env.os == 'windows-2025' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'msvc' ) &&
           steps.cacheRWindowsInstallerExe.outputs.cache-hit != 'true'
           }}
-        uses: suisei-cn/actions-download-file@v1.6.0
+        uses: suisei-cn/actions-download-file@v1.6.1
         id: downloadfileRforWindows
         with:
           url: ${{ env.CRAN_R_DOWNLOAD_URL }}
@@ -888,14 +888,14 @@ jobs:
           (( env.PGVER2 == '17' && env.Platform == 'x86' ) || ( env.PGVER2 != '17' )) &&
           steps.cachePGWindowsInstallerExe.outputs.cache-hit != 'true'
           }}
-        uses: suisei-cn/actions-download-file@v1.6.0
+        uses: suisei-cn/actions-download-file@v1.6.1
         id: downloadfilePGforWindows
         with:
           url: ${{ env.ENTDB_PG_DOWNLOAD_URL }}
 
-#     # The "crazy-max/ghaction-chocolatey@v3" "install SOMEHING_AT_SOURCEFORGE" file download often times-out.
+#     # The "crazy-max/ghaction-chocolatey@v4" "install SOMEHING_AT_SOURCEFORGE" file download often times-out.
 #     - name: Choco Install GNU diffutils for Test on PostgreSQL for Windows
-#       uses: crazy-max/ghaction-chocolatey@v3
+#       uses: crazy-max/ghaction-chocolatey@v4
 #       with:
 #         args: install diffutils
 
@@ -903,7 +903,7 @@ jobs:
         if: ${{ ( ( env.os == 'windows-2025' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) || ( env.os == 'windows-2025' && env.compilerClass == 'msvc' ) ) &&
           steps.cacheDiffutilsZip.outputs.cache-hit != 'true'
           }}
-        uses: suisei-cn/actions-download-file@v1.6.0
+        uses: suisei-cn/actions-download-file@v1.6.1
         id: downloadDiffutilsZip
         with:
           retry-times: 1
@@ -916,7 +916,7 @@ jobs:
           ${{ env.os == 'windows-2025' && env.compilerClass == 'msvc' &&
           steps.cachePkgConfigLiteZip.outputs.cache-hit != 'true'
           }}
-        uses: suisei-cn/actions-download-file@v1.6.0
+        uses: suisei-cn/actions-download-file@v1.6.1
         id: downloadPkgConfigLiteZip
         with:
           retry-times: 1
@@ -929,7 +929,7 @@ jobs:
           ${{ env.os == 'windows-2025' && env.compilerClass == 'msvc' &&
           steps.cacheWinFlexBisonZip.outputs.cache-hit != 'true'
           }}
-        uses: suisei-cn/actions-download-file@v1.6.0
+        uses: suisei-cn/actions-download-file@v1.6.1
         id: downloadWinFlexBisonZip
         with:
           retry-times: 1
@@ -942,7 +942,7 @@ jobs:
           ${{ env.os == 'windows-2025' && env.compilerClass == 'msvc' &&
           steps.cacheMesonMsi.outputs.cache-hit != 'true'
           }}
-        uses: suisei-cn/actions-download-file@v1.6.0
+        uses: suisei-cn/actions-download-file@v1.6.1
         id: downloadMesonMsi
         with:
           retry-times: 1
@@ -960,7 +960,7 @@ jobs:
           ${{ env.os == 'windows-2025' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' &&
           steps.cacheStrawberryPerlMsi.outputs.cache-hit != 'true'
           }}
-        uses: suisei-cn/actions-download-file@v1.6.0
+        uses: suisei-cn/actions-download-file@v1.6.1
         id: downloadStrawberryPerlMsi
         with:
           retry-times: 1
@@ -1061,14 +1061,14 @@ jobs:
       - name: Choco Install support software about PL/R compiling using msvc for Windows
         if: ${{ env.os == 'windows-2025' && env.compilerClass == 'msvc' }}
         # Keep v2.  v2.2.0 may have connection to Sourceforge problems
-        uses: crazy-max/ghaction-chocolatey@v3
+        uses: crazy-max/ghaction-chocolatey@v4
         with:
           args: >-
             install sed gzip strawberryperl
             grep
 
       # Choco Install GNU diffutils
-      # BUT the "crazy-max/ghaction-chocolatey@v2" "install diffutils" file download often times-out
+      # BUT the "crazy-max/ghaction-chocolatey@v4" "install diffutils" file download often times-out
       - name: Extract Diffuntils and add Diffuntils bin directory to the PATH for Test on PostgreSQL for Windows
         if: ${{ ( env.os == 'windows-2025' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) || ( env.os == 'windows-2025' && env.compilerClass == 'msvc' ) }}
         shell: cmd
@@ -1083,7 +1083,7 @@ jobs:
           printf                               "C:\\OTHERBIN\\diffutils\\bin" >> %GITHUB_PATH%
 
       # Choco Install pkgconfiglite
-      # BUT the "crazy-max/ghaction-chocolatey@v2" "install pkgconfiglite" file download often times-out
+      # BUT the "crazy-max/ghaction-chocolatey@v4" "install pkgconfiglite" file download often times-out
       - name: Extract pkgconfiglite and add pkgconfiglite bin directory to the PATH for Compile using msvc and meson
         if: ${{ env.os == 'windows-2025' && env.compilerClass == 'msvc' }}
         shell: cmd
@@ -1098,7 +1098,7 @@ jobs:
           printf                                          "C:\\OTHERBIN\\pkgconfiglite\\pkg-config-lite-0.28-1\\bin" >> %GITHUB_PATH%
 
       # Choco Install winflexbison
-      # BUT the "crazy-max/ghaction-chocolatey@v2" "install pkgconfiglite" file download often times-out
+      # BUT the "crazy-max/ghaction-chocolatey@v4" "install pkgconfiglite" file download often times-out
       - name: Extract winflexbison and add the winflexbison directory to the PATH for Compile using msvc
         if: ${{ env.os == 'windows-2025' && env.compilerClass == 'msvc' }}
         shell: cmd
@@ -1113,7 +1113,7 @@ jobs:
           printf                                          "C:\\OTHERBIN\\winflexbison" >> %GITHUB_PATH%
 
       # Choco Install meson
-      # BUT the "crazy-max/ghaction-chocolatey@v3" "install meson" msiexec.exe Exit code was '3010'.
+      # BUT the "crazy-max/ghaction-chocolatey@v4" "install meson" msiexec.exe Exit code was '3010'.
       - name: Install meson and add meson directory to the PATH for Compile using msvc and meson
         if: ${{ env.os == 'windows-2025' && env.compilerClass == 'msvc' }}
         shell: cmd
@@ -1433,7 +1433,7 @@ jobs:
       #
       - name: Upload artifact PG for export for LOCAL testing
         if: ${{ env.os == 'windows-2025' &&  env.compilerClass == 'MSYS2' && env.buildpgFromSRC == 'true' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pg-matid-${{ matrix.matid }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}
           path: |
@@ -2658,7 +2658,7 @@ jobs:
       #
       - name: Try to Upload artifacts plr.dll and plr.dll.a for export for LOCAL testing
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}
           # default
