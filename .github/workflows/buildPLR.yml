@@ -200,7 +200,7 @@ jobs:
             #
             #   pgWINversion: 18.?-?
             #   MSYS2testonpgWIN: false
-            pgWINversion: 18.0-1
+            pgWINversion: 18.3-2
             MSYS2testonpgWIN: true
 
 
@@ -226,7 +226,7 @@ jobs:
             #
             #   pgWINversion: 18.?-?
             #   MSYS2testonpgWIN: false
-            pgWINversion: 18.0-1
+            pgWINversion: 18.3-2
             MSYS2testonpgWIN: true
 
 
@@ -255,7 +255,7 @@ jobs:
           #  MSYS2testonpgWIN: true
 
 
-          # R latest and PostgreSQL latest (buildpgFromSRCmethod meson)
+          # R latest and PostgreSQL 2nd latest (buildpgFromSRCmethod meson)
           - matid: 08
             os: windows-2025
             GithubActionsIgnoreFail: false
@@ -275,13 +275,25 @@ jobs:
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
             #
-            # Note, BELOW Github Actions has installed a lower version (17.5),
-            # than what is available at EnterpriseDB 17.6-1 (Aug 19 2025)
+            # EnterpriseDB PostgreSQL for Windows
+            # windows-2025 and pgWINversion: 17.x-y
+            # (if MANUAL would be: 17.9-2)
             #
-            # pgWINversion: 17.5-1
+            # A HUMAN must manually see the VERSION here. (seen Aug 17 2024 EST)
+            # Mar 2026 - Pre-installed Github Actions PostgreSQL for Windows version is x64-14
+            # ServiceName postgresql-x64-17
+            # Version 17.9
+            # REAFFIRMED MAR 14 2026
+            # https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md
+            # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-software
+            #
+            # Note, BELOW Github Actions has installed version (17.9),
+            # than what is available at EnterpriseDB 17.9-2 (March 14 2026)
+            #
+            # pgWINversion: 17.9-2
             MSYS2testonpgWIN: true
 
-
+          # R latest and PostgreSQL 3rd latest (buildpgFromSRCmethod meson)
           - matid: 09
             os: windows-2025
             GithubActionsIgnoreFail: false
@@ -301,10 +313,13 @@ jobs:
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
             #
-            pgWINversion: 16.10-1
+            pgWINversion: 16.13-2
             MSYS2testonpgWIN: true
 
+          # buildpgFromSRCmethod meson ONLY WORKS on the PostreSQL REL_16_STABLE version or later
+          # buildpgFromSRCmethod make WORKS on ANY PostgreSQL version 
 
+          # R latest and PostgreSQL 3rd latest (buildpgFromSRCmethod make)
           - matid: 10
             os: windows-2025
             GithubActionsIgnoreFail: false
@@ -324,10 +339,10 @@ jobs:
             buildpgFromSRCmethod: make
             PG_HOME: 'C:\PGINSTALL'
             #
-            pgWINversion: 15.14-1
+            pgWINversion: 15.17-2
             MSYS2testonpgWIN: true
 
-
+          # R latest and PostgreSQL 4th latest (buildpgFromSRCmethod make)
           - matid: 11
             os: windows-2025
             GithubActionsIgnoreFail: false
@@ -347,19 +362,7 @@ jobs:
             buildpgFromSRCmethod: make
             PG_HOME: 'C:\PGINSTALL'
             #
-            # EnterpriseDB PostgreSQL for Windows
-            # windows-2022 and pgWINversion: 14.x-y
-            # (if MANUAL would be: 14.18)
-            #
-            # A HUMAN must manually see the VERSION here. (seen Aug 17 2024 EST)
-            # Aug 2025 - Pre-installed Github Actions PostgreSQL for Windows version is x64-14
-            # ServiceName postgresql-x64-14
-            # Version 14.18
-            # REAFFIRMED AUG 17 2025
-            # https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
-            # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-software
-            #
-            pgWINversion: 14.19-1
+            pgWINversion: 14.22-2
             MSYS2testonpgWIN: true
 
     defaults:
