@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
-        run: echo building - Fix thinko in nocachegetattr() and nocache_index_getattr()
+        run: echo building - Fix thinko in nocachegetattr and nocache_index_getattr
  
       - name: Checkout code
         uses: actions/checkout@v6
