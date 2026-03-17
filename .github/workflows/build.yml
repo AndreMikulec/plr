@@ -108,13 +108,14 @@ jobs:
           make -j4
           sudo make install
           export PATH=/usr/local/pgsql/bin:$PATH
-          psql --version
-          psql -c "SELECT version();"
-          psql -c "SHOW server_version;"
-          psql -c "SELECT setting FROM pg_settings WHERE name = 'server_version';"
-          postgres --version
           initdb -D data
           pg_ctl -D data -l logfile start
+          postgres --version
+          psql --version
+          psql -c "SHOW server_version;"
+          psql -c "SELECT version();"
+          psql -c "SELECT setting FROM pg_settings WHERE name = 'server_version';"
+          psql -c "SELECT current_setting('server_version_num');"
           popd
  
       - name: Script
