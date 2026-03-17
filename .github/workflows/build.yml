@@ -8,11 +8,11 @@ on:
 
 jobs:
 
-  PG_5e72ce2_pg_plan_advice:
+  PG_82ff543_Move_ffast_math_defense:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
-        run: echo building - Fix failures to accept identifier keywords
+        run: echo building - Move_ffast_math_defense
  
       - name: Checkout code
         uses: actions/checkout@v6
@@ -29,7 +29,7 @@ jobs:
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           git clone https://github.com/postgres/postgres.git
           pushd postgres
-          git checkout 5e72ce2467c15340026955b57ff75f75e853a766
+          git checkout 82ff54377e557914d975d22c4847d98d0efa1dac
           ./configure
           make -j4
           sudo make install
@@ -51,11 +51,11 @@ jobs:
         env:
           USE_PGXS: 1
 
-  PG_7a2ab122_Fix_thinko:
+  PG_5f39698c_Remove_obsolete_speculative_insert:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
-        run: echo building - Fix thinko in nocachegetattr and nocache_index_getattr
+        run: echo building - Remove obsolete speculative insert
  
       - name: Checkout code
         uses: actions/checkout@v6
@@ -72,7 +72,7 @@ jobs:
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           git clone https://github.com/postgres/postgres.git
           pushd postgres
-          git checkout 7a2ab122a1c555ee4298863917ce68a2b9800cb8
+          git checkout 5f39698c9028554850fca6d3f764449c0da76d99
           ./configure
           make -j4
           sudo make install
