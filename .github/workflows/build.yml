@@ -8,6 +8,49 @@ on:
 
 jobs:
 
+  PG_2f094e7_SQL_Property:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo site details
+        run: echo building - PG_2f094e7_SQL_Property
+ 
+      - name: Checkout code
+        uses: actions/checkout@v6
+ 
+      - name: checkout postgres
+        run: |
+          sudo apt-get update -qq
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+          sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+          sudo apt-get install -qq r-base-dev acl bison flex libssl-dev
+          sudo R --version
+          sudo /etc/init.d/postgresql stop
+          sudo apt-get remove --purge postgresql\*
+          sudo rm -rf /etc/postgresql /var/lib/postgresql
+          git clone https://github.com/postgres/postgres.git
+          pushd postgres
+          git checkout 2f094e7ac691abc9d2fe0f4dcf0feac4a6ce1d9c
+          ./configure
+          make -j4
+          sudo make install
+          export PATH=/usr/local/pgsql/bin:$PATH
+          initdb -D data
+          pg_ctl -D data -l logfile start
+          popd
+ 
+      - name: Script
+        run: |
+          export USE_PGXS=1
+          export PATH=/usr/local/pgsql/bin:$PATH
+          SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
+          # USE_PGXS=1 is not required in Travis, and it is required in Github Actions
+          sudo USE_PGXS=1 PATH=/usr/local/pgsql/bin:$PATH make install
+          psql --version
+          R --version
+          make installcheck || (cat regression.diffs && false)
+        env:
+          USE_PGXS: 1
+
   PG_d7ad79e_Prevent_Wstrict:
     runs-on: ubuntu-latest
     steps:
@@ -51,11 +94,11 @@ jobs:
         env:
           USE_PGXS: 1
 
-  PG_fba4233c_Reduce_header:
+  PG_5c2a8d2_Use_C11_alignas:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
-        run: echo building - PG_fba4233c_Reduce_header
+        run: echo building - PG_5c2a8d2_Use_C11_alignas
  
       - name: Checkout code
         uses: actions/checkout@v6
@@ -72,50 +115,7 @@ jobs:
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           git clone https://github.com/postgres/postgres.git
           pushd postgres
-          git checkout fba4233c832870c8363438419743c48fdcb2151c
-          ./configure
-          make -j4
-          sudo make install
-          export PATH=/usr/local/pgsql/bin:$PATH
-          initdb -D data
-          pg_ctl -D data -l logfile start
-          popd
- 
-      - name: Script
-        run: |
-          export USE_PGXS=1
-          export PATH=/usr/local/pgsql/bin:$PATH
-          SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
-          # USE_PGXS=1 is not required in Travis, and it is required in Github Actions
-          sudo USE_PGXS=1 PATH=/usr/local/pgsql/bin:$PATH make install
-          psql --version
-          R --version
-          make installcheck || (cat regression.diffs && false)
-        env:
-          USE_PGXS: 1
-
-  PG_cd8844e_Make_some_tests_more_stable:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Echo site details
-        run: echo building - PG_cd8844e_Make_some_tests_more_stable
- 
-      - name: Checkout code
-        uses: actions/checkout@v6
- 
-      - name: checkout postgres
-        run: |
-          sudo apt-get update -qq
-          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-          sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
-          sudo apt-get install -qq r-base-dev acl bison flex libssl-dev
-          sudo R --version
-          sudo /etc/init.d/postgresql stop
-          sudo apt-get remove --purge postgresql\*
-          sudo rm -rf /etc/postgresql /var/lib/postgresql
-          git clone https://github.com/postgres/postgres.git
-          pushd postgres
-          git checkout cd8844e7db64d57554c780ec9881457c573c51ab
+          git checkout 5c2a8d272b9aa95f36355357095a2838120b0fe2
           ./configure
           make -j4
           sudo make install
