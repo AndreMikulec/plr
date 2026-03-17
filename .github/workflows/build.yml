@@ -94,7 +94,7 @@ jobs:
         env:
           USE_PGXS: 1
 
-   PG_63275ce_Hardcode_override:
+  PG_63275ce_Hardcode_override:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
