@@ -125,7 +125,7 @@ jobs:
           make installcheck || (cat regression.diffs && false)
         env:
           USE_PGXS: 1
- 
+
   build:
     runs-on: ubuntu-latest
     env:
