@@ -27,8 +27,8 @@ jobs:
           sudo apt-get remove --purge postgresql\*
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           git clone https://github.com/postgres/postgres.git
-          git checkout e5a77d876dbb6168e3013d32198794c535f1627d
           pushd postgres
+          git checkout e5a77d876dbb6168e3013d32198794c535f1627d
           ./configure
           make -j4
           sudo make install
@@ -70,8 +70,8 @@ jobs:
           sudo apt-get remove --purge postgresql\*
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           git clone https://github.com/postgres/postgres.git
-          git checkout 503620311e3fc127708b00d4cd7eff6fd3154753
           pushd postgres
+          git checkout 503620311e3fc127708b00d4cd7eff6fd3154753
           ./configure
           make -j4
           sudo make install
@@ -113,8 +113,8 @@ jobs:
           sudo apt-get remove --purge postgresql\*
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           git clone https://github.com/postgres/postgres.git
-          git checkout c456e39113809376f6604e720910ccd24e18e034
           pushd postgres
+          git checkout c456e39113809376f6604e720910ccd24e18e034
           ./configure
           make -j4
           sudo make install
@@ -156,8 +156,8 @@ jobs:
           sudo apt-get remove --purge postgresql\*
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           git clone https://github.com/postgres/postgres.git
-          git checkout c675d80d7221411689d0f8ab18386d2f517eed0c
           pushd postgres
+          git checkout c675d80d7221411689d0f8ab18386d2f517eed0c
           ./configure
           make -j4
           sudo make install
