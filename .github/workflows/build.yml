@@ -8,11 +8,11 @@ on:
 
 jobs:
 
-  PG_c336133_Reject_ALTER_TABLE:
+  PG_d7ad79e_Prevent_Wstrict:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
-        run: echo building - Reject ALTER TABLE
+        run: echo building - PG_d7ad79e_Prevent_Wstrict
  
       - name: Checkout code
         uses: actions/checkout@v6
@@ -29,7 +29,7 @@ jobs:
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           git clone https://github.com/postgres/postgres.git
           pushd postgres
-          git checkout c336133c65a7ac3223a3cb492b8bbf4fa3999375
+          git checkout d7ad79e5069b3649bfd973f84d89be40519f8cba
           ./configure
           make -j4
           sudo make install
@@ -51,11 +51,11 @@ jobs:
         env:
           USE_PGXS: 1
 
-  PG_fd6ecbf_Ensure_still_waiting:
+  PG_fba4233c_Reduce_header:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
-        run: echo building - Ensure_still_waiting
+        run: echo building - PG_fba4233c_Reduce_header
  
       - name: Checkout code
         uses: actions/checkout@v6
@@ -72,7 +72,7 @@ jobs:
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           git clone https://github.com/postgres/postgres.git
           pushd postgres
-          git checkout fd6ecbfa75ff0316f17c75d3931f20eb4f6e1231
+          git checkout fba4233c832870c8363438419743c48fdcb2151c
           ./configure
           make -j4
           sudo make install
@@ -94,11 +94,11 @@ jobs:
         env:
           USE_PGXS: 1
 
-  PG_63275ce_Hardcode_override:
+  PG_cd8844e_Make_some_tests_more_stable:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
-        run: echo building - Hardcode_override
+        run: echo building - PG_cd8844e_Make_some_tests_more_stable
  
       - name: Checkout code
         uses: actions/checkout@v6
@@ -115,7 +115,7 @@ jobs:
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           git clone https://github.com/postgres/postgres.git
           pushd postgres
-          git checkout 63275ce84d2f571136b585d7493e1ec351388014
+          git checkout cd8844e7db64d57554c780ec9881457c573c51ab
           ./configure
           make -j4
           sudo make install
