@@ -8,7 +8,7 @@ on:
 
 jobs:
 
- PG_5e72ce2 pg_plan_advice Fix failures to accept identifier keywords:
+ PG_5e72ce2_pg_plan_advice:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
@@ -53,7 +53,7 @@ jobs:
 
 
 
-  PG_7a2ab122 Fix thinko in nocachegetattr and nocache_index_getattr:
+  PG_7a2ab122_Fix_thinko:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
