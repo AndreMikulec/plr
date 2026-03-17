@@ -8,11 +8,11 @@ on:
 
 jobs:
 
-  PG_82ff543_Move_ffast_math_defense:
+  PG_c336133_Reject_ALTER_TABLE:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
-        run: echo building - Move_ffast_math_defense
+        run: echo building - Reject ALTER TABLE
  
       - name: Checkout code
         uses: actions/checkout@v6
@@ -29,7 +29,7 @@ jobs:
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           git clone https://github.com/postgres/postgres.git
           pushd postgres
-          git checkout 82ff54377e557914d975d22c4847d98d0efa1dac
+          git checkout c336133c65a7ac3223a3cb492b8bbf4fa3999375
           ./configure
           make -j4
           sudo make install
@@ -51,11 +51,11 @@ jobs:
         env:
           USE_PGXS: 1
 
-  PG_5f39698c_Remove_obsolete_speculative_insert:
+  PG_fd6ecbf_Ensure_still_waiting:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
-        run: echo building - Remove obsolete speculative insert
+        run: echo building - Ensure_still_waiting
  
       - name: Checkout code
         uses: actions/checkout@v6
@@ -72,7 +72,7 @@ jobs:
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           git clone https://github.com/postgres/postgres.git
           pushd postgres
-          git checkout 5f39698c9028554850fca6d3f764449c0da76d99
+          git checkout fd6ecbfa75ff0316f17c75d3931f20eb4f6e1231
           ./configure
           make -j4
           sudo make install
@@ -94,7 +94,51 @@ jobs:
         env:
           USE_PGXS: 1
 
+   PG_63275ce_Hardcode_override:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo site details
+        run: echo building - Hardcode_override
  
+      - name: Checkout code
+        uses: actions/checkout@v6
+ 
+      - name: checkout postgres
+        run: |
+          sudo apt-get update -qq
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+          sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+          sudo apt-get install -qq r-base-dev acl bison flex libssl-dev
+          sudo R --version
+          sudo /etc/init.d/postgresql stop
+          sudo apt-get remove --purge postgresql\*
+          sudo rm -rf /etc/postgresql /var/lib/postgresql
+          git clone https://github.com/postgres/postgres.git
+          pushd postgres
+          git checkout 63275ce84d2f571136b585d7493e1ec351388014
+          ./configure
+          make -j4
+          sudo make install
+          export PATH=/usr/local/pgsql/bin:$PATH
+          initdb -D data
+          pg_ctl -D data -l logfile start
+          popd
+ 
+      - name: Script
+        run: |
+          export USE_PGXS=1
+          export PATH=/usr/local/pgsql/bin:$PATH
+          SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
+          # USE_PGXS=1 is not required in Travis, and it is required in Github Actions
+          sudo USE_PGXS=1 PATH=/usr/local/pgsql/bin:$PATH make install
+          psql --version
+          R --version
+          make installcheck || (cat regression.diffs && false)
+        env:
+          USE_PGXS: 1
+
+
+
 # master:
 #   runs-on: ubuntu-latest
 #   steps:
