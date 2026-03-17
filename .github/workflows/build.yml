@@ -8,7 +8,7 @@ on:
 
 jobs:
 
- PG_5e72ce2_pg_plan_advice:
+  PG_5e72ce2_pg_plan_advice:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
@@ -50,8 +50,6 @@ jobs:
           make installcheck || (cat regression.diffs && false)
         env:
           USE_PGXS: 1
-
-
 
   PG_7a2ab122_Fix_thinko:
     runs-on: ubuntu-latest
