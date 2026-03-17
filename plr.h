@@ -39,9 +39,9 @@
 
 #include "fmgr.h"
 #include "funcapi.h"
-/* BEGIN ANDRE */
+#if PG_VERSION_NUM >= 190000
 #include "nodes/execnodes.h"
-/* END ANDRE */
+#endif
 #include "miscadmin.h"
 #if PG_VERSION_NUM >= 80400
 #include "windowapi.h"
@@ -68,9 +68,9 @@
 #include "utils/array.h"
 
 #include "utils/builtins.h"
-/* BEGIN ANDRE */
+#if PG_VERSION_NUM >= 190000
 #include "utils/tuplestore.h"
-/* END ANDRE */
+#endif
 
 #if PG_VERSION_NUM >= 80500
 #include "utils/bytea.h"
