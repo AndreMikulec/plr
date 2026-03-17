@@ -178,7 +178,7 @@ jobs:
           # Builds under "runner"
           # Github Actions require elevated priviledges
           sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner
-          sudo pg_ctlcluster $PG main reload
+          sudo pg_ctlcluster $PG main restart
           sudo psql -d postgres -c "SELECT version();"
           sudo psql -d postgres -c "SELECT current_setting('server_version_num');"
  
