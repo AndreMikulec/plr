@@ -128,3 +128,4 @@ jobs:
           sudo USE_PGXS=1 PATH=/usr/local/pgsql/bin:$PATH make install
           make installcheck || (cat regression.diffs && false)
         env:
+          USE_PGXS: 1
