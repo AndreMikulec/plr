@@ -7,7 +7,7 @@ on:
    workflow_dispatch:
 
 jobs:
-  e5a77d87:
+  PG_e5a77d87:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
@@ -50,7 +50,7 @@ jobs:
         env:
           USE_PGXS: 1
 
-  50362031:
+  PG_50362031:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
@@ -93,7 +93,7 @@ jobs:
         env:
           USE_PGXS: 1
 
-  c456e391:
+  PG_c456e391:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
@@ -136,7 +136,7 @@ jobs:
         env:
           USE_PGXS: 1
 
-  c675d80d:
+  PG_c675d80d:
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
