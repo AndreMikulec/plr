@@ -168,6 +168,18 @@ extern int R_SignalHandlers;
     SET_TYPEOF(s, LANGSXP); \
   } while (0)
 #endif
+#if (R_SVN_REVISION >= 86737) /* R_VERSION >= 4.4.1 */
+#define SET_ALLOCLANG_SIZE_THREE \
+  do { \
+    t = s = PROTECT(allocLang(3)); \
+  } while (0)
+#else /* R_VERSION < 4.4.1 */
+#define SET_ALLOCLANG_SIZE_THREE \
+  do { \
+    PROTECT(t = s = allocList(3)); \
+    SET_TYPEOF(s, LANGSXP); \
+  } while (0)
+#endif
 
 /* Restore the Postgres headers */
 

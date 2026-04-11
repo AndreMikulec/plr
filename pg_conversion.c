@@ -1222,8 +1222,7 @@ get_scalar_datum(SEXP rval, Oid result_typid, FmgrInfo result_in_func, bool *isn
 		 * Need to construct a call to
 		 * serialize(rval, NULL)
 		 */
-		PROTECT(t = s = allocList(3));
-		SET_TYPEOF(s, LANGSXP);
+		SET_ALLOCLANG_SIZE_THREE;
 		SETCAR(t, install("serialize")); t = CDR(t);
 		SETCAR(t, rval); t = CDR(t);
 		SETCAR(t, R_NilValue);
