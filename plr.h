@@ -162,7 +162,7 @@ extern int R_SignalHandlers;
     t = s = PROTECT(allocLang(allocLang_size)); \
   } while (0)
 #else /* R_VERSION < 4.4.1 */
-#define SET_ALLOCLANG_SIZE(allocLang_size, s, t) 
+#define SET_ALLOCLANG_SIZE(allocLang_size, s, t)
   do { \
     PROTECT(t = s = allocList(allocLang_size)); \
     SET_TYPEOF(s, LANGSXP); \
