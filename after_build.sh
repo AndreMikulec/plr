@@ -89,7 +89,7 @@ then
   export R_HOME=${R_HOME_OLD}
 fi
 
-export var7z=plr-${gitrevshort}-pg${pgversion}-R${rversion}${rversion_more}-${Platform}-${Configuration}-${compiler}.7z
+export var7z=plr-apvid-${apvid}-${gitrevshort}-${compiler}-${Platform}-R${rversion}${rversion_more}-PG${pgversion}-${Configuration}.7z
 loginfo "${var7z}"
 
 echo ${APPVEYOR_BUILD_FOLDER}
