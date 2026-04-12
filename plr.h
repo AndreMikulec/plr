@@ -157,26 +157,14 @@ extern int R_SignalHandlers;
  *
  */
 #if (R_SVN_REVISION >= 86737) /* R_VERSION >= 4.4.1 */
-#define SET_ALLOCLANG_SIZE_TWO \
+#define SET_ALLOCLANG_SIZE(allocLang_size, s, t)
   do { \
-    t = s = PROTECT(allocLang(2)); \
+    t = s = PROTECT(allocLang(allocLang_size)); \
   } while (0)
 #else /* R_VERSION < 4.4.1 */
-#define SET_ALLOCLANG_SIZE_TWO \
+#define SET_ALLOCLANG_SIZE(allocLang_size, s, t) 
   do { \
-    PROTECT(t = s = allocList(2)); \
-    SET_TYPEOF(s, LANGSXP); \
-  } while (0)
-#endif
-#if (R_SVN_REVISION >= 86737) /* R_VERSION >= 4.4.1 */
-#define SET_ALLOCLANG_SIZE_THREE \
-  do { \
-    t = s = PROTECT(allocLang(3)); \
-  } while (0)
-#else /* R_VERSION < 4.4.1 */
-#define SET_ALLOCLANG_SIZE_THREE \
-  do { \
-    PROTECT(t = s = allocList(3)); \
+    PROTECT(t = s = allocList(allocLang_size)); \
     SET_TYPEOF(s, LANGSXP); \
   } while (0)
 #endif

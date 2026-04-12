@@ -105,7 +105,7 @@ pg_scalar_get_r(Datum dvalue, Oid arg_typid, FmgrInfo arg_out_func)
 		 * Need to construct a call to
 		 * unserialize(rval)
 		 */
-		SET_ALLOCLANG_SIZE_TWO;
+		SET_ALLOCLANG_SIZE(2, s, t);
 		SETCAR(t, install("unserialize"));
 		t = CDR(t);
 		SETCAR(t, obj);
@@ -1222,7 +1222,7 @@ get_scalar_datum(SEXP rval, Oid result_typid, FmgrInfo result_in_func, bool *isn
 		 * Need to construct a call to
 		 * serialize(rval, NULL)
 		 */
-		SET_ALLOCLANG_SIZE_THREE;
+		SET_ALLOCLANG_SIZE(3, s, t);
 		SETCAR(t, install("serialize")); t = CDR(t);
 		SETCAR(t, rval); t = CDR(t);
 		SETCAR(t, R_NilValue);

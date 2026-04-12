@@ -527,7 +527,7 @@ plr_get_raw(PG_FUNCTION_ARGS)
 	 * Need to construct a call to
 	 * unserialize(rval)
 	 */
-	SET_ALLOCLANG_SIZE_TWO;
+	SET_ALLOCLANG_SIZE(2, s, t);
 	SETCAR(t, install("unserialize")); t = CDR(t);
 	SETCAR(t, obj);
 
