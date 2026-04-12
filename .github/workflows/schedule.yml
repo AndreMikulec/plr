@@ -11,21 +11,16 @@ on:
     # * is a special character in YAML so you have to quote this string
       - cron:  '30 1 * * *'
 jobs:
+
   master:
-    # SEEN SEP 2025
-    # Ubuntu 24.04	ubuntu-latest
-    # https://github.com/actions/runner-images
-    # noble (24.04, LTS)
-    # https://wiki.postgresql.org/wiki/Apt
-    # https://apt.postgresql.org/pub/repos/apt/dists/
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
-        run: echo building master
-
+        run: echo building - master
+ 
       - name: Checkout code
         uses: actions/checkout@v6
-
+ 
       - name: checkout postgres
         run: |
           sudo apt-get update -qq
@@ -36,14 +31,17 @@ jobs:
           sudo /etc/init.d/postgresql stop
           sudo apt-get remove --purge postgresql\*
           sudo rm -rf /etc/postgresql /var/lib/postgresql
-          git clone --depth=1 https://github.com/postgres/postgres.git
+          git clone https://github.com/postgres/postgres.git
           pushd postgres
+          git checkout master
           ./configure
-          make
+          make -j4
           sudo make install
           export PATH=/usr/local/pgsql/bin:$PATH
           initdb -D data
           pg_ctl -D data -l logfile start
+          psql -d postgres -c "SELECT version();"
+          psql -d postgres -c "SELECT current_setting('server_version_num');"
           popd
 
       - name: Script
@@ -53,28 +51,28 @@ jobs:
           SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
           # USE_PGXS=1 is not required in Travis, and it is required in Github Actions
           sudo USE_PGXS=1 PATH=/usr/local/pgsql/bin:$PATH make install
-          psql --version
           make installcheck || (cat regression.diffs && false)
         env:
           USE_PGXS: 1
 
   REL_18_:
-    # SEEN MAY 2025
-    # Ubuntu 24.04	ubuntu-latest
+    # SEEN MAR 2026
+    # Ubuntu 24.04 - ubuntu-latest or ubuntu-24.04
     # https://github.com/actions/runner-images
-    # noble (24.04, LTS)
+    # noble (24.04, LTS), plucky (25.04, amd64 only)
     # https://wiki.postgresql.org/wiki/Apt
     # https://apt.postgresql.org/pub/repos/apt/dists/
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
         run: echo building master
-
+ 
       - name: Checkout code
         uses: actions/checkout@v6
-
+ 
       - name: checkout postgres
         run: |
+          set -x -v -e
           sudo apt-get update -qq
           sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
           sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
@@ -116,16 +114,18 @@ jobs:
           export PATH=/usr/local/pgsql/bin:$PATH
           initdb -D data
           pg_ctl -D data -l logfile start
+          psql -d postgres -c "SELECT version();"
+          psql -d postgres -c "SELECT current_setting('server_version_num');"
           popd
-
+ 
       - name: Script
         run: |
+          set -x -v -e
           export USE_PGXS=1
           export PATH=/usr/local/pgsql/bin:$PATH
           SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
           # USE_PGXS=1 is not required in Travis, and it is required in Github Actions
           sudo USE_PGXS=1 PATH=/usr/local/pgsql/bin:$PATH make install
-          psql --version
           make installcheck || (cat regression.diffs && false)
         env:
           USE_PGXS: 1

@@ -397,10 +397,10 @@ jobs:
           }
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
           #
-          ${env:HEAD8_GITHUB_SHA} = "${env:GITHUB_SHA}".SubString(0,8)
-          Set-EnvVar "HEAD8_GITHUB_SHA=${env:HEAD8_GITHUB_SHA}"
+          ${env:HEAD7_GITHUB_SHA} = "${env:GITHUB_SHA}".SubString(0,7)
+          Set-EnvVar "HEAD7_GITHUB_SHA=${env:HEAD7_GITHUB_SHA}"
 
-          echo "HEAD8_GITHUB_SHA: ${env:HEAD8_GITHUB_SHA}"
+          echo "HEAD7_GITHUB_SHA: ${env:HEAD7_GITHUB_SHA}"
 
           ${env:os} = "${{ matrix.os }}"
           if("${env:os}" -eq ""){${env:os} = "notset"}
@@ -2660,7 +2660,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v7
         with:
-          name: plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}
+          name: plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}
           # default
           if-no-files-found: warn
           path: |
@@ -2752,8 +2752,8 @@ jobs:
         run: |
           echo on
           dir
-          if exist plr-artifact.zip copy plr-artifact.zip plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
-          if exist plr-artifact.zip dir                   plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
+          if exist plr-artifact.zip copy plr-artifact.zip plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
+          if exist plr-artifact.zip dir                   plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
 
       # Testing is not done here.
       # Pushing this tag assumes that the previous Github Actions workflow run had all 'successes'.
@@ -2766,5 +2766,5 @@ jobs:
           # "artifacts" means "paths" and "files"
           # set of paths representing artifacts to upload to the release
           artifacts: |
-            plr-matid-${{ matrix.matid }}-${{ env.HEAD8_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
+            plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
           token: ${{ secrets.ACTIONS_CREATE_RELEASE_REPO_SECRET }}

@@ -39,6 +39,9 @@
 
 #include "fmgr.h"
 #include "funcapi.h"
+#if PG_VERSION_NUM >= 190000
+#include "nodes/execnodes.h"
+#endif
 #include "miscadmin.h"
 #if PG_VERSION_NUM >= 80400
 #include "windowapi.h"
@@ -65,6 +68,9 @@
 #include "utils/array.h"
 
 #include "utils/builtins.h"
+#if PG_VERSION_NUM >= 190000
+#include "utils/tuplestore.h"
+#endif
 
 #if PG_VERSION_NUM >= 80500
 #include "utils/bytea.h"
@@ -133,6 +139,34 @@ extern int R_SignalHandlers;
 #define IS_DATAFRAME(rval) isDataFrame(rval)
 #else
 #define IS_DATAFRAME(rval) isFrame(rval)
+#endif
+
+/*
+ * Internal workaround to a trivial change in R 4.4.1 file Rinternals.h
+ *
+ * (Removal of the code line "void (SET_TYPEOF)(SEXP x, int v);")
+ * Remove some non-API declarations from Rinternals.h
+ * https://github.com/wch/r-source/commit/23ce2dba89aa706a090277b10a294fa6dd474950#diff-f80fbe1c24fd75e44326c4169107c6db214b7188f2a16464ff38b248417164fdL1290
+ *
+ * The new function Rf_allocLang is now available. 
+ * This provides an alternative to the idiom of calling Rf_allocList followed by SET_TYPEOF.
+ * https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html (R 4.4.1)
+ *
+ * Add allocLang to make it easier to avoid using SET_TYPEOF.
+ * https://github.com/wch/r-source/commit/6b72cd1b3f458896a6a3346f75313e8fbde4c2e0
+ *
+ */
+#if (R_SVN_REVISION >= 86737) /* R_VERSION >= 4.4.1 */
+#define SET_ALLOCLANG_SIZE(allocLang_size, s, t) \
+  do { \
+    t = s = PROTECT(allocLang(allocLang_size)); \
+  } while (0)
+#else /* R_VERSION < 4.4.1 */
+#define SET_ALLOCLANG_SIZE(allocLang_size, s, t) \
+  do { \
+    PROTECT(t = s = allocList(allocLang_size)); \
+    SET_TYPEOF(s, LANGSXP); \
+  } while (0)
 #endif
 
 /* Restore the Postgres headers */
