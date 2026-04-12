@@ -76,7 +76,8 @@ environment:
 ##    compiler: cygwin
 
   # from the "last" compiled "Cygwin PostgreSQL" - in December 2022 - https://cygwin.com/packages/summary/postgresql-src.html
-  - PlatformToolset: v143
+  - apvid: 1
+    PlatformToolset: v143
     Configuration: Release
     Platform: x86
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
@@ -158,7 +159,8 @@ environment:
 # The fails should not have happened, and unknown.
 # Research of these accidents may occur in the future.
 
-# - pg: 10.23-1
+# - apvid: 2
+#   pg: 10.23-1
 #   PlatformToolset: v120
 #   Configuration: Release
 #   Platform: x86
@@ -166,7 +168,8 @@ environment:
 #   rversion: 4.1.3
 #   compiler: msvc
 #
-# - pg: REL_10_STABLE # verify can compile pgsql.sln on msvc 2015
+# - apvid: 3
+#   pg: REL_10_STABLE # verify can compile pgsql.sln on msvc 2015
 #   PlatformToolset: v120
 #   Configuration: Debug
 #   Platform: x86
@@ -207,7 +210,8 @@ environment:
 # The fails should not have happened, and unknown.
 # Research of these accidents may occur in the future.
 
-# - pg: REL_16_STABLE # static commit - from git
+# - apvid: 4
+#   pg: REL_16_STABLE # static commit - from git
 #   PlatformToolset: v143
 #   Configuration: Debug
 #   Platform: x64
@@ -215,7 +219,8 @@ environment:
 #   rversion: 4.2.3
 #   compiler: msvc
 #
-# - pg: 16.10-1
+# - apvid: 5
+#   pg: 16.10-1
 #   PlatformToolset: v143
 #   Configuration: Release
 #   Platform: x64
@@ -223,7 +228,8 @@ environment:
 #   rversion: 4.2.3
 #   compiler: msvc
 #
-# - pg: 15.14-1
+# - apvid: 6
+#   pg: 15.14-1
 #   PlatformToolset: v143
 #   Configuration: Release
 #   Platform: x64
@@ -231,7 +237,8 @@ environment:
 #   rversion: 4.2.3
 #   compiler: msvc
 #
-# - pg: 14.19-1
+# - apvid: 7
+#   pg: 14.19-1
 #   PlatformToolset: v143
 #   Configuration: Release
 #   Platform: x64
@@ -239,7 +246,8 @@ environment:
 #   rversion: 4.2.3
 #   compiler: msvc
 #
-# - pg: 13.22-1
+# - apvid: 8
+#   pg: 13.22-1
 #   PlatformToolset: v143
 #   Configuration: Release
 #   Platform: x64
@@ -247,7 +255,8 @@ environment:
 #   rversion: 4.2.3
 #   compiler: msvc
 #
-# - pg: 12.20-1
+# - apvid: 9
+#   pg: 12.20-1
 #   PlatformToolset: v143
 #   Configuration: Release
 #   Platform: x64
@@ -255,7 +264,8 @@ environment:
 #   rversion: 4.2.3
 #   compiler: msvc
 #
-# - pg: REL_11_STABLE # verify can compile pgsql.sln on msvc 2017
+# - apvid: 10
+#   pg: REL_11_STABLE # verify can compile pgsql.sln on msvc 2017
 #   PlatformToolset: v140
 #   Configuration: Debug
 #   Platform: x64
@@ -263,7 +273,8 @@ environment:
 #   rversion: 4.2.3
 #   compiler: msvc
 #
-# - pg: 11.22-1
+# - apvid: 11
+#   pg: 11.22-1
 #   PlatformToolset: v140
 #   Configuration: Release
 #   Platform: x64
@@ -359,7 +370,7 @@ for:
   #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
   #   pg already-compiled-binaries.
   #
-  - set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
+  - set pg7z=pg-%compiler%-%Platform%-PG%pgversion%-%Configuration%.7z
   - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pg7z%
   #
   # note: using Windows instead of Powershell
@@ -694,7 +705,7 @@ for:
   #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
   #   pg already-compiled-binaries.
   #
-  - set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
+  - set pg7z=pg-%compiler%-%Platform%-PG%pgversion%-%Configuration%.7z
   - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pg7z%
   #
   # note: using Windows instead of Powershell
@@ -971,7 +982,7 @@ for:
   #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
   #   pg already-compiled-binaries.
   #
-  - set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
+  - set pg7z=pg-%compiler%-%Platform%-PG%pgversion%-%Configuration%.7z
   - set pggithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%pg7z%
   #
   # note: using Windows instead of Powershell
@@ -1272,7 +1283,7 @@ for:
   - copy %dll% tmp\lib
   - copy %dll:.dll=.pdb% tmp\symbols
   - dir tmp
-  - set var7z=plr-%APPVEYOR_REPO_COMMIT:~0,8%-pg%pgversion%-R%rversion%-%Platform%-%Configuration%-%compiler%.7z
+  - set var7z=plr-apvid-%apvid%-%APPVEYOR_REPO_COMMIT:~0,8%-%compiler%-%Platform%-R%rversion%-PG%pgversion%-%Configuration%.7z
   - 7z a -t7z -mmt24 -mx7 -r %var7z% .\tmp\* > nul
   - dir "%var7z%"
   - echo appveyor PushArtifact "%var7z%"
@@ -1307,7 +1318,7 @@ for:
 
   #
   # same as above (repeated here)
-  - set pg7z=pg-pg%pgversion%-%Platform%-%Configuration%-%compiler%.7z
+  - set pg7z=pg-%compiler%-%Platform%-PG%pgversion%-%Configuration%.7z
   #
   # Zipping must be performed here, after "perl install.pl".
   # pg has been installed inside %pgroot% == %pf%\PostgreSQL\%pgversion% (see above).
