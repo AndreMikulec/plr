@@ -27,7 +27,7 @@ export PATH=${PATH}:$(echo $(cygpath "c:\\${betterperl}\c\bin"))
 if [ "${pggithubbincacheextracted}" == "false" ] && [ ! "${pg}" == "none" ]
 then
   loginfo "BEGIN PostgreSQL EXTRACT XOR CONFIGURE+BUILD+INSTALL"
-  if [ ! -f "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" ]
+  if [ ! -f "pg-${compiler}-${Platform}-PG${pgversion}-${Configuration}.7z" ]
   then
     loginfo "BEGIN PostgreSQL CONFIGURE"
     cd ${pgsource}
@@ -51,8 +51,8 @@ then
   else
     loginfo "BEGIN 7z EXTRACTION"
     cd ${pgroot}
-    7z l "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-    7z x "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
+    7z l "${APPVEYOR_BUILD_FOLDER}/pg-${compiler}-${Platform}-PG${pgversion}-${Configuration}.7z"
+    7z x "${APPVEYOR_BUILD_FOLDER}/pg-${compiler}-${Platform}-PG${pgversion}-${Configuration}.7z"
     ls -alrt ${pgroot}
     cd ${APPVEYOR_BUILD_FOLDER}
     loginfo "END   7z EXTRACTION"
@@ -166,20 +166,20 @@ then
   loginfo "BEGIN pg 7z CREATION"
   cd ${pgroot}
   ls -alrt
-  loginfo                                            "pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-  7z a -t7z -mmt24 -mx7 -r   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z *
-  7z l                       ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
-  ls -alrt                   ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
-  export  pg_7z_size=$(find "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" -printf "%s")
+  loginfo                                            "pg-${compiler}-${Platform}-PG${pgversion}-${Configuration}.7z"
+  7z a -t7z -mmt24 -mx7 -r   ${APPVEYOR_BUILD_FOLDER}/pg-${compiler}-${Platform}-PG${pgversion}-${Configuration}.7z *
+  7z l                       ${APPVEYOR_BUILD_FOLDER}/pg-${compiler}-${Platform}-PG${pgversion}-${Configuration}.7z
+  ls -alrt                   ${APPVEYOR_BUILD_FOLDER}/pg-${compiler}-${Platform}-PG${pgversion}-${Configuration}.7z
+  export  pg_7z_size=$(find "${APPVEYOR_BUILD_FOLDER}/pg-${compiler}-${Platform}-PG${pgversion}-${Configuration}.7z" -printf "%s")
   loginfo "pg_7z_size $pg_7z_size" 
   #                       96m
   if [ ${pg_7z_size} -gt 100663296 ] 
   then
-    rm -f    ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
-    loginfo "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z is TOO BIG so removed."
+    rm -f    ${APPVEYOR_BUILD_FOLDER}/pg-${compiler}-${Platform}-PG${pgversion}-${Configuration}.7z
+    loginfo "${APPVEYOR_BUILD_FOLDER}/pg-${compiler}-${Platform}-PG${pgversion}-${Configuration}.7z is TOO BIG so removed."
   fi
   #
-  if [ -f "${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z" ]
+  if [ -f "${APPVEYOR_BUILD_FOLDER}/pg-${compiler}-${Platform}-PG${pgversion}-${Configuration}.7z" ]
   then
     if [ "${compiler}" == "cygwin" ]
     then
@@ -189,16 +189,16 @@ then
       #
       # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
       #
-      # loginfo "appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-      #          appveyor PushArtifact                          pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+      # loginfo "appveyor PushArtifact                          pg-${compiler}-${Platform}-PG${pgversion}-${Configuration}.7z"
+      #          appveyor PushArtifact                          pg-${compiler}-${Platform}-PG${pgversion}-${Configuration}.7z
       popd
   # bash if-then-else-fi # inside bodies can not be empty
   # else
       #
       # NOTE FTP Deploy will automatically PushArtifact, so I will not do that HERE.
       #
-      # loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z"
-      #          appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-pg${pgversion}-${Platform}-${Configuration}-${compiler}.7z
+      # loginfo "appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-${compiler}-${Platform}-PG${pgversion}-${Configuration}.7z"
+      #          appveyor PushArtifact ${APPVEYOR_BUILD_FOLDER}/pg-${compiler}-${Platform}-PG${pgversion}-${Configuration}.7z
     fi
   fi
   #
