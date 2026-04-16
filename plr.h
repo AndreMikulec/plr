@@ -202,10 +202,10 @@ extern int R_SignalHandlers;
  *
  */
 #if (R_SVN_REVISION >= 89598)  /* R_VERSION >= 4.5.3 */ 
-# define FINDVAR (sym, rho) R_getVar(sym, rho, TRUE)
+# define FINDVAR(sym, rho) R_getVar(sym, rho, TRUE)
 # define ATTRIB(s) R_getAttributes(x)
 #else
-# define FINDVAR (sym, rho) findVar(sym, rho)
+# define FINDVAR(sym, rho) findVar(sym, rho)
 #endif
 
 /* Restore the Postgres headers */
