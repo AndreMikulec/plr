@@ -1000,9 +1000,9 @@ get_trigger_tuple(SEXP rval, plr_function *function, FunctionCallInfo fcinfo, bo
 		}
 		else
 		{
-			SEXP 	t;
+			SEXP 	t; t = dfcol;
 
-			for (t = ATTRIB(dfcol); t != R_NilValue; t = CDR(t))
+			for (ANY_ATTRIB(t);; t = CDR(t))
 			{
 				if(TAG(t) == R_LevelsSymbol)
 				{
