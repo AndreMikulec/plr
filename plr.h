@@ -169,6 +169,45 @@ extern int R_SignalHandlers;
   } while (0)
 #endif
 
+/*
+ * Internal workaround to a
+ * trivial change in R 4.5.3/bleeding-edge files Defn.h and Rinternals.h
+ *
+ * (Switch to remove from end-user the view of the legacy API)
+ * Disable legacy non-API declarations.
+ * https://github.com/wch/r-source/commit/80a441bfda15ae27ee3897aa51d583cfbfd0c9c2
+ *
+ * (Puts ATTRIB Rf_findVar in the legacy API group of functions)
+ * Allow separate contol of legacy functions and variables
+ * https://github.com/wch/r-source/commit/b2f593caa4cd76b74eaf3c72f228768e7df71809
+ *
+ * Changes in R 4.6.0. C-Level Facilities.
+ * ... in preparation for removing declarations
+ * and, where possible, hiding these entry points: ATTRIB.
+ * New function R_getAttributes returns the same result as the R function attributes.
+ * New function R_getVar.
+ * In most cases these can be used instead of the non-API functions ... Rf_findVar.
+ * Seen 4/16/2026
+ * https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html
+ *
+ * 6.21.1 Some API replacements for non-API entry points
+ * Rf_findVar. Use R_getVar ...
+ * Seen 4/16/2026
+ * This manual is for R, version 4.5.3 (2026-03-11).
+ * https://cran.r-project.org/doc/manuals/r-release/R-exts.html
+ *
+ * (Moves ATTRIB and Rf_findVar from the file Rinternals.h to Defn.h.)
+ * Rearrange to allow turning off the tools:::warnNonAPI entry point declarations.
+ * https://github.com/wch/r-source/commit/906fe07b05e415c5425bcfe7024891c33cad6096
+ *
+ */
+#if (R_SVN_REVISION >= 89598)  /* R_VERSION >= 4.5.3 */ 
+# define FINDVAR (sym, rho) R_getVar(sym, rho, TRUE)
+# define ATTRIB(s) R_getAttributes(x)
+#else
+# define FINDVAR (sym, rho) findVar(sym, rho)
+#endif
+
 /* Restore the Postgres headers */
 
 #ifdef ERROR
