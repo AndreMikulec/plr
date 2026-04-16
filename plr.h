@@ -201,9 +201,8 @@ extern int R_SignalHandlers;
  * https://github.com/wch/r-source/commit/906fe07b05e415c5425bcfe7024891c33cad6096
  *
  */
-#if (R_SVN_REVISION >= 89598)  /* R_VERSION >= 4.5.3 */ 
+#if (R_SVN_REVISION >= 89598) /* R_VERSION >= 4.5.3 */ 
 # define FINDVAR(sym, rho) R_getVar(sym, rho, TRUE)
-# define ATTRIB(s) R_getAttributes(x)
 #else
 # define FINDVAR(sym, rho) findVar(sym, rho)
 #endif
