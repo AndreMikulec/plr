@@ -1000,9 +1000,9 @@ get_trigger_tuple(SEXP rval, plr_function *function, FunctionCallInfo fcinfo, bo
 		}
 		else
 		{
-			SEXP 	t;
+			SEXP 	t; 
 
-			for (t = ATTRIB(dfcol); t != R_NilValue; t = CDR(t))
+			for (t = dfcol; ANY_ATTRIB(t); t = CDR(t))
 			{
 				if(TAG(t) == R_LevelsSymbol)
 				{
@@ -1032,7 +1032,7 @@ get_trigger_tuple(SEXP rval, plr_function *function, FunctionCallInfo fcinfo, bo
 				if(isFactor(dfcol))
 				{
 					SEXP t;
-					for (t = ATTRIB(dfcol); t != R_NilValue; t = CDR(t))
+					for (t = dfcol; ANY_ATTRIB(t); t = CDR(t))
 					{
 						if(TAG(t) == R_LevelsSymbol)
 						{
@@ -1345,11 +1345,11 @@ get_frame_array_datum(SEXP rval, plr_function *function, int col, bool *isnull)
 		 * factors and do the alternative assignment ONLY for them.
 		 * For the moment this locution seems to work correctly.
 		 */
-		if (ATTRIB(dfcol) == R_NilValue ||
-			TYPEOF(CAR(ATTRIB(dfcol))) != STRSXP)
+		if (NO_ATTRIB(dfcol) ||
+			TYPEOF_CAR(dfcol) != STRSXP)
 			PROTECT(obj = coerce_to_char(dfcol));
 		else
-			PROTECT(obj = coerce_to_char(CAR(ATTRIB(dfcol))));
+			PROTECT(obj = coerce_to_char(CAR(dfcol)));
 
 		if (j == 0)
 		{
@@ -2054,7 +2054,7 @@ get_frame_tuplestore(SEXP rval,
 		{
 			SEXP 	t;
 
-			for (t = ATTRIB(dfcol); t != R_NilValue; t = CDR(t))
+			for (t = dfcol; ANY_ATTRIB(t); t = CDR(t))
 			{
 				if(TAG(t) == R_LevelsSymbol)
 				{
@@ -2087,7 +2087,7 @@ get_frame_tuplestore(SEXP rval,
 				 */
 				if (INTEGER_ELT(dfcol, i) != NA_INTEGER)
 				{
-					for (t = ATTRIB(dfcol); t != R_NilValue; t = CDR(t))
+					for (t = dfcol; ANY_ATTRIB(t); t = CDR(t))
 					{
 						if(TAG(t) == R_LevelsSymbol)
 						{

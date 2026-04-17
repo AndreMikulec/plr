@@ -1,5 +1,5 @@
 project('plr', 'c',
-  version : '8_4_8_4',
+  version : '8_4_8_5',
   license : 'GNU Public License Version 2',
 )
 
