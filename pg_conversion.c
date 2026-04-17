@@ -1346,7 +1346,7 @@ get_frame_array_datum(SEXP rval, plr_function *function, int col, bool *isnull)
 		 * For the moment this locution seems to work correctly.
 		 */
 		if (NO_ATTRIB(dfcol) ||
-			TYPEOF(CAR(dfcol)) != STRSXP)
+			TYPEOF_CAR(dfcol) != STRSXP)
 			PROTECT(obj = coerce_to_char(dfcol));
 		else
 			PROTECT(obj = coerce_to_char(CAR(dfcol)));

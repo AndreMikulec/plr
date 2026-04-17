@@ -170,8 +170,8 @@ extern int R_SignalHandlers;
 #endif
 
 /*
- * Internal workaround to a
- * trivial change in R 4.5.3/bleeding-edge files Defn.h and Rinternals.h
+ * Internal workarounds to
+ * trivial changeS in R 4.5.3/bleeding-edge files Defn.h and Rinternals.h
  *
  * (Switch to remove from end-user the view of the legacy API)
  * Disable legacy non-API declarations.
@@ -184,12 +184,14 @@ extern int R_SignalHandlers;
  * Changes in R 4.6.0. C-Level Facilities.
  * ... in preparation for removing declarations
  * and, where possible, hiding these entry points: ATTRIB.
- * New function R_getAttributes returns the same result as the R function attributes.
  * New function R_getVar.
  * In most cases these can be used instead of the non-API functions ... Rf_findVar.
  * Seen 4/16/2026
+ * Changes in R-devel
  * https://cran.r-project.org/bin/windows/base/NEWS.R-devel.html
  *
+ * 5.9.12 Named objects and copying
+ * ANY_ATTRIB checks whether there are any attributes
  * 6.21.1 Some API replacements for non-API entry points
  * Rf_findVar. Use R_getVar ...
  * Seen 4/16/2026
@@ -203,8 +205,12 @@ extern int R_SignalHandlers;
  */
 #if (R_SVN_REVISION >= 89598) /* R_VERSION >= 4.5.3 */ 
 # define FINDVAR(sym, rho) R_getVar(sym, rho, TRUE)
+# define TYPEOF_CAR(dfcol) TYPEOF(CAR(dfcol))
 #else
 # define FINDVAR(sym, rho) findVar(sym, rho)
+# define TYPEOF_CAR(dfcol) TYPEOF(CAR(ATTRIB(dfcol)))
+# define ANY_ATTRIB(t) (ATTRIB(t) != R_NilValue)
+# define NO_ATTRIB(t) (! ANY_ATTRIB(t))
 #endif
 
 /* Restore the Postgres headers */
