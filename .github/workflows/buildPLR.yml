@@ -57,7 +57,7 @@ jobs:
           # https://www.cygwin.com/packages/summary/postgresql.html
           #
           # current Cygwin repository
-          - matid: 01
+          - matid: '01'
             os: windows-2025-vs2026
             GithubActionsIgnoreFail: false
             compilerEnv: cygwin
@@ -93,7 +93,7 @@ jobs:
           # https://github.com/actions/runner-images
 
           # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
-          - matid: 02
+          - matid: '02'
             os: windows-2025-vs2026
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -114,7 +114,7 @@ jobs:
 
 
           # R latest and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
-          - matid: 03
+          - matid: '03'
             os: windows-2025-vs2026
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -135,7 +135,7 @@ jobs:
 
 
           # R latest and PostgreSQL bleeding edge (buildpgANDplrInSRCcontrib true)
-          #- matid: 04
+          #- matid: '04'
           #  os: windows-2025-vs2026
           #  GithubActionsIgnoreFail: true
           #  compilerEnv: UCRT64
@@ -169,8 +169,8 @@ jobs:
           #  PG_HOME: 'C:\PGINSTALL'
 
 
-          # R latest and PostgreSQL beta (buildpgANDplrInSRCcontrib true)
-          - matid: 04
+          # R latest and PostgreSQL release candidate or beta (buildpgANDplrInSRCcontrib true)
+          - matid: '04'
             os: windows-2025-vs2026
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -191,7 +191,7 @@ jobs:
 
 
           # R bleeding edge and PostgreSQL latest (buildpgFromSRCmethod meson)
-          - matid: 05
+          - matid: '05'
             os: windows-2025-vs2026
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -226,7 +226,7 @@ jobs:
 
 
           # R latest and PostgreSQL latest (buildpgFromSRCmethod meson)
-          - matid: 06
+          - matid: '06'
             os: windows-2025-vs2026
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
@@ -252,7 +252,7 @@ jobs:
 
 
           # R latest and PostgreSQL latest (buildpgANDplrInSRCcontrib true)
-          #- matid: 07
+          #- matid: '07'
           #  os: windows-2025-vs2026
           #  GithubActionsIgnoreFail: false
           #  compilerEnv: UCRT64
@@ -277,7 +277,7 @@ jobs:
 
 
           # R latest and PostgreSQL 2nd latest (buildpgFromSRCmethod meson)
-          - matid: 08
+          - matid: '08'
             os: windows-2025-vs2026
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
@@ -315,7 +315,7 @@ jobs:
             MSYS2testonpgWIN: true
 
           # R latest and PostgreSQL 3rd latest (buildpgFromSRCmethod meson)
-          - matid: 09
+          - matid: '09'
             os: windows-2025-vs2026
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
@@ -341,7 +341,7 @@ jobs:
           # buildpgFromSRCmethod make WORKS on ANY PostgreSQL version 
 
           # R latest and PostgreSQL 3rd latest (buildpgFromSRCmethod make)
-          - matid: 10
+          - matid: '10'
             os: windows-2025-vs2026
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
@@ -364,7 +364,7 @@ jobs:
             MSYS2testonpgWIN: true
 
           # R latest and PostgreSQL 4th latest (buildpgFromSRCmethod make)
-          - matid: 11
+          - matid: '11'
             os: windows-2025-vs2026
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
