@@ -200,7 +200,7 @@ jobs:
             #
             #   pgWINversion: 18.?-?
             #   MSYS2testonpgWIN: false
-            pgWINversion: 18.3-2
+            pgWINversion: 18.4-2
             MSYS2testonpgWIN: true
 
 
@@ -226,7 +226,7 @@ jobs:
             #
             #   pgWINversion: 18.?-?
             #   MSYS2testonpgWIN: false
-            pgWINversion: 18.3-2
+            pgWINversion: 18.4-2
             MSYS2testonpgWIN: true
 
 
@@ -277,20 +277,20 @@ jobs:
             #
             # EnterpriseDB PostgreSQL for Windows
             # windows-2025 and pgWINversion: 17.x-y
-            # (if MANUAL would be: 17.9-2)
+            # 
+            # (if MANUAL would be: 17.10-2)
             #
-            # A HUMAN must manually see the VERSION here. (seen Aug 17 2024 EST)
-            # Mar 2026 - Pre-installed Github Actions PostgreSQL for Windows version is x64-14
+            # A HUMAN must manually see the VERSION here. (seen Jun 12 2026 EST)
+            # Jun 2026 - Pre-installed Github Actions PostgreSQL for Windows version is x64-14
             # ServiceName postgresql-x64-17
-            # Version 17.9
-            # REAFFIRMED MAR 14 2026
-            # https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md
-            # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-software
+            # Version 17.10
+            # REAFFIRMED JUN 12 2026
+            # https://github.com/actions/runner-images
             #
-            # Note, BELOW Github Actions has installed version (17.9),
-            # than what is available at EnterpriseDB 17.9-2 (March 14 2026)
+            # Note, BELOW Github Actions has installed version (17.10),
+            # than what is available at EnterpriseDB 17.10-2 (June 12 2026)
             #
-            # pgWINversion: 17.9-2
+            # pgWINversion: 17.10-2
             MSYS2testonpgWIN: true
 
           # R latest and PostgreSQL 3rd latest (buildpgFromSRCmethod meson)
@@ -313,7 +313,7 @@ jobs:
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
             #
-            pgWINversion: 16.13-2
+            pgWINversion: 16.14-2
             MSYS2testonpgWIN: true
 
           # buildpgFromSRCmethod meson ONLY WORKS on the PostreSQL REL_16_STABLE version or later
@@ -339,7 +339,7 @@ jobs:
             buildpgFromSRCmethod: make
             PG_HOME: 'C:\PGINSTALL'
             #
-            pgWINversion: 15.17-2
+            pgWINversion: 15.18-2
             MSYS2testonpgWIN: true
 
           # R latest and PostgreSQL 4th latest (buildpgFromSRCmethod make)
@@ -362,7 +362,7 @@ jobs:
             buildpgFromSRCmethod: make
             PG_HOME: 'C:\PGINSTALL'
             #
-            pgWINversion: 14.22-2
+            pgWINversion: 14.23-2
             MSYS2testonpgWIN: true
 
     defaults:
