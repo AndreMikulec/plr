@@ -169,8 +169,30 @@ jobs:
           #  PG_HOME: 'C:\PGINSTALL'
 
 
+          # RSVP for FUTURE USE
+#         # R latest and PostgreSQL release candidate or beta (buildpgANDplrInSRCcontrib true)
+#         - matid: '04'
+#           os: windows-2025-vs2026
+#           GithubActionsIgnoreFail: true
+#           compilerEnv: UCRT64
+#           shellEnv: msys2 {0}
+#           compilerExe: gcc
+#           Platform: x64
+#           Configuration: Debug
+#           #
+#           rversion: 4.6.0
+#           R_HOME: 'C:\RINSTALL'
+#           R_ARCH: /x64
+#           #
+#           pgSRCversion: REL_19_STABLE
+#           PG_SOURCE: 'C:\PGSOURCE'
+#           buildpgFromSRC: true
+#           buildpgFromSRCmethod: meson
+#           PG_HOME: 'C:\PGINSTALL'
+
+
           # R latest and PostgreSQL release candidate or beta (buildpgANDplrInSRCcontrib true)
-          - matid: '04'
+          - matid: '05'
             os: windows-2025-vs2026
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -191,7 +213,7 @@ jobs:
 
 
           # R bleeding edge and PostgreSQL latest (buildpgFromSRCmethod meson)
-          - matid: '05'
+          - matid: '06'
             os: windows-2025-vs2026
             GithubActionsIgnoreFail: true
             compilerEnv: UCRT64
@@ -226,7 +248,7 @@ jobs:
 
 
           # R latest and PostgreSQL latest (buildpgFromSRCmethod meson)
-          - matid: '06'
+          - matid: '07'
             os: windows-2025-vs2026
             GithubActionsIgnoreFail: false
             compilerEnv: UCRT64
