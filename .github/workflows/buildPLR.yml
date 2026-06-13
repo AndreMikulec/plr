@@ -169,6 +169,27 @@ jobs:
           #  PG_HOME: 'C:\PGINSTALL'
 
 
+          # R latest and PostgreSQL beta (buildpgANDplrInSRCcontrib true)
+          - matid: 04
+            os: windows-2025
+            GithubActionsIgnoreFail: true
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            #
+            rversion: 4.6.0
+            R_HOME: 'C:\RINSTALL'
+            R_ARCH: /x64
+            #
+            pgSRCversion: REL_19_BETA1
+            PG_SOURCE: 'C:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: meson
+            PG_HOME: 'C:\PGINSTALL'
+
+
           # R bleeding edge and PostgreSQL latest (buildpgFromSRCmethod meson)
           - matid: 05
             os: windows-2025
