@@ -355,7 +355,7 @@ jobs:
             # Debian 13 trixie
             curl -O https://cdn.posit.co/r/debian-13/pkgs/r-${R_VERSION}_1_$(dpkg --print-architecture).deb
             sudo apt-get update
-            sudo apt-get install ./r-${R_VERSION}_1_$(dpkg --print-architecture).deb
+            sudo apt-get install -y ./r-${R_VERSION}_1_$(dpkg --print-architecture).deb -y
             /opt/R/${R_VERSION}/bin/R --version
             sudo ln -s /opt/R/${R_VERSION}/bin/R /usr/local/bin/R
             sudo ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
