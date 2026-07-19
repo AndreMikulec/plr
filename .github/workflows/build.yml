@@ -68,61 +68,79 @@ jobs:
 
 
 
-  # A WORK IN PROGRESS
-  # Using ARM runner to automatically build releases for Raspberry Pi using GitHub Actions
-  # https://castle-engine.io/wp/2024/11/16/using-arm-runner-to-automatically-build-releases-for-raspberry-pi-using-github-actions/
-  # Simplest example
-  # https://github.com/michaliskambi/test-arm-runner-for-cge/blob/651350ddd29f776e3144d3c6b9239a724e92150d/.github/workflows/minimal-arm-actions-test.yaml
-  # Complex example
-  # https://github.com/michaliskambi/test-arm-runner-for-cge/blob/master/.github/workflows/build.yml
-  # chroot-based virtualized Raspberry Pi (raspios/raspbian) environment. (using qemu userland Linux emulation)
-  # https://github.com/pguyot/arm-runner-action (SEEN JUL 18 2026)
-  # Last known working combinations (SEEN JUL 18 2026)
-  # https://github.com/pguyot/arm-runner-action/blob/main/.github/workflows/test-cpu_info.yml
-  test_cortex_a76:
-    # Ubuntu 24.04 ships qemu >= 8.2 which synthesizes /proc/cpuinfo from the
-    # -cpu option on aarch64. No cpu_info bind mount is used here.
-    runs-on: ubuntu-24.04
+### A WORK IN PROGRESS
+### Using ARM runner to automatically build releases for Raspberry Pi using GitHub Actions
+### https://castle-engine.io/wp/2024/11/16/using-arm-runner-to-automatically-build-releases-for-raspberry-pi-using-github-actions/
+### Simplest example
+### https://github.com/michaliskambi/test-arm-runner-for-cge/blob/651350ddd29f776e3144d3c6b9239a724e92150d/.github/workflows/minimal-arm-actions-test.yaml
+### Complex example
+### https://github.com/michaliskambi/test-arm-runner-for-cge/blob/master/.github/workflows/build.yml
+### chroot-based virtualized Raspberry Pi (raspios/raspbian) environment. (using qemu userland Linux emulation)
+### https://github.com/pguyot/arm-runner-action (SEEN JUL 18 2026)
+### Last known working combinations (SEEN JUL 18 2026)
+### https://github.com/pguyot/arm-runner-action/blob/main/.github/workflows/test-cpu_info.yml
+##test_cortex_a76:
+##  # Ubuntu 24.04 ships qemu >= 8.2 which synthesizes /proc/cpuinfo from the
+##  # -cpu option on aarch64. No cpu_info bind mount is used here.
+##  runs-on: ubuntu-24.04
+##  steps:
+##
+##  - uses: actions/checkout@v6
+##
+##  - uses: pguyot/arm-runner-action@HEAD
+##    with:
+##      bind_mount_repository: true
+##      cpu: cortex-a76
+##      base_image: raspios_lite_arm64:latest
+##      # base_image: raspios_lite_arm64:2023-05-03
+##      # Below from https://github.com/pguyot/arm-runner-action/blob/main/action.yml
+##      import_github_env: yes
+##      export_github_env: yes
+##      commands: |
+##          set -x -v -e
+##          grep Model /proc/cpuinfo
+##          cat /proc/cpuinfo > cpuinfo.txt
+##          # Below from https://r4pi.org/docs/installation/
+##          source /etc/os-release
+##          cat /etc/os-release
+##          uname -m
+##          uname -a
+##          # Below from https://pimylifeup.com/raspberry-pi-postgresql/
+##          sudo apt install postgresql
+##          # To find your Raspberry Pi's VERSION_CODENAME (such as bookworm, bullseye, or buster), 
+##          #   open your terminal and run: cat /etc/os-release. 
+##          #     This will display system details; look for the line starting with VERSION_CODENAME=
+##          # Common Version Codenames - trixie (Debian 13) bookworm (Debian 12) bullseye (Debian 11) 
+##          #                            buster (Debian 10) stretch (Debian 9) jessie (Debian 8) wheezy (Debian 7)
+##          # guessing "trixie"
+##          # Manual pre-check making sure that the package exists
+##          curl -O  https://pkgs.r4pi.org/dl/trixie/r4pi-repo-conf_0.0.1-1_all.deb
+##          sudo dpkg -i  r4pi-repo-conf_0.0.1-1_all.deb
+##          sudo apt install r4pi
+##
+##  - name: Test content of cpuinfo
+##    run: |
+##      cat cpuinfo.txt
+##      grep -c "model name	: ARMv8 Processor rev . (v8l)" cpuinfo.txt
+##      grep -c "CPU architecture: 8" cpuinfo.txt
+##      grep -c "CPU part.*0xd0b" cpuinfo.txt
+
+
+
+# https://github.com/michaliskambi/test-arm-runner-for-cge/blob/651350ddd29f776e3144d3c6b9239a724e92150d/.github/workflows/minimal-arm-actions-test.yaml
+
+  minimal-arm-actions-test:
+    runs-on: ubuntu-latest
     steps:
-
-    - uses: actions/checkout@v6
-
-    - uses: pguyot/arm-runner-action@HEAD
+    - uses: actions/checkout@v7
+    #- uses: pguyot/arm-runner-action@HEAD # also good now
+    - uses: pguyot/arm-runner-action@v2
       with:
-        bind_mount_repository: true
-        cpu: cortex-a76
-        base_image: raspios_lite_arm64:latest
-        # base_image: raspios_lite_arm64:2023-05-03
-        # Below from https://github.com/pguyot/arm-runner-action/blob/main/action.yml
-        import_github_env: yes
-        export_github_env: yes
+        shell: /bin/bash
         commands: |
-            set -x -v -e
-            grep Model /proc/cpuinfo
-            cat /proc/cpuinfo > cpuinfo.txt
-            # Below from https://r4pi.org/docs/installation/
-            source /etc/os-release
-            cat /etc/os-release
-            uname -m
-            uname -a
-            # Below from https://pimylifeup.com/raspberry-pi-postgresql/
-            sudo apt install postgresql
-            # To find your Raspberry Pi's VERSION_CODENAME (such as bookworm, bullseye, or buster), 
-            #   open your terminal and run: cat /etc/os-release. 
-            #     This will display system details; look for the line starting with VERSION_CODENAME=
-            # Common Version Codenames - trixie (Debian 13) bookworm (Debian 12) bullseye (Debian 11) 
-            #                            buster (Debian 10) stretch (Debian 9) jessie (Debian 8) wheezy (Debian 7)
-            # guessing "trixie"
-            # Manual pre-check making sure that the package exists
-            curl -O  https://pkgs.r4pi.org/dl/trixie/r4pi-repo-conf_0.0.1-1_all.deb
-            sudo dpkg -i  r4pi-repo-conf_0.0.1-1_all.deb
-            sudo apt install r4pi
+            echo "Minimal"
+            test `uname -m` = 'armv6l'
 
-    - name: Test content of cpuinfo
-      run: |
-        cat cpuinfo.txt
-        grep -c "model name	: ARMv8 Processor rev . (v8l)" cpuinfo.txt
-        grep -c "CPU architecture: 8" cpuinfo.txt
-        grep -c "CPU part.*0xd0b" cpuinfo.txt
 
+# https://github.com/pguyot/arm-runner-action/blob/main/.github/workflows/test-cpu_info.yml
 
