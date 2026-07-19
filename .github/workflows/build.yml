@@ -112,6 +112,9 @@ jobs:
 ##          # Common Version Codenames - trixie (Debian 13) bookworm (Debian 12) bullseye (Debian 11) 
 ##          #                            buster (Debian 10) stretch (Debian 9) jessie (Debian 8) wheezy (Debian 7)
 ##          # guessing "trixie" (MUST NOT GUESS)
+##          # Re How do I know what Raspbian version name I have
+##          # https://forums.raspberrypi.com/viewtopic.php?t=280368
+##          cat /etc/os-release 
 ##          source /etc/os-release
 ##          # https://r4pi.org/docs/installation/
 ##          # Manual pre-check making sure that the package exists
@@ -128,8 +131,8 @@ jobs:
 ##      cat Raspberry_Pi_model.txt
 
 
-
 # https://github.com/michaliskambi/test-arm-runner-for-cge/blob/651350ddd29f776e3144d3c6b9239a724e92150d/.github/workflows/minimal-arm-actions-test.yaml
+
 
 ##minimal-arm-actions-test:
 ##  runs-on: ubuntu-latest
@@ -160,6 +163,7 @@ jobs:
 ##      cat uname_m.txt
 ##      cat uname_a.txt
 
+
   minimal-arm-actions-test_adj:
     runs-on: ubuntu-latest
     steps:
@@ -174,6 +178,7 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /etc/os-release
 
 
 # https://github.com/pguyot/arm-runner-action/blob/main/.github/workflows/test-cpu_info.yml
@@ -194,6 +199,7 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /etc/os-release
 
 
   test-cpu_info_test_3b_adj:
@@ -211,6 +217,7 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /etc/os-release
 
 
   test-cpu_info_test_zero2_w_adj:
@@ -228,6 +235,7 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /etc/os-release
 
 
   test-cpu_info_test_zero2_w_arm64_adj:
@@ -246,6 +254,7 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /etc/os-release
 
 
   test-cpu_info_test_4b_adj:
@@ -263,6 +272,7 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /etc/os-release
 
 
   test-cpu_info_test_5_adj:
@@ -280,6 +290,7 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /etc/os-release
 
 
   test-cpu_info_test_cortex_a76_adj:
@@ -299,3 +310,4 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /etc/os-release
