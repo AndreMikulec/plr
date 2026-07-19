@@ -175,155 +175,160 @@ jobs:
 ##      cat uname_m.txt
 ##      cat uname_a.txt
 
-
-  minimal-arm-actions-test_adj:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v7
-    #- uses: pguyot/arm-runner-action@HEAD # also good now
-    - uses: pguyot/arm-runner-action@v2
-      with:
-        shell: /bin/bash
-        commands: |
-            set -x -v -e
-            echo "Minimal"
-            uname -m
-            uname -a
-            cat /proc/cpuinfo
-            cat /proc/meminfo
-            free -h
-            # trixie - JUL 2026
-            cat /etc/os-release
+###
+### GOOD
+###
+##minimal-arm-actions-test_adj:
+##  runs-on: ubuntu-latest
+##  steps:
+##  - uses: actions/checkout@v7
+##  #- uses: pguyot/arm-runner-action@HEAD # also good now
+##  - uses: pguyot/arm-runner-action@v2
+##    with:
+##      shell: /bin/bash
+##      commands: |
+##          set -x -v -e
+##          echo "Minimal"
+##          uname -m
+##          uname -a
+##          cat /proc/cpuinfo
+##          cat /proc/meminfo
+##          free -h
+##          # trixie - JUL 2026
+##          cat /etc/os-release
 
 
 # https://github.com/pguyot/arm-runner-action/blob/main/.github/workflows/test-cpu_info.yml
 
 
-  test-cpu_info_test_zero_w_adj:
-    runs-on: ubuntu-22.04
-    steps:
-    - uses: actions/checkout@v6
-    - uses: pguyot/arm-runner-action@HEAD
-      with:
-        cpu_info: cpuinfo/raspberrypi_zero_w
-        bind_mount_repository: true
-        cpu: arm1176
-        commands: |
-            set -x -v -e
-            echo "Minimal"
-            uname -m
-            uname -a
-            cat /proc/cpuinfo
-            cat /proc/meminfo
-            free -h
-            # trixie - JUL 2026
-            cat /etc/os-release
-
-
-  test-cpu_info_test_3b_adj:
-    runs-on: ubuntu-22.04
-    steps:
-    - uses: actions/checkout@v6
-    - uses: pguyot/arm-runner-action@HEAD
-      with:
-        cpu_info: cpuinfo/raspberrypi_3b
-        bind_mount_repository: true
-        cpu: cortex-a7
-        commands: |
-            set -x -v -e
-            echo "Minimal"
-            uname -m
-            uname -a
-            cat /proc/cpuinfo
-            cat /proc/meminfo
-            free -h
-            # trixie - JUL 2026
-            cat /etc/os-release
-
-
-  test-cpu_info_test_zero2_w_adj:
-    runs-on: ubuntu-22.04
-    steps:
-    - uses: actions/checkout@v6
-    - uses: pguyot/arm-runner-action@HEAD
-      with:
-        cpu_info: cpuinfo/raspberrypi_zero2_w
-        bind_mount_repository: true
-        cpu: cortex-a7
-        commands: |
-            set -x -v -e
-            echo "Minimal"
-            uname -m
-            uname -a
-            cat /proc/cpuinfo
-            cat /proc/meminfo
-            free -h
-            # trixie - JUL 2026
-            cat /etc/os-release
-
-
-  test-cpu_info_test_zero2_w_arm64_adj:
-    runs-on: ubuntu-22.04
-    steps:
-    - uses: actions/checkout@v6
-    - uses: pguyot/arm-runner-action@HEAD
-      with:
-        cpu_info: cpuinfo/raspberrypi_zero2_w_arm64
-        bind_mount_repository: true
-        cpu: cortex-a53
-        base_image: raspios_lite_arm64:latest
-        commands: |
-            set -x -v -e
-            echo "Minimal"
-            uname -m
-            uname -a
-            cat /proc/cpuinfo
-            cat /proc/meminfo
-            free -h
-            # trixie - JUL 2026
-            cat /etc/os-release
-
-
-  test-cpu_info_test_4b_adj:
-    runs-on: ubuntu-22.04
-    steps:
-    - uses: actions/checkout@v6
-    - uses: pguyot/arm-runner-action@HEAD
-      with:
-        cpu_info: cpuinfo/raspberrypi_4b
-        bind_mount_repository: true
-        cpu: cortex-a53
-        commands: |
-            set -x -v -e
-            echo "Minimal"
-            uname -m
-            uname -a
-            cat /proc/cpuinfo
-            cat /proc/meminfo
-            free -h
-            # trixie - JUL 2026
-            cat /etc/os-release
-
-
-  test-cpu_info_test_5_adj:
-    runs-on: ubuntu-22.04
-    steps:
-    - uses: actions/checkout@v6
-    - uses: pguyot/arm-runner-action@HEAD
-      with:
-        cpu_info: cpuinfo/raspberrypi_5
-        bind_mount_repository: true
-        cpu: cortex-a53
-        commands: |
-            set -x -v -e
-            echo "Minimal"
-            uname -m
-            uname -a
-            cat /proc/cpuinfo
-            cat /proc/meminfo
-            free -h
-            # trixie - JUL 2026
-            cat /etc/os-release
+###
+### GOOD
+###
+##test-cpu_info_test_zero_w_adj:
+##  runs-on: ubuntu-22.04
+##  steps:
+##  - uses: actions/checkout@v6
+##  - uses: pguyot/arm-runner-action@HEAD
+##    with:
+##      cpu_info: cpuinfo/raspberrypi_zero_w
+##      bind_mount_repository: true
+##      cpu: arm1176
+##      commands: |
+##          set -x -v -e
+##          echo "Minimal"
+##          uname -m
+##          uname -a
+##          cat /proc/cpuinfo
+##          cat /proc/meminfo
+##          free -h
+##          # trixie - JUL 2026
+##          cat /etc/os-release
+##
+##
+##test-cpu_info_test_3b_adj:
+##  runs-on: ubuntu-22.04
+##  steps:
+##  - uses: actions/checkout@v6
+##  - uses: pguyot/arm-runner-action@HEAD
+##    with:
+##      cpu_info: cpuinfo/raspberrypi_3b
+##      bind_mount_repository: true
+##      cpu: cortex-a7
+##      commands: |
+##          set -x -v -e
+##          echo "Minimal"
+##          uname -m
+##          uname -a
+##          cat /proc/cpuinfo
+##          cat /proc/meminfo
+##          free -h
+##          # trixie - JUL 2026
+##          cat /etc/os-release
+##
+##
+##test-cpu_info_test_zero2_w_adj:
+##  runs-on: ubuntu-22.04
+##  steps:
+##  - uses: actions/checkout@v6
+##  - uses: pguyot/arm-runner-action@HEAD
+##    with:
+##      cpu_info: cpuinfo/raspberrypi_zero2_w
+##      bind_mount_repository: true
+##      cpu: cortex-a7
+##      commands: |
+##          set -x -v -e
+##          echo "Minimal"
+##          uname -m
+##          uname -a
+##          cat /proc/cpuinfo
+##          cat /proc/meminfo
+##          free -h
+##          # trixie - JUL 2026
+##          cat /etc/os-release
+##
+##
+##test-cpu_info_test_zero2_w_arm64_adj:
+##  runs-on: ubuntu-22.04
+##  steps:
+##  - uses: actions/checkout@v6
+##  - uses: pguyot/arm-runner-action@HEAD
+##    with:
+##      cpu_info: cpuinfo/raspberrypi_zero2_w_arm64
+##      bind_mount_repository: true
+##      cpu: cortex-a53
+##      base_image: raspios_lite_arm64:latest
+##      commands: |
+##          set -x -v -e
+##          echo "Minimal"
+##          uname -m
+##          uname -a
+##          cat /proc/cpuinfo
+##          cat /proc/meminfo
+##          free -h
+##          # trixie - JUL 2026
+##          cat /etc/os-release
+##
+##
+##test-cpu_info_test_4b_adj:
+##  runs-on: ubuntu-22.04
+##  steps:
+##  - uses: actions/checkout@v6
+##  - uses: pguyot/arm-runner-action@HEAD
+##    with:
+##      cpu_info: cpuinfo/raspberrypi_4b
+##      bind_mount_repository: true
+##      cpu: cortex-a53
+##      commands: |
+##          set -x -v -e
+##          echo "Minimal"
+##          uname -m
+##          uname -a
+##          cat /proc/cpuinfo
+##          cat /proc/meminfo
+##          free -h
+##          # trixie - JUL 2026
+##          cat /etc/os-release
+##
+##
+##test-cpu_info_test_5_adj:
+##  runs-on: ubuntu-22.04
+##  steps:
+##  - uses: actions/checkout@v6
+##  - uses: pguyot/arm-runner-action@HEAD
+##    with:
+##      cpu_info: cpuinfo/raspberrypi_5
+##      bind_mount_repository: true
+##      cpu: cortex-a53
+##      commands: |
+##          set -x -v -e
+##          echo "Minimal"
+##          uname -m
+##          uname -a
+##          cat /proc/cpuinfo
+##          cat /proc/meminfo
+##          free -h
+##          # trixie - JUL 2026
+##          cat /etc/os-release
 
 
   test-cpu_info_test_cortex_a76_adj:
@@ -337,6 +342,10 @@ jobs:
         bind_mount_repository: true
         cpu: cortex-a76
         base_image: raspios_lite_arm64:latest
+        # cannot copy extracted data for './opt/R/4.6.1/lib/R/include/R_ext/Error.h' to '/opt/R/4.6.1/lib/R/include/R_ext/Error.h.dpkg-new'
+        #   failed to write (No space left on device)
+        # Enlarge the image by this number of MB. Default is to not enlarge the image.
+        image_additional_mb: 1024
         commands: |
             set -x -v -e
             echo "Minimal"
@@ -355,12 +364,15 @@ jobs:
             # Debian 13 trixie
             curl -O https://cdn.posit.co/r/debian-13/pkgs/r-${R_VERSION}_1_$(dpkg --print-architecture).deb
             sudo apt-get update
-            sudo apt-get install -y ./r-${R_VERSION}_1_$(dpkg --print-architecture).deb -y
+            sudo apt-get install -y ./r-${R_VERSION}_1_$(dpkg --print-architecture).deb
             /opt/R/${R_VERSION}/bin/R --version
             sudo ln -s /opt/R/${R_VERSION}/bin/R /usr/local/bin/R
             sudo ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
 
 
+###
+### LATER
+###
 ##windows-11-arm:
 ##  runs-on: windows-11-arm
 ##  steps:
