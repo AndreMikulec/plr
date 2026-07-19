@@ -367,6 +367,7 @@ jobs:
             sudo apt-get update
             sudo apt upgrade -y
             sudo apt-get install -y ./r-${R_VERSION}_1_$(dpkg --print-architecture).deb
+            # R version 4.6.1 (2026-06-24) -- "Happy Hop"
             /opt/R/${R_VERSION}/bin/R --version
             sudo ln -s /opt/R/${R_VERSION}/bin/R /usr/local/bin/R
             sudo ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
@@ -378,10 +379,12 @@ jobs:
             # verify account has sudo rights
             sudo apt update
             sudo apt upgrade -y
+            # postgresql-17 postgresql-common  postgresql-common-dev
             sudo apt install -y postgresql postgresql-contrib
             # To confirm that Post­greSQL started suc­cess­ful­ly, check its service status
             sudo systemctl status postgresql
-
+            sudo USE_PGXS=1 make install
+            make installcheck PGUSER=postgres || (cat regression.diffs && false)
 
 ###
 ### LATER
