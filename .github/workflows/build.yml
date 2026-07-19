@@ -101,8 +101,7 @@ jobs:
 ##          grep Model /proc/cpuinfo
 ##          cat /proc/cpuinfo > cpuinfo.txt
 ##          # Below from https://r4pi.org/docs/installation/
-##          source /etc/os-release
-##          cat /etc/os-release
+##          cat /sys/firmware/devicetree/base/model > Raspberry_Pi_model.txt
 ##          uname -m
 ##          uname -a
 ##          # Below from https://pimylifeup.com/raspberry-pi-postgresql/
@@ -112,7 +111,9 @@ jobs:
 ##          #     This will display system details; look for the line starting with VERSION_CODENAME=
 ##          # Common Version Codenames - trixie (Debian 13) bookworm (Debian 12) bullseye (Debian 11) 
 ##          #                            buster (Debian 10) stretch (Debian 9) jessie (Debian 8) wheezy (Debian 7)
-##          # guessing "trixie"
+##          # guessing "trixie" (MUST NOT GUESS)
+##          source /etc/os-release
+##          # https://r4pi.org/docs/installation/
 ##          # Manual pre-check making sure that the package exists
 ##          curl -O  https://pkgs.r4pi.org/dl/trixie/r4pi-repo-conf_0.0.1-1_all.deb
 ##          sudo dpkg -i  r4pi-repo-conf_0.0.1-1_all.deb
@@ -124,6 +125,7 @@ jobs:
 ##      grep -c "model name	: ARMv8 Processor rev . (v8l)" cpuinfo.txt
 ##      grep -c "CPU architecture: 8" cpuinfo.txt
 ##      grep -c "CPU part.*0xd0b" cpuinfo.txt
+##      cat Raspberry_Pi_model.txt
 
 
 
@@ -138,9 +140,24 @@ jobs:
       with:
         shell: /bin/bash
         commands: |
+            set -x -v -e
             echo "Minimal"
-            test `uname -m` = 'armv6l'
+            uname -m > uname_m.txt
+            uname -a > uname_a.txt
+            # test `uname -m` = 'armv6l'
+            cat /proc/cpuinfo > cpuinfo.txt
+            cat /sys/firmware/devicetree/base/model > Raspberry_Pi_model.txt
 
+    - name: Test content of cpuinfo
+      run: |
+        set -x -v -e
+        cat cpuinfo.txt
+        # grep -c "model name	: ARMv8 Processor rev . (v8l)" cpuinfo.txt
+        # grep -c "CPU architecture: 8" cpuinfo.txt
+        # grep -c "CPU part.*0xd0b" cpuinfo.txt
+        cat Raspberry_Pi_model.txt
+        cat uname_m.txt
+        cat uname_a.txt
 
 # https://github.com/pguyot/arm-runner-action/blob/main/.github/workflows/test-cpu_info.yml
 
