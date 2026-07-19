@@ -131,7 +131,36 @@ jobs:
 
 # https://github.com/michaliskambi/test-arm-runner-for-cge/blob/651350ddd29f776e3144d3c6b9239a724e92150d/.github/workflows/minimal-arm-actions-test.yaml
 
-  minimal-arm-actions-test:
+##minimal-arm-actions-test:
+##  runs-on: ubuntu-latest
+##  steps:
+##  - uses: actions/checkout@v7
+##  #- uses: pguyot/arm-runner-action@HEAD # also good now
+##  - uses: pguyot/arm-runner-action@v2
+##    with:
+##      shell: /bin/bash
+##      commands: |
+##          set -x -v -e
+##          echo "Minimal"
+##          uname -m > uname_m.txt
+##          uname -a > uname_a.txt
+##          # test `uname -m` = 'armv6l'
+##          cat /proc/cpuinfo > cpuinfo.txt
+##          # cat /sys/firmware/devicetree/base/model - No such file or directory
+##          # cat /sys/firmware/devicetree/base/model > Raspberry_Pi_model.txt
+##
+##  - name: Test content of cpuinfo
+##    run: |
+##      set -x -v -e
+##      cat cpuinfo.txt
+##      # grep -c "model name	: ARMv8 Processor rev . (v8l)" cpuinfo.txt
+##      # grep -c "CPU architecture: 8" cpuinfo.txt
+##      # grep -c "CPU part.*0xd0b" cpuinfo.txt
+##      cat Raspberry_Pi_model.txt
+##      cat uname_m.txt
+##      cat uname_a.txt
+
+  minimal-arm-actions-test.yaml_adj:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
@@ -142,23 +171,131 @@ jobs:
         commands: |
             set -x -v -e
             echo "Minimal"
-            uname -m > uname_m.txt
-            uname -a > uname_a.txt
-            # test `uname -m` = 'armv6l'
-            cat /proc/cpuinfo > cpuinfo.txt
-            # cat /sys/firmware/devicetree/base/model - No such file or directory
-            # cat /sys/firmware/devicetree/base/model > Raspberry_Pi_model.txt
+            uname -m
+            uname -a
+            cat /proc/cpuinfo
 
-    - name: Test content of cpuinfo
-      run: |
-        set -x -v -e
-        cat cpuinfo.txt
-        # grep -c "model name	: ARMv8 Processor rev . (v8l)" cpuinfo.txt
-        # grep -c "CPU architecture: 8" cpuinfo.txt
-        # grep -c "CPU part.*0xd0b" cpuinfo.txt
-        cat Raspberry_Pi_model.txt
-        cat uname_m.txt
-        cat uname_a.txt
 
 # https://github.com/pguyot/arm-runner-action/blob/main/.github/workflows/test-cpu_info.yml
 
+
+  test-cpu_info_test_zero_w_adj:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v6
+    - uses: ./ # pguyot/arm-runner-action@HEAD
+      with:
+        cpu_info: cpuinfo/raspberrypi_zero_w
+        bind_mount_repository: true
+        cpu: arm1176
+        commands: |
+            set -x -v -e
+            echo "Minimal"
+            uname -m
+            uname -a
+            cat /proc/cpuinfo
+
+
+  test-cpu_info_test_3b_adj:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v6
+    - uses: ./ # pguyot/arm-runner-action@HEAD
+      with:
+        cpu_info: cpuinfo/raspberrypi_3b
+        bind_mount_repository: true
+        cpu: cortex-a7
+        commands: |
+            set -x -v -e
+            echo "Minimal"
+            uname -m
+            uname -a
+            cat /proc/cpuinfo
+
+
+  test-cpu_info_test_zero2_w_adj:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v6
+    - uses: ./ # pguyot/arm-runner-action@HEAD
+      with:
+        cpu_info: cpuinfo/raspberrypi_zero2_w
+        bind_mount_repository: true
+        cpu: cortex-a7
+        commands: |
+            set -x -v -e
+            echo "Minimal"
+            uname -m
+            uname -a
+            cat /proc/cpuinfo
+
+
+  test-cpu_info_test_zero2_w_arm64_adj:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v6
+    - uses: ./ # pguyot/arm-runner-action@HEAD
+      with:
+        cpu_info: cpuinfo/raspberrypi_zero2_w_arm64
+        bind_mount_repository: true
+        cpu: cortex-a53
+        base_image: raspios_lite_arm64:latest
+        commands: |
+            set -x -v -e
+            echo "Minimal"
+            uname -m
+            uname -a
+            cat /proc/cpuinfo
+
+
+  test-cpu_info_test_4b_adj:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v6
+    - uses: ./ # pguyot/arm-runner-action@HEAD
+      with:
+        cpu_info: cpuinfo/raspberrypi_4b
+        bind_mount_repository: true
+        cpu: cortex-a53
+        commands: |
+            set -x -v -e
+            echo "Minimal"
+            uname -m
+            uname -a
+            cat /proc/cpuinfo
+
+
+  test-cpu_info_test_5_adj:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v6
+    - uses: ./ # pguyot/arm-runner-action@HEAD
+      with:
+        cpu_info: cpuinfo/raspberrypi_5
+        bind_mount_repository: true
+        cpu: cortex-a53
+        commands: |
+            set -x -v -e
+            echo "Minimal"
+            uname -m
+            uname -a
+            cat /proc/cpuinfo
+
+
+  test-cpu_info_test_cortex_a76_adj:
+    # Ubuntu 24.04 ships qemu >= 8.2 which synthesizes /proc/cpuinfo from the
+    # -cpu option on aarch64. No cpu_info bind mount is used here.
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v6
+    - uses: ./ # pguyot/arm-runner-action@HEAD
+      with:
+        bind_mount_repository: true
+        cpu: cortex-a76
+        base_image: raspios_lite_arm64:latest
+        commands: |
+            set -x -v -e
+            echo "Minimal"
+            uname -m
+            uname -a
+            cat /proc/cpuinfo
