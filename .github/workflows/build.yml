@@ -356,6 +356,7 @@ jobs:
             free -h
             # trixie - JUL 2026
             cat /etc/os-release
+            #
             # Install R from source
             # https://docs.posit.co/resources/install-r-source.html
             # Install R , Download and install R
@@ -364,10 +365,22 @@ jobs:
             # Debian 13 trixie
             curl -O https://cdn.posit.co/r/debian-13/pkgs/r-${R_VERSION}_1_$(dpkg --print-architecture).deb
             sudo apt-get update
+            sudo apt upgrade -y
             sudo apt-get install -y ./r-${R_VERSION}_1_$(dpkg --print-architecture).deb
             /opt/R/${R_VERSION}/bin/R --version
             sudo ln -s /opt/R/${R_VERSION}/bin/R /usr/local/bin/R
             sudo ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
+            # GOOD THROUGH ABOVE
+            #
+            # How to install Post­greSQL on Debian 13 step by step
+            # 01/16/2026
+            https://www.ionos.com/digitalguide/server/configuration/how-to-install-postgresql-on-debian-13/
+            # verify account has sudo rights
+            sudo apt update
+            sudo apt upgrade -y
+            sudo apt install -y postgresql postgresql-contrib
+            # To confirm that Post­greSQL started suc­cess­ful­ly, check its service status
+            sudo systemctl status postgresql
 
 
 ###
