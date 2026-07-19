@@ -14,6 +14,7 @@ jobs:
     # https://docs.github.com/en/actions/reference/runners/github-hosted-runners
     # noble (24.04) arm64 (64-bit ARM)
     # https://wiki.postgresql.org/wiki/Apt
+    # https://ftp.postgresql.org/pub/repos/apt/dists/noble-pgdg/main/binary-arm64/Packages.gz
     # arm64 (i.e., M1/M2/M3, graviton etc) CPUs
     # 24.04 (“noble”, amd64 and arm64),
     # https://cloud.r-project.org/
@@ -37,7 +38,8 @@ jobs:
           sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
           sudo apt-get install -qq r-base-dev acl
           sudo R --version
-          sudo /etc/init.d/postgresql stop
+          # Seems PG does not come pre-installed
+          # sudo /etc/init.d/postgresql stop
           sudo apt-get remove --purge postgresql\*
           sudo rm -rf /etc/postgresql /var/lib/postgresql
           sudo apt-get install postgresql-$PG
