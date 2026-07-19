@@ -374,7 +374,7 @@ jobs:
             #
             # How to install Post­greSQL on Debian 13 step by step
             # 01/16/2026
-            https://www.ionos.com/digitalguide/server/configuration/how-to-install-postgresql-on-debian-13/
+            # https://www.ionos.com/digitalguide/server/configuration/how-to-install-postgresql-on-debian-13/
             # verify account has sudo rights
             sudo apt update
             sudo apt upgrade -y
