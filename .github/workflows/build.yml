@@ -107,8 +107,11 @@ jobs:
 ##          set -x -v -e
 ##          grep Model /proc/cpuinfo
 ##          cat /proc/cpuinfo > cpuinfo.txt
+##          # how much RAM your Raspberry Pi
+##          cat /proc/meminfo
+##          free -h
 ##          # Below from https://r4pi.org/docs/installation/
-##          cat /sys/firmware/devicetree/base/model > Raspberry_Pi_model.txt
+##          NO cat /sys/firmware/devicetree/base/model > Raspberry_Pi_model.txt
 ##          uname -m
 ##          uname -a
 ##          # Below from https://pimylifeup.com/raspberry-pi-postgresql/
@@ -122,12 +125,15 @@ jobs:
 ##          # Re How do I know what Raspbian version name I have
 ##          # https://forums.raspberrypi.com/viewtopic.php?t=280368
 ##          cat /etc/os-release 
-##          # https://r4pi.org/docs/installation/
-##          # Manual pre-check making sure that the package exists
-##          curl -O  https://pkgs.r4pi.org/dl/trixie/r4pi-repo-conf_0.0.1-1_all.deb
-##          sudo dpkg -i  r4pi-repo-conf_0.0.1-1_all.deb
-##          sudo apt install r4pi
-##
+##          ### https://r4pi.org/docs/installation/
+##          ### Manual pre-check making sure that the package exists
+##          ##curl -O  https://pkgs.r4pi.org/dl/trixie/r4pi-repo-conf_0.0.1-1_all.deb
+##          ##sudo dpkg -i  r4pi-repo-conf_0.0.1-1_all.deb
+##          ##sudo apt install r4pi
+##          # R packages but not more "r4pi"
+##          # https://pkgs.r4pi.org/trixie/index.html
+
+
 ##  - name: Test content of cpuinfo
 ##    run: |
 ##      cat cpuinfo.txt
@@ -184,11 +190,10 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /proc/meminfo
+            free -h
             # trixie - JUL 2026
             cat /etc/os-release
-            curl -O  https://pkgs.r4pi.org/dl/trixie/r4pi-repo-conf_0.0.1-1_all.deb
-            sudo dpkg -i  r4pi-repo-conf_0.0.1-1_all.deb
-            sudo apt install r4pi
 
 
 # https://github.com/pguyot/arm-runner-action/blob/main/.github/workflows/test-cpu_info.yml
@@ -209,11 +214,10 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /proc/meminfo
+            free -h
             # trixie - JUL 2026
             cat /etc/os-release
-            curl -O  https://pkgs.r4pi.org/dl/trixie/r4pi-repo-conf_0.0.1-1_all.deb
-            sudo dpkg -i  r4pi-repo-conf_0.0.1-1_all.deb
-            sudo apt install r4pi
 
 
   test-cpu_info_test_3b_adj:
@@ -231,11 +235,10 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /proc/meminfo
+            free -h
             # trixie - JUL 2026
             cat /etc/os-release
-            curl -O  https://pkgs.r4pi.org/dl/trixie/r4pi-repo-conf_0.0.1-1_all.deb
-            sudo dpkg -i  r4pi-repo-conf_0.0.1-1_all.deb
-            sudo apt install r4pi
 
 
   test-cpu_info_test_zero2_w_adj:
@@ -253,11 +256,10 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /proc/meminfo
+            free -h
             # trixie - JUL 2026
             cat /etc/os-release
-            curl -O  https://pkgs.r4pi.org/dl/trixie/r4pi-repo-conf_0.0.1-1_all.deb
-            sudo dpkg -i  r4pi-repo-conf_0.0.1-1_all.deb
-            sudo apt install r4pi
 
 
   test-cpu_info_test_zero2_w_arm64_adj:
@@ -276,11 +278,10 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /proc/meminfo
+            free -h
             # trixie - JUL 2026
             cat /etc/os-release
-            curl -O  https://pkgs.r4pi.org/dl/trixie/r4pi-repo-conf_0.0.1-1_all.deb
-            sudo dpkg -i  r4pi-repo-conf_0.0.1-1_all.deb
-            sudo apt install r4pi
 
 
   test-cpu_info_test_4b_adj:
@@ -298,11 +299,10 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /proc/meminfo
+            free -h
             # trixie - JUL 2026
             cat /etc/os-release
-            curl -O  https://pkgs.r4pi.org/dl/trixie/r4pi-repo-conf_0.0.1-1_all.deb
-            sudo dpkg -i  r4pi-repo-conf_0.0.1-1_all.deb
-            sudo apt install r4pi
 
 
   test-cpu_info_test_5_adj:
@@ -320,11 +320,10 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /proc/meminfo
+            free -h
             # trixie - JUL 2026
             cat /etc/os-release
-            curl -O  https://pkgs.r4pi.org/dl/trixie/r4pi-repo-conf_0.0.1-1_all.deb
-            sudo dpkg -i  r4pi-repo-conf_0.0.1-1_all.deb
-            sudo apt install r4pi
 
 
   test-cpu_info_test_cortex_a76_adj:
@@ -344,9 +343,8 @@ jobs:
             uname -m
             uname -a
             cat /proc/cpuinfo
+            cat /proc/meminfo
+            free -h
             # trixie - JUL 2026
             cat /etc/os-release
-            curl -O  https://pkgs.r4pi.org/dl/trixie/r4pi-repo-conf_0.0.1-1_all.deb
-            sudo dpkg -i  r4pi-repo-conf_0.0.1-1_all.deb
-            sudo apt install r4pi
 
