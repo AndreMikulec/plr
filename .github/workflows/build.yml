@@ -447,7 +447,8 @@ jobs:
             # verify account has sudo rights
             sudo apt update
             sudo apt upgrade -y
-            export PG=18
+            # Error: Unable to locate package postgresql-18 (images MAY BE TOO OLD (an not updated) TO BE USEFUL)
+            export PG=17
             # postgresql-17 postgresql-common  postgresql-common-dev
             sudo apt install -y postgresql-${PG}
             ## # To confirm that Post­greSQL started suc­cess­ful­ly, check its service status
