@@ -345,7 +345,7 @@ jobs:
         # cannot copy extracted data for './opt/R/4.6.1/lib/R/include/R_ext/Error.h' to '/opt/R/4.6.1/lib/R/include/R_ext/Error.h.dpkg-new'
         #   failed to write (No space left on device)
         # Enlarge the image by this number of MB. Default is to not enlarge the image.
-        image_additional_mb: 3072
+        image_additional_mb: 6144
         commands: |
             set -x -v -e
             echo "Minimal"
@@ -429,6 +429,8 @@ jobs:
             cat                                              /etc/apt/sources.list.d/debian.sources
             sudo apt update
             #
+            # Download size: 825 MB
+            # Space needed: 2225 MB / 476 MB available
             sudo apt build-dep r-base
             
             ### Uninstall
