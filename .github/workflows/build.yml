@@ -345,7 +345,7 @@ jobs:
         # cannot copy extracted data for './opt/R/4.6.1/lib/R/include/R_ext/Error.h' to '/opt/R/4.6.1/lib/R/include/R_ext/Error.h.dpkg-new'
         #   failed to write (No space left on device)
         # Enlarge the image by this number of MB. Default is to not enlarge the image.
-        image_additional_mb: 1024
+        image_additional_mb: 3072
         commands: |
             set -x -v -e
             echo "Minimal"
@@ -379,6 +379,7 @@ jobs:
             # (Optional) Install system dependencies of common R packages
             # https://docs.posit.co/resources/install-r.html
             # Debian 13
+            # Space needed: 2049 MB / 728 MB available
             apt install -y cmake default-jdk gdal-bin git gsfonts libabsl-dev libcairo2-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libgdal-dev libgeos-dev libgl1-mesa-dev libglpk-dev libglu1-mesa-dev libharfbuzz-dev libicu-dev libjpeg-dev libmagick++-dev libmariadb-dev libmariadb-dev-compat libnode-dev libpng-dev libpoppler-cpp-dev libproj-dev libprotobuf-dev libprotoc-dev libsodium-dev libsqlite3-dev libssh2-1-dev libssl-dev libtiff-dev libudunits2-dev libuv1-dev libwebp-dev libx11-dev libxml2-dev make poppler-data protobuf-compiler python3 tcl texlive tk tk-dev tk-table unixodbc-dev zlib1g-dev
             # Next, install the build dependencies for R
             # Ubuntu/Debian Linux
