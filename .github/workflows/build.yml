@@ -372,7 +372,25 @@ jobs:
             sudo ln -s /opt/R/${R_VERSION}/bin/R /usr/local/bin/R
             sudo ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
             # GOOD THROUGH ABOVE
-            #
+
+            # First follow the steps to enable the required and optional repositories, 
+            #   as listed from the Install R page.
+            # https://docs.posit.co/resources/install-r-source.html
+            # (Optional) Install system dependencies of common R packages
+            # https://docs.posit.co/resources/install-r.html
+            # Debian 13
+            apt install -y cmake default-jdk gdal-bin git gsfonts libabsl-dev libcairo2-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libgdal-dev libgeos-dev libgl1-mesa-dev libglpk-dev libglu1-mesa-dev libharfbuzz-dev libicu-dev libjpeg-dev libmagick++-dev libmariadb-dev libmariadb-dev-compat libnode-dev libpng-dev libpoppler-cpp-dev libproj-dev libprotobuf-dev libprotoc-dev libsodium-dev libsqlite3-dev libssh2-1-dev libssl-dev libtiff-dev libudunits2-dev libuv1-dev libwebp-dev libx11-dev libxml2-dev make poppler-data protobuf-compiler python3 tcl texlive tk tk-dev tk-table unixodbc-dev zlib1g-dev
+            # Next, install the build dependencies for R
+            # Ubuntu/Debian Linux
+            # https://docs.posit.co/resources/install-r-source.html
+            sudo sed -i.bak "/^#.*deb-src.*universe$/s/^# //g" /etc/apt/sources.list
+            sudo apt update
+            sudo apt build-dep r-base
+            ### Uninstall
+            ### https://docs.posit.co/resources/install-r.html
+            ##sudo apt-get remove r-${R_VERSION}
+            ##sudo rm /usr/local/bin/R /usr/local/bin/Rscript
+
             # How to install Post­greSQL on Debian 13 step by step
             # 01/16/2026
             # https://www.ionos.com/digitalguide/server/configuration/how-to-install-postgresql-on-debian-13/
@@ -383,6 +401,13 @@ jobs:
             sudo apt install -y postgresql postgresql-contrib
             # To confirm that Post­greSQL started suc­cess­ful­ly, check its service status
             sudo systemctl status postgresql
+
+            # Package libR was not found in the pkg-config search path.
+            # Perhaps you should add the directory containing `libR.pc'
+            # to the PKG_CONFIG_PATH environment variable
+            # Package 'libR', required by 'virtual:world', not found
+            # make: *** No rule to make target 'install'.  Stop.
+            #
             sudo USE_PGXS=1 make install
             make installcheck PGUSER=postgres || (cat regression.diffs && false)
 
