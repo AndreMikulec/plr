@@ -431,7 +431,10 @@ jobs:
             #
             # Download size: 825 MB
             # Space needed: 2225 MB / 476 MB available
-            sudo apt build-dep -y  r-base
+            # sudo apt build-dep -y  r-base
+            # IF THIS DOES NOT WORK THEN JUST BUILD IT (IN THE LINE JUST BELOW)
+            sudo apt install     -y r-base-dev
+            # sudo apt build-dep -y r-base-dev
             
             ### Uninstall
             ### https://docs.posit.co/resources/install-r.html
