@@ -380,7 +380,7 @@ jobs:
             # https://docs.posit.co/resources/install-r.html
             # Debian 13
             # Space needed: 2049 MB / 728 MB available
-            apt install -y cmake default-jdk gdal-bin git gsfonts libabsl-dev libcairo2-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libgdal-dev libgeos-dev libgl1-mesa-dev libglpk-dev libglu1-mesa-dev libharfbuzz-dev libicu-dev libjpeg-dev libmagick++-dev libmariadb-dev libmariadb-dev-compat libnode-dev libpng-dev libpoppler-cpp-dev libproj-dev libprotobuf-dev libprotoc-dev libsodium-dev libsqlite3-dev libssh2-1-dev libssl-dev libtiff-dev libudunits2-dev libuv1-dev libwebp-dev libx11-dev libxml2-dev make poppler-data protobuf-compiler python3 tcl texlive tk tk-dev tk-table unixodbc-dev zlib1g-dev
+            sudo apt install -y cmake default-jdk gdal-bin git gsfonts libabsl-dev libcairo2-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libgdal-dev libgeos-dev libgl1-mesa-dev libglpk-dev libglu1-mesa-dev libharfbuzz-dev libicu-dev libjpeg-dev libmagick++-dev libmariadb-dev libmariadb-dev-compat libnode-dev libpng-dev libpoppler-cpp-dev libproj-dev libprotobuf-dev libprotoc-dev libsodium-dev libsqlite3-dev libssh2-1-dev libssl-dev libtiff-dev libudunits2-dev libuv1-dev libwebp-dev libx11-dev libxml2-dev make poppler-data protobuf-compiler python3 tcl texlive tk tk-dev tk-table unixodbc-dev zlib1g-dev
             # Next, install the build dependencies for R
             # Ubuntu/Debian Linux
             # https://docs.posit.co/resources/install-r-source.html
@@ -431,7 +431,7 @@ jobs:
             #
             # Download size: 825 MB
             # Space needed: 2225 MB / 476 MB available
-            sudo apt build-dep r-base
+            sudo apt build-dep -y  r-base
             
             ### Uninstall
             ### https://docs.posit.co/resources/install-r.html
