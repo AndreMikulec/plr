@@ -384,7 +384,25 @@ jobs:
             # Next, install the build dependencies for R
             # Ubuntu/Debian Linux
             # https://docs.posit.co/resources/install-r-source.html
-            sudo sed -i.bak "/^#.*deb-src.*universe$/s/^# //g" /etc/apt/sources.list
+
+            #
+            # After 14 mintutes
+            # Error: You must put some 'deb-src' URIs in your sources.list
+            # [error]Process completed with exit code 100.
+            #
+            ### uncomment hidden deb-src lines (Attempted fix of Error: You must put some 'deb-src' URIs in your sources.list )
+            ##sudo sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list
+            ### if your main file is blank, look inside your configuration directory
+            ##sudo sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list.d/*.list
+            ##sudo apt update
+            #
+            # If above does not work
+            # https://cloud.r-project.org/bin/linux/debian/
+            #
+            # Error: You must put some 'deb-src' URIs in your sources.list
+            # [error]Process completed with exit code 100.
+            # ANDRE SEEMS "NONE FOUND", THEREFORE, NOTHING TO DO
+            # sudo sed -i.bak "/^#.*deb-src.*universe$/s/^# //g" /etc/apt/sources.list
             sudo apt update
             sudo apt build-dep r-base
             ### Uninstall
