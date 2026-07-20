@@ -472,17 +472,16 @@ jobs:
             sudo setfacl -Rm u:postgres:rwx,d:u:${WHOAMI}:rwx ${HOME}
             sudo pg_ctlcluster ${PG} main reload
 
-#           sudo USE_PGXS=1 make install
-#           
-#           # AFTER 18m 59s
-#           # make installcheck PGUSER=postgres || (cat regression.diffs && false)
-#           # + make installcheck PGUSER=postgres
-#           # Makefile:40: ../../src/Makefile.global: No such file or directory
-#           # make: *** No rule to make target '../../src/Makefile.global'.  Stop.
-#           # + cat regression.diffs
-#           # cat: regression.diffs: No such file or directory
-#           # Error: Process completed with exit code 1.
-#           make installcheck PGUSER=postgres || (cat regression.diffs && false)
+            ### AFTER 18m 59s
+            ### sudo USE_PGXS=1 make install
+            ### make installcheck PGUSER=postgres || (cat regression.diffs && false)
+            ### + make installcheck PGUSER=postgres
+            ### Makefile:40: ../../src/Makefile.global: No such file or directory
+            ### make: *** No rule to make target '../../src/Makefile.global'.  Stop.
+            ### + cat regression.diffs
+            ### cat: regression.diffs: No such file or directory
+            ### Error: Process completed with exit code 1.
+            ##make installcheck PGUSER=postgres || (cat regression.diffs && false)
 
             sudo pg_lsclusters
             export USE_PGXS=1
