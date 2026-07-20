@@ -433,7 +433,7 @@ jobs:
             # Space needed: 2225 MB / 476 MB available
             # sudo apt build-dep -y  r-base
             # IF THIS DOES NOT WORK THEN JUST BUILD IT (IN THE LINE JUST BELOW)
-            sudo apt install     -y r-base-dev
+            sudo apt install     -y r-base-dev acl
             # sudo apt build-dep -y r-base-dev
             
             ### Uninstall
@@ -464,7 +464,7 @@ jobs:
             #    38 | #include "postgres.h"
             #       |          ^~~~~~~~~~~~
             # TRYING TO FIX BY TRYING TO INSTALL postgresql-server-dev
-            sudo apt install -y postgresql-server-dev
+            sudo apt install -y postgresql-server-dev-17
             
             sudo USE_PGXS=1 make install
             make installcheck PGUSER=postgres || (cat regression.diffs && false)
