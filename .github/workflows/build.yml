@@ -404,7 +404,33 @@ jobs:
             # ANDRE SEEMS "NONE FOUND", THEREFORE, NOTHING TO DO
             # sudo sed -i.bak "/^#.*deb-src.*universe$/s/^# //g" /etc/apt/sources.list
             sudo apt update
+            #
+            # sudo apt build-dep r-base
+            # + sudo apt build-dep r-base
+            # 
+            # WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+            # 
+            # Reading package lists...
+            # Error: You must put some 'deb-src' URIs in your sources.list
+            #
+            # For Older Debian Versions (Debian 12 Bookworm & Older)
+            # Uncomment existing source lines
+            # cat                                /etc/apt/sources.list
+            # sudo sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list
+            # cat                                /etc/apt/sources.list
+            # If the previous command doesn't change anything, edit the file manually:
+            # sudo nano /etc/apt/sources.list
+            #
+            # For Newer Debian Versions (Debian 13 Trixie & Newer)
+            # Modern versions of Debian manage repositories using a structured format called deb822 instead of a single text file.
+            # Append deb-src to your existing configuration types.
+            cat                                              /etc/apt/sources.list.d/debian.sources
+            sudo sed -i 's/Types: deb$/Types: deb deb-src/g' /etc/apt/sources.list.d/debian.sources
+            cat                                              /etc/apt/sources.list.d/debian.sources
+            sudo apt update
+            #
             sudo apt build-dep r-base
+            
             ### Uninstall
             ### https://docs.posit.co/resources/install-r.html
             ##sudo apt-get remove r-${R_VERSION}
@@ -429,21 +455,4 @@ jobs:
             #
             sudo USE_PGXS=1 make install
             make installcheck PGUSER=postgres || (cat regression.diffs && false)
-
-###
-### LATER
-###
-##windows-11-arm:
-##  runs-on: windows-11-arm
-##  steps:
-##    - uses: actions/checkout@v4
-##    - uses: msys2/setup-msys2@v2
-##      with:
-##        msystem: CLANGARM64
-##        update: true
-##    - name: CI-Build
-##      shell: msys2 {0}
-##      run: |
-##        set -x -v -e
-##        echo Hello
 
