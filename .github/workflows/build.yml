@@ -468,8 +468,24 @@ jobs:
             # TRYING TO FIX BY TRYING TO INSTALL postgresql-server-dev
             sudo apt install -y postgresql-server-dev-${PG}
             echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
+            sudo cut -d: -f1 /etc/passwd # print out all of the OS users
+            #
+            # In a Debian or Ubuntu environment, displays the status of all installed PostgreSQL clusters, 
+            #   including their version, port, owner, data directory, and log file location
+            # Ver     -- The PostgreSQL version (e.g., 15, 16, 17).
+            # Cluster -- The cluster name (usually main).
+            # Port    -- The port the cluster is listening on (default is 5432).
+            # Status  -- Whether the cluster is online or down.
+            # Owner   -- The system user running the cluster.
+            sudo pg_lsclusters
+            sudo pg_ctlcluster ${PG} main start
 
-            export WHOAMI=$(whoami)
+            sudo export WHOAMI=$(whoami);
+            sudo echo ${WHOAMI} # (SUDO)
+            # export WHOAMI=$(whoami) # root (NONSUDO)
+            echo ${HOME} # (NONSUDO)
+            #                                                   (SUDO)
+            #                                                   /home/runner
             # sudo setfacl -Rm u:postgres:rwx,d:u:${WHOAMI}:rwx ${HOME}
             sudo pg_ctlcluster ${PG} main reload
 
@@ -484,7 +500,6 @@ jobs:
             ### Error: Process completed with exit code 1.
             ##make installcheck PGUSER=postgres || (cat regression.diffs && false)
 
-            sudo pg_lsclusters
             export USE_PGXS=1
             SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
             # USE_PGXS=1 is not required in Travis, and it is required in Github Actions
