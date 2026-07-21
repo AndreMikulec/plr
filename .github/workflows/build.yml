@@ -54,7 +54,7 @@ jobs:
           echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/$PG/main/pg_hba.conf > /dev/null
           # Builds under "runner"
           # Github Actions require elevated priviledges
-          sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner
+          # sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner
           sudo pg_ctlcluster $PG main reload
 
       - name: Script
