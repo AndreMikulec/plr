@@ -470,7 +470,7 @@ jobs:
             echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
 
             export WHOAMI=$(whoami)
-            sudo setfacl -Rm u:postgres:rwx,d:u:${WHOAMI}:rwx ${HOME}
+            # sudo setfacl -Rm u:postgres:rwx,d:u:${WHOAMI}:rwx ${HOME}
             sudo pg_ctlcluster ${PG} main reload
 
             ### AFTER 18m 59s
