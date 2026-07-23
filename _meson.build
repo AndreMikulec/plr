@@ -1,6 +1,7 @@
 project('plr', 'c',
   version : '8_4_8_6',
   license : 'GNU Public License Version 2',
+  default_options: ['c_args=-nostdinc'],
 )
 
 R_home = get_option('R_HOME')
