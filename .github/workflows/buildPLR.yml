@@ -383,7 +383,7 @@ jobs:
 #           PG_HOME: 'C:\PGINSTALL'
 #           #
 #           pgWINversion: 15.18-2
-            MSYS2testonpgWIN: true
+#           MSYS2testonpgWIN: true
 
           # R latest and PostgreSQL 4th latest (buildpgFromSRCmethod make)
           - matid: '11'
