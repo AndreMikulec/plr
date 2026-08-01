@@ -1308,6 +1308,9 @@ jobs:
       - name: Install Cygwin Python Meson 
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'cygwin' }}
         env:
+          # Cygwin OS variables
+          SHELLOPTS: igncr
+          CHERE_INVOKING: 1
           msystem: ${{ env.compilerEnv }}
         run: |
           echo "Install Cygwin Python Meson"
