@@ -1289,7 +1289,7 @@ jobs:
           # add-to-path: true
           work-vol: 'C:'
           packages: >-
-             cygrunsrv meson  gendef
+             cygrunsrv gendef
              gcc-core  make  tar  gzip  libreadline7  zlib  icu-devel  bison  perl
              flex  libreadline-devel  libssl-devel  libxml2-devel  libxslt-devel  openldap-devel  zlib-devel
              libintl-devel  libcrypt-devel
@@ -1297,6 +1297,23 @@ jobs:
              postgresql-client  postgresql  postgresql-devel
              libpq-devel
              R  R-debuginfo
+             python
+
+      # Executables installed via Cygwin's pip for standard system-wide 
+      #   go to /usr/bin or /usr/local/bin
+      #   need explicit pre-requesite "python" install
+      #     in cygwin/cygwin-install-action
+      #   need explicit removal "meson" install
+      #     in cygwin/cygwin-install-action
+      - name: Install Cygwin Python Meson 
+        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'cygwin' }}
+        env:
+          msystem: ${{ env.compilerEnv }}
+        run: |
+          echo "Install Cygwin Python Meson"
+          set -x -v -e
+          pip install meson
+          meson --version
 
       - name: View Cygwin R Version
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'cygwin' }}
