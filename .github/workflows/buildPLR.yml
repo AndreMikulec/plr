@@ -1321,6 +1321,9 @@ jobs:
           meson --version
           # 11.2
           which meson
+          # /cygdrive/c/hostedtoolcache/windows/Python/3.12.10/x64/Scripts/meson
+          echo "RUNNER_TOOL_CACHE: ${RUNNER_TOOL_CACHE}"
+          which python
 
       - name: View Cygwin R Version
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'cygwin' }}
