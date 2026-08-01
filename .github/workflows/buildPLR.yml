@@ -866,15 +866,17 @@ jobs:
         env:
           SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
 
-      - name: Cache pkgconfiglite for Compile using msvc and meson
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' }}
-        uses: actions/cache@v5
-        id: cachePkgConfigLiteZip
-        with:
-          path: pkg-config-lite-0.28-1_bin-win32.zip
-          key:  pkg-config-lite-0.28-1_bin-win32.zip
-        env:
-          SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
+#     # NEVER USED
+#     # This is wrong - the correct is at "https://github.com/pkgconf/pkgconf/releases"
+#     - name: Cache pkgconfiglite for Compile using msvc and meson
+#       if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' }}
+#       uses: actions/cache@v5
+#       id: cachePkgConfigLiteZip
+#       with:
+#         path: pkg-config-lite-0.28-1_bin-win32.zip
+#         key:  pkg-config-lite-0.28-1_bin-win32.zip
+#       env:
+#         SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
 
       - name: Cache winflexbison for Compile using msvc
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' }}
@@ -954,18 +956,19 @@ jobs:
           # last file update 2004-05-24
           url: https://zenlayer.dl.sourceforge.net/project/gnuwin32/diffutils/2.8.7-1/diffutils-2.8.7-1-bin.zip
 
-      - name: Download pkgconfiglite for Compile using msvc and meson
-        if: >-
-          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' &&
-          steps.cachePkgConfigLiteZip.outputs.cache-hit != 'true'
-          }}
-        uses: suisei-cn/actions-download-file@v1.6.1
-        id: downloadPkgConfigLiteZip
-        with:
-          retry-times: 1
-          # verified Jul 13 2024
-          # last file update 2013-01-26
-          url: http://downloads.sourceforge.net/project/pkgconfiglite/0.28-1/pkg-config-lite-0.28-1_bin-win32.zip
+#     # NEVER USED
+#     - name: Download pkgconfiglite for Compile using msvc and meson
+#       if: >-
+#         ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' &&
+#         steps.cachePkgConfigLiteZip.outputs.cache-hit != 'true'
+#         }}
+#       uses: suisei-cn/actions-download-file@v1.6.1
+#       id: downloadPkgConfigLiteZip
+#       with:
+#         retry-times: 1
+#         # verified Jul 13 2024
+#         # last file update 2013-01-26
+#         url: http://downloads.sourceforge.net/project/pkgconfiglite/0.28-1/pkg-config-lite-0.28-1_bin-win32.zip
 
       - name: Download winflexbison for Compile using msvc
         if: >-
@@ -1125,20 +1128,22 @@ jobs:
           rem - man7.org/linux/man-pages/man1/printf.1.html
           printf                               "C:\\OTHERBIN\\diffutils\\bin" >> %GITHUB_PATH%
 
-      # Choco Install pkgconfiglite
-      # BUT the "crazy-max/ghaction-chocolatey@v4" "install pkgconfiglite" file download often times-out
-      - name: Extract pkgconfiglite and add pkgconfiglite bin directory to the PATH for Compile using msvc and meson
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' }}
-        shell: cmd
-        run: |
-          rem MKDIR creates any intermediate directories in the path, if needed.
-          mkdir                                           "C:\OTHERBIN\pkgconfiglite"
-          rem 7z is provided by Github Actions
-          7z x  pkg-config-lite-0.28-1_bin-win32.zip    -o"C:\OTHERBIN\pkgconfiglite"
-          copy  pkg-config-lite-0.28-1_bin-win32.zip      "C:\OTHERBIN\pkgconfiglite"
-          dir                                             "C:\OTHERBIN\pkgconfiglite"
-          rem - man7.org/linux/man-pages/man1/printf.1.html
-          printf                                          "C:\\OTHERBIN\\pkgconfiglite\\pkg-config-lite-0.28-1\\bin" >> %GITHUB_PATH%
+#     # NEVER USED
+#     # This is wrong - the correct is at "https://github.com/pkgconf/pkgconf/releases"
+#     # Choco Install pkgconfiglite
+#     # BUT the "crazy-max/ghaction-chocolatey@v4" "install pkgconfiglite" file download often times-out
+#     - name: Extract pkgconfiglite and add pkgconfiglite bin directory to the PATH for Compile using msvc and meson
+#       if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' }}
+#       shell: cmd
+#       run: |
+#         rem MKDIR creates any intermediate directories in the path, if needed.
+#         mkdir                                           "C:\OTHERBIN\pkgconfiglite"
+#         rem 7z is provided by Github Actions
+#         7z x  pkg-config-lite-0.28-1_bin-win32.zip    -o"C:\OTHERBIN\pkgconfiglite"
+#         copy  pkg-config-lite-0.28-1_bin-win32.zip      "C:\OTHERBIN\pkgconfiglite"
+#         dir                                             "C:\OTHERBIN\pkgconfiglite"
+#         rem - man7.org/linux/man-pages/man1/printf.1.html
+#         printf                                          "C:\\OTHERBIN\\pkgconfiglite\\pkg-config-lite-0.28-1\\bin" >> %GITHUB_PATH%
 
       # Choco Install winflexbison
       # BUT the "crazy-max/ghaction-chocolatey@v4" "install pkgconfiglite" file download often times-out
@@ -1173,6 +1178,8 @@ jobs:
           printf "C:\Strawberry\perl\bin" >> %GITHUB_PATH%
           type strawberry-perl-5.38.2.2-64bit.msiInstall.log
 
+      # "meson" pulls -> "ninja" "pkgconf" (correct version) "python"
+      #   # removed  ${{ env.MINGW_PACKAGE_PREFIX }}-pkg-config
       # 34 seconds with zero packages
       # 2 minutes and seven(7) seconds with everything
       - name: Install Windows mingw Software
@@ -1188,7 +1195,6 @@ jobs:
           msystem: ${{ env.compilerEnv }}
           #
           install: >-
-            ${{ env.MINGW_PACKAGE_PREFIX }}-pkg-config
             ${{ env.MINGW_PACKAGE_PREFIX }}-curl
             git
             ${{ env.MINGW_PACKAGE_PREFIX }}-meson
@@ -1216,6 +1222,8 @@ jobs:
             ${{ env.MINGW_PACKAGE_PREFIX }}-libxslt
             ${{ env.MINGW_PACKAGE_PREFIX }}-lz4
 
+      # "meson" pulls -> "ninja" "pkgconf" (correct version) "python"
+      #   # removed  ${{ env.MINGW_PACKAGE_PREFIX }}-pkg-config
       # 34 seconds with zero packages
       # 2 minutes and seven(7) seconds with everything
       - name: Install Windows mingw Software - same as above - but omit software - perl winpty
@@ -1231,7 +1239,6 @@ jobs:
           msystem: ${{ env.compilerEnv }}
           #
           install: >-
-            ${{ env.MINGW_PACKAGE_PREFIX }}-pkg-config
             ${{ env.MINGW_PACKAGE_PREFIX }}-curl
             git
             ${{ env.MINGW_PACKAGE_PREFIX }}-meson
@@ -1268,6 +1275,8 @@ jobs:
           set -x -v -e
           pacman -S --needed --noconfirm ${{ env.MINGW_PACKAGE_PREFIX }}-postgresql
 
+      # "meson" pulls -> "cygport" pulls -> "ninja" "pkg-config" (correct version) pulls -> pkgconf (correct version)
+      #   # removed pkg-config
       - name: Set up Cygwin
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'cygwin' }}
         uses: cygwin/cygwin-install-action@v6
@@ -1280,7 +1289,7 @@ jobs:
           # add-to-path: true
           work-vol: 'C:'
           packages: >-
-             cygrunsrv pkg-config  meson  gendef
+             cygrunsrv meson  gendef
              gcc-core  make  tar  gzip  libreadline7  zlib  icu-devel  bison  perl
              flex  libreadline-devel  libssl-devel  libxml2-devel  libxslt-devel  openldap-devel  zlib-devel
              libintl-devel  libcrypt-devel
