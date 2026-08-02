@@ -1222,6 +1222,18 @@ jobs:
             ${{ env.MINGW_PACKAGE_PREFIX }}-libxslt
             ${{ env.MINGW_PACKAGE_PREFIX }}-lz4
 
+      # https://packages.msys2.org/packages/mingw-w64-ucrt-x86_64-python3
+      # Virtual Package mingw-w64-ucrt-x86_64-python3
+      #   Provided By mingw-w64-ucrt-x86_64-python
+      # (NOT APPLICABLE) ...
+      # MSYS2 Python3 quirks
+      # If you are using MSYS2 on Windows as your development environment, please make 
+      # sure that you do not use the msys/python package to provide Python 3. Use 
+      # either mingw32/mingw-w64-i686-python3 or mingw64/mingw-w64-x86_64-python3 
+      # depending on which MinGW target you are building for.
+      # SEEN AUG 2026
+      # https://mesonbuild.com/Getting-meson.html
+      #
       # "meson" pulls -> "ninja" "pkgconf" (correct version) "python"
       #   # removed  ${{ env.MINGW_PACKAGE_PREFIX }}-pkg-config
       # 34 seconds with zero packages
@@ -1279,6 +1291,13 @@ jobs:
       # "meson" pulls -> "cygport" pulls -> "ninja" "pkg-config" (correct version) pulls -> pkgconf (correct version)
       #   # removed pkg-config
       # "mason" through "python" MAY need MANUAL "ninja pkg-config" (KEEP FOR NOW)
+      #
+      # https://www.cygwin.com/packages/summary/python312.html
+      # Getting Meson
+      # Meson is implemented in Python 3, and requires 3.10 or newer.
+      # SEEN AUG 2026
+      # https://mesonbuild.com/Getting-meson.html
+      #
       - name: Set up Cygwin
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'cygwin' }}
         uses: cygwin/cygwin-install-action@v6
@@ -1299,7 +1318,7 @@ jobs:
              postgresql-client  postgresql  postgresql-devel
              libpq-devel
              R  R-debuginfo
-             ninja pkg-config python
+             ninja pkg-config python312
 
 
       - name: Prep for Github Actions Python Scripts 
@@ -1626,6 +1645,7 @@ jobs:
           PG_SOURCE: ${{ env.PG_SOURCE }} # different - full
           PG_HOME: ${{ env.PG_HOME }}     # different - empty - and below - it is not used
           PGROOT2: ${{ env.PGROOT2 }}
+          PYTHON_SCRIPT_PATH: ${{ env.PYTHON_SCRIPT_PATH }}
         run: |
           echo "Windows non-msvc Meson PG and Meson PL/R Setup Compile and Meson Test"
           set -x -v -e
@@ -1644,6 +1664,7 @@ jobs:
             fi
             echo ${PATH}
           fi
+          which meson
           uname -a
           echo "compilerEnv: ${{ env.compilerEnv }}"
           echo "bash: $(which bash)"
@@ -2177,6 +2198,7 @@ jobs:
           rversion: ${{ env.rversion }}
           PG_HOME: ${{ env.PG_HOME }} # different
           PGROOT2: ${{ env.PGROOT2 }}
+          PYTHON_SCRIPT_PATH: ${{ env.PYTHON_SCRIPT_PATH }}
         run: |
           echo "Windows non-msvc Meson PL/R Setup Compile and Non-Meson Manual Test"
           set -x -v -e
