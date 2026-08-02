@@ -1275,6 +1275,7 @@ jobs:
           set -x -v -e
           pacman -S --needed --noconfirm ${{ env.MINGW_PACKAGE_PREFIX }}-postgresql
 
+
       # "meson" pulls -> "cygport" pulls -> "ninja" "pkg-config" (correct version) pulls -> pkgconf (correct version)
       #   # removed pkg-config
       # "mason" through "python" MAY need MANUAL "ninja pkg-config" (KEEP FOR NOW)
@@ -1300,6 +1301,48 @@ jobs:
              R  R-debuginfo
              ninja pkg-config python
 
+
+      - name: Prep for Github Actions Python Scripts 
+        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'cygwin' || env.compilerClass == 'MSYS2' ) }}
+        env:
+          # Cygwin OS variables
+          SHELLOPTS: igncr
+          CHERE_INVOKING: 1
+          msystem: ${{ env.compilerEnv }}
+        run: |
+          echo "Prep for Github Actions Python Scripts "
+          set -x -v -e
+          # last two characters of (m)achine is "64"
+          if [ "$(expr "$(uname -m)" : ".*\(..\)$")" == "64" ]
+          then 
+            export MACHINE=x64
+          else 
+            export MACHINE=x32 
+          fi
+          echo "MACHINE=${MACHINE}" >> ${GITHUB_ENV}
+          echo "MACHINE: ${MACHINE}"
+
+          if [ $(which python > /dev/null 2>&1 && echo 0) ]
+          then
+            export PYTHON_VERSION=$(python --version 2>&1 | cut -d' ' -f2)
+          else
+            export PYTHON_VERSION=unset
+          fi
+          echo "PYTHON_VERSION=${PYTHON_VERSION}" >> ${GITHUB_ENV}
+          # should be 3.12.10 VERIFY THAT
+          echo "PYTHON_VERSION: ${PYTHON_VERSION}"
+
+          # for Cygwin
+          # which  meson 
+          #   /cygdrive/c/hostedtoolcache/windows/Python/3.12.10/x64/Scripts/meson
+          # for Cygwin, because I later set CHERE_INVOKING to be 1, I have to MANUALLY add the PATH
+          if [ ! "${PYTHON_VERSION}" == "notset" ] && [ ! "${PYTHON_VERSION}" == "" ]
+          then                        # C:\hostedtoolcache\windows
+            export  PYTHON_SCRIPT_PATH="${RUNNER_TOOL_CACHE}""\\""Python""\\""${PYTHON_VERSION}""\\""${MACHINE}""\\""Scripts"
+            echo   "PYTHON_SCRIPT_PATH: ${PYTHON_SCRIPT_PATH}"
+          fi
+
+
       # Executables installed via Cygwin's pip for standard system-wide 
       #   go to /usr/bin or /usr/local/bin
       #   need explicit pre-requesite "python" install
@@ -1322,8 +1365,8 @@ jobs:
           # 11.2
           which meson
           # /cygdrive/c/hostedtoolcache/windows/Python/3.12.10/x64/Scripts/meson
-          echo "RUNNER_TOOL_CACHE: ${RUNNER_TOOL_CACHE}"
-          which python
+ 
+
 
       - name: View Cygwin R Version
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'cygwin' }}
@@ -1358,6 +1401,12 @@ jobs:
           then
             # because I set CHERE_INVOKING to be 1
             export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin
+            # for Cygwin, because I set CHERE_INVOKING to be 1, I have to MANUALLY add the PATH
+            if [ ! "${PYTHON_SCRIPT_PATH}" == "notset" ] && [ ! "${PYTHON_SCRIPT_PATH}" == "" ]
+            then
+              export PATH="$(cygpath "${PYTHON_SCRIPT_PATH}")":${PATH}
+            fi
+            echo ${PATH}
           fi
           uname -a
           echo "compilerEnv: ${{ env.compilerEnv }}"
@@ -1546,6 +1595,12 @@ jobs:
           then
             # because I set CHERE_INVOKING to be 1
             export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin
+            # for Cygwin, because I set CHERE_INVOKING to be 1, I have to MANUALLY add the PATH
+            if [ ! "${PYTHON_SCRIPT_PATH}" == "notset" ] && [ ! "${PYTHON_SCRIPT_PATH}" == "" ]
+            then
+              export PATH="$(cygpath "${PYTHON_SCRIPT_PATH}")":${PATH}
+            fi
+            echo ${PATH}
           fi
           uname -a
           echo "compilerEnv: ${{ env.compilerEnv }}"
@@ -2128,6 +2183,12 @@ jobs:
           then
             # because I set CHERE_INVOKING to be 1
             export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin
+            # for Cygwin, because I set CHERE_INVOKING to be 1, I have to MANUALLY add the PATH
+            if [ ! "${PYTHON_SCRIPT_PATH}" == "notset" ] && [ ! "${PYTHON_SCRIPT_PATH}" == "" ]
+            then
+              export PATH="$(cygpath "${PYTHON_SCRIPT_PATH}")":${PATH}
+            fi
+            echo ${PATH}
           fi
           uname -a
           echo "compilerEnv: ${{ env.compilerEnv }}"
