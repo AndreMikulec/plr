@@ -1329,7 +1329,7 @@ jobs:
           CHERE_INVOKING: 1
           msystem: ${{ env.compilerEnv }}
         run: |
-          echo "Prep for Github Actions Python Scripts "
+          echo "Prep for Github Actions Python Scripts"
           set -x -v -e
           # last two characters of (m)achine is "64"
           if [ "$(expr "$(uname -m)" : ".*\(..\)$")" == "64" ]
@@ -1358,6 +1358,7 @@ jobs:
           if [ ! "${PYTHON_VERSION}" == "notset" ] && [ ! "${PYTHON_VERSION}" == "" ]
           then                        # C:\hostedtoolcache\windows
             export  PYTHON_SCRIPT_PATH="${RUNNER_TOOL_CACHE}""\\""Python""\\""${PYTHON_VERSION}""\\""${MACHINE}""\\""Scripts"
+            echo   "PYTHON_SCRIPT_PATH=${PYTHON_SCRIPT_PATH}" >> ${GITHUB_ENV}
             echo   "PYTHON_SCRIPT_PATH: ${PYTHON_SCRIPT_PATH}"
           fi
 
