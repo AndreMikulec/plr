@@ -1378,13 +1378,13 @@ jobs:
         run: |
           echo "Install Cygwin Python Meson"
           set -x -v -e
-          python -m pip install --upgrade pip
+          # python -m pip install --upgrade pip
+          # /usr/bin/python: No module named pip
           pip install meson
           meson --version
           # 11.2
           which meson
           # /cygdrive/c/hostedtoolcache/windows/Python/3.12.10/x64/Scripts/meson
- 
 
 
       - name: View Cygwin R Version
