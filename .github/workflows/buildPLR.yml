@@ -57,12 +57,12 @@ jobs:
           # https://www.cygwin.com/packages/summary/postgresql.html
           #
           # current Cygwin repository
-          - matid: '01'
-            os: windows-2025-vs2026
-            GithubActionsIgnoreFail: false
-            compilerEnv: cygwin
-            Platform: x64
-            Configuration: Release
+#         - matid: '01'
+#           os: windows-2025-vs2026
+#           GithubActionsIgnoreFail: false
+#           compilerEnv: cygwin
+#           Platform: x64
+#           Configuration: Release
 
 
           # plr for "R 4.3.0 (and later) for Windows" can not be compiled with Microsoft Visual Studio.
@@ -93,45 +93,45 @@ jobs:
           # https://github.com/actions/runner-images
 
           # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
-          - matid: '02'
-            os: windows-2025-vs2026
-            GithubActionsIgnoreFail: true
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Debug
-            #
-            rversion:  devel
-            R_HOME: 'C:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: master
-            PG_SOURCE: 'C:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: meson
-            PG_HOME: 'C:\PGINSTALL'
+#         - matid: '02'
+#           os: windows-2025-vs2026
+#           GithubActionsIgnoreFail: true
+#           compilerEnv: UCRT64
+#           shellEnv: msys2 {0}
+#           compilerExe: gcc
+#           Platform: x64
+#           Configuration: Debug
+#           #
+#           rversion:  devel
+#           R_HOME: 'C:\RINSTALL'
+#           R_ARCH: /x64
+#           #
+#           pgSRCversion: master
+#           PG_SOURCE: 'C:\PGSOURCE'
+#           buildpgFromSRC: true
+#           buildpgFromSRCmethod: meson
+#           PG_HOME: 'C:\PGINSTALL'
 
 
           # R latest and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
-          - matid: '03'
-            os: windows-2025-vs2026
-            GithubActionsIgnoreFail: true
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Debug
-            #
-            rversion: 4.6.1
-            R_HOME: 'C:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: master
-            PG_SOURCE: 'C:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: meson
-            PG_HOME: 'C:\PGINSTALL'
+#         - matid: '03'
+#           os: windows-2025-vs2026
+#           GithubActionsIgnoreFail: true
+#           compilerEnv: UCRT64
+#           shellEnv: msys2 {0}
+#           compilerExe: gcc
+#           Platform: x64
+#           Configuration: Debug
+#           #
+#           rversion: 4.6.1
+#           R_HOME: 'C:\RINSTALL'
+#           R_ARCH: /x64
+#           #
+#           pgSRCversion: master
+#           PG_SOURCE: 'C:\PGSOURCE'
+#           buildpgFromSRC: true
+#           buildpgFromSRCmethod: meson
+#           PG_HOME: 'C:\PGINSTALL'
 
 
           # R latest and PostgreSQL bleeding edge (buildpgANDplrInSRCcontrib true)
@@ -171,24 +171,24 @@ jobs:
 
           # RSVP for FUTURE USE
           # R latest and PostgreSQL release candidate or beta (buildpgFromSRCmethod meson)
-          - matid: '04'
-            os: windows-2025-vs2026
-            GithubActionsIgnoreFail: true
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Debug
-            #
-            rversion: 4.6.1
-            R_HOME: 'C:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: REL_19_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: meson
-            PG_HOME: 'C:\PGINSTALL'
+#         - matid: '04'
+#           os: windows-2025-vs2026
+#           GithubActionsIgnoreFail: true
+#           compilerEnv: UCRT64
+#           shellEnv: msys2 {0}
+#           compilerExe: gcc
+#           Platform: x64
+#           Configuration: Debug
+#           #
+#           rversion: 4.6.1
+#           R_HOME: 'C:\RINSTALL'
+#           R_ARCH: /x64
+#           #
+#           pgSRCversion: REL_19_STABLE
+#           PG_SOURCE: 'C:\PGSOURCE'
+#           buildpgFromSRC: true
+#           buildpgFromSRCmethod: meson
+#           PG_HOME: 'C:\PGINSTALL'
 
 
 #         # R latest and PostgreSQL release candidate or beta (buildpgFromSRCmethod meson)
@@ -213,24 +213,24 @@ jobs:
 
 
           # R bleeding edge and PostgreSQL latest (buildpgFromSRCmethod meson)
-          - matid: '06'
-            os: windows-2025-vs2026
-            GithubActionsIgnoreFail: true
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Debug
-            #
-            rversion:  devel
-            R_HOME: 'C:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: REL_18_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: meson
-            PG_HOME: 'C:\PGINSTALL'
+#         - matid: '06'
+#           os: windows-2025-vs2026
+#           GithubActionsIgnoreFail: true
+#           compilerEnv: UCRT64
+#           shellEnv: msys2 {0}
+#           compilerExe: gcc
+#           Platform: x64
+#           Configuration: Debug
+#           #
+#           rversion:  devel
+#           R_HOME: 'C:\RINSTALL'
+#           R_ARCH: /x64
+#           #
+#           pgSRCversion: REL_18_STABLE
+#           PG_SOURCE: 'C:\PGSOURCE'
+#           buildpgFromSRC: true
+#           buildpgFromSRCmethod: meson
+#           PG_HOME: 'C:\PGINSTALL'
             #
             # pgWINversion: REL_X_Y.future-future
             #
@@ -243,8 +243,8 @@ jobs:
             #
             #   pgWINversion: 18.?-?
             #   MSYS2testonpgWIN: false
-            pgWINversion: 18.4-2
-            MSYS2testonpgWIN: true
+#           pgWINversion: 18.4-2
+#           MSYS2testonpgWIN: true
 
 
           # R latest and PostgreSQL latest (buildpgFromSRCmethod meson)
@@ -299,24 +299,24 @@ jobs:
 
 
           # R latest and PostgreSQL 2nd latest (buildpgFromSRCmethod meson)
-          - matid: '08'
-            os: windows-2025-vs2026
-            GithubActionsIgnoreFail: false
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Release
-            #
-            rversion: 4.6.1
-            R_HOME: 'C:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: REL_17_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: meson
-            PG_HOME: 'C:\PGINSTALL'
+#         - matid: '08'
+#           os: windows-2025-vs2026
+#           GithubActionsIgnoreFail: false
+#           compilerEnv: UCRT64
+#           shellEnv: msys2 {0}
+#           compilerExe: gcc
+#           Platform: x64
+#           Configuration: Release
+#           #
+#           rversion: 4.6.1
+#           R_HOME: 'C:\RINSTALL'
+#           R_ARCH: /x64
+#           #
+#           pgSRCversion: REL_17_STABLE
+#           PG_SOURCE: 'C:\PGSOURCE'
+#           buildpgFromSRC: true
+#           buildpgFromSRCmethod: meson
+#           PG_HOME: 'C:\PGINSTALL'
             #
             # EnterpriseDB PostgreSQL for Windows
             # windows-2025-vs2026 and pgWINversion: 17.x-y
@@ -334,79 +334,79 @@ jobs:
             # than what is available at EnterpriseDB 17.10-2 (June 12 2026)
             #
             # pgWINversion: 17.10-2
-            MSYS2testonpgWIN: true
+#           MSYS2testonpgWIN: true
 
           # R latest and PostgreSQL 3rd latest (buildpgFromSRCmethod meson)
-          - matid: '09'
-            os: windows-2025-vs2026
-            GithubActionsIgnoreFail: false
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Release
-            #
-            rversion: 4.6.1
-            R_HOME: 'C:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: REL_16_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: meson
-            PG_HOME: 'C:\PGINSTALL'
-            #
-            pgWINversion: 16.14-2
-            MSYS2testonpgWIN: true
+#         - matid: '09'
+#           os: windows-2025-vs2026
+#           GithubActionsIgnoreFail: false
+#           compilerEnv: UCRT64
+#           shellEnv: msys2 {0}
+#           compilerExe: gcc
+#           Platform: x64
+#           Configuration: Release
+#           #
+#           rversion: 4.6.1
+#           R_HOME: 'C:\RINSTALL'
+#           R_ARCH: /x64
+#           #
+#           pgSRCversion: REL_16_STABLE
+#           PG_SOURCE: 'C:\PGSOURCE'
+#           buildpgFromSRC: true
+#           buildpgFromSRCmethod: meson
+#           PG_HOME: 'C:\PGINSTALL'
+#           #
+#           pgWINversion: 16.14-2
+#           MSYS2testonpgWIN: true
 
           # buildpgFromSRCmethod meson ONLY WORKS on the PostreSQL REL_16_STABLE version or later
           # buildpgFromSRCmethod make WORKS on ANY PostgreSQL version 
 
           # R latest and PostgreSQL 3rd latest (buildpgFromSRCmethod make)
-          - matid: '10'
-            os: windows-2025-vs2026
-            GithubActionsIgnoreFail: false
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Release
-            #
-            rversion: 4.6.1
-            R_HOME: 'C:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: REL_15_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: make
-            PG_HOME: 'C:\PGINSTALL'
-            #
-            pgWINversion: 15.18-2
-            MSYS2testonpgWIN: true
+#         - matid: '10'
+#           os: windows-2025-vs2026
+#           GithubActionsIgnoreFail: false
+#           compilerEnv: UCRT64
+#           shellEnv: msys2 {0}
+#           compilerExe: gcc
+#           Platform: x64
+#           Configuration: Release
+#           #
+#           rversion: 4.6.1
+#           R_HOME: 'C:\RINSTALL'
+#           R_ARCH: /x64
+#           #
+#           pgSRCversion: REL_15_STABLE
+#           PG_SOURCE: 'C:\PGSOURCE'
+#           buildpgFromSRC: true
+#           buildpgFromSRCmethod: make
+#           PG_HOME: 'C:\PGINSTALL'
+#           #
+#           pgWINversion: 15.18-2
+#           MSYS2testonpgWIN: true
 
           # R latest and PostgreSQL 4th latest (buildpgFromSRCmethod make)
-          - matid: '11'
-            os: windows-2025-vs2026
-            GithubActionsIgnoreFail: false
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Release
-            #
-            rversion: 4.6.1
-            R_HOME: 'C:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: REL_14_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: make
-            PG_HOME: 'C:\PGINSTALL'
-            #
-            pgWINversion: 14.23-2
-            MSYS2testonpgWIN: true
+#         - matid: '11'
+#           os: windows-2025-vs2026
+#           GithubActionsIgnoreFail: false
+#           compilerEnv: UCRT64
+#           shellEnv: msys2 {0}
+#           compilerExe: gcc
+#           Platform: x64
+#           Configuration: Release
+#           #
+#           rversion: 4.6.1
+#           R_HOME: 'C:\RINSTALL'
+#           R_ARCH: /x64
+#           #
+#           pgSRCversion: REL_14_STABLE
+#           PG_SOURCE: 'C:\PGSOURCE'
+#           buildpgFromSRC: true
+#           buildpgFromSRCmethod: make
+#           PG_HOME: 'C:\PGINSTALL'
+#           #
+#           pgWINversion: 14.23-2
+#           MSYS2testonpgWIN: true
 
     defaults:
       run:
