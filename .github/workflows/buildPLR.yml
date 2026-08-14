@@ -1850,7 +1850,6 @@ jobs:
 
           echo "END_RUN_THE_OLD"
 
-
 #         if [ "${Configuration}" == "Debug" ]
 #         then
 #           meson setup --prefix "${PG_HOME}"                                   -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
