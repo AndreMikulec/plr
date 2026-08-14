@@ -1824,17 +1824,43 @@ jobs:
           # from WORKSPACE
           pushd "${PG_SOURCE}"
 
-          if [ "${Configuration}" == "Debug" ]
-          then
-            meson setup --prefix "${PG_HOME}"                                   -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
-          fi
+          echo "RUN THE OLD"
 
-          if [ "${Configuration}" == "Release" ]
-          then
-            meson setup --prefix "${PG_HOME}" -Dbuildtype=release -Ddebug=false -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
-          fi
+          cd "C:/PGINSTALL/contrib/plr"
 
-          meson compile -C build -v
+          echo "1."
+          "cc" "-Iplr.dll.p" "-I." "-I../../contribplr" "-IC:/RINSTALL/include" "-IC:/PGINSTALL/include/postgresql/server" "-IC:/PGINSTALL/include/postgresql/server/port/win32" "-Ic:/RINSTALL/include" "-Ic:/PGINSTALL/include" "-fdiagnostics-color=always" "-D_FILE_OFFSET_BITS=64" "-Wall" "-Winvalid-pch" "-O3" "-DDLSUFFIX=\".dll\"" -MD -MQ plr.dll.p/pg_backend_support.c.obj -MF "plr.dll.p/pg_backend_support.c.obj.d" -o plr.dll.p/pg_backend_support.c.obj "-c" ../../contribplr/pg_backend_support.c
+
+          echo "2."
+          "cc" "-Iplr.dll.p" "-I." "-I../../contribplr" "-IC:/RINSTALL/include" "-IC:/PGINSTALL/include/postgresql/server" "-IC:/PGINSTALL/include/postgresql/server/port/win32" "-Ic:/RINSTALL/include" "-Ic:/PGINSTALL/include" "-fdiagnostics-color=always" "-D_FILE_OFFSET_BITS=64" "-Wall" "-Winvalid-pch" "-O3" "-DDLSUFFIX=\".dll\"" -MD -MQ plr.dll.p/pg_userfuncs.c.obj -MF "plr.dll.p/pg_userfuncs.c.obj.d" -o plr.dll.p/pg_userfuncs.c.obj "-c" ../../contribplr/pg_userfuncs.c
+
+          echo "3."
+          "cc" "-Iplr.dll.p" "-I." "-I../../contribplr" "-IC:/RINSTALL/include" "-IC:/PGINSTALL/include/postgresql/server" "-IC:/PGINSTALL/include/postgresql/server/port/win32" "-Ic:/RINSTALL/include" "-Ic:/PGINSTALL/include" "-fdiagnostics-color=always" "-D_FILE_OFFSET_BITS=64" "-Wall" "-Winvalid-pch" "-O3" "-DDLSUFFIX=\".dll\"" -MD -MQ plr.dll.p/pg_rsupport.c.obj -MF "plr.dll.p/pg_rsupport.c.obj.d" -o plr.dll.p/pg_rsupport.c.obj "-c" ../../contribplr/pg_rsupport.c
+
+          echo "4."
+          "cc" "-Iplr.dll.p" "-I." "-I../../contribplr" "-IC:/RINSTALL/include" "-IC:/PGINSTALL/include/postgresql/server" "-IC:/PGINSTALL/include/postgresql/server/port/win32" "-Ic:/RINSTALL/include" "-Ic:/PGINSTALL/include" "-fdiagnostics-color=always" "-D_FILE_OFFSET_BITS=64" "-Wall" "-Winvalid-pch" "-O3" "-DDLSUFFIX=\".dll\"" -MD -MQ plr.dll.p/plr.c.obj -MF "plr.dll.p/plr.c.obj.d" -o plr.dll.p/plr.c.obj "-c" ../../contribplr/plr.c
+
+          echo "5."
+          "cc" "-Iplr.dll.p" "-I." "-I../../contribplr" "-IC:/RINSTALL/include" "-IC:/PGINSTALL/include/postgresql/server" "-IC:/PGINSTALL/include/postgresql/server/port/win32" "-Ic:/RINSTALL/include" "-Ic:/PGINSTALL/include" "-fdiagnostics-color=always" "-D_FILE_OFFSET_BITS=64" "-Wall" "-Winvalid-pch" "-O3" "-DDLSUFFIX=\".dll\"" -MD -MQ plr.dll.p/pg_conversion.c.obj -MF "plr.dll.p/pg_conversion.c.obj.d" -o plr.dll.p/pg_conversion.c.obj "-c" ../../contribplr/pg_conversion.c
+
+          echo "6."
+          "cc"  -o plr.dll plr.dll.p/plr.c.obj plr.dll.p/pg_conversion.c.obj plr.dll.p/pg_backend_support.c.obj plr.dll.p/pg_userfuncs.c.obj plr.dll.p/pg_rsupport.c.obj "-Wl,--allow-shlib-undefined" "-Wl,-O1" "-shared" "-Wl,--start-group" "-Wl,--out-implib=plr.dll.a" "-fopenmp" "c:/RINSTALL/bin/x64/R.dll" "c:/PGINSTALL/lib/libpq.dll" "c:/PGINSTALL/lib/libpostgres.a" "-lkernel32" "-luser32" "-lgdi32" "-lwinspool" "-lshell32" "-lole32" "-loleaut32" "-luuid" "-lcomdlg32" "-ladvapi32" "-Wl,--end-group"
+
+          cd -
+
+          echo "END OF RUN THE OLD"
+
+#         if [ "${Configuration}" == "Debug" ]
+#         then
+#           meson setup --prefix "${PG_HOME}"                                   -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+#         fi
+#
+#         if [ "${Configuration}" == "Release" ]
+#         then
+#           meson setup --prefix "${PG_HOME}" -Dbuildtype=release -Ddebug=false -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+#         fi
+#
+#         meson compile -C build -v
 
           export pgversion=$("${PG_SOURCE}/build/src/bin/pg_config/pg_config" | grep "^VERSION" | sed "s/ = /=/" | sed "s/^.*=//" | grep -oP '[ ].*$' | grep -oP '\d.*$')
           # potential override
