@@ -1482,6 +1482,18 @@ jobs:
           path: |
             pg-matid-${{ matrix.matid }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
 
+
+
+      #         if [ "${Configuration}" == "Debug" ]
+      #         then
+      #           meson setup --prefix "${PG_HOME}"                                   -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+      #         fi
+      #
+      #         if [ "${Configuration}" == "Release" ]
+      #         then
+      #           meson setup --prefix "${PG_HOME}" -Dbuildtype=release -Ddebug=false -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+      #         fi
+      #
       - name: Windows non-msvc Meson PG and Meson PL/R Setup Compile and Non-Meson Manual Test
         if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib == 'true' }}
         env:
@@ -1850,16 +1862,6 @@ jobs:
 
           echo "END_RUN_THE_OLD"
 
-#         if [ "${Configuration}" == "Debug" ]
-#         then
-#           meson setup --prefix "${PG_HOME}"                                   -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
-#         fi
-#
-#         if [ "${Configuration}" == "Release" ]
-#         then
-#           meson setup --prefix "${PG_HOME}" -Dbuildtype=release -Ddebug=false -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
-#         fi
-#
           meson compile -C build -v
 
           export pgversion=$("${PG_SOURCE}/build/src/bin/pg_config/pg_config" | grep "^VERSION" | sed "s/ = /=/" | sed "s/^.*=//" | grep -oP '[ ].*$' | grep -oP '\d.*$')
@@ -2092,6 +2094,22 @@ jobs:
               fi
             fi
           fi
+
+
+        #         if [ "${Configuration}" == "Debug" ]
+        #         then
+        #           meson setup --prefix="${PG_HOME}/contrib/plr"                                   -Db_pie=true -DR_HOME="${R_HOME}" -DPG_HOME="${PG_HOME}" ../contrib/plr
+        #         fi
+        #
+        #         if [ "${Configuration}" == "Release" ]
+        #         then
+        #           meson setup --prefix="${PG_HOME}/contrib/plr" -Dbuildtype=release -Ddebug=false -Db_pie=true -DR_HOME="${R_HOME}" -DPG_HOME="${PG_HOME}" ../contrib/plr
+        #         fi
+        #
+        #         meson compile -C ../contrib/plr  -v
+
+                  # install GOOD or BAD artifacts into NIX PG plr.dll and plr.dll.a.
+                  #
 
       - name: Windows non-msvc Meson PL/R Setup Compile and Non-Meson Manual Test
         if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib != 'true' }}
@@ -2548,20 +2566,7 @@ jobs:
 
           echo "END_RUN_THE_OLD"
 
-#         if [ "${Configuration}" == "Debug" ]
-#         then
-#           meson setup --prefix="${PG_HOME}/contrib/plr"                                   -Db_pie=true -DR_HOME="${R_HOME}" -DPG_HOME="${PG_HOME}" ../contrib/plr
-#         fi
-#
-#         if [ "${Configuration}" == "Release" ]
-#         then
-#           meson setup --prefix="${PG_HOME}/contrib/plr" -Dbuildtype=release -Ddebug=false -Db_pie=true -DR_HOME="${R_HOME}" -DPG_HOME="${PG_HOME}" ../contrib/plr
-#         fi
-#
-#         meson compile -C ../contrib/plr  -v
 
-          # install GOOD or BAD artifacts into NIX PG plr.dll and plr.dll.a.
-          #
           if [ -f "../contrib/plr/plr.dll" ]
           then
             echo "plr.dll is found"
