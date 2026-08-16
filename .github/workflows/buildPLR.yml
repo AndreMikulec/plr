@@ -546,9 +546,7 @@ jobs:
           if("${env:compilerEnv}" -eq "cygwin") {
             ${env:compilerClass} = "cygwin"
           }
-          if("${env:compilerEnv}" -eq "msvc") {
-            ${env:compilerClass} = "msvc"
-          }
+
           Set-EnvVar "compilerClass=${env:compilerClass}"
 
           echo "compilerClass: ${env:compilerClass}"
@@ -735,7 +733,7 @@ jobs:
 
 
       - name: Matrix Windows Platform Specific Variables
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'msvc' ) }}
+        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) }}
         shell: powershell
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
@@ -778,20 +776,6 @@ jobs:
 
       - name: Checkout Code of This Repository
         uses: actions/checkout@v6
-
-      # running Meson on GitHub Actions will end up using GCC rather than MSVC
-      #
-      # His fix .
-      # https://dvdhrm.github.io/2021/04/21/meson-msvc-github-actions/
-      #
-      # `x64` for 64-bit x86 machines, `x86` for 32-bit x86 machines.
-      # https://github.com/bus1/cabuild/blob/8c91ebf06b7a5f8405cf93c89a6928e4c76967e0/action/msdevshell/action.yml
-      - name: Prepare Github Actions, MSVC, and Meson
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' }}
-        uses: bus1/cabuild/action/msdevshell@v1
-        with:
-          # msvc ARCHITECTURE
-          architecture: ${{ env.Platform }}
 
       - name: Checkout PostgreSQL Code
         if: ${{ env.pgSRCversion != 'notset' }}
@@ -837,7 +821,7 @@ jobs:
       # https://github.com/actions/cache/blob/main/tips-and-workarounds.md#update-a-cache
       #
       - name: Cache R-x.y.z Windows Installer Exe
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'msvc' ) && env.rversion != 'devel' }}
+        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) && env.rversion != 'devel' }}
         uses: actions/cache@v5
         id: cacheRWindowsInstallerExe
         with:
@@ -848,7 +832,7 @@ jobs:
 
       - name: Cache PostgreSQL for Windows
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'msvc' ) && env.pgWINversion != 'notset' &&
+          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) && env.pgWINversion != 'notset' &&
           (( env.PGVER2 == '17' && env.Platform == 'x86' ) || ( env.PGVER2 != '17' ))
           }}
         uses: actions/cache@v5
@@ -860,42 +844,12 @@ jobs:
           SEGMENT_DOWNLOAD_TIMEOUT_MINS: 10
 
       - name: Cache GNU diffutils for Test on PostgreSQL for Windows
-        if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) || ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' ) }}
+        if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) }}
         uses: actions/cache@v5
         id: cacheDiffutilsZip
         with:
           path: diffutils-2.8.7-1-bin.zip
           key:  diffutils-2.8.7-1-bin.zip
-        env:
-          SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
-
-      - name: Cache pkgconfiglite for Compile using msvc and meson
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' }}
-        uses: actions/cache@v5
-        id: cachePkgConfigLiteZip
-        with:
-          path: pkg-config-lite-0.28-1_bin-win32.zip
-          key:  pkg-config-lite-0.28-1_bin-win32.zip
-        env:
-          SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
-
-      - name: Cache winflexbison for Compile using msvc
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' }}
-        uses: actions/cache@v5
-        id: cacheWinFlexBisonZip
-        with:
-          path: win_flex_bison-2.5.24.zip
-          key:  win_flex_bison-2.5.24.zip
-        env:
-          SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
-
-      - name: Cache meson for Compile using msvc and meson
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' }}
-        uses: actions/cache@v5
-        id: cacheMesonMsi
-        with:
-          path: meson-1.2.1-64.msi
-          key:  meson-1.2.1-64.msi
         env:
           SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
 
@@ -920,7 +874,7 @@ jobs:
       # five seconds
       - name: Download R for Windows R-x.y.z R-rmajor.rminor.rpatch
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'msvc' ) &&
+          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) &&
           steps.cacheRWindowsInstallerExe.outputs.cache-hit != 'true'
           }}
         uses: suisei-cn/actions-download-file@v1.6.1
@@ -930,7 +884,7 @@ jobs:
 
       - name: Download PostgreSQL for Windows
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'msvc' ) && env.pgWINversion != 'notset' &&
+          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) && env.pgWINversion != 'notset' &&
           (( env.PGVER2 == '17' && env.Platform == 'x86' ) || ( env.PGVER2 != '17' )) &&
           steps.cachePGWindowsInstallerExe.outputs.cache-hit != 'true'
           }}
@@ -946,7 +900,7 @@ jobs:
 #         args: install diffutils
 
       - name: Download GNU diffutils for Test on PostgreSQL for Windows
-        if: ${{ ( ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) || ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' ) ) &&
+        if: ${{ ( ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) ) &&
           steps.cacheDiffutilsZip.outputs.cache-hit != 'true'
           }}
         uses: suisei-cn/actions-download-file@v1.6.1
@@ -956,50 +910,6 @@ jobs:
           # verified Jul 13 2024
           # last file update 2004-05-24
           url: https://zenlayer.dl.sourceforge.net/project/gnuwin32/diffutils/2.8.7-1/diffutils-2.8.7-1-bin.zip
-
-      - name: Download pkgconfiglite for Compile using msvc and meson
-        if: >-
-          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' &&
-          steps.cachePkgConfigLiteZip.outputs.cache-hit != 'true'
-          }}
-        uses: suisei-cn/actions-download-file@v1.6.1
-        id: downloadPkgConfigLiteZip
-        with:
-          retry-times: 1
-          # verified Jul 13 2024
-          # last file update 2013-01-26
-          url: http://downloads.sourceforge.net/project/pkgconfiglite/0.28-1/pkg-config-lite-0.28-1_bin-win32.zip
-
-      - name: Download winflexbison for Compile using msvc
-        if: >-
-          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' &&
-          steps.cacheWinFlexBisonZip.outputs.cache-hit != 'true'
-          }}
-        uses: suisei-cn/actions-download-file@v1.6.1
-        id: downloadWinFlexBisonZip
-        with:
-          retry-times: 1
-          # verified Jul 13 2024
-          # last file update 2021-01-06
-          url: https://sourceforge.net/projects/winflexbison/files/win_flex_bison-2.5.24.zip
-
-      - name: Download meson for Compile using msvc and meson
-        if: >-
-          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' &&
-          steps.cacheMesonMsi.outputs.cache-hit != 'true'
-          }}
-        uses: suisei-cn/actions-download-file@v1.6.1
-        id: downloadMesonMsi
-        with:
-          retry-times: 1
-          # verified Jul 13 2024
-          # We provide an MSI installer on the GitHub release page
-          # https://mesonbuild.com/Getting-meson.html
-          # BUT this is the last .msi build and no .msi builds for 1.4.2 and 1.5.0 - STRANGE
-          # last file update May 30 2024
-          # https://github.com/mesonbuild/meson/releases/download/1.4.1/meson-1.4.1-64.msi
-          # https://github.com/mesonbuild/meson/releases/tag/1.4.1
-          url: https://github.com/mesonbuild/meson/releases/download/1.4.1/meson-1.4.1-64.msi
 
       - name: Download StrawberryPerl
         if: >-
@@ -1017,7 +927,7 @@ jobs:
           url: https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_53822_64bit/strawberry-perl-5.38.2.2-64bit.msi
 
       - name: Install R for Windows R-x.y.z R-rmajor.rminor.rpatch
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'msvc' ) }}
+        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) }}
         env:
           R_HOME: ${{ env.R_HOME }}
           R_ARCHplat: ${{ env.R_ARCHplat }}
@@ -1052,7 +962,7 @@ jobs:
       #
       - name: From Disabled, Enable PostgreSQL x64-17 for Windows and Start and Stop
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' || env.compilerClass == 'msvc' ) &&
+          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) &&
           env.PGVER2 == '17' && env.Platform == 'x64'
           }}
         shell: cmd
@@ -1064,7 +974,7 @@ jobs:
 
       - name: Install PostgreSQL for Windows and Stop PostgreSQL
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'msvc' ) && env.pgWINversion != 'notset' &&
+          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) && env.pgWINversion != 'notset' &&
           (( env.PGVER2 == '17' && env.Platform == 'x86' ) || ( env.PGVER2 != '17' ))
           }}
         env:
@@ -1098,25 +1008,10 @@ jobs:
           if "%Platform%"=="notset" (echo Platform is not set, therefore no net stop happens.)
           dir "%PGROOT2%"
 
-      # https://wiki.postgresql.org/wiki/Meson
-      #   NOTE - (for PostgreSQL) winflexbison - fails with a general error. (see OTHER step)
-      #   NOTE - (for testing) diffutils - times out - doing a custom install instead (see OTHER step)
-      #   NOTE - (for meson) pkgconfiglite - times out - doing a custom install instead (see OTHER step)
-      #   NOTE - meson - fails with msiexec.exe Exit code was '3010' (see OTHER step)
-      #   NOTE - 7z is provided by Github Actions
-      - name: Choco Install support software about PL/R compiling using msvc for Windows
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' }}
-        # Keep v2.  v2.2.0 may have connection to Sourceforge problems
-        uses: crazy-max/ghaction-chocolatey@v4
-        with:
-          args: >-
-            install sed gzip strawberryperl
-            grep
-
       # Choco Install GNU diffutils
       # BUT the "crazy-max/ghaction-chocolatey@v4" "install diffutils" file download often times-out
       - name: Extract Diffuntils and add Diffuntils bin directory to the PATH for Test on PostgreSQL for Windows
-        if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) || ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' ) }}
+        if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) }}
         shell: cmd
         run: |
           rem MKDIR creates any intermediate directories in the path, if needed.
@@ -1127,46 +1022,6 @@ jobs:
           dir                                  "C:\OTHERBIN\diffutils"
           rem - man7.org/linux/man-pages/man1/printf.1.html
           printf                               "C:\\OTHERBIN\\diffutils\\bin" >> %GITHUB_PATH%
-
-      # Choco Install pkgconfiglite
-      # BUT the "crazy-max/ghaction-chocolatey@v4" "install pkgconfiglite" file download often times-out
-      - name: Extract pkgconfiglite and add pkgconfiglite bin directory to the PATH for Compile using msvc and meson
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' }}
-        shell: cmd
-        run: |
-          rem MKDIR creates any intermediate directories in the path, if needed.
-          mkdir                                           "C:\OTHERBIN\pkgconfiglite"
-          rem 7z is provided by Github Actions
-          7z x  pkg-config-lite-0.28-1_bin-win32.zip    -o"C:\OTHERBIN\pkgconfiglite"
-          copy  pkg-config-lite-0.28-1_bin-win32.zip      "C:\OTHERBIN\pkgconfiglite"
-          dir                                             "C:\OTHERBIN\pkgconfiglite"
-          rem - man7.org/linux/man-pages/man1/printf.1.html
-          printf                                          "C:\\OTHERBIN\\pkgconfiglite\\pkg-config-lite-0.28-1\\bin" >> %GITHUB_PATH%
-
-      # Choco Install winflexbison
-      # BUT the "crazy-max/ghaction-chocolatey@v4" "install pkgconfiglite" file download often times-out
-      - name: Extract winflexbison and add the winflexbison directory to the PATH for Compile using msvc
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' }}
-        shell: cmd
-        run: |
-          rem MKDIR creates any intermediate directories in the path, if needed.
-          mkdir                                           "C:\OTHERBIN\winflexbison"
-          rem 7z is provided by Github Actions
-          7z x  win_flex_bison-2.5.24.zip               -o"C:\OTHERBIN\winflexbison"
-          copy  win_flex_bison-2.5.24.zip                 "C:\OTHERBIN\winflexbison"
-          dir                                             "C:\OTHERBIN\winflexbison"
-          rem - man7.org/linux/man-pages/man1/printf.1.html
-          printf                                          "C:\\OTHERBIN\\winflexbison" >> %GITHUB_PATH%
-
-      # Choco Install meson
-      # BUT the "crazy-max/ghaction-chocolatey@v4" "install meson" msiexec.exe Exit code was '3010'.
-      - name: Install meson and add meson directory to the PATH for Compile using msvc and meson
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' }}
-        shell: cmd
-        run: |
-          msiexec.exe /i meson-1.4.1-64.msi /qn /norestart /l*v meson.1.4.1.MsiInstall.log
-          printf "C:\Program Files\Meson" >> %GITHUB_PATH%
-          type meson.1.4.1.MsiInstall.log
 
       - name: Install Strawberry Perl
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' }}
@@ -1485,7 +1340,7 @@ jobs:
           path: |
             pg-matid-${{ matrix.matid }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
 
-      - name: Windows non-msvc Meson PG and Meson PL/R Setup Compile and Non-Meson Manual Test
+      - name: Windows Meson PG and Meson PL/R Setup Compile and Non-Meson Manual Test
         if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib == 'true' }}
         env:
           # Cygwin shell variables
@@ -1503,9 +1358,9 @@ jobs:
           PG_HOME: ${{ env.PG_HOME }}     # different - empty - and below - it is not used
           PGROOT2: ${{ env.PGROOT2 }}
         run: |
-          echo "Windows non-msvc Meson PG and Meson PL/R Setup Compile and Meson Test"
+          echo "Windows Meson PG and Meson PL/R Setup Compile and Non-Meson Manual Test"
           set -x -v -e
-          echo "Windows non-msvc Meson PL/R Setup Compile and Non-Meson Manual Test"
+          echo "Windows Meson PG and Meson PL/R Setup Compile and Non-Meson Manual Test"
           set -x -v -e
           if [ "${OperatingSystem}" == "" ]; then export OperatingSystem=$(uname -o); fi
           echo "OperatingSystem: ${OperatingSystem}"
@@ -1758,12 +1613,7 @@ jobs:
 
           # Cygwin already has the file /usr/lib/R/lib/libR.dll.a
           # MSYS2 (mingw) compilers require libR.dll.a.
-          # That file is created by ddltool program parameter "--output-lib".
-          #
-          # Note, Windows compilers (e.g. msvc) require R.lib.
-          # To create this file, instead of using the "dlltool" program, use the msvc "lib" program.
-          # Alternately, in the Windows "msvc" compiler case, just rename an archive dll.a to be a .lib,
-          # and that also works.
+          # That file is created by dlltool program parameter "--output-lib".
           #
           if [ ! -d "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}" ]
           then
@@ -2070,7 +1920,7 @@ jobs:
             fi
           fi
 
-      - name: Windows non-msvc Meson PL/R Setup Compile and Non-Meson Manual Test
+      - name: Windows Meson PL/R Setup Compile and Non-Meson Manual Test
         if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib != 'true' }}
         env:
           # Cygwin shell variables
@@ -2087,7 +1937,7 @@ jobs:
           PG_HOME: ${{ env.PG_HOME }} # different
           PGROOT2: ${{ env.PGROOT2 }}
         run: |
-          echo "Windows non-msvc Meson PL/R Setup Compile and Non-Meson Manual Test"
+          echo "Windows Meson PL/R Setup Compile and Non-Meson Manual Test"
           set -x -v -e
           if [ "${OperatingSystem}" == "" ]; then export OperatingSystem=$(uname -o); fi
           echo "OperatingSystem: ${OperatingSystem}"
@@ -2431,12 +2281,7 @@ jobs:
 
           # Cygwin already has the file /usr/lib/R/lib/libR.dll.a
           # MSYS2 (mingw) compilers require libR.dll.a.
-          # That file is created by ddltool program parameter "--output-lib".
-          #
-          # Note, Windows compilers (e.g. msvc) require R.lib.
-          # To create this file, instead of using the "dlltool" program, use the msvc "lib" program.
-          # Alternately, in the Windows "msvc" compiler case, just rename an archive dll.a to be a .lib,
-          # and that also works.
+          # That file is created by dlltool program parameter "--output-lib".
           #
           if [ ! -d "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}" ]
           then
@@ -2652,51 +2497,6 @@ jobs:
             fi
           fi
 
-      - name: Windows     msvc Meson PL/R Setup Compile and Non-Meson Manual Test
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'msvc' }}
-        env:
-          R_HOME: ${{ env.R_HOME }}
-          Platform: ${{ env.Platform }}
-          R_ARCH: ${{ env.R_ARCH }}
-          rversion: ${{ env.rversion }}
-          PG_HOME: ${{ env.PGROOT2 }} # different
-          PGVER2: ${{ env.PGVER2 }}
-        shell: powershell
-        run: |
-          systeminfo
-          if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
-            ${env:msvcversion}   = $(& "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion)
-            echo "msvcversion: ${env:msvcversion}"
-            ${env:msvcproductid} = $(& "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId)
-            echo "msvcproductid: ${env:msvcproductid}"
-          }
-
-          echo "R_HOME: ${env:R_HOME}"
-          echo "Platform: ${env:Platform}"
-          echo "R_ARCH: ${env:R_ARCH}"
-          echo "rversion: ${env:rversion}"
-          echo "PG_HOME: ${env:PG_HOME}"
-          echo "PGVER2: ${env:PGVER2}"
-
-          ${env:WORKSPACE} = ${env:GITHUB_WORKSPACE}  # NEED to cygpath THIS
-          echo "WORKSPACE: ${env:WORKSPACE}"
-
-          if("${env:R_HOME}" -eq ""){
-            Write-Error 'R_HOME is missing. Please supply the R_HOME.' -ErrorAction Stop
-          }
-          if("${env:R_ARCH}" -eq ""){
-            Write-Warning 'R_ARCH is missing. Is that the intention? One may supply the R_ARCH.'
-          }
-          if("${env:rversion}" -eq ""){
-            Write-Error 'rversion is missing. Please supply the rversion.' -ErrorAction Stop
-          }
-          if("${env:PG_HOME}" -eq ""){
-            Write-Error 'PG_HOME is missing. Please supply the PG_HOME.' -ErrorAction Stop
-          }
-          if("${env:PGVER2}" -eq ""){
-            Write-Error 'PGVER2 is missing. Please supply the PGVER2.' -ErrorAction Stop
-          }
-
       # @v4 - Due to how Artifacts are created in this new version,
       # it is no longer possible to upload to the same named Artifact multiple times.
       # MAY 2024
@@ -2790,7 +2590,7 @@ jobs:
           if "%Platform%"=="notset" (echo Platform is not set, therefore no net stop happens.)
 
       - name: Windows Prep PL/R Artifact for Release
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' || env.compilerClass == 'msvc' ) }}
+        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) }}
         env:
           PGVER2: ${{ env.PGVER2 }}
           Platform: ${{ env.Platform }}
