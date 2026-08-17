@@ -141,7 +141,7 @@ jobs:
 
   job_18_ubuntu-24_04-arm:
     name: PG 18 ubuntu-24.04-arm
-    # JUL 18 2026
+    # JUL 18 2026 AUG 17 2026
     # ubuntu-22.04-arm
     # https://docs.github.com/en/actions/reference/runners/github-hosted-runners
     # noble (24.04) arm64 (64-bit ARM)
@@ -188,6 +188,7 @@ jobs:
           # Github Actions require elevated priviledges
           # sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner
           sudo pg_ctlcluster $PG main reload
+
       - name: Script
         run: |
           sudo pg_lsclusters
@@ -197,6 +198,7 @@ jobs:
           sudo USE_PGXS=1 make install
           /usr/lib/postgresql/$PG/bin/pg_config
           make installcheck PGUSER=postgres || (cat regression.diffs && false)
+
       - name: After Success
         # success() returns true, when none of the previous steps have failed or been canceled.
         if: ${{ success() }}
@@ -211,7 +213,7 @@ jobs:
     strategy:
       matrix:
         include:
-          # SEEN JUN 2026
+          # SEEN JUN 2026 AUG 2026
           # Ubuntu 24.04 - ubuntu-latest or ubuntu-24.04
           # https://github.com/actions/runner-images
           # noble (24.04, LTS), plucky (25.04, amd64 only)
