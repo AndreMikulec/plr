@@ -13,6 +13,7 @@ on:
 jobs:
 
   master:
+    name: master ubuntu-latest
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
@@ -56,6 +57,7 @@ jobs:
           USE_PGXS: 1
 
   REL_19_:
+    name: REL_19_ ubuntu-latest
     # SEEN JUN 2026
     # Ubuntu 24.04 - ubuntu-latest or ubuntu-24.04
     # https://github.com/actions/runner-images
