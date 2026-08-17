@@ -9,7 +9,7 @@ on:
 jobs:
 
   master:
-    name: master ubuntu-latest
+    name: PG master ubuntu-latest
     runs-on: ubuntu-latest
     steps:
       - name: Echo site details
@@ -53,7 +53,7 @@ jobs:
           USE_PGXS: 1
 
   REL_19_:
-    name: REL_19_ ubuntu-latest
+    name: PG REL_19_ ubuntu-latest
     # SEEN JUN 2026
     # Ubuntu 24.04 - ubuntu-latest or ubuntu-24.04
     # https://github.com/actions/runner-images
@@ -147,8 +147,6 @@ jobs:
     strategy:
       matrix:
         include:
-          # SEEN AUG 2026
-          # Ubuntu 24.04  Arm64  arm64  ubuntu-24.04-arm  ubuntu-24.04-arm64
           # SEEN JUN 2026
           # Ubuntu 24.04 - ubuntu-latest or ubuntu-24.04
           # https://github.com/actions/runner-images
@@ -159,8 +157,6 @@ jobs:
           # https://ftp.postgresql.org/pub/repos/apt/dists/noble-pgdg/
           # Regular expression search - "Package: postgresql-18$"
           # https://ftp.postgresql.org/pub/repos/apt/dists/noble-pgdg/main/binary-amd64/Packages
-          - pg: 18
-            os: ubuntu-24.04-arm
           - pg: 18
             os: ubuntu-latest
           - pg: 17
