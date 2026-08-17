@@ -139,7 +139,7 @@ jobs:
         env:
           USE_PGXS: 1
 
-  job_18_ubuntu-24.04-arm:
+  job_18_ubuntu-24_04-arm:
     name: PG 18 ubuntu-24.04-arm
     # JUL 18 2026
     # ubuntu-22.04-arm
