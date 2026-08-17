@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  master:
+  job_master:
     name: PG master ubuntu-latest
     runs-on: ubuntu-latest
     steps:
@@ -52,7 +52,7 @@ jobs:
         env:
           USE_PGXS: 1
 
-  REL_19_ubuntu-latest:
+  job_REL_19_ubuntu-latest:
     name: PG REL_19_ ubuntu-latest
     # SEEN JUN 2026
     # Ubuntu 24.04 - ubuntu-latest or ubuntu-24.04
@@ -139,7 +139,7 @@ jobs:
         env:
           USE_PGXS: 1
 
-  18_ubuntu-24.04-arm:
+  job_18_ubuntu-24.04-arm:
     name: PG 18 ubuntu-24.04-arm
     # JUL 18 2026
     # ubuntu-22.04-arm
@@ -203,7 +203,7 @@ jobs:
         # Uploads code coverage to codecov.io
         run: bash <(curl -s https://codecov.io/bash)
 
-  build:
+  job_build:
     name: PG ${{ matrix.pg }} ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     env:
