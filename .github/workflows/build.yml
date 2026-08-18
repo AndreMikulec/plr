@@ -211,6 +211,8 @@ jobs:
           sudo groupdel postgres
           #
           sudo apt-get install -qq bison flex libssl-dev libreadline-dev -y
+          # cluster management utilities
+          sudo apt-get install -qq  postgresql-common -y
           git clone --branch master --depth 1 https://github.com/postgres/postgres.git postgres-src
           pushd postgres-src
           git checkout master

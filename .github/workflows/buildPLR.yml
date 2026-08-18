@@ -499,7 +499,7 @@ jobs:
     steps:
 
       - name: Windows Machine Stats systeminfo
-        if: ${{ matrix.os == 'windows-2025-vs2026' }}
+        if: ${{ matrix.os == 'windows-2025-vs2026' || matrix.os == 'windows-11-arm' }}
         shell: cmd
         run: |
           systeminfo
@@ -511,7 +511,7 @@ jobs:
           git config --global advice.detachedHead false
 
       - name: Matrix Variables
-        if: matrix.os == 'windows-2025-vs2026'
+        if: ${{ matrix.os == 'windows-2025-vs2026' || matrix.os == 'windows-11-arm' }}
         shell: powershell
         run: |
           # systeminfo
@@ -534,6 +534,14 @@ jobs:
           Set-EnvVar "os=${env:os}"
 
           echo "os: ${env:os}"
+
+          ${env:osClass} = "notset"
+          if("${env:os}" -in "windows-2025-vs2026", "windows-11-arm") {
+            ${env:osClass} = "windows"
+          }
+          Set-EnvVar "osClass=${env:osClass}"
+
+          echo "osClass: ${env:osClass}"
 
           ${env:Platform} = "${{ matrix.Platform }}"
           if("${env:Platform}" -eq ""){${env:Platform} = "notset"}
@@ -814,7 +822,7 @@ jobs:
 
 
       - name: Matrix Windows Platform Specific Variables
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' }}
+        if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' }}
         shell: powershell
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
@@ -889,7 +897,7 @@ jobs:
           path: PGSOURCE
 
       - name: Windows Move PostgreSQL Code
-        if: ${{ env.os == 'windows-2025-vs2026' && env.pgSRCversion != 'notset' }}
+        if: ${{ env.osClass == 'windows' && env.pgSRCversion != 'notset' }}
         shell: powershell
         run: |
           Copy-Item -Path PGSOURCE -Destination ${{ env.PG_SOURCE }} -Recurse -Force
@@ -905,7 +913,8 @@ jobs:
       #
       - name: Cache R-x.y.z Windows Installer Exe
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) && env.rversion != 'devel'  &&
+          ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' && env.rversion != 'devel'  &&
+          env.rversion != 'devel-aarch64' && env.rversion != 'devel-x86_64' &&
           env.CRAN_R_DOWNLOAD_URL != 'notset'
           }}
         uses: actions/cache@v5
@@ -958,7 +967,7 @@ jobs:
       # https://cran-archive.r-project.org/bin/windows/base/old/2.11.1/R-2.11.1-win32.exe
       #
       # five seconds
-      - name: Download R for Windows R-x.y.z R-rmajor.rminor.rpatch
+      - name: Download R from CRAN_R_DOWNLOAD_URL for Windows R-x.y.z R-rmajor.rminor.rpatch
         if: >-
           ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) &&
           env.CRAN_R_DOWNLOAD_URL != 'notset' &&
@@ -971,8 +980,8 @@ jobs:
 
       - name: Download R Development for Windows or Windows-Arm, x86_64 or aarch64, respectively
         if: >-
-          ${{ ( env.compilerClass == 'MSYS2' ) && 
-          (( env.rversion == 'devel-aarch64' && env.os == 'windows-11-arm' ) || (env.rversion == 'devel-x86_64' && env.os == 'windows-2025-vs2026'))
+          ${{ env.compilerClass == 'MSYS2' &&
+          env.osClass == 'windows'&& ( env.rversion == 'devel-aarch64' || env.rversion == 'devel-x86_64' )
           }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -1043,7 +1052,7 @@ jobs:
 #         url: https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_53822_64bit/strawberry-perl-5.38.2.2-64bit.msi
 
       - name: Install R for Windows R-x.y.z R-rmajor.rminor.rpatch
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) }}
+        if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' }}
         env:
           R_HOME: ${{ env.R_HOME }}
           R_ARCHplat: ${{ env.R_ARCHplat }}
@@ -1161,7 +1170,7 @@ jobs:
       # Gemini says icu and icu-devel are not required for posgres unless I select "--with-icu" in configuration
       # perl
       - name: Install Windows mingw Software
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' }}
+        if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' }}
         uses: msys2/setup-msys2@v2
         with:
           # By default, the installation is not updated; hence package versions are those of the installation tarball.
@@ -1199,7 +1208,7 @@ jobs:
             ${{ env.MINGW_PACKAGE_PREFIX }}-lz4
 
       - name: Install Windows mingw Software Repository PostgreSQL
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.buildpgFromSRC != 'true' }}
+        if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' && env.buildpgFromSRC != 'true' }}
         env:
           # Msys OS variable
           msystem: ${{ env.compilerEnv }}
@@ -1241,7 +1250,7 @@ jobs:
 
       # If the PostgreSQL version is 16 or greater, I can compile PostgreSQL using meson.
       - name: Compile PG using pgSRCversion and PG_SOURCE and Install to here PG_HOME
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgFromSRC == 'true' }}
+        if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgFromSRC == 'true' }}
         env:
           # Cygwin OS variables
           SHELLOPTS: igncr
@@ -1398,7 +1407,7 @@ jobs:
           fi
 
       - name: Windows Prep PG Artifact
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.buildpgFromSRC == 'true' }}
+        if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' && env.buildpgFromSRC == 'true' }}
         env:
           PGVER2: ${{ env.PGVER2 }}
           Platform: ${{ env.Platform }}
@@ -1415,7 +1424,7 @@ jobs:
       # github.com/actions/upload-artifact
       #
       - name: Upload artifact PG for export for LOCAL testing
-        if: ${{ env.os == 'windows-2025-vs2026' &&  env.compilerClass == 'MSYS2' && env.buildpgFromSRC == 'true' }}
+        if: ${{ env.osClass == 'windows' &&  env.compilerClass == 'MSYS2' && env.buildpgFromSRC == 'true' }}
         uses: actions/upload-artifact@v7
         with:
           name: pg-matid-${{ matrix.matid }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}
@@ -1423,7 +1432,7 @@ jobs:
             pg-matid-${{ matrix.matid }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
 
       - name: Windows Meson PG and Meson PL/R Setup Compile and Non-Meson Manual Test
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib == 'true' }}
+        if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib == 'true' }}
         env:
           # Cygwin shell variables
           SHELLOPTS: igncr
@@ -2003,7 +2012,7 @@ jobs:
           fi
 
       - name: Windows Meson PL/R Setup Compile and Non-Meson Manual Test
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib != 'true' }}
+        if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib != 'true' }}
         env:
           # Cygwin shell variables
           SHELLOPTS: igncr
@@ -2672,7 +2681,7 @@ jobs:
           if "%Platform%"=="notset" (echo Platform is not set, therefore no net stop happens.)
 
       - name: Windows Prep PL/R Artifact for Release
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) }}
+        if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) }}
         env:
           PGVER2: ${{ env.PGVER2 }}
           Platform: ${{ env.Platform }}

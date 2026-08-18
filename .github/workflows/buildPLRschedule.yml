@@ -378,7 +378,7 @@ jobs:
     steps:
 
       - name: Windows Machine Stats systeminfo
-        if: ${{ matrix.os == 'windows-2025-vs2026' }}
+        if: ${{ matrix.os == 'windows-2025-vs2026' || matrix.os == 'windows-11-arm' }}
         shell: cmd
         run: |
           systeminfo
@@ -390,7 +390,7 @@ jobs:
           git config --global advice.detachedHead false
 
       - name: Matrix Variables
-        if: matrix.os == 'windows-2025-vs2026'
+        if: ${{ matrix.os == 'windows-2025-vs2026' || matrix.os == 'windows-11-arm' }}
         shell: powershell
         run: |
           # systeminfo
@@ -413,6 +413,14 @@ jobs:
           Set-EnvVar "os=${env:os}"
 
           echo "os: ${env:os}"
+
+          ${env:osClass} = "notset"
+          if("${env:os}" -in "windows-2025-vs2026", "windows-11-arm") {
+            ${env:osClass} = "windows"
+          }
+          Set-EnvVar "osClass=${env:osClass}"
+
+          echo "osClass: ${env:osClass}"
 
           ${env:Platform} = "${{ matrix.Platform }}"
           if("${env:Platform}" -eq ""){${env:Platform} = "notset"}
@@ -693,7 +701,7 @@ jobs:
 
 
       - name: Matrix Windows Platform Specific Variables
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' }}
+        if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' }}
         shell: powershell
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
@@ -768,7 +776,7 @@ jobs:
           path: PGSOURCE
 
       - name: Windows Move PostgreSQL Code
-        if: ${{ env.os == 'windows-2025-vs2026' && env.pgSRCversion != 'notset' }}
+        if: ${{ env.osClass == 'windows' && env.pgSRCversion != 'notset' }}
         shell: powershell
         run: |
           Copy-Item -Path PGSOURCE -Destination ${{ env.PG_SOURCE }} -Recurse -Force
@@ -784,9 +792,10 @@ jobs:
       #
       - name: Cache R-x.y.z Windows Installer Exe
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) && env.rversion != 'devel'  &&
-          env.CRAN_R_DOWNLOAD_URL != 'notset'
-          }}
+          ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' && env.rversion != 'devel'  &&
+           env.rversion != 'devel-aarch64' && env.rversion != 'devel-x86_64' &&
+           env.CRAN_R_DOWNLOAD_URL != 'notset'
+            }}
         uses: actions/cache@v5
         id: cacheRWindowsInstallerExe
         with:
@@ -818,15 +827,15 @@ jobs:
 #       env:
 #         SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
 
-      - name: Cache StrawberryPerl
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' }}
-        uses: actions/cache@v5
-        id: cacheStrawberryPerlMsi
-        with:
-          path: strawberry-perl-5.38.2.2-64bit.msi
-          key:  strawberry-perl-5.38.2.2-64bit.msi
-        env:
-          SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
+#     - name: Cache StrawberryPerl
+#       if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' }}
+#       uses: actions/cache@v5
+#       id: cacheStrawberryPerlMsi
+#       with:
+#         path: strawberry-perl-5.38.2.2-64bit.msi
+#         key:  strawberry-perl-5.38.2.2-64bit.msi
+#       env:
+#         SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
 
       # Notice
       # Path R-2.11.1-x64
@@ -837,7 +846,7 @@ jobs:
       # https://cran-archive.r-project.org/bin/windows/base/old/2.11.1/R-2.11.1-win32.exe
       #
       # five seconds
-      - name: Download R for Windows R-x.y.z R-rmajor.rminor.rpatch
+      - name: Download R from CRAN_R_DOWNLOAD_URL for Windows R-x.y.z R-rmajor.rminor.rpatch
         if: >-
           ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) &&
           env.CRAN_R_DOWNLOAD_URL != 'notset' &&
@@ -849,9 +858,9 @@ jobs:
           url: ${{ env.CRAN_R_DOWNLOAD_URL }}
 
       - name: Download R Development for Windows or Windows-Arm, x86_64 or aarch64, respectively
-        if: >-
-          ${{ ( env.compilerClass == 'MSYS2' ) && 
-          (( env.rversion == 'devel-aarch64' && env.os == 'windows-11-arm' ) || (env.rversion == 'devel-x86_64' && env.os == 'windows-2025-vs2026'))
+         if: >-
+          ${{ env.compilerClass == 'MSYS2' &&
+          env.osClass == 'windows'&& ( env.rversion == 'devel-aarch64' || env.rversion == 'devel-x86_64' )
           }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -906,23 +915,23 @@ jobs:
 #         # last file update 2004-05-24
 #         url: https://zenlayer.dl.sourceforge.net/project/gnuwin32/diffutils/2.8.7-1/diffutils-2.8.7-1-bin.zip
 
-      - name: Download StrawberryPerl
-        if: >-
-          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' &&
-          steps.cacheStrawberryPerlMsi.outputs.cache-hit != 'true'
-          }}
-        uses: suisei-cn/actions-download-file@v1.6.1
-        id: downloadStrawberryPerlMsi
-        with:
-          retry-times: 1
-          # verified Jul 13 2024
-          # last file update 2023-12-11
-          # https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_53822_64bit/strawberry-perl-5.38.2.2-64bit.msi
-          # https://strawberryperl.com/releases.html
-          url: https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_53822_64bit/strawberry-perl-5.38.2.2-64bit.msi
+#     - name: Download StrawberryPerl
+#       if: >-
+#         ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' &&
+#         steps.cacheStrawberryPerlMsi.outputs.cache-hit != 'true'
+#         }}
+#       uses: suisei-cn/actions-download-file@v1.6.1
+#       id: downloadStrawberryPerlMsi
+#       with:
+#         retry-times: 1
+#         # verified Jul 13 2024
+#         # last file update 2023-12-11
+#         # https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_53822_64bit/strawberry-perl-5.38.2.2-64bit.msi
+#         # https://strawberryperl.com/releases.html
+#         url: https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_53822_64bit/strawberry-perl-5.38.2.2-64bit.msi
 
       - name: Install R for Windows R-x.y.z R-rmajor.rminor.rpatch
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) }}
+        if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' }}
         env:
           R_HOME: ${{ env.R_HOME }}
           R_ARCHplat: ${{ env.R_ARCHplat }}
@@ -1021,13 +1030,13 @@ jobs:
 #         rem - man7.org/linux/man-pages/man1/printf.1.html
 #         printf                               "C:\\OTHERBIN\\diffutils\\bin" >> %GITHUB_PATH%
 
-      - name: Install Strawberry Perl
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' }}
-        shell: cmd
-        run: |
-          msiexec.exe /i strawberry-perl-5.38.2.2-64bit.msi /qn /norestart /l*v strawberry-perl-5.38.2.2-64bit.msiInstall.log
-          printf "C:\Strawberry\perl\bin" >> %GITHUB_PATH%
-          type strawberry-perl-5.38.2.2-64bit.msiInstall.log
+#     - name: Install Strawberry Perl
+#       if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' }}
+#       shell: cmd
+#       run: |
+#         msiexec.exe /i strawberry-perl-5.38.2.2-64bit.msi /qn /norestart /l*v strawberry-perl-5.38.2.2-64bit.msiInstall.log
+#         printf "C:\Strawberry\perl\bin" >> %GITHUB_PATH%
+#         type strawberry-perl-5.38.2.2-64bit.msiInstall.log
 
       # 34 seconds with zero packages
       # 2 minutes and seven(7) seconds with everything
@@ -1040,7 +1049,7 @@ jobs:
       # Gemini says icu and icu-devel are not required for posgres unless I select "--with-icu" in configuration
       # perl
       - name: Install Windows mingw Software
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' }}
+        if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' }}
         uses: msys2/setup-msys2@v2
         with:
           # By default, the installation is not updated; hence package versions are those of the installation tarball.
@@ -1078,7 +1087,7 @@ jobs:
             ${{ env.MINGW_PACKAGE_PREFIX }}-lz4
 
       - name: Install Windows mingw Software Repository PostgreSQL
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.buildpgFromSRC != 'true' }}
+        if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' && env.buildpgFromSRC != 'true' }}
         env:
           # Msys OS variable
           msystem: ${{ env.compilerEnv }}
@@ -1120,7 +1129,7 @@ jobs:
 
       # If the PostgreSQL version is 16 or greater, I can compile PostgreSQL using meson.
       - name: Compile PG using pgSRCversion and PG_SOURCE and Install to here PG_HOME
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgFromSRC == 'true' }}
+        if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgFromSRC == 'true' }}
         env:
           # Cygwin OS variables
           SHELLOPTS: igncr
@@ -1277,7 +1286,7 @@ jobs:
           fi
 
       - name: Windows Prep PG Artifact
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.buildpgFromSRC == 'true' }}
+        if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' && env.buildpgFromSRC == 'true' }}
         env:
           PGVER2: ${{ env.PGVER2 }}
           Platform: ${{ env.Platform }}
@@ -1294,7 +1303,7 @@ jobs:
       # github.com/actions/upload-artifact
       #
       - name: Upload artifact PG for export for LOCAL testing
-        if: ${{ env.os == 'windows-2025-vs2026' &&  env.compilerClass == 'MSYS2' && env.buildpgFromSRC == 'true' }}
+        if: ${{ env.osClass == 'windows' &&  env.compilerClass == 'MSYS2' && env.buildpgFromSRC == 'true' }}
         uses: actions/upload-artifact@v7
         with:
           name: pg-matid-${{ matrix.matid }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}
@@ -1302,7 +1311,7 @@ jobs:
             pg-matid-${{ matrix.matid }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
 
       - name: Windows Meson PG and Meson PL/R Setup Compile and Non-Meson Manual Test
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib == 'true' }}
+        if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib == 'true' }}
         env:
           # Cygwin shell variables
           SHELLOPTS: igncr
@@ -1882,7 +1891,7 @@ jobs:
           fi
 
       - name: Windows Meson PL/R Setup Compile and Non-Meson Manual Test
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib != 'true' }}
+        if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib != 'true' }}
         env:
           # Cygwin shell variables
           SHELLOPTS: igncr
@@ -2458,21 +2467,21 @@ jobs:
             fi
           fi
 
-#     # @v4 - Due to how Artifacts are created in this new version,
-#     # it is no longer possible to upload to the same named Artifact multiple times.
-#     # MAY 2024
-#     # github.com/actions/upload-artifact
-#     #
-#     - name: Try to Upload artifacts plr.dll and plr.dll.a for export for LOCAL testing
-#       if: ${{ always() }}
-#       uses: actions/upload-artifact@v7
-#       with:
-#         name: plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}
-#         # default
-#         if-no-files-found: warn
-#         path: |
-#           tmp\*\*
-#           tmp\PLR_LICENSE
+      # @v4 - Due to how Artifacts are created in this new version,
+      # it is no longer possible to upload to the same named Artifact multiple times.
+      # MAY 2024
+      # github.com/actions/upload-artifact
+      #
+      - name: Try to Upload artifacts plr.dll and plr.dll.a for export for LOCAL testing
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}
+          # default
+          if-no-files-found: warn
+          path: |
+            tmp\*\*
+            tmp\PLR_LICENSE
 
       - name: Set R_HOME and PG PATH, Start PG(read OS variables), Test on PostgreSQL for Windows
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' }}
@@ -2550,17 +2559,17 @@ jobs:
           if "%Platform%"=="x86" (net stop postgresql-%PGVER2%)
           if "%Platform%"=="notset" (echo Platform is not set, therefore no net stop happens.)
 
-      - name: Windows Prep PL/R Artifact for Release
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) }}
-        env:
-          PGVER2: ${{ env.PGVER2 }}
-          Platform: ${{ env.Platform }}
-        shell: cmd
-        run: |
-          echo on
-          dir
-          if exist plr-artifact.zip copy plr-artifact.zip plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
-          if exist plr-artifact.zip dir                   plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
+#     - name: Windows Prep PL/R Artifact for Release
+#       if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) }}
+#       env:
+#         PGVER2: ${{ env.PGVER2 }}
+#         Platform: ${{ env.Platform }}
+#       shell: cmd
+#       run: |
+#         echo on
+#         dir
+#         if exist plr-artifact.zip copy plr-artifact.zip plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
+#         if exist plr-artifact.zip dir                   plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
 
 #     # Testing is not done here.
 #     # Pushing this tag assumes that the previous Github Actions workflow run had all 'successes'.
