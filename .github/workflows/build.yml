@@ -162,27 +162,12 @@ jobs:
   # RISE RISC-V Runners
   # GitHub App
   # https://github.com/apps/rise-risc-v-runners
-
+  #
   # start(ed) with a copy of "job_18_ubuntu-24_04-arm"
   job_18_ubuntu-24_04-riscv:
-    name: PG 16 ubuntu-24.04-riscv
-    # JUL 18 2026 AUG 17 2026
-    # ubuntu-22.04-arm
-    # https://docs.github.com/en/actions/reference/runners/github-hosted-runners
-    # noble (24.04) arm64 (64-bit ARM)
-    # https://wiki.postgresql.org/wiki/Apt
-    # https://ftp.postgresql.org/pub/repos/apt/dists/noble-pgdg/main/binary-arm64/Packages.gz
-    # arm64 (i.e., M1/M2/M3, graviton etc) CPUs
-    # 24.04 (“noble”, amd64 and arm64),
-    # https://cloud.r-project.org/
+    name: PG master ubuntu-24.04-riscv
     runs-on: ubuntu-24.04-riscv
-    env:
-      # 2026-08-18T07:06:41.9692886Z E_ Unable to locate package postgresql-18
-      PG: 16
     steps:
-      - name: Echo site details
-        run: echo PG $PG
- 
       - name: Checkout code
         uses: actions/checkout@v6
  
@@ -195,25 +180,46 @@ jobs:
           cat /proc/cpuinfo
           cat /etc/os-release
           set +x +v +e
-          echo Building plr with PostgreSQL $PG
-          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
           sudo apt-get update -qq
-          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-          sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
-          sudo apt-get install r-base-dev acl
-          sudo R --version
-          # Seems PG does not come pre-installed
-          # sudo /etc/init.d/postgresql stop
+          #
+          # echo Building plr with PostgreSQL $PG
+          # sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          # wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          #
+          sudo /etc/init.d/postgresql stop
           sudo apt-get remove --purge postgresql\*
           sudo rm -rf /etc/postgresql /var/lib/postgresql
-          sudo apt-get install postgresql-$PG
-          sudo apt-get install postgresql-server-dev-$PG
-          echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/$PG/main/pg_hba.conf > /dev/null
-          # Builds under "runner"
-          # Github Actions require elevated priviledges
-          # sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner
-          sudo pg_ctlcluster $PG main reload
+          #
+          sudo apt-get install -qq bison flex libssl-dev
+          git clone https://github.com/postgres/postgres.git postgres-src
+          pushd postgres-src
+          git checkout master
+          ./configure --help
+          ./configure
+          make -j4
+          sudo make install
+          export PATH=/usr/local/pgsql/bin:$PATH
+          initdb -D data
+          pg_ctl -D data -l logfile start
+          psql -d postgres -c "SELECT version();"
+          psql -d postgres -c "SELECT current_setting('server_version_num');"
+          popd
+          #
+          # sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+          # sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+          # sudo apt-get install r-base-dev acl
+          #
+          sudo apt install --no-install-recommends build-essential ca-certificates curl gcc gfortran libblas-dev libbz2-dev libcairo2-dev libcurl4-openssl-dev libicu-dev libjpeg-dev liblapack-dev liblzma-dev libpcre2-dev libpng-dev libreadline-dev libssl-dev libtiff-dev libx11-dev libxml2-dev libxt-dev zlib1g-dev
+          git clone https://github.com/wch/r-source.git r-src
+          pushd r-src
+          checkout trunk
+          ./configure --help
+          ./configure --enable-R-shlib --without-recommended-packages
+          make -j4
+          sudo make install
+          popd
+          export PATH=/usr/local/bin:$PATH
+          sudo R --version
 
       - name: Script
         run: |
