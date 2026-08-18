@@ -621,7 +621,7 @@ jobs:
           if(([int]"${{ env.rversionnumeric }}" -ge 20200) -and ([int]"${{ env.rversionnumeric }}" -le 21101))
             ${env:rversionlong} = "${{ env.rversion }}-win${{ env.bit }}"
           } else {
-            if(("${env:rversionlong}" -ne "devel-aarch64") -and ("${env:rversionlong}" -ne "devel-aarch64")) {
+            if(("${env:rversionlong}" -ne "devel-aarch64") -and ("${env:rversionlong}" -ne "devel-x86_64")) {
               # enhances and overrides #
               ${env:rversionlong} = "${{ env.rversionlong }}-win"
             }
@@ -635,25 +635,24 @@ jobs:
 
           # CRAN download URL
           ${env:CRAN_R_DOWNLOAD_URL} ="notset"
-
-          $matches = @()
-          if(-not ("${env:rversionlong}" -match 'patched|devel')) {
-            if([int]"${{ env.rversionnumeric }}" -ge 40000 ) {
-              ${env:CRAN_R_DOWNLOAD_URL} = "https://cran.r-project.org/bin/windows/base/old/${{ env.rversion }}/${env:rversionlong}.exe"
+          if(("${env:rversion}" -ne "devel-aarch64") -and ("${env:rversion}" -ne "devel-x86_64")) {
+            $matches = @()
+            if(-not ("${env:rversionlong}" -match 'patched|devel')) {
+              if([int]"${{ env.rversionnumeric }}" -ge 40000 ) {
+                ${env:CRAN_R_DOWNLOAD_URL} = "https://cran.r-project.org/bin/windows/base/old/${{ env.rversion }}/${env:rversionlong}.exe"
+              }
+              if([int]"${{ env.rversionnumeric }}" -le 30603 ) {
+                ${env:CRAN_R_DOWNLOAD_URL} = "https://cran-archive.r-project.org/bin/windows/base/old/${{ env.rversion }}/${env:rversionlong}.exe"
+              }
             }
-            if([int]"${{ env.rversionnumeric }}" -le 30603 ) {
-              ${env:CRAN_R_DOWNLOAD_URL} = "https://cran-archive.r-project.org/bin/windows/base/old/${{ env.rversion }}/${env:rversionlong}.exe"
+            $matches = @()
+            $matches = @()
+            if("${env:rversionlong}" -match 'patched|devel') {
+              ${env:CRAN_R_DOWNLOAD_URL} = "https://cran.r-project.org/bin/windows/base/${env:rversionlong}.exe"
             }
+            $matches = @()
           }
-          $matches = @()
-
-          $matches = @()
-          if("${env:rversionlong}" -match 'patched|devel') {
-            ${env:CRAN_R_DOWNLOAD_URL} = "https://cran.r-project.org/bin/windows/base/${env:rversionlong}.exe"
-          }
-          $matches = @()
           Set-EnvVar "CRAN_R_DOWNLOAD_URL=${env:CRAN_R_DOWNLOAD_URL}"
-
           echo "CRAN_R_DOWNLOAD_URL: ${env:CRAN_R_DOWNLOAD_URL}"
 
       - name: Checkout Code of This Repository
