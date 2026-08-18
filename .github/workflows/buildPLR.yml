@@ -939,15 +939,15 @@ jobs:
 #       env:
 #         SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
 
-      - name: Cache StrawberryPerl
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' }}
-        uses: actions/cache@v5
-        id: cacheStrawberryPerlMsi
-        with:
-          path: strawberry-perl-5.38.2.2-64bit.msi
-          key:  strawberry-perl-5.38.2.2-64bit.msi
-        env:
-          SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
+#     - name: Cache StrawberryPerl
+#       if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' }}
+#       uses: actions/cache@v5
+#       id: cacheStrawberryPerlMsi
+#       with:
+#         path: strawberry-perl-5.38.2.2-64bit.msi
+#         key:  strawberry-perl-5.38.2.2-64bit.msi
+#       env:
+#         SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
 
       # Notice
       # Path R-2.11.1-x64
@@ -1027,20 +1027,20 @@ jobs:
 #         # last file update 2004-05-24
 #         url: https://zenlayer.dl.sourceforge.net/project/gnuwin32/diffutils/2.8.7-1/diffutils-2.8.7-1-bin.zip
 
-      - name: Download StrawberryPerl
-        if: >-
-          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' &&
-          steps.cacheStrawberryPerlMsi.outputs.cache-hit != 'true'
-          }}
-        uses: suisei-cn/actions-download-file@v1.6.1
-        id: downloadStrawberryPerlMsi
-        with:
-          retry-times: 1
-          # verified Jul 13 2024
-          # last file update 2023-12-11
-          # https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_53822_64bit/strawberry-perl-5.38.2.2-64bit.msi
-          # https://strawberryperl.com/releases.html
-          url: https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_53822_64bit/strawberry-perl-5.38.2.2-64bit.msi
+#     - name: Download StrawberryPerl
+#       if: >-
+#         ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' &&
+#         steps.cacheStrawberryPerlMsi.outputs.cache-hit != 'true'
+#         }}
+#       uses: suisei-cn/actions-download-file@v1.6.1
+#       id: downloadStrawberryPerlMsi
+#       with:
+#         retry-times: 1
+#         # verified Jul 13 2024
+#         # last file update 2023-12-11
+#         # https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_53822_64bit/strawberry-perl-5.38.2.2-64bit.msi
+#         # https://strawberryperl.com/releases.html
+#         url: https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_53822_64bit/strawberry-perl-5.38.2.2-64bit.msi
 
       - name: Install R for Windows R-x.y.z R-rmajor.rminor.rpatch
         if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) }}
@@ -1142,13 +1142,13 @@ jobs:
 #         rem - man7.org/linux/man-pages/man1/printf.1.html
 #         printf                               "C:\\OTHERBIN\\diffutils\\bin" >> %GITHUB_PATH%
 
-      - name: Install Strawberry Perl
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' }}
-        shell: cmd
-        run: |
-          msiexec.exe /i strawberry-perl-5.38.2.2-64bit.msi /qn /norestart /l*v strawberry-perl-5.38.2.2-64bit.msiInstall.log
-          printf "C:\Strawberry\perl\bin" >> %GITHUB_PATH%
-          type strawberry-perl-5.38.2.2-64bit.msiInstall.log
+#     - name: Install Strawberry Perl
+#       if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' }}
+#       shell: cmd
+#       run: |
+#         msiexec.exe /i strawberry-perl-5.38.2.2-64bit.msi /qn /norestart /l*v strawberry-perl-5.38.2.2-64bit.msiInstall.log
+#         printf "C:\Strawberry\perl\bin" >> %GITHUB_PATH%
+#         type strawberry-perl-5.38.2.2-64bit.msiInstall.log
 
       # 34 seconds with zero packages
       # 2 minutes and seven(7) seconds with everything
