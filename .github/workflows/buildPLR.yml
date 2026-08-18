@@ -411,6 +411,61 @@ jobs:
             pgWINversion: 14.23-2
             MSYS2testonpgWIN: true
 
+          # devel-x86_64 rversion
+          # Win-installer-x86_64 on runner page
+          # R-devel-x86_64.exe gh downloaded
+          # 
+          # devel-aarch64 rversion
+          # Win-installer-aarch64 on runner page
+          # R-devel-aarch64.exe gh downloaded
+          # 
+          # R on 64-bit ARM Windows - Tomas Kalibera - 2024/04/23
+          #   R-devel-aarch64 “sub-architectures” are not used
+          #   Hence, e.g. Rgui.exe is located directly in bin, while it is in bin/x64 on x86_64 (R-devel-x86_64)
+          #   R-devel-aarch64 LLVM is needed because GCC does not support Windows/aarch64
+          #   Also, R-devel-aarch64 CRAN packages are already tested with LLVM clang
+          # https://blog.r-project.org/2024/04/23/r-on-64-bit-arm-windows/
+
+          # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
+          - matid: '12'
+            os: windows-2025-vs2026
+            GithubActionsIgnoreFail: false
+            compilerEnv: UCRT64
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x64
+            Configuration: Debug
+            #
+            rversion: devel-x86_64
+            R_HOME: 'C:\RINSTALL'
+            R_ARCH: /x64
+            #
+            pgSRCversion: master
+            PG_SOURCE: 'C:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: meson
+            PG_HOME: 'C:\PGINSTALL'
+
+          # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
+          - matid: '13'
+            os: windows-11-arm64
+            GithubActionsIgnoreFail: false
+            compilerEnv: CLANGARM64
+            shellEnv: msys2 {0}
+            compilerExe: clang
+            Platform: x64
+            Configuration: Debug
+            #
+            rversion: devel-aarch64
+            R_HOME: 'C:\RINSTALL'
+            # R_ARCH - not a multiarchitecture
+            #
+            pgSRCversion: master
+            PG_SOURCE: 'C:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: meson
+            PG_HOME: 'C:\PGINSTALL'
+
     defaults:
       run:
         shell: ${{ matrix.shellEnv || 'bash' }}
