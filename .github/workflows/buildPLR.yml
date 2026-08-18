@@ -738,7 +738,6 @@ jobs:
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
 
-          $matches = @()
           # 2.2.0 through 2.11.1
           if(([int]"${{ env.rversionnumeric }}" -ge 20200) -and ([int]"${{ env.rversionnumeric }}" -le 21101))
             ${env:rversionlong} = "${{ env.rversion }}-win${{ env.bit }}"
@@ -749,7 +748,6 @@ jobs:
             }
           }
 
-          $matches = @()
           ${env:rversionlong} = "R-${env:rversionlong}"
 
           Set-EnvVar "rversionlong=${env:rversionlong}"
@@ -769,6 +767,8 @@ jobs:
               ${env:CRAN_R_DOWNLOAD_URL} = "https://cran-archive.r-project.org/bin/windows/base/old/${{ env.rversion }}/${env:rversionlong}.exe"
             }
           }
+          $matches = @()
+
           $matches = @()
           if("${env:rversionlong}" -match 'patched|devel') {
             ${env:CRAN_R_DOWNLOAD_URL} = "https://cran.r-project.org/bin/windows/base/${env:rversionlong}.exe"
