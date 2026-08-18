@@ -666,13 +666,13 @@ jobs:
 
 
       - name: Matrix Windows Platform Specific Variables
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) }}
+        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) }} {
         shell: powershell
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
 
           # 2.2.0 through 2.11.1
-          if(([int]"${{ env.rversionnumeric }}" -ge 20200) -and ([int]"${{ env.rversionnumeric }}" -le 21101))
+          if(([int]"${{ env.rversionnumeric }}" -ge 20200) -and ([int]"${{ env.rversionnumeric }}" -le 21101)) {
             ${env:rversionlong} = "${{ env.rversion }}-win${{ env.bit }}"
           } else {
             if(("${env:rversionlong}" -ne "devel-aarch64") -and ("${env:rversionlong}" -ne "devel-x86_64")) {
