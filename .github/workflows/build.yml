@@ -210,6 +210,9 @@ jobs:
           sudo userdel -r postgres
           sudo groupdel postgres
           #
+          # debconf unable to initialize frontend Dialog
+          export DEBIAN_FRONTEND=noninteractive
+          #
           # To build PostgreSQL and its C client library (libpq) from source
           sudo apt-get install build-essential libreadline-dev zlib1g-dev flex bison libssl-dev -y
           # default PostgreSQL client development libraries on Ubuntu
@@ -230,6 +233,7 @@ jobs:
           postgres --version
           pg_config --version
           pg_config
+          # psql: symbol lookup error: psql: undefined symbol: PQchangePassword
           psql --version
           psql -d postgres -c "SELECT version();"
           psql -d postgres -c "SELECT current_setting('server_version_num');"

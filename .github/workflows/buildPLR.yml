@@ -738,11 +738,16 @@ jobs:
               # then THIS(17) is the default TESTING(17) "MSYS2testonpgWIN PostgreSQL"
               # 9.6
               # 13
-              ${env:pgwinmajor} = $matches[1]; $matches = @()
+              $matches = @()
+              ${env:pgwinmajor} = $matches[1]
+              $matches = @()
               # override
               ${env:pgWINversion} = "NODOWNLOAD"
             }
           }
+          # Need A NUMBER to be used as a DEFAULT for the rest of the program
+          if(${env:pgwinmajor} -eq "notset") { ${env:pgwinmajor} = "99" }
+          
           Set-EnvVar "pgwinmajor=${env:pgwinmajor}"
           Set-EnvVar "pgWINversion=${env:pgWINversion}"
 
