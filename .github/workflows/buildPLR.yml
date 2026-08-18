@@ -940,7 +940,10 @@ jobs:
           rem need "main" for the GUIs and command line utilites to work
           rem A comma at the end is O.K
           rem Component "notset" is ignored
-          "${{ env.rversionlong }}.exe" /VERYSILENT /COMPONENTS=main,%R_ARCHplat% /DIR=%R_HOME% /NOICONS /TASKS=
+          rem Install skips components that it does not know about
+          "${{ env.rversionlong }}.exe" /VERYSILENT /COMPONENTS=main,%R_ARCHplat% /DIR=%R_HOME% /NOICONS /TASKS= /LOG=${{ env.rversionlong }}.exe__install.log /SAVEINF=${{ env.rversionlong }}.exe__setup.inf
+          type ${{ env.rversionlong }}.exe__setup.inf
+          type ${{ env.rversionlong }}.exe__install.log
           "%R_HOME%\bin\R" --version
           dir "%R_HOME%"
 
