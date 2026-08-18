@@ -929,15 +929,15 @@ jobs:
         env:
           SEGMENT_DOWNLOAD_TIMEOUT_MINS: 10
 
-      - name: Cache GNU diffutils for Test on PostgreSQL for Windows
-        if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) }}
-        uses: actions/cache@v5
-        id: cacheDiffutilsZip
-        with:
-          path: diffutils-2.8.7-1-bin.zip
-          key:  diffutils-2.8.7-1-bin.zip
-        env:
-          SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
+#     - name: Cache GNU diffutils for Test on PostgreSQL for Windows
+#       if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) }}
+#       uses: actions/cache@v5
+#       id: cacheDiffutilsZip
+#       with:
+#         path: diffutils-2.8.7-1-bin.zip
+#         key:  diffutils-2.8.7-1-bin.zip
+#       env:
+#         SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
 
       - name: Cache StrawberryPerl
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' }}
@@ -1015,17 +1015,17 @@ jobs:
 #       with:
 #         args: install diffutils
 
-      - name: Download GNU diffutils for Test on PostgreSQL for Windows
-        if: ${{ ( ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) ) &&
-          steps.cacheDiffutilsZip.outputs.cache-hit != 'true'
-          }}
-        uses: suisei-cn/actions-download-file@v1.6.1
-        id: downloadDiffutilsZip
-        with:
-          retry-times: 1
-          # verified Jul 13 2024
-          # last file update 2004-05-24
-          url: https://zenlayer.dl.sourceforge.net/project/gnuwin32/diffutils/2.8.7-1/diffutils-2.8.7-1-bin.zip
+#     - name: Download GNU diffutils for Test on PostgreSQL for Windows
+#       if: ${{ ( ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) ) &&
+#         steps.cacheDiffutilsZip.outputs.cache-hit != 'true'
+#         }}
+#       uses: suisei-cn/actions-download-file@v1.6.1
+#       id: downloadDiffutilsZip
+#       with:
+#         retry-times: 1
+#         # verified Jul 13 2024
+#         # last file update 2004-05-24
+#         url: https://zenlayer.dl.sourceforge.net/project/gnuwin32/diffutils/2.8.7-1/diffutils-2.8.7-1-bin.zip
 
       - name: Download StrawberryPerl
         if: >-
@@ -1127,20 +1127,20 @@ jobs:
           if "%Platform%"=="notset" (echo Platform is not set, therefore no net stop happens.)
           dir "%PGROOT2%"
 
-      # Choco Install GNU diffutils
-      # BUT the "crazy-max/ghaction-chocolatey@v4" "install diffutils" file download often times-out
-      - name: Extract Diffuntils and add Diffuntils bin directory to the PATH for Test on PostgreSQL for Windows
-        if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) }}
-        shell: cmd
-        run: |
-          rem MKDIR creates any intermediate directories in the path, if needed.
-          mkdir                                "C:\OTHERBIN\diffutils"
-          rem 7z is provided by Github Actions
-          7z x  diffutils-2.8.7-1-bin.zip    -o"C:\OTHERBIN\diffutils"
-          copy  diffutils-2.8.7-1-bin.zip      "C:\OTHERBIN\diffutils"
-          dir                                  "C:\OTHERBIN\diffutils"
-          rem - man7.org/linux/man-pages/man1/printf.1.html
-          printf                               "C:\\OTHERBIN\\diffutils\\bin" >> %GITHUB_PATH%
+#     # Choco Install GNU diffutils
+#     # BUT the "crazy-max/ghaction-chocolatey@v4" "install diffutils" file download often times-out
+#     - name: Extract Diffuntils and add Diffuntils bin directory to the PATH for Test on PostgreSQL for Windows
+#       if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) }}
+#       shell: cmd
+#       run: |
+#         rem MKDIR creates any intermediate directories in the path, if needed.
+#         mkdir                                "C:\OTHERBIN\diffutils"
+#         rem 7z is provided by Github Actions
+#         7z x  diffutils-2.8.7-1-bin.zip    -o"C:\OTHERBIN\diffutils"
+#         copy  diffutils-2.8.7-1-bin.zip      "C:\OTHERBIN\diffutils"
+#         dir                                  "C:\OTHERBIN\diffutils"
+#         rem - man7.org/linux/man-pages/man1/printf.1.html
+#         printf                               "C:\\OTHERBIN\\diffutils\\bin" >> %GITHUB_PATH%
 
       - name: Install Strawberry Perl
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' }}
@@ -1152,6 +1152,13 @@ jobs:
 
       # 34 seconds with zero packages
       # 2 minutes and seven(7) seconds with everything
+      # UCRT64 tools but no MINGW32 
+      #
+      # diffutils
+      # binutils
+      # winpty
+      # icu-devel requires icu(UCRT-icu available)
+      # perl
       - name: Install Windows mingw Software
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv != 'MINGW32' }}
         uses: msys2/setup-msys2@v2
@@ -1165,7 +1172,10 @@ jobs:
           msystem: ${{ env.compilerEnv }}
           #
           install: >-
-            ${{ env.MINGW_PACKAGE_PREFIX }}-pkg-config
+            diffutils
+            binutils
+            winpty
+            perl
             ${{ env.MINGW_PACKAGE_PREFIX }}-curl
             git
             ${{ env.MINGW_PACKAGE_PREFIX }}-meson
@@ -1176,19 +1186,15 @@ jobs:
             gzip
             ${{ env.MINGW_PACKAGE_PREFIX }}-readline
             ${{ env.MINGW_PACKAGE_PREFIX }}-zlib
-            ${{ env.MINGW_PACKAGE_PREFIX }}-icu
             icu-devel
             git
             flex
             bison
-            ${{ env.MINGW_PACKAGE_PREFIX }}-perl
-            ${{ env.MINGW_PACKAGE_PREFIX }}-winpty
+            
             p7zip
             tar
             zstd
             ${{ env.MINGW_PACKAGE_PREFIX }}-tools-git
-            ${{ env.MINGW_PACKAGE_PREFIX }}-binutils
-            ${{ env.MINGW_PACKAGE_PREFIX }}-diffutils
             ${{ env.MINGW_PACKAGE_PREFIX }}-libxml2
             ${{ env.MINGW_PACKAGE_PREFIX }}-libxslt
             ${{ env.MINGW_PACKAGE_PREFIX }}-lz4
