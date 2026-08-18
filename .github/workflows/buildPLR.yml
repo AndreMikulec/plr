@@ -918,8 +918,8 @@ jobs:
 
       - name: Cache PostgreSQL for Windows
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) && env.pgWINversion != 'notset' &&
-          (( env.PGVER2 == '17' && env.Platform == 'x86' ) || ( env.PGVER2 != '17' ))
+          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' &&
+          env.PGVER2 != '17' && env.Platform == 'x64'
           }}
         uses: actions/cache@v5
         id: cachePGWindowsInstallerExe
@@ -1000,8 +1000,8 @@ jobs:
 
       - name: Download PostgreSQL for Windows
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) && env.pgWINversion != 'notset' &&
-          (( env.PGVER2 == '17' && env.Platform == 'x86' ) || ( env.PGVER2 != '17' )) &&
+          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' &&
+          env.PGVER2 != '17' && env.Platform == 'x64' &&
           steps.cachePGWindowsInstallerExe.outputs.cache-hit != 'true'
           }}
         uses: suisei-cn/actions-download-file@v1.6.1
@@ -1081,7 +1081,7 @@ jobs:
       #
       - name: From Disabled, Enable PostgreSQL x64-17 for Windows and Start and Stop
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) &&
+          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' &&
           env.PGVER2 == '17' && env.Platform == 'x64'
           }}
         shell: cmd
@@ -1093,8 +1093,8 @@ jobs:
 
       - name: Install PostgreSQL for Windows and Stop PostgreSQL
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) && env.pgWINversion != 'notset' &&
-          (( env.PGVER2 == '17' && env.Platform == 'x86' ) || ( env.PGVER2 != '17' ))
+          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true'  &&
+          env.PGVER2 != '17' && env.Platform == 'x64' 
           }}
         env:
           PGVER2: ${{ env.PGVER2 }}
