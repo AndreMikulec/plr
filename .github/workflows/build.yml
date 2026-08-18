@@ -164,7 +164,7 @@ jobs:
   # https://github.com/apps/rise-risc-v-runners
   #
   # start(ed) with a copy of "job_18_ubuntu-24_04-arm"
-  job_18_ubuntu-24_04-riscv:
+  job_master_ubuntu-24_04-riscv:
     name: PG master ubuntu-24.04-riscv
     runs-on: ubuntu-24.04-riscv
     steps:
@@ -190,17 +190,17 @@ jobs:
           dpkg -l | grep postgres
           # see the exact dependency tree
           apt-cache depends postgresql
-          # see everything APT would install
-          sudo apt install --simulate postgresql
+          # see everything that would be installed
+          sudo apt-get            install --simulate postgresql
           #
           sudo /etc/init.d/postgresql stop
           sudo systemctl stop postgresql
-          sudo apt-get --purge remove "postgresql*" -y
-          sudo apt-get --purge remove libpq5 libpq-dev -y
-          sudo apt autoremove --dry-run
-          sudo apt-get autoremove --purge -y
-          sudo apt-get autoclean -y
-          sudo apt-get clean -y
+          sudo apt-get --purge    remove "postgresql*" -y
+          sudo apt-get --purge    remove libpq5 libpq-dev -y
+          sudo apt-get --dry-run  autoremove -y
+          sudo apt-get            autoremove --purge -y
+          sudo apt-get            autoclean -y
+          sudo apt-get            clean -y
           #
           sudo rm -rf /etc/postgresql/
           sudo rm -rf /var/lib/postgresql/
@@ -210,9 +210,13 @@ jobs:
           sudo userdel -r postgres
           sudo groupdel postgres
           #
-          sudo apt-get install -qq bison flex libssl-dev libreadline-dev -y
+          # To build PostgreSQL and its C client library (libpq) from source
+          sudo apt-get install build-essential libreadline-dev zlib1g-dev flex bison libssl-dev -y
+          # default PostgreSQL client development libraries on Ubuntu
+          #   to be able to make the client-side pg_config utility to be at /usr/bin/pg_config
+          sudo apt-get install libpq-dev -y
           # cluster management utilities
-          sudo apt-get install -qq  postgresql-common -y
+          # sudo apt-get install postgresql-common -y
           git clone --branch master --depth 1 https://github.com/postgres/postgres.git postgres-src
           pushd postgres-src
           git checkout master
@@ -223,6 +227,10 @@ jobs:
           export PATH=/usr/local/pgsql/bin:$PATH
           initdb -D data
           pg_ctl -D data -l logfile start
+          postgres --version
+          pg_config --version
+          pg_config
+          psql --version
           psql -d postgres -c "SELECT version();"
           psql -d postgres -c "SELECT current_setting('server_version_num');"
           popd
@@ -231,11 +239,11 @@ jobs:
           # sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
           # sudo apt-get install r-base-dev acl
           #
-          sudo apt install -qq --no-install-recommends build-essential ca-certificates curl gcc gfortran libblas-dev libbz2-dev libcairo2-dev libcurl4-openssl-dev libicu-dev libjpeg-dev liblapack-dev liblzma-dev libpcre2-dev libpng-dev libreadline-dev libssl-dev libtiff-dev libx11-dev libxml2-dev libxt-dev zlib1g-dev -y
+          sudo apt-get install -qq --no-install-recommends build-essential ca-certificates curl gcc gfortran libblas-dev libbz2-dev libcairo2-dev libcurl4-openssl-dev libicu-dev libjpeg-dev liblapack-dev liblzma-dev libpcre2-dev libpng-dev libreadline-dev libssl-dev libtiff-dev libx11-dev libxml2-dev libxt-dev zlib1g-dev -y
           #
-          # r-devel
           # https://rstudio.github.io/r-manuals/r-admin/Obtaining-R.html
           sudo apt install subversion -y
+          # r-devel
           svn checkout https://svn.r-project.org/R/trunk/ r-src
           pushd r-src
           ./configure --help
@@ -248,13 +256,11 @@ jobs:
 
       - name: Script
         run: |
-          sudo pg_lsclusters
-          export USE_PGXS=1
-          SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
-          # USE_PGXS=1 is not required in Travis, and it is required in Github Actions
-          sudo USE_PGXS=1 make install
-          /usr/lib/postgresql/$PG/bin/pg_config
-          make installcheck PGUSER=postgres || (cat regression.diffs && false)
+          export PATH=/usr/local/pgsql/bin:$PATH
+          export PATH=/usr/local/bin:$PATH
+          USE_PGXS=1 SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
+          sudo make install
+          make installcheck || (cat regression.diffs && false)
 
       - name: After Success
         # success() returns true, when none of the previous steps have failed or been canceled.
