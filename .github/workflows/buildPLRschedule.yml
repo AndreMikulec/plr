@@ -324,14 +324,14 @@ jobs:
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
 
-          # Requested labels: windows-11-arm64
+          # Requested labels: windows-11-arm
           # Job defined at: AndreMikulec/plr/.github/workflows/...
           # Waiting for a runner to pick up this job... WAITING ... WAITING
           #
           # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
           # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
           - matid: '13'
-            os: windows-11-arm64
+            os: windows-11-arm
             GithubActionsIgnoreFail: false
             compilerEnv: CLANGARM64
             shellEnv: msys2 {0}
@@ -851,7 +851,7 @@ jobs:
       - name: Download R Development for Windows or Windows-Arm, x86_64 or aarch64, respectively
         if: >-
           ${{ ( env.compilerClass == 'MSYS2' ) && 
-          (( env.rversion == 'devel-aarch64' && env.os == 'windows-11-arm64' ) || (env.rversion == 'devel-x86_64' && env.os == 'windows-2025-vs2026'))
+          (( env.rversion == 'devel-aarch64' && env.os == 'windows-11-arm' ) || (env.rversion == 'devel-x86_64' && env.os == 'windows-2025-vs2026'))
           }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

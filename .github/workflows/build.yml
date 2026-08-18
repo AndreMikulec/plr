@@ -165,7 +165,7 @@ jobs:
 
   # start(ed) with a copy of "job_18_ubuntu-24_04-arm"
   job_18_ubuntu-24_04-riscv:
-    name: PG 18 ubuntu-24.04-riscv
+    name: PG 16 ubuntu-24.04-riscv
     # JUL 18 2026 AUG 17 2026
     # ubuntu-22.04-arm
     # https://docs.github.com/en/actions/reference/runners/github-hosted-runners
@@ -177,7 +177,8 @@ jobs:
     # https://cloud.r-project.org/
     runs-on: ubuntu-24.04-riscv
     env:
-      PG: 18
+      # 2026-08-18T07:06:41.9692886Z E_ Unable to locate package postgresql-18
+      PG: 16
     steps:
       - name: Echo site details
         run: echo PG $PG
@@ -200,7 +201,7 @@ jobs:
           sudo apt-get update -qq
           sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
           sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
-          sudo apt-get install -qq r-base-dev acl
+          sudo apt-get install r-base-dev acl
           sudo R --version
           # Seems PG does not come pre-installed
           # sudo /etc/init.d/postgresql stop
