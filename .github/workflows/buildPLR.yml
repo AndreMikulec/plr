@@ -470,6 +470,28 @@ jobs:
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
 
+          # test finding from the correct R repository
+          # test R is not a multiarchitecture
+          # R ___ and PostgreSQL ___ latest (buildpgFromSRCmethod meson)
+          - matid: '14'
+            os: windows-2025-vs2026
+            GithubActionsIgnoreFail: false
+            compilerEnv: MINGW32
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x86
+            Configuration: Release
+            #
+            rversion: 2.10.1
+            R_HOME: 'C:\RINSTALL'
+            # R_ARCH - R 2.10.1 is not a multiarchitecture
+            #
+            pgSRCversion: REL_16_STABLE
+            PG_SOURCE: 'C:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: meson
+            PG_HOME: 'C:\PGINSTALL'
+
     defaults:
       run:
         shell: ${{ matrix.shellEnv || 'bash' }}

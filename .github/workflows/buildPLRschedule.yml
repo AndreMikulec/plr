@@ -109,25 +109,25 @@ jobs:
           # windows-2022 (uses PG 14)
           # https://github.com/actions/runner-images
 
-          # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
-          - matid: '02'
-            os: windows-2025-vs2026
-            GithubActionsIgnoreFail: false
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Debug
-            #
-            rversion:  devel
-            R_HOME: 'C:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: master
-            PG_SOURCE: 'C:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: meson
-            PG_HOME: 'C:\PGINSTALL'
+#         # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
+#         - matid: '02'
+#           os: windows-2025-vs2026
+#           GithubActionsIgnoreFail: false
+#           compilerEnv: UCRT64
+#           shellEnv: msys2 {0}
+#           compilerExe: gcc
+#           Platform: x64
+#           Configuration: Debug
+#           #
+#           rversion:  devel
+#           R_HOME: 'C:\RINSTALL'
+#           R_ARCH: /x64
+#           #
+#           pgSRCversion: master
+#           PG_SOURCE: 'C:\PGSOURCE'
+#           buildpgFromSRC: true
+#           buildpgFromSRCmethod: meson
+#           PG_HOME: 'C:\PGINSTALL'
 
 
 #         # R latest and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
@@ -149,63 +149,63 @@ jobs:
 #           buildpgFromSRC: true
 #           buildpgFromSRCmethod: meson
 #           PG_HOME: 'C:\PGINSTALL'
-
-
-          # R latest and PostgreSQL bleeding edge (buildpgANDplrInSRCcontrib true)
-          #- matid: '04'
-          #  os: windows-2025-vs2026
-          #  GithubActionsIgnoreFail: false
-          #  compilerEnv: UCRT64
-          #  shellEnv: msys2 {0}
-          #  compilerExe: gcc
-          #  Platform: x64
-          #  Configuration: Debug
-            #
-          #  rversion: 4.6.1
-          #  R_HOME: 'C:\RINSTALL'
-          #  R_ARCH: /x64
-            #
-            # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
-            # Because this is "next PostgreSQL",
-            # if available are/is 'release candidate' REL_AA_RC#
-            # and/or 'beta' REL_AA_BETA# version(s)
-            # then choose that 'latest' version;
-            # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
-            # Otherwise, just choose the latest REL_XX_Y or better just REL_XX_STABLE
-            # https://github.com/postgres/postgres/tags
-          #  pgSRCversion: master
-          #  PG_SOURCE: 'C:\PGSOURCE'
-            #
-            # buildpgFromSRC: true
-            # buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
-            #   Add meson build system (Andres Freund, Nazir Bilal Yavuz, Peter Eisentraut)
-            #   https://www.postgresql.org/docs/16/release-16.html
-            # xor
-            # buildpgANDplrInSRCcontrib: true
-          #  buildpgANDplrInSRCcontrib: true
-          #  PG_HOME: 'C:\PGINSTALL'
-
-
-          # RSVP for FUTURE USE
-          # R latest and PostgreSQL release candidate or beta (buildpgFromSRCmethod meson)
-          - matid: '04'
-            os: windows-2025-vs2026
-            GithubActionsIgnoreFail: false
-            compilerEnv: UCRT64
-            shellEnv: msys2 {0}
-            compilerExe: gcc
-            Platform: x64
-            Configuration: Debug
-            #
-            rversion: 4.6.1
-            R_HOME: 'C:\RINSTALL'
-            R_ARCH: /x64
-            #
-            pgSRCversion: REL_19_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: meson
-            PG_HOME: 'C:\PGINSTALL'
+#
+#
+#         # R latest and PostgreSQL bleeding edge (buildpgANDplrInSRCcontrib true)
+#         #- matid: '04'
+#         #  os: windows-2025-vs2026
+#         #  GithubActionsIgnoreFail: false
+#         #  compilerEnv: UCRT64
+#         #  shellEnv: msys2 {0}
+#         #  compilerExe: gcc
+#         #  Platform: x64
+#         #  Configuration: Debug
+#           #
+#         #  rversion: 4.6.1
+#         #  R_HOME: 'C:\RINSTALL'
+#         #  R_ARCH: /x64
+#           #
+#           # A HUMAN must manually see the VERSION here. (seen Jul 13 2024 EST)
+#           # Because this is "next PostgreSQL",
+#           # if available are/is 'release candidate' REL_AA_RC#
+#           # and/or 'beta' REL_AA_BETA# version(s)
+#           # then choose that 'latest' version;
+#           # 'REL' is later than 'BETA'. Higher numbers are later than lower numbers.
+#           # Otherwise, just choose the latest REL_XX_Y or better just REL_XX_STABLE
+#           # https://github.com/postgres/postgres/tags
+#         #  pgSRCversion: master
+#         #  PG_SOURCE: 'C:\PGSOURCE'
+#           #
+#           # buildpgFromSRC: true
+#           # buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
+#           #   Add meson build system (Andres Freund, Nazir Bilal Yavuz, Peter Eisentraut)
+#           #   https://www.postgresql.org/docs/16/release-16.html
+#           # xor
+#           # buildpgANDplrInSRCcontrib: true
+#         #  buildpgANDplrInSRCcontrib: true
+#         #  PG_HOME: 'C:\PGINSTALL'
+#
+#
+#         # RSVP for FUTURE USE
+#         # R latest and PostgreSQL release candidate or beta (buildpgFromSRCmethod meson)
+#         - matid: '04'
+#           os: windows-2025-vs2026
+#           GithubActionsIgnoreFail: false
+#           compilerEnv: UCRT64
+#           shellEnv: msys2 {0}
+#           compilerExe: gcc
+#           Platform: x64
+#           Configuration: Debug
+#           #
+#           rversion: 4.6.1
+#           R_HOME: 'C:\RINSTALL'
+#           R_ARCH: /x64
+#           #
+#           pgSRCversion: REL_19_STABLE
+#           PG_SOURCE: 'C:\PGSOURCE'
+#           buildpgFromSRC: true
+#           buildpgFromSRCmethod: meson
+#           PG_HOME: 'C:\PGINSTALL'
 
 
 #         # R latest and PostgreSQL release candidate or beta (buildpgFromSRCmethod meson)
@@ -344,6 +344,28 @@ jobs:
             # R_ARCH - not a multiarchitecture
             #
             pgSRCversion: master
+            PG_SOURCE: 'C:\PGSOURCE'
+            buildpgFromSRC: true
+            buildpgFromSRCmethod: meson
+            PG_HOME: 'C:\PGINSTALL'
+
+          # test finding from the correct R repository
+          # test R is not a multiarchitecture
+          # R ___ and PostgreSQL ___ latest (buildpgFromSRCmethod meson)
+          - matid: '14'
+            os: windows-2025-vs2026
+            GithubActionsIgnoreFail: false
+            compilerEnv: MINGW32
+            shellEnv: msys2 {0}
+            compilerExe: gcc
+            Platform: x86
+            Configuration: Release
+            #
+            rversion: 2.10.1
+            R_HOME: 'C:\RINSTALL'
+            # R_ARCH - R 2.10.1 is not a multiarchitecture
+            #
+            pgSRCversion: REL_16_STABLE
             PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
