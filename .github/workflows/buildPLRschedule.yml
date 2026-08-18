@@ -858,10 +858,10 @@ jobs:
           url: ${{ env.CRAN_R_DOWNLOAD_URL }}
 
       - name: Download R Development for Windows or Windows-Arm, x86_64 or aarch64, respectively
-         if: >-
-          ${{ env.compilerClass == 'MSYS2' &&
-          env.osClass == 'windows'&& ( env.rversion == 'devel-aarch64' || env.rversion == 'devel-x86_64' )
-          }}
+        if: >-
+         ${{ env.compilerClass == 'MSYS2' &&
+         env.osClass == 'windows' && ( env.rversion == 'devel-aarch64' || env.rversion == 'devel-x86_64' )
+         }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash # Git for Windows Bash
