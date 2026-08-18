@@ -324,6 +324,11 @@ jobs:
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
 
+          # Requested labels: windows-11-arm64
+          # Job defined at: AndreMikulec/plr/.github/workflows/...
+          # Waiting for a runner to pick up this job... WAITING ... WAITING
+          #
+          # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
           # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
           - matid: '13'
             os: windows-11-arm64
@@ -826,6 +831,8 @@ jobs:
           ${{ ( env.compilerClass == 'MSYS2' ) && 
           (( env.rversion == 'devel-aarch64' && env.os == 'windows-11-arm64' ) || (env.rversion == 'devel-x86_64' && env.os == 'windows-2025-vs2026'))
           }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash # Git for Windows Bash
         run: |
           echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
