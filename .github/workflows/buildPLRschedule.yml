@@ -666,7 +666,7 @@ jobs:
 
 
       - name: Matrix Windows Platform Specific Variables
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) }} {
+        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' }}
         shell: powershell
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
