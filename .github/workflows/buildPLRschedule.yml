@@ -624,8 +624,9 @@ jobs:
               ${env:pgWINversion} = "NODOWNLOAD"
             }
           }
-          # Need A NUMBER to be used as a DEFAULT for the rest of the program
-          if(${env:pgwinmajor} -eq "notset") { ${env:pgwinmajor} = "99" }
+          # REVERT
+          # # Need A NUMBER to be used as a DEFAULT for the rest of the program
+          # if(${env:pgwinmajor} -eq "notset") { ${env:pgwinmajor} = "99" }
 
           Set-EnvVar "pgwinmajor=${env:pgwinmajor}"
           Set-EnvVar "pgWINversion=${env:pgWINversion}"

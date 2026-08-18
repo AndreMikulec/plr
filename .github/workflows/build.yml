@@ -164,6 +164,9 @@ jobs:
   # https://github.com/apps/rise-risc-v-runners
   #
   # start(ed) with a copy of "job_18_ubuntu-24_04-arm"
+  #
+  # NOT WORKING - A WORK IN PROGRESS
+  #
   job_master_ubuntu-24_04-riscv:
     name: PG master ubuntu-24.04-riscv
     runs-on: ubuntu-24.04-riscv
@@ -217,7 +220,7 @@ jobs:
           sudo apt-get install build-essential libreadline-dev zlib1g-dev flex bison libssl-dev -y
           # default PostgreSQL client development libraries on Ubuntu
           #   to be able to make the client-side pg_config utility to be at /usr/bin/pg_config
-          sudo apt-get install libpq-dev -y
+          # sudo apt-get install libpq-dev -y
           # cluster management utilities
           # sudo apt-get install postgresql-common -y
           git clone --branch master --depth 1 https://github.com/postgres/postgres.git postgres-src
@@ -227,13 +230,48 @@ jobs:
           ./configure --without-icu --without-readline --without-zlib --disable-rpath --enable-depend
           make -j4
           sudo make install
+          #
+          sudo adduser postgres
+          sudo mkdir -p /usr/local/pgsql/data
+          sudo chown postgres /usr/local/pgsql/data
+          #
+          sudo su - postgres
+          #
           export PATH=/usr/local/pgsql/bin:$PATH
-          initdb -D data
-          pg_ctl -D data -l logfile start
+          export PATH=/usr/local/pgsql/lib:${PATH}
+          export LD_LIBRARY_PATH=/usr/local/pgsql/lib:${LD_LIBRARY_PATH}
+          export PGDATA=/usr/local/pgsql/data
+          export PGUSER=postgres
+          #  postgres (PostgreSQL) 20devel
           postgres --version
+          # PostgreSQL 20devel
           pg_config --version
           pg_config
-          # psql: symbol lookup error: psql: undefined symbol: PQchangePassword
+          # BINDIR = /usr/local/pgsql/bin
+          # DOCDIR = /usr/local/pgsql/share/doc
+          # HTMLDIR = /usr/local/pgsql/share/doc
+          # INCLUDEDIR = /usr/local/pgsql/include
+          # PKGINCLUDEDIR = /usr/local/pgsql/include
+          # INCLUDEDIR-SERVER = /usr/local/pgsql/include/server
+          # LIBDIR = /usr/local/pgsql/lib
+          # PKGLIBDIR = /usr/local/pgsql/lib
+          # LOCALEDIR = /usr/local/pgsql/share/locale
+          # MANDIR = /usr/local/pgsql/share/man
+          # SHAREDIR = /usr/local/pgsql/share
+          # SYSCONFDIR = /usr/local/pgsql/etc
+          # PGXS = /usr/local/pgsql/lib/pgxs/src/makefiles/pgxs.mk
+          # CONFIGURE =  '--without-icu' '--without-readline' '--without-zlib' '--disable-rpath' '--enable-depend'
+          # CC = gcc
+          # CPPFLAGS = -D_GNU_SOURCE
+          # CFLAGS = -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statement -Werror=vla -Wmissing-format-attribute -Wold-style-declaration -Wimplicit-fallthrough=5 -Wcast-function-type -Wshadow=compatible-local -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -Wno-format-truncation -Wno-stringop-truncation -O2 -Wstrict-prototypes -Wold-style-definition
+          # CFLAGS_SL = -fPIC
+          # LDFLAGS = -Wl,--as-needed
+          # LDFLAGS_EX = 
+          # LDFLAGS_SL = 
+          # LIBS = -lpgcommon -lpgport -lm 
+          # VERSION = PostgreSQL 20devel
+          initdb
+          pg_ctl -l logfile start
           psql --version
           psql -d postgres -c "SELECT version();"
           psql -d postgres -c "SELECT current_setting('server_version_num');"
@@ -260,8 +298,14 @@ jobs:
 
       - name: Script
         run: |
+          sudo su - postgres
+          #
           export PATH=/usr/local/pgsql/bin:$PATH
-          export PATH=/usr/local/bin:$PATH
+          export PATH=/usr/local/pgsql/lib:${PATH}
+          export LD_LIBRARY_PATH=/usr/local/pgsql/lib:${LD_LIBRARY_PATH}
+          export PGDATA=/usr/local/pgsql/data
+          export PGUSER=postgres
+          #
           USE_PGXS=1 SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
           sudo make install
           make installcheck || (cat regression.diffs && false)
