@@ -742,7 +742,8 @@ jobs:
           ${env:rversionlong} = "${{ env.rversionlong }}-win"
 
           $matches = @()
-          if( "${{ env.rversion }}" -match "2.11.0|2.11.1") {
+          # 2.2.0 through 2.11.1
+          if(([int]"${{ env.rversionnumeric }}" -ge 20200) -and ([int]"${{ env.rversionnumeric }}" -le 21101))
             ${env:rversionlong} = "${{ env.rversion }}-win${{ env.bit }}"
           }
           $matches = @()
@@ -757,11 +758,11 @@ jobs:
 
           $matches = @()
           if(-not ("${env:rversionlong}" -match 'patched|devel')) {
-            if([int]"${{ env.rversionnumeric }}" -ge 30600 ) {
+            if([int]"${{ env.rversionnumeric }}" -ge 40000 ) {
               ${env:CRAN_R_DOWNLOAD_URL} = "https://cran.r-project.org/bin/windows/base/old/${{ env.rversion }}/${env:rversionlong}.exe"
             }
 
-            if([int]"${{ env.rversionnumeric }}" -lt 30600 ) {
+            if([int]"${{ env.rversionnumeric }}" -le 30603 ) {
               ${env:CRAN_R_DOWNLOAD_URL} = "https://cran-archive.r-project.org/bin/windows/base/old/${{ env.rversion }}/${env:rversionlong}.exe"
             }
           }
