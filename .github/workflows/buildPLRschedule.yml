@@ -823,7 +823,7 @@ jobs:
 
       - name: Download R Development for Windows or Windows-Arm, x86_64 or aarch64, respectively
         if: >-
-          ${{ && ( env.compilerClass == 'MSYS2' ) && 
+          ${{ ( env.compilerClass == 'MSYS2' ) && 
           (( env.rversion == 'devel-aarch64' && env.os == 'windows-11-arm64' ) || (env.rversion == 'devel-x86_64' && env.os == 'windows-2025-vs2026'))
           }}
         shell: bash # Git for Windows Bash
