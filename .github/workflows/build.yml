@@ -180,16 +180,35 @@ jobs:
           cat /proc/cpuinfo
           cat /etc/os-release
           set +x +v +e
-          sudo apt-get update -qq -y
-          sudo apt-get upgrade -qq -y
+          sudo apt-get update -y
+          sudo apt-get upgrade -y
           #
           # echo Building plr with PostgreSQL $PG
           # sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
           # wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
           #
+          dpkg -l | grep postgres
+          # see the exact dependency tree
+          apt-cache depends postgresql
+          # see everything APT would install
+          sudo apt install --simulate postgresql
+          #
           sudo /etc/init.d/postgresql stop
-          sudo apt-get remove --purge postgresql\* -y
-          sudo rm -rf /etc/postgresql /var/lib/postgresql
+          sudo systemctl stop postgresql
+          sudo apt-get --purge remove "postgresql*" -y
+          sudo apt-get --purge remove libpq5 libpq-dev -y
+          sudo apt autoremove --dry-run
+          sudo apt-get autoremove --purge -y
+          sudo apt-get autoclean -y
+          sudo apt-get clean -y
+          #
+          sudo rm -rf /etc/postgresql/
+          sudo rm -rf /var/lib/postgresql/
+          sudo rm -rf /var/log/postgresql/
+          sudo rm -rf /etc/postgresql-common/
+          #
+          sudo userdel -r postgres
+          sudo groupdel postgres
           #
           sudo apt-get install -qq bison flex libssl-dev libreadline-dev -y
           git clone --branch master --depth 1 https://github.com/postgres/postgres.git postgres-src
@@ -211,9 +230,12 @@ jobs:
           # sudo apt-get install r-base-dev acl
           #
           sudo apt install -qq --no-install-recommends build-essential ca-certificates curl gcc gfortran libblas-dev libbz2-dev libcairo2-dev libcurl4-openssl-dev libicu-dev libjpeg-dev liblapack-dev liblzma-dev libpcre2-dev libpng-dev libreadline-dev libssl-dev libtiff-dev libx11-dev libxml2-dev libxt-dev zlib1g-dev -y
-          git clone  --branch trunk --depth 1 https://github.com/wch/r-source.git r-src
+          #
+          # r-devel
+          # https://rstudio.github.io/r-manuals/r-admin/Obtaining-R.html
+          sudo apt install subversion -y
+          svn checkout https://svn.r-project.org/R/trunk/ r-src
           pushd r-src
-          checkout trunk
           ./configure --help
           ./configure --enable-R-shlib --disable-java --disable-byte-compiled-packages --disable-rpath --without-ICU --without-recommended-packages
           make -j4
