@@ -1154,13 +1154,14 @@ jobs:
       # 2 minutes and seven(7) seconds with everything
       # UCRT64 tools but no MINGW32 
       #
-      # diffutils
+      # diffutils - https://packages.msys2.org/base/mingw-w64-diffutils (only 64bits available)
       # binutils
       # winpty
       # icu-devel requires icu(UCRT-icu available)
+      # Gemini says icu and icu-devel are not required for posgres unless I select "--with-icu" in configuration
       # perl
       - name: Install Windows mingw Software
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv != 'MINGW32' }}
+        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' }}
         uses: msys2/setup-msys2@v2
         with:
           # By default, the installation is not updated; hence package versions are those of the installation tarball.
@@ -1172,7 +1173,6 @@ jobs:
           msystem: ${{ env.compilerEnv }}
           #
           install: >-
-            diffutils
             binutils
             winpty
             perl
@@ -1186,7 +1186,7 @@ jobs:
             gzip
             ${{ env.MINGW_PACKAGE_PREFIX }}-readline
             ${{ env.MINGW_PACKAGE_PREFIX }}-zlib
-            icu-devel
+            ${{ env.compilerEnv == 'MINGW32' && 'mingw-w64-x86_64' || env.MINGW_PACKAGE_PREFIX }}-diffutils
             git
             flex
             bison
@@ -1197,48 +1197,6 @@ jobs:
             ${{ env.MINGW_PACKAGE_PREFIX }}-libxml2
             ${{ env.MINGW_PACKAGE_PREFIX }}-libxslt
             ${{ env.MINGW_PACKAGE_PREFIX }}-lz4
-
-      # 34 seconds with zero packages
-      # 2 minutes and seven(7) seconds with everything
-      - name: Install Windows mingw Software - same as above - but omit software - perl winpty
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' }}
-        uses: msys2/setup-msys2@v2
-        with:
-          # By default, the installation is not updated; hence package versions are those of the installation tarball.
-          # Faster without the "update"
-          # update: true
-          update: true
-          # do not inherit anything from the PATH
-          path-type: strict
-          msystem: ${{ env.compilerEnv }}
-          #
-          install: >-
-            ${{ env.MINGW_PACKAGE_PREFIX }}-pkg-config
-            ${{ env.MINGW_PACKAGE_PREFIX }}-curl
-            git
-            ${{ env.MINGW_PACKAGE_PREFIX }}-meson
-            ${{ env.MINGW_PACKAGE_PREFIX }}-make
-            make
-            ${{ env.MINGW_PACKAGE_PREFIX }}-${{ env.compilerExe }}
-            tar
-            gzip
-            ${{ env.MINGW_PACKAGE_PREFIX }}-readline
-            ${{ env.MINGW_PACKAGE_PREFIX }}-zlib
-            ${{ env.MINGW_PACKAGE_PREFIX }}-icu
-            icu-devel
-            git
-            flex
-            bison
-            p7zip
-            tar
-            zstd
-            ${{ env.MINGW_PACKAGE_PREFIX }}-tools-git
-            ${{ env.MINGW_PACKAGE_PREFIX }}-binutils
-            ${{ env.MINGW_PACKAGE_PREFIX }}-diffutils
-            ${{ env.MINGW_PACKAGE_PREFIX }}-libxml2
-            ${{ env.MINGW_PACKAGE_PREFIX }}-libxslt
-            ${{ env.MINGW_PACKAGE_PREFIX }}-lz4
-
 
       - name: Install Windows mingw Software Repository PostgreSQL
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.buildpgFromSRC != 'true' }}
