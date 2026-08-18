@@ -702,7 +702,10 @@ jobs:
       # https://github.com/actions/cache/blob/main/tips-and-workarounds.md#update-a-cache
       #
       - name: Cache R-x.y.z Windows Installer Exe
-        if: ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) && env.rversion != 'devel' }}
+        if: >-
+          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) && env.rversion != 'devel'  &&
+          env.CRAN_R_DOWNLOAD_URL != 'notset'
+          }}
         uses: actions/cache@v5
         id: cacheRWindowsInstallerExe
         with:
@@ -756,6 +759,7 @@ jobs:
       - name: Download R for Windows R-x.y.z R-rmajor.rminor.rpatch
         if: >-
           ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) &&
+          env.CRAN_R_DOWNLOAD_URL != 'notset' &&
           steps.cacheRWindowsInstallerExe.outputs.cache-hit != 'true'
           }}
         uses: suisei-cn/actions-download-file@v1.6.1
