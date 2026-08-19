@@ -155,12 +155,14 @@ jobs:
 
           export DEBIAN_FRONTEND=noninteractive
           # To build PostgreSQL and its C client library (libpq) from source
-          sudo apt-get install -qq build-essential libreadline-dev zlib1g-dev flex bison libssl-dev -y
+          # E Unable to locate package libreadline-dev
+          # libreadline-dev 
+          sudo apt-get install -qq build-essential zlib1g-dev flex bison libssl-dev -y
           git clone --branch master --depth 1 https://github.com/postgres/postgres.git postgres-src
           pushd postgres-src
           git checkout master
           ./configure --help
-          ./configure --without-icu --without-readline --without-zlib --disable-rpath --enable-depend
+          ./configure --without-icu --without-readline --without-zlib --disable-rpath --enable-depend --without-readline
           make 
           sudo make install
           export PATH=/usr/local/pgsql/bin:$PATH
