@@ -603,6 +603,14 @@ jobs:
 
           ${env:pgWINServiceNameHostDefault} = "notset"
           ${env:pgWINServiceNameHostDefault} = (Get-Service -ErrorAction SilentlyContinue | where-object {$_.name -like "*postgres*"}).Name
+          #
+          # windows-arm does not have an installed Windows-arm PostgreSQL for Windows (does not exist yet).
+          # HOWEVER, at the moment, if the variable is the values of  "" or "notset" 
+          # then, the REST of the CODE breaks, just below
+          # on "[int]${env:pgwinmajor}" "Cannot convert value "notset"".
+          # THEREFORE, temporarily just keep the new default "17" UNTIL I REWORK the code of PG detection and assignment logic.
+          if("${env:pgWINServiceNameHostDefault}" -eq "") { ${env:pgWINServiceNameHostDefault} = "17" }
+
           echo "pgWINServiceNameHostDefault: ${env:pgWINServiceNameHostDefault}"
           Set-EnvVar "pgWINServiceNameHostDefault=${env:pgWINServiceNameHostDefault}"
 
