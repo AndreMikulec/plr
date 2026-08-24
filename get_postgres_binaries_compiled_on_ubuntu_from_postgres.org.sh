@@ -42,12 +42,17 @@ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-
 
 # check your setup using the apt-cache policy command to see if "200" shows up in the output:
 # apt-cache policy postgresql-${PG}
-apt-cache policy postgresql
+# apt-cache policy postgresql
+apt-cache policy postgresql-${PG}
 
 # sudo apt-get install -qq postgresql-${PG} -y
-sudo apt-get install -qq postgresql -y
+# sudo apt-get install -qq postgresql -y
+sudo apt-get install -qq postgresql-${PG} -y
+
 # sudo apt-get install -qq postgresql-server-dev-${PG} -y
-sudo apt-get install -qq postgresql-server-dev -y
+# sudo apt-get install -qq postgresql-server-dev -y
+sudo apt-get install -qq postgresql-server-dev-${PG} -y
+
 
 echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
 # Builds under "runner"
