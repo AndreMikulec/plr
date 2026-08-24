@@ -37,7 +37,7 @@ jobs:
   ubuntu_job_runner:
     name: callee Ubuntu - PG ${{ matrix.pg }} R ${{ matrix.R }} os ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    ontinue-on-error: ${{ matrix.GithubActionsIgnoreFail }}
+    continue-on-error: ${{ matrix.GithubActionsIgnoreFail }}
     strategy:
       fail-fast: false
       matrix:
