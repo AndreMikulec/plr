@@ -61,6 +61,6 @@ echo 'local   all             postgres                                trust' | s
 # Ubuntu non-arm64: ubuntu-latest or ubuntu-24.04         (required elevated priviledges)
 # Ubuntu                             ubuntu-24.04-arm (not required elevated priviledges)
 # https://github.com/actions/runner-images
-sudo apt-get install -qq acl -y
-sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner  || true
+## sudo apt-get install -qq acl -y
+## sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner  || true
 sudo pg_ctlcluster ${PG} main reload
