@@ -1,6 +1,8 @@
 #!/bin/bash
 set -x -v -e
 
+sudo apt-get install -qq bison flex libssl-dev -y
+
 pushd postgres
 ./configure
 make

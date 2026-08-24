@@ -46,7 +46,7 @@ jobs:
         ]
 
   ubuntu_fullbuildable_job_caller:
-    name: call Ubuntu build - PG ${{ matrix.pg }} R ${{ matrix.R }} os ${{ matrix.os }}
+    name: call Ubuntu build
     if: ${{ github.event_name != 'schedule' }}
 #   runs-on: ${{ matrix.os }}
 #   strategy:
