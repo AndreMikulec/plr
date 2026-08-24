@@ -62,7 +62,7 @@ jobs:
         set -x -v -e
         sudo apt-get update -qq
 
-    - name: Acquire PostgreSQL
+    - name: Acquire PostgreSQL and PostgreSQL-Dev
       run: |
         set -x -v -e
         # two(2) consecutive digits
@@ -80,18 +80,18 @@ jobs:
       run: |
         set -x -v -e
         bash ./query_postgres_version.sh
-#
-#   - name: Acquire R
-#     run: |
-#       set -x -v -e
-#       if [ "${{ matrix.R }}" == "repo" ]
-#       then
-#         echo "R from CRAN ..."
-#         ./get_debian_r_binaries_on_ubuntu_from_cran.sh
-#       else
-#         echo "R from Posit ..."
-#         ./get_debian_r_binaries_on_ubuntu_from_posit.sh ${{ matrix.R }}
-#       fi
+ 
+    - name: Acquire R-Dev
+      run: |
+        set -x -v -e
+        if [ "${{ matrix.R }}" == "repo" ]
+        then
+          echo "R from CRAN ..."
+          bash ./get_debian_r_binaries_on_ubuntu_from_cran.sh
+        else
+          echo "R from Posit ..."
+          bash ./get_debian_r_binaries_on_ubuntu_from_posit.sh ${{ matrix.R }}
+        fi
 #
 #   - name: Query the R Version and R_HOME
 #     run: |
