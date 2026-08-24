@@ -36,7 +36,7 @@ jobs:
 #             R: 'next'
 #             os: ubuntu-latest
 
-    uses: .github/workflows/build2.yml
+    uses: ./.github/workflows//build2.yml
     with:
 #     target: ${{ matrix.target }}
       ragged_schedule: 
