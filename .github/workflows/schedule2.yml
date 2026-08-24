@@ -78,8 +78,6 @@ jobs:
 #     target: ${{ matrix.target }}
       ragged_schedule: >
         [
-#         {"PG": "20", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
-#         {"PG": "19", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
           {"PG": "18", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
           {"PG": "17", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
           {"PG": "16", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
@@ -91,8 +89,10 @@ jobs:
           {"PG": "10", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
           {"PG": "master",  "R": "next", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
           {"PG": "REL_19_", "R": "next",  "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
-#         {"PG": "20",      "R": "next",  "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
-#         {"PG": "19",      "R": "devel", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
           {"PG": "18",      "R": "repo",  "os": "ubuntu-24.04-arm", "GithubActionsIgnoreFail": "false"}
         ]
+#         {"PG": "19", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+#         {"PG": "20", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+#         {"PG": "19",      "R": "devel", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+#         {"PG": "20",      "R": "next",  "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
 
