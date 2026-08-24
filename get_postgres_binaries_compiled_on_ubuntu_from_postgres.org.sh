@@ -56,7 +56,7 @@ sudo apt-get install -qq postgresql-${PG} -y
 sudo apt-get install -qq postgresql-server-dev-${PG} -y
 
 # echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
-sudo echo 'local   all             postgres                                trust' | tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
+echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
 sudo cat  /etc/postgresql/${PG}/main/pg_hba.conf
 # Builds under "runner"
 # Github Actions require elevated priviledges
