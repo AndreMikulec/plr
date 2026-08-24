@@ -92,12 +92,12 @@ jobs:
         set -x -v -e
         bash ./query_r_version_and_home.sh
 
-#   - name: Debug with SSH owenthereal/action-upterm@v1
-##    if: ${{ inputs.debug_enabled == true }}
-#     uses: owenthereal/action-upterm@v1
-#     with:
-#       wait-timeout-minutes: 2
-#       limit-access-to-actor: true
+    - name: Debug with SSH owenthereal/action-upterm@v1
+#     if: ${{ inputs.debug_enabled == true }}
+      uses: owenthereal/action-upterm@v1
+      with:
+        wait-timeout-minutes: 5
+        limit-access-to-actor: true
 
     - name: Of PLR, Build, Install, and Check
       run: |
