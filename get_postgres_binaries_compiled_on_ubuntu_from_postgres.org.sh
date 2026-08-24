@@ -40,10 +40,14 @@ sudo add-apt-repository "deb https://apt.postgresql.org/pub/repos/apt/ $(lsb_rel
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 
 # check your setup using the apt-cache policy command to see if "200" shows up in the output:
-apt-cache policy postgresql-${PG}
+# apt-cache policy postgresql-${PG}
+apt-cache policy postgresql
 
-sudo apt-get install -qq postgresql-${PG} -y
-sudo apt-get install -qq postgresql-server-dev-${PG} -y
+# sudo apt-get install -qq postgresql-${PG} -y
+sudo apt-get install -qq postgresql -y
+# sudo apt-get install -qq postgresql-server-dev-${PG} -y
+sudo apt-get install -qq postgresql-server-dev -y
+
 echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
 # Builds under "runner"
 # Github Actions require elevated priviledges

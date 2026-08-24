@@ -115,8 +115,9 @@ printf '%s\n' \
 #   it does not limit you to R 4.0. 
 
 # inspect the candidate and origin
-apt-cache policy r-base r-base-core
+# apt-cache policy r-base-core
+apt-cache policy r-base
+apt-cache policy r-base-dev
 # install R
 sudo apt-get install -qq r-base -y
-sudo apt-get install r-base-dev -y
-
+sudo apt-get install -qq r-base-dev -y
