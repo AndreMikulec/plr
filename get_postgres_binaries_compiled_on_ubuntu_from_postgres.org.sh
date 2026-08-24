@@ -58,7 +58,7 @@ sudo apt-get install -qq postgresql-server-dev-${PG} -y
 
 echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
-echo 'host    postgres        runner          127.0.0.1/32            trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
+echo 'host    all             all             127.0.0.1/32            trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
 sudo cat  /etc/postgresql/${PG}/main/pg_hba.conf
 # Builds under "runner"
 # Github Actions require elevated priviledges
