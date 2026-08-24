@@ -1,5 +1,3 @@
-#!/bin/bash
-set -x -v -e
 
 echo "Hello"
 # uname -a

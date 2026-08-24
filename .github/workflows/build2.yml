@@ -51,7 +51,7 @@ jobs:
       
     - name: Get Linux Host Information
       run: |
-        get_linux_host_info.sh
+        ./get_linux_host_info.sh
 
     - name: Guarantee PostgreSQL is Not Installed
       run: |
