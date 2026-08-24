@@ -22,6 +22,10 @@ export PATH=/usr/local/pgsql/bin:$PATH
 # or simply
 # psql -U runner -d postgres
 
-# CONCLUSION
-psql -h /var/run/postgresql -U runner -d postgres -c "SELECT version();"
-psql -h /var/run/postgresql -U runner -d postgres -c "SELECT current_setting('server_version_num') "server_version_num";"
+# CONCLUSION (but REL_19_ [NOT WORK] works?)
+# psql -h /var/run/postgresql -U runner -d postgres -c "SELECT version();"
+# psql -h /var/run/postgresql -U runner -d postgres -c "SELECT current_setting('server_version_num') "server_version_num";"
+
+psql -h 127.0.0.1 -U runner -d postgres -c "SELECT version();"
+psql -h 127.0.0.1 -U runner -d postgres -c "SELECT current_setting('server_version_num') "server_version_num";"
+
