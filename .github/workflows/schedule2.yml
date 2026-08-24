@@ -79,20 +79,26 @@ jobs:
       ragged_schedule: >
         [
           {"PG": "18", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
-          {"PG": "17", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
-          {"PG": "16", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
-          {"PG": "15", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
-          {"PG": "14", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
-          {"PG": "13", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
-          {"PG": "12", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
-          {"PG": "11", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
-          {"PG": "10", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
-          {"PG": "master",  "R": "next", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
-          {"PG": "REL_19_", "R": "next",  "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
-          {"PG": "18",      "R": "repo",  "os": "ubuntu-24.04-arm", "GithubActionsIgnoreFail": "false"}
+          {"PG": "REL_19_", "R": "next",  "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"}
         ]
+
+# WANT TO TEST - BUT NOT WORTH THE CPU
+#         {"PG": "17", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+#         {"PG": "16", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+#         {"PG": "15", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+#         {"PG": "14", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+#         {"PG": "13", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+#         {"PG": "12", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+#         {"PG": "11", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+#         {"PG": "10", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+#
+#         {"PG": "master",  "R": "next", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+#         {"PG": "18",      "R": "repo",  "os": "ubuntu-24.04-arm", "GithubActionsIgnoreFail": "false"}
+
+# PG 20 and 19 binaries are not available in neither the non-snapshot nor the ssnapshot 
 #         {"PG": "19", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
 #         {"PG": "20", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
 #         {"PG": "19",      "R": "devel", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
 #         {"PG": "20",      "R": "next",  "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+
 
