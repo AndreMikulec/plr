@@ -13,6 +13,9 @@ sudo rm -rf /etc/postgresql /var/lib/postgresql
 #  as otherwise the versions of the packages provided 
 #   by the operating system would be preferred (SEEN AUG 2026)
 # https://wiki.postgresql.org/wiki/Apt/FAQ#Development_snapshots
+
+sudo touch     /etc/apt/preferences.d/pgdg.pref
+sudo chmod 777 /etc/apt/preferences.d/pgdg.pref
 echo "
 Package: \*
 Pin: release o=apt.postgresql.org
