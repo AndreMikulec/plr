@@ -35,16 +35,17 @@ sudo apt-get install -qq libreadline-dev -y
 # # print only the depends-on line
 # dpkg-deb -f <path-to-package.deb>
 
-# installed package
-#
+
 # view the full metadata of the installed package (including "Depends:" line)
 apt show r-base-dev
 
 # find the packages that an installed Ubuntu package depends on
 apt depends r-base-dev
 
+# installed package
+#
 # query the local package database directly without touching the network
-dpkg -s r-base-dev | grep '^Depends:'
+# dpkg -s r-base-dev | grep '^Depends:'
 
 # recursive list (the dependencies of the dependencies, all the way down),
 sudo apt-get -qq install apt-rdepends -y
