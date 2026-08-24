@@ -12,9 +12,13 @@ export PGSRCVERSION="$1"
 
 if [ "${PGSRCVERSION}" == "master" ]
 then
+  set +x +v +e
   export SPECGITTAG="master"
+  set -x -v -e
 else
+  set +x +v +e
   export ALLGITTAGS=$(git ls-remote --tags https://github.com/postgres/postgres.git | cut -c 52-)
+  set -x -v -e
   quantity() { set +x +v +e; echo ${ALLGITTAGS} | tr " " "\n" | grep -c "${PGSRCVERSION}${MARK}[0-9]"; set -x -v -e; }
   quality()  { set +x +v +e; echo ${ALLGITTAGS} | tr " " "\n" | grep -e "${PGSRCVERSION}${MARK}[0-9]" | tail -n 1; set -x -v -e; }
   export MARK=""

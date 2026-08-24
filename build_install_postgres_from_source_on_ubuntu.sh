@@ -23,7 +23,9 @@ apt-cache depends r-base-dev
 # # recursively list all dependent packages down the chain
 # apt-rdepends r-base-dev
 
-sudo apt-get install -qq r-base-dev -y
+# provides to PostgreSQL package libreadline-dev
+# sudo apt-get install -qq r-base-dev -y
+sudo apt-get install -qq libreadline-dev -y
 
 # # package.deb file
 # # (or dpkg -I)
@@ -54,7 +56,7 @@ pushd postgres
 ./configure
 make
 sudo make install
+popd
 export PATH=/usr/local/pgsql/bin:$PATH
 initdb -D data
 pg_ctl -D data -l logfile start
-popd
