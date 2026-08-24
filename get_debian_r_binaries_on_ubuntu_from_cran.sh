@@ -1,6 +1,39 @@
 #!/bin/bash
 set -x -v -e
 
+
+
+# # SEEN\EXPERIENCED AUG 2026 
+# # This downloads "r-base", but r-base-dev is not available, (nor an equivalent)
+# #
+# # R binaries are built for the following Linux operating systems:
+# # Ubuntu 20.04, 22.04, 24.04, 26.04
+# # R binaries are built for x86_64/amd64 and aarch64/arm64.
+# # https://github.com/rstudio/r-builds
+# 
+# # Input
+# # export R=R version
+# # Input examples
+# # export R=x.y.z
+# # export R=next
+# # export R=devel
+# export R="$1"
+# 
+# # Output
+# # R is installed and started
+# 
+# echo "R versions available ..."
+# bash -c "$(curl -L https://rstd.io/r-install)"
+# 
+# curl -O https://cdn.posit.co/r/ubuntu-2404/pkgs/r-${R}_1_$(dpkg --print-architecture).deb
+# sudo apt-get install ./r-${R}_1_$(dpkg --print-architecture).deb
+# 
+# #To ensure that R is available on the system path, create symbolic links to the version of R that you installed:
+# sudo ln -s /opt/R/${R}/bin/R /usr/local/bin/R 
+# sudo ln -s /opt/R/${R}/bin/Rscript /usr/local/bin/Rscript
+
+
+
 # arm64 (i.e., M1/M2/M3, graviton etc) CPUs
 # 24.04 (“noble”, amd64 and arm64),
 # https://cloud.r-project.org/
@@ -35,8 +68,7 @@ set -x -v -e
 # and
 # https://cloud.r-project.org/bin/linux/ubuntu/
 
-
-#  Install Current R from CRAN
+# Install Current R from CRAN
 
 # CRAN publishes Ubuntu packages for resolute, noble, and jammy. 
 # The repository supports amd64 and arm64; at the time of validation, 
@@ -118,6 +150,7 @@ printf '%s\n' \
 # apt-cache policy r-base-core
 apt-cache policy r-base
 apt-cache policy r-base-dev
-# install R
+# install R to start R
 sudo apt-get install -qq r-base -y
+# ONLY NEED r-base-dev to help create plr
 sudo apt-get install -qq r-base-dev -y

@@ -62,7 +62,7 @@ jobs:
         set -x -v -e
         sudo apt-get update -qq
 
-    - name: Acquire PostgreSQL and PostgreSQL-Dev
+    - name: Acquire PostgreSQL-Dev (and PostgreSQL to test)
       run: |
         set -x -v -e
         # two(2) consecutive digits
@@ -81,23 +81,17 @@ jobs:
         set -x -v -e
         bash ./query_postgres_version.sh
  
-    - name: Acquire R-Dev
+    - name: Acquire R-Dev (and R to test)
       run: |
         set -x -v -e
-        if [ "${{ matrix.R }}" == "repo" ]
-        then
-          echo "R from CRAN ..."
-          bash ./get_debian_r_binaries_on_ubuntu_from_cran.sh
-        else
-          echo "R from Posit ..."
-          bash ./get_debian_r_binaries_on_ubuntu_from_posit.sh ${{ matrix.R }}
-        fi
-#
-#   - name: Query the R Version and R_HOME
-#     run: |
-#       set -x -v -e
-#       ./query_r_version_and_home.sh
-#
+        echo "R from CRAN ..."
+        bash ./get_debian_r_binaries_on_ubuntu_from_cran.sh
+
+    - name: Query the R Version and R_HOME
+      run: |
+        set -x -v -e
+        ./query_r_version_and_home.sh
+
 #   - name: Debug with SSH owenthereal/action-upterm@v1
 ##    if: ${{ inputs.debug_enabled == true }}
 #     uses: owenthereal/action-upterm@v1
