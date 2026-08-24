@@ -2,9 +2,6 @@
 name: Caller of plr jobs
 run-name: Caller of plr jobs - ${{ github.event.head_commit.message }}
 
-env:
-  DAILY_SCHEDULE: '30 1 * * *'
-
 on: 
   push:
   pull_request: 
@@ -26,52 +23,76 @@ jobs:
   ubuntu_scheduled_daily_job_caller:
     name: call Ubuntu daily - PG ${{ matrix.pg }} R ${{ matrix.R }} os ${{ matrix.os }}
     if: ${{ github.event_name == 'schedule' && github.event.schedule == '30 1 * * *' }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        target:
-          include:
-            - PG: master
-              R: 'next'
-              os: ubuntu-latest
-            - PG: REL_19_
-              R: 'next'
-              os: ubuntu-latest
+#   runs-on: ${{ matrix.os }}
+#   strategy:
+#     fail-fast: false
+#     matrix:
+#       target:
+#         include:
+#           - PG: master
+#             R: 'next'
+#             os: ubuntu-latest
+#           - PG: REL_19_
+#             R: 'next'
+#             os: ubuntu-latest
 
     uses: .github/workflows/build2.yml
     with:
-      target: ${{ matrix.target }}
-
+#     target: ${{ matrix.target }}
+      ragged_schedule: 
+        [
+          {"PG": "master", " R": "next", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "REL_19_", "R": "next", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"}
+        ]
 
   ubuntu_fullbuildable_job_caller:
     name: call Ubuntu build - PG ${{ matrix.pg }} R ${{ matrix.R }} os ${{ matrix.os }}
     if: ${{ github.event_name != 'schedule' }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        target:
-          PG: [20, 19, 18, 17, 16, 15, 14, 13, 12, 10]
-          R: 'repo'
-          os: ubuntu-latest
-          include:
-            - PG: master
-              R: 'next'
-              os: ubuntu-latest
-            - PG: REL_19_
-              R: 'next'
-              os: ubuntu-latest
-            - PG: 20
-              R: 'next'
-              os: ubuntu-latest
-            - PG: 19
-              R: 'devel'
-              os: ubuntu-latest
-            - PG: 18
-              R: 'repo'
-              os: ubuntu-24.04-arm
+#   runs-on: ${{ matrix.os }}
+#   strategy:
+#     fail-fast: false
+#     matrix:
+#       target:
+#         PG: [20, 19, 18, 17, 16, 15, 14, 13, 12, 10]
+#         R: 'repo'
+#         os: ubuntu-latest
+#         include:
+#           - PG: master
+#             R: 'next'
+#             os: ubuntu-latest
+#           - PG: REL_19_
+#             R: 'next'
+#             os: ubuntu-latest
+#           - PG: 20
+#             R: 'next'
+#             os: ubuntu-latest
+#           - PG: 19
+#             R: 'devel'
+#             os: ubuntu-latest
+#           - PG: 18
+#             R: 'repo'
+#             os: ubuntu-24.04-arm
 
     uses: .github/workflows/build2.yml
     with:
-      target: ${{ matrix.target }}
+#     target: ${{ matrix.target }}
+      ragged_schedule: 
+        [
+          {"PG": "20", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "19", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "18", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "17", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "16", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "15", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "14", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "13", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "12", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "11", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "10", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "master",  "R": "next", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "REL_19_", "R": "next",  "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "20",      "R": "next",  "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "19",      "R": "devel", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "18",      "R": "repo",  "os": "ubuntu-24.04-arm", "GithubActionsIgnoreFail": "false"}
+        ]
+

@@ -9,26 +9,40 @@ on:
         type: boolean
         required: false
         default: false
+
   workflow_call:
     inputs:
-      PG:
-        required: true
-        default: '18'
+      debug_enabled:
+        type: boolean
+        required: false
+        default: false
+#     PG:
+#       required: true
+#       default: '18'
+#       type: string
+#     R:
+#       required: true
+#       default: 'repo'
+#       type: string
+#     os:
+#       required: true
+#       default: 'ubuntu-latest'
+#       type: string
+      ragged_schedule:
         type: string
-      R:
         required: true
-        default: 'repo'
-        type: string
-      os:
-        required: true
-        default: 'ubuntu-latest'
-        type: string
 
 jobs:
 
   ubuntu_job_runner:
-    name: callee Ubuntu - PG ${{ inputs.pg }} R ${{ inputs.R }} os ${{ inputs.os }}
-    runs-on: ${{ inputs.os }}
+    name: callee Ubuntu - PG ${{ matrix.pg }} R ${{ matrix.R }} os ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    ontinue-on-error: ${{ matrix.GithubActionsIgnoreFail }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(inputs.ragged_schedule) }}
+
     steps:
 
     - name: Git Checkout this Repository Code
@@ -47,58 +61,58 @@ jobs:
         set -x -v -e
         sudo apt-get update -qq
 
-    - name: Acquire PostgreSQL
-      run: |
-        set -x -v -e
-        # two(2) consecutive digits
-        if [ $(echo "${{ inputs.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
-        then
-          echo "Postgres from repository binary ..."
-          ./get_postgres_binaries_compiled_on_ubuntu_from_postgres.org.sh ${{ inputs.PG }}
-        else
-          echo "Postgres from source ..."
-          ./get_latest_postgres_source_branch_or_tag.sh ${{ inputs.PG }}
-          ./build_install_postgres_from_source_on_ubuntu.sh
-        fi
-
-    - name: Query the PostgreSQL Version
-      run: |
-        set -x -v -e
-        ./query_postgres_version.sh
-
-    - name: Acquire R
-      run: |
-        set -x -v -e
-        if [ "${{ inputs.R }}" == "repo" ]
-        then
-          echo "R from CRAN ..."
-          ./get_debian_r_binaries_on_ubuntu_from_cran.sh
-        else
-          echo "R from Posit ..."
-          ./get_debian_r_binaries_on_ubuntu_from_posit.sh ${{ inputs.R }}
-        fi
-
-    - name: Query the R Version and R_HOME
-      run: |
-        set -x -v -e
-        ./query_r_version_and_home.sh
-
-    - name: Debug with SSH owenthereal/action-upterm@v1
-#     if: ${{ inputs.debug_enabled == true }}
-      uses: owenthereal/action-upterm@v1
-      with:
-        wait-timeout-minutes: 2
-        limit-access-to-actor: true
-
-    - name: Of PLR, Build, Install, and Check
-      run: |
-        set -x -v -e
-        # two(2) consecutive digits
-        if [ $(echo "${{ inputs.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
-        then
-          echo "Postgres originally from repository binary ..."
-          ./build_install_plr_from_binary_postgres_on_ubuntu_and_check.sh 
-        else
-          echo "Postgres originally from source ..."
-          ./build_install_plr_from_binary_postgres_on_ubuntu_and_check.sh
-        fi
+#   - name: Acquire PostgreSQL
+#     run: |
+#       set -x -v -e
+#       # two(2) consecutive digits
+#       if [ $(echo "${{ matrix.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
+#       then
+#         echo "Postgres from repository binary ..."
+#         ./get_postgres_binaries_compiled_on_ubuntu_from_postgres.org.sh ${{ matrix.PG }}
+#       else
+#         echo "Postgres from source ..."
+#         ./get_latest_postgres_source_branch_or_tag.sh ${{ matrix.PG }}
+#         ./build_install_postgres_from_source_on_ubuntu.sh
+#       fi
+#
+#   - name: Query the PostgreSQL Version
+#     run: |
+#       set -x -v -e
+#       ./query_postgres_version.sh
+#
+#   - name: Acquire R
+#     run: |
+#       set -x -v -e
+#       if [ "${{ matrix.R }}" == "repo" ]
+#       then
+#         echo "R from CRAN ..."
+#         ./get_debian_r_binaries_on_ubuntu_from_cran.sh
+#       else
+#         echo "R from Posit ..."
+#         ./get_debian_r_binaries_on_ubuntu_from_posit.sh ${{ matrix.R }}
+#       fi
+#
+#   - name: Query the R Version and R_HOME
+#     run: |
+#       set -x -v -e
+#       ./query_r_version_and_home.sh
+#
+#   - name: Debug with SSH owenthereal/action-upterm@v1
+##    if: ${{ inputs.debug_enabled == true }}
+#     uses: owenthereal/action-upterm@v1
+#     with:
+#       wait-timeout-minutes: 2
+#       limit-access-to-actor: true
+#
+#   - name: Of PLR, Build, Install, and Check
+#     run: |
+#       set -x -v -e
+#       # two(2) consecutive digits
+#       if [ $(echo "${{ matrix.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
+#       then
+#         echo "Postgres originally from repository binary ..."
+#         ./build_install_plr_from_binary_postgres_on_ubuntu_and_check.sh 
+#       else
+#         echo "Postgres originally from source ..."
+#         ./build_install_plr_from_binary_postgres_on_ubuntu_and_check.sh
+#       fi
