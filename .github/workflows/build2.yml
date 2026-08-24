@@ -90,7 +90,7 @@ jobs:
     - name: Query the R Version and R_HOME
       run: |
         set -x -v -e
-        ./query_r_version_and_home.sh
+        bash ./query_r_version_and_home.sh
 
 #   - name: Debug with SSH owenthereal/action-upterm@v1
 ##    if: ${{ inputs.debug_enabled == true }}

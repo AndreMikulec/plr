@@ -78,8 +78,8 @@ jobs:
 #     target: ${{ matrix.target }}
       ragged_schedule: >
         [
-          {"PG": "18", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
-          {"PG": "REL_19_", "R": "next",  "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"}
+          {"PG": "18",      "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
+          {"PG": "REL_19_", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"}
         ]
 
 # WANT TO TEST - BUT NOT WORTH THE CPU
@@ -94,6 +94,9 @@ jobs:
 #
 #         {"PG": "master",  "R": "next", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
 #         {"PG": "18",      "R": "repo",  "os": "ubuntu-24.04-arm", "GithubActionsIgnoreFail": "false"}
+
+# Numbered versions of R (e.g. x.y.z are not available)
+# r-base-dev devel and next are not available
 
 # PG 20 and 19 binaries are not available in neither the non-snapshot nor the ssnapshot 
 #         {"PG": "19", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
