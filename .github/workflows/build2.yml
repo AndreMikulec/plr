@@ -51,11 +51,11 @@ jobs:
       
     - name: Get Linux Host Information
       run: |
-        ./get_linux_host_info.sh
+        bash ./get_linux_host_info.sh
 
     - name: Guarantee PostgreSQL is Not Installed
       run: |
-        ./guarantee_postgres_is_not_installed.sh
+        bash ./guarantee_postgres_is_not_installed.sh
 
     - name: Refresh APT
       run: |
