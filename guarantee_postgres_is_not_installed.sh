@@ -21,3 +21,5 @@ Package: \*
 Pin: release o=apt.postgresql.org
 Pin-Priority: 800
 " >> /etc/apt/preferences.d/pgdg.pref
+
+cat /etc/apt/preferences.d/pgdg.pref
