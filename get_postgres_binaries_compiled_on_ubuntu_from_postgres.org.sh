@@ -66,6 +66,6 @@ sudo cat  /etc/postgresql/${PG}/main/pg_hba.conf
 # Ubuntu                             ubuntu-24.04-arm (not required elevated priviledges)
 # https://github.com/actions/runner-images
 # acl is no longer required (but MAYBE to run "psql"?)
-sudo apt-get install -qq acl -y
-sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner  || true
+# sudo apt-get install -qq acl -y
+# sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner  || true
 sudo pg_ctlcluster ${PG} main reload

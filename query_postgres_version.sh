@@ -38,7 +38,8 @@ export PATH=/usr/local/pgsql/bin:$PATH
 # psql -h 127.0.0.1 -d postgres -c "SELECT version();"
 # psql -h 127.0.0.1 -d postgres -c "SELECT current_setting('server_version_num') "server_version_num";"
 
-# for XX repo (Github Actions running account is "runner") | REL_XX_/master does not require this
+# "XX repo": Github Actions running account is "runner".  REL_XX_/master does not require this variable setting.
+# REL_19_ -- psql: error: connection to server at "127.0.0.1", port 5432 failed: FATAL:  role "postgres" does not exist
 export PGUSER=postgres
 psql -h 127.0.0.1 -d postgres -c "SELECT version();"
 psql -h 127.0.0.1 -d postgres -c "SELECT current_setting('server_version_num') "server_version_num";"
