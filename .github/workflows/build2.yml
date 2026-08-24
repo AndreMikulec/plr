@@ -76,10 +76,10 @@ jobs:
           bash ./build_install_postgres_from_source_on_ubuntu.sh
         fi
  
-#   - name: Query the PostgreSQL Version
-#     run: |
-#       set -x -v -e
-#       ./query_postgres_version.sh
+    - name: Query the PostgreSQL Version
+      run: |
+        set -x -v -e
+        bash ./query_postgres_version.sh
 #
 #   - name: Acquire R
 #     run: |
