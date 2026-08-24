@@ -17,7 +17,7 @@ sudo rm -rf /etc/postgresql /var/lib/postgresql
 sudo touch     /etc/apt/preferences.d/pgdg.pref
 sudo chmod 777 /etc/apt/preferences.d/pgdg.pref
 echo "
-Package: \*
+Package: *
 Pin: release o=apt.postgresql.org
 Pin-Priority: 800
 " >> /etc/apt/preferences.d/pgdg.pref
