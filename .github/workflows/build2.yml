@@ -69,11 +69,11 @@ jobs:
 #       if [ $(echo "${{ matrix.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
 #       then
 #         echo "Postgres from repository binary ..."
-#         ./get_postgres_binaries_compiled_on_ubuntu_from_postgres.org.sh ${{ matrix.PG }}
+#         bash ./get_postgres_binaries_compiled_on_ubuntu_from_postgres.org.sh ${{ matrix.PG }}
 #       else
 #         echo "Postgres from source ..."
-#         ./get_latest_postgres_source_branch_or_tag.sh ${{ matrix.PG }}
-#         ./build_install_postgres_from_source_on_ubuntu.sh
+#         bash ./get_latest_postgres_source_branch_or_tag.sh ${{ matrix.PG }}
+#         bash ./build_install_postgres_from_source_on_ubuntu.sh
 #       fi
 #
 #   - name: Query the PostgreSQL Version
