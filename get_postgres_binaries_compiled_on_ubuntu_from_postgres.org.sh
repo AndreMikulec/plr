@@ -32,18 +32,18 @@ export PG="$1"
 # Read about the snaphsots
 # https://wiki.postgresql.org/wiki/Apt/FAQ#Development_snapshots
 #
-if [ "${PG}" -gt "18" ]
-then
-  # snapshots (I can not find a binary package! They SHOULD BE THERE, but I can not find them.)
-  # sudo add-apt-repository "deb https://apt.postgresql.org/pub/repos/apt/ $(lsb_release -s -c)-pgdg-snapshot main ${PG}"
-  # BETTER ...
-  sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main-snapshot" > /etc/apt/sources.list.d/pgdg.list'
-  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-else
+# if [ "${PG}" -gt "18" ]
+# then
+#   # snapshots (I can not find a binary package! They SHOULD BE THERE, but I can not find them.)
+#   # sudo add-apt-repository "deb https://apt.postgresql.org/pub/repos/apt/ $(lsb_release -s -c)-pgdg-snapshot main ${PG}"
+#   # BETTER ... (I can not find a binary package! They SHOULD BE THERE, but I can not find them.)
+#   # sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main-snapshot" > /etc/apt/sources.list.d/pgdg.list'
+#   # wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+# else
   # non-snapshots
   sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
   wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-fi
+# fi
 
 # REQUIRED (at least by "non-snapshots")
 sudo apt-get update -qq
