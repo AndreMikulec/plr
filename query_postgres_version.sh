@@ -65,10 +65,10 @@ export PATH=/usr/local/pgsql/bin:$PATH
 # sudo PATH=/usr/local/pgsql/bin:${PATH} -u postgres psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
 # sudo PATH=/usr/local/pgsql/bin:${PATH} -u postgres psql -c "CREATE DATABASE root OWNER root;"
 
-psql -U postgres -d postgres -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
-psql -U postgres -d postgres -c "CREATE DATABASE runner OWNER runner;"
-psql -U postgres -d postgres -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
-psql -U postgres -d postgres -c "CREATE DATABASE root OWNER runner;"
+sudo -u postgres /usr/local/pgsql/bin/psql -u postgres -d postgres -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
+sudo -u postgres /usr/local/pgsql/bin/psql -u postgres -d postgres -c "CREATE DATABASE runner OWNER runner;"
+sudo -u postgres /usr/local/pgsql/bin/psql -u postgres -d postgres -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
+sudo -u postgres /usr/local/pgsql/bin/psql -u postgres -d postgres -c "CREATE DATABASE root OWNER runner;"
 
 # looking for a database "runner", the same name as the user "runner"
 psql -c "SELECT version();"
