@@ -1,12 +1,10 @@
 #!/bin/bash
 set -x -v -e
 
-export PG="$1"
 # "runner" needs to find psql
-export PATH=/usr/lib/postgresql/${PG}/bin/psql:${PATH}
-
 # REL_XX_/master  "build and install from source" does not add this to the PATH.
-# export PATH=/usr/local/pgsql/bin:$PATH
+# -rwxr-xr-x 1 root root 1121648 Aug 25 08:18 /usr/local/pgsql/bin/psql
+export PATH=/usr/local/pgsql/bin:$PATH
 # (PG XY repo using"sudo -u postgres psql" does not need the above PATH addition)
 #### psql -d postgres -c "SELECT version();"
 #### psql -d postgres -c "SELECT current_setting('server_version_num') "server_version_num";"
@@ -60,12 +58,12 @@ export PATH=/usr/lib/postgresql/${PG}/bin/psql:${PATH}
 
 # Create a superuser named 'runner' with no password prompt
 # sudo -u postgres createuser -s -d -r -w runner
-sudo PATH=/usr/lib/postgresql/${PG}/bin/psql:${PATH} -u postgres psql -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
-sudo PATH=/usr/lib/postgresql/${PG}/bin/psql:${PATH} -u postgres psql -c "CREATE DATABASE runner OWNER runner;"
+sudo PATH=/usr/local/pgsql/bin:${PATH} -u postgres psql -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
+sudo PATH=/usr/local/pgsql/bin:${PATH} -u postgres psql -c "CREATE DATABASE runner OWNER runner;"
 # Create a superuser named 'root' with no password prompt
 # sudo -u postgres createuser -s -d -r -w root
-sudo PATH=/usr/lib/postgresql/${PG}/bin/psql:${PATH} -u postgres psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
-sudo PATH=/usr/lib/postgresql/${PG}/bin/psql:${PATH} -u postgres psql -c "CREATE DATABASE root OWNER root;"
+sudo PATH=/usr/local/pgsql/bin:${PATH} -u postgres psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
+sudo PATH=/usr/local/pgsql/bin:${PATH} -u postgres psql -c "CREATE DATABASE root OWNER root;"
 
 # looking for a database "runner", the same name as the user "runner"
 psql -c "SELECT version();"

@@ -76,17 +76,17 @@ jobs:
           bash ./build_install_postgres_from_source_on_ubuntu.sh
         fi
  
-    - name: Debug with SSH owenthereal/action-upterm@v1
+#   - name: Debug with SSH owenthereal/action-upterm@v1
 #     if: ${{ inputs.debug_enabled == true }}
-      uses: owenthereal/action-upterm@v1
-      with:
-        wait-timeout-minutes: 5
-        limit-access-to-actor: true
+#     uses: owenthereal/action-upterm@v1
+#     with:
+#       wait-timeout-minutes: 5
+#       limit-access-to-actor: true
  
     - name: Query the PostgreSQL Version
       run: |
         set -x -v -e
-        bash ./query_postgres_version.sh ${PG}
+        bash ./query_postgres_version.sh
  
     - name: Acquire R-Dev (and R to test)
       run: |
