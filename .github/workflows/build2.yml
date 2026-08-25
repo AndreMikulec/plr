@@ -62,6 +62,15 @@ jobs:
         set -x -v -e
         sudo apt-get update -qq
 
+
+    - name: Debug with SSH owenthereal/action-upterm@v1
+#     if: ${{ inputs.debug_enabled == true }}
+      uses: owenthereal/action-upterm@v1
+      with:
+        wait-timeout-minutes: 5
+        limit-access-to-actor: true
+
+
     - name: Acquire PostgreSQL-Dev (and PostgreSQL to test)
       run: |
         set -x -v -e
@@ -81,14 +90,6 @@ jobs:
         set -x -v -e
         echo "R from CRAN ..."
         bash ./get_debian_r_binaries_on_ubuntu_from_cran.sh
-
-
-#   - name: Debug with SSH owenthereal/action-upterm@v1
-#     if: ${{ inputs.debug_enabled == true }}
-#     uses: owenthereal/action-upterm@v1
-#     with:
-#       wait-timeout-minutes: 5
-#       limit-access-to-actor: true
 
 
     - name: Of PLR, Build, Install, and Check
