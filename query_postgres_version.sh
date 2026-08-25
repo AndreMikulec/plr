@@ -55,11 +55,14 @@ export PATH=/usr/local/pgsql/bin:$PATH
 # sudo -u postgres psql -c "SELECT current_setting('server_version_num') "server_version_num";" || true
 
 # Create a superuser named 'runner' with no password prompt
-sudo -u postgres createuser -s -d -r -w runner
+# sudo -u postgres createuser -s -d -r -w runner
+sudo -u postgres psql -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
 sudo -u postgres psql -c "CREATE DATABASE runner OWNER runner;"
 # Create a superuser named 'root' with no password prompt
-sudo -u postgres createuser -s -d -r -w root
+# sudo -u postgres createuser -s -d -r -w root
+sudo -u postgres psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
 sudo -u postgres psql -c "CREATE DATABASE root OWNER root;"
+
 
 # looking for a database,the same name as the user
 psql -c "SELECT version();"
