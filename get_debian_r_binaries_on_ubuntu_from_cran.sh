@@ -2,7 +2,6 @@
 set -x -v -e
 
 
-
 # # SEEN\EXPERIENCED AUG 2026 
 # # This downloads "r-base", but r-base-dev is not available, (nor an equivalent)
 # #
@@ -31,7 +30,6 @@ set -x -v -e
 # #To ensure that R is available on the system path, create symbolic links to the version of R that you installed:
 # sudo ln -s /opt/R/${R}/bin/R /usr/local/bin/R 
 # sudo ln -s /opt/R/${R}/bin/Rscript /usr/local/bin/Rscript
-
 
 
 # arm64 (i.e., M1/M2/M3, graviton etc) CPUs
@@ -142,6 +140,9 @@ printf '%s\n' \
   "Signed-By: /etc/apt/keyrings/cran.gpg" |
   sudo tee /etc/apt/sources.list.d/cran.sources >/dev/null
 )
+
+# ADDED
+sudo apt update
 
 # The cran40 suffix identifies the repository ABI introduced with R 4.0; 
 #   it does not limit you to R 4.0. 

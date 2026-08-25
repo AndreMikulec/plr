@@ -55,29 +55,29 @@ sudo apt-get install -qq postgresql-${PG} -y
 
 sudo apt-get install -qq postgresql-server-dev-${PG} -y
 
-# echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
-# TYPE  DATABASE        USER            ADDRESS                 METHOD
-# replace contents and keep file permissions
-     echo 'host    all             all             all                     trust' | sudo --preserve-env=PG tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
-# append contents
-sudo --preserve-env=PG echo 'local   all             all             all                     trust' >>         /etc/postgresql/${PG}/main/pg_hba.conf
-sudo --preserve-env=PG cat  /etc/postgresql/${PG}/main/pg_hba.conf
-# PG pg_hba.conf file change requires reload (see below)
-
-sudo --preserve-env=PG cat /etc/postgresql/${PG}/main/postgresql.conf | grep "listen_addresses"
-sudo --preserve-env=PG sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/${PG}/main/postgresql.conf
-sudo --preserve-env=PG cat /etc/postgresql/${PG}/main/postgresql.conf | grep "listen_addresses"
-# PG postgresql.conf file change requires a stop then start (see below)
-
-# Builds under "runner"
-# Ubuntu non-arm64: ubuntu-latest or ubuntu-24.04
-# Ubuntu                             ubuntu-24.04-arm
-# https://github.com/actions/runner-images
-# acl is no longer required
-# sudo apt-get install -qq acl -y
-# sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner  || true
-
-sudo pg_ctlcluster ${PG} main reload
-sudo pg_ctlcluster ${PG} main stop
-sudo pg_ctlcluster ${PG} main start
+## # echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
+## # TYPE  DATABASE        USER            ADDRESS                 METHOD
+## # replace contents and keep file permissions
+##      echo 'host    all             all             all                     trust' | sudo --preserve-env=PG tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
+## # append contents
+## sudo --preserve-env=PG echo 'local   all             all             all                     trust' >>         /etc/postgresql/${PG}/main/pg_hba.conf
+## sudo --preserve-env=PG cat  /etc/postgresql/${PG}/main/pg_hba.conf
+## # PG pg_hba.conf file change requires reload (see below)
+## 
+## sudo --preserve-env=PG cat /etc/postgresql/${PG}/main/postgresql.conf | grep "listen_addresses"
+## sudo --preserve-env=PG sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/${PG}/main/postgresql.conf
+## sudo --preserve-env=PG cat /etc/postgresql/${PG}/main/postgresql.conf | grep "listen_addresses"
+## # PG postgresql.conf file change requires a stop then start (see below)
+## 
+## # Builds under "runner"
+## # Ubuntu non-arm64: ubuntu-latest or ubuntu-24.04
+## # Ubuntu                             ubuntu-24.04-arm
+## # https://github.com/actions/runner-images
+## # acl is no longer required
+## # sudo apt-get install -qq acl -y
+## # sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner  || true
+## 
+## sudo pg_ctlcluster ${PG} main reload
+## sudo pg_ctlcluster ${PG} main stop
+## sudo pg_ctlcluster ${PG} main start
 
