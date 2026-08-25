@@ -82,23 +82,12 @@ jobs:
       with:
         wait-timeout-minutes: 5
         limit-access-to-actor: true
- 
-    - name: Query the PostgreSQL Version
-      run: |
-        set -x -v -e
-        bash ./query_postgres_version.sh
- 
+
     - name: Acquire R-Dev (and R to test)
       run: |
         set -x -v -e
         echo "R from CRAN ..."
         bash ./get_debian_r_binaries_on_ubuntu_from_cran.sh
-
-    - name: Query the R Version and R_HOME
-      run: |
-        set -x -v -e
-        bash ./query_r_version_and_home.sh
-
 
     - name: Of PLR, Build, Install, and Check
       run: |

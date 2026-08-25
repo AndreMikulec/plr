@@ -58,6 +58,60 @@ pushd postgres
 make
 sudo make install
 popd
-export PATH=/usr/local/pgsql/bin:$PATH
-initdb -D data
-pg_ctl -D data -l logfile start
+
+
+
+## # TEST THIS
+##
+## sudo useradd -r -s /bin/bash -m -d /var/lib/postgresql postgres
+## sudo mkdir -p                data
+## sudo chown postgres:postgres data
+##
+##
+## # When you initialize a PostgreSQL database using initdb without any extra flags, 
+## # the initial superuser role is automatically 
+## # given the same name as your operating system username, not "postgres"
+## sudo -u postgres /usr/local/pgsql/bin/initdb -D data
+## # automatically created: os user postgres, cluster role postgres, database postgres
+##
+## sudo -u postgres /usr/local/pgsql/bin/pg_ctl -D data -l logfile start
+## sudo -u postgres /usr/local/pgsql/bin/pg_ctl -D data -l logfile status
+## 
+## # runner@runnervmgx7h7:~/work/plr/plr$ ls -alrt data/*.conf
+## # -rw------- 1 runner runner 45968 Aug 25 18:47 data/postgresql.conf
+## # ...
+## # -rw------- 1 runner runner  5710 Aug 25 18:47 data/pg_hba.conf
+## #
+## # TYPE  DATABASE        USER            ADDRESS                 METHOD
+## sudo chmod 777 data/pg_hba.conf
+## # append contents
+## sudo echo 'local   all             postgres                                trust' >>         data/pg_hba.conf
+## sudo echo 'local   all             root                                    trust' >>         data/pg_hba.conf
+## sudo echo 'local   all             runner                                  trust' >>         data/pg_hba.conf
+## sudo echo 'host    all             all             all                     trust' >>         data/pg_hba.conf
+## # access if the OS username matches the database username.
+## sudo echo 'local   all             all                                     peer'  >>         data/pg_hba.conf
+## # peer authentication is only supported on local sockets (Unix-domain sockets)
+## # sudo echo 'host    all             all             all                     peer'  >>         data/pg_hba.conf
+## sudo cat  data/pg_hba.conf
+## # PG pg_hba.conf file change requires reload (see below)
+## 
+## # PostgreSQL still uses localhost as its internal default
+## # sudo cat data/postgresql.conf | grep "listen_addresses"
+## # sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" data/postgresql.conf
+## # sudo cat data/postgresql.conf | grep "listen_addresses"
+## # PG postgresql.conf file change requires a stop then start (see below)
+## 
+## # only RELOAD (pre-requisite is that the server is started)
+## sudo -u postgres /usr/local/pgsql/bin/pg_ctl -D data -l logfile reload
+## 
+## # REL_##_ (AFTER pg_hba.conf configuration)
+## 
+## # # LOGIN and SUPERUSER are cluster-level roles
+## sudo -u postgres /usr/local/pgsql/bin/psql -d postgres -U postgres -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
+## sudo -u postgres /usr/local/pgsql/bin/psql -d postgres -U postgres -c "CREATE DATABASE runner OWNER runner;"
+## sudo -u postgres /usr/local/pgsql/bin/psql -d postgres -U postgres -c "CREATE ROLE root  WITH LOGIN SUPERUSER;"
+## sudo -u postgres /usr/local/pgsql/bin/psql -d postgres -U postgres -c "CREATE DATABASE root OWNER root;"
+## 
+## /usr/local/pgsql/bin/psql -c  "SELECT version();"
+## /usr/local/pgsql/bin/psql -c  "SELECT current_setting('server_version_num') "server_version_num";"

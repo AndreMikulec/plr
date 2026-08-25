@@ -153,5 +153,14 @@ apt-cache policy r-base
 apt-cache policy r-base-dev
 # install R to start R
 sudo apt-get install -qq r-base -y
+
+R --version
+Rscript --version
+Rscript --vanilla -e 'stopifnot(sum(c(2, 4, 6)) == 12); cat("R runtime works\n")'
+Rscript --vanilla -e "writeLines(paste0('R_HOME: ', R.home()))"
+Rscript --vanilla -e "writeLines(paste0('R svn rev: ', ' ', R.version\$\`svn rev\`))"
+
 # ONLY NEED r-base-dev to help create plr
 sudo apt-get install -qq r-base-dev -y
+
+

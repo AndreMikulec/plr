@@ -65,11 +65,12 @@ set -x -v -e
 # sudo PATH=/usr/local/pgsql/bin:${PATH} -U postgres psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
 # sudo PATH=/usr/local/pgsql/bin:${PATH} -U postgres psql -c "CREATE DATABASE root OWNER root;"
 
-sudo -u postgres /usr/local/pgsql/bin/psql -U postgres -d postgres -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
-sudo -u postgres /usr/local/pgsql/bin/psql -U postgres -d postgres -c "CREATE DATABASE runner OWNER runner;"
-sudo -u postgres /usr/local/pgsql/bin/psql -U postgres -d postgres -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
-sudo -u postgres /usr/local/pgsql/bin/psql -U postgres -d postgres -c "CREATE DATABASE root OWNER runner;"
-
-# looking for a database "runner", the same name as the user "runner"
-/usr/local/pgsql/bin/psql -c "SELECT version();"
-/usr/local/pgsql/bin/psql -c "SELECT current_setting('server_version_num') "server_version_num";"
+## # NEVER WORKED
+## sudo -u postgres /usr/local/pgsql/bin/psql -U postgres -d postgres -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
+## sudo -u postgres /usr/local/pgsql/bin/psql -U postgres -d postgres -c "CREATE DATABASE runner OWNER runner;"
+## sudo -u postgres /usr/local/pgsql/bin/psql -U postgres -d postgres -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
+## sudo -u postgres /usr/local/pgsql/bin/psql -U postgres -d postgres -c "CREATE DATABASE root OWNER runner;"
+## 
+## # looking for a database "runner", the same name as the user "runner"
+## /usr/local/pgsql/bin/psql -c "SELECT version();"
+## /usr/local/pgsql/bin/psql -c "SELECT current_setting('server_version_num') "server_version_num";"

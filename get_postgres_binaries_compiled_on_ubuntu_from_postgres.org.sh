@@ -68,6 +68,7 @@ sudo apt-get update -qq
 apt-cache policy postgresql-${PG}
 
 sudo apt-get install -qq postgresql-${PG} -y
+# automatically created: os user postgres, cluster role postgres, database postgres
 
 sudo apt-get install -qq postgresql-server-dev-${PG} -y
 
@@ -77,11 +78,14 @@ sudo apt-get install -qq postgresql-server-dev-${PG} -y
 #    echo 'host    all             all             all                     trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
 sudo chmod 777 /etc/postgresql/${PG}/main/pg_hba.conf
 # append contents
-sudo echo 'local   all             all             all                     trust' >>         /etc/postgresql/${PG}/main/pg_hba.conf
+sudo echo 'local   all             postgres                                trust' >>         /etc/postgresql/${PG}/main/pg_hba.conf
+sudo echo 'local   all             root                                    trust' >>         /etc/postgresql/${PG}/main/pg_hba.conf
+sudo echo 'local   all             runner                                  trust' >>         /etc/postgresql/${PG}/main/pg_hba.conf
 sudo echo 'host    all             all             all                     trust' >>         /etc/postgresql/${PG}/main/pg_hba.conf
 # access if the OS username matches the database username.
-sudo echo 'local   all             all             all                     peer'  >>         /etc/postgresql/${PG}/main/pg_hba.conf
-sudo echo 'host    all             all             all                     peer'  >>         /etc/postgresql/${PG}/main/pg_hba.conf
+sudo echo 'local   all             all                                     peer'  >>         /etc/postgresql/${PG}/main/pg_hba.conf
+# peer authentication is only supported on local sockets (Unix-domain sockets)
+# sudo echo 'host    all             all             all                     peer'  >>         /etc/postgresql/${PG}/main/pg_hba.conf
 sudo cat  /etc/postgresql/${PG}/main/pg_hba.conf
 # PG pg_hba.conf file change requires reload (see below)
 
@@ -99,6 +103,18 @@ sudo cat  /etc/postgresql/${PG}/main/pg_hba.conf
 # sudo apt-get install -qq acl -y
 # sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner  || true
 
+# only RELOAD when I know that the server is started
 sudo pg_ctlcluster ${PG} main reload
 # sudo pg_ctlcluster ${PG} main stop  # DOES NOT LIKE THIS
 # sudo pg_ctlcluster ${PG} main start # DOES NOT LIKE THIS
+
+# ## repo (correct works AFTER pg_hba.conf configuration)
+
+sudo -u postgres /usr/bin/psql -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
+sudo -u postgres /usr/bin/psql -c "CREATE DATABASE runner OWNER runner;"
+sudo -u postgres /usr/bin/psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
+sudo -u postgres /usr/bin/psql -c "CREATE DATABASE root OWNER runner;"
+
+/usr/bin/psql -c "SELECT version();"
+/usr/bin/psql -c "SELECT current_setting('server_version_num') "server_version_num";"
+
