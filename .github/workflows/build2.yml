@@ -77,7 +77,7 @@ jobs:
         fi
  
     - name: Debug with SSH owenthereal/action-upterm@v1
-      if: ${{ inputs.debug_enabled == true }}
+#     if: ${{ inputs.debug_enabled == true }}
       uses: owenthereal/action-upterm@v1
       with:
         wait-timeout-minutes: 5
