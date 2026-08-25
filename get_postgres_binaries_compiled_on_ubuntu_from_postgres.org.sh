@@ -102,4 +102,3 @@ sudo cat  /etc/postgresql/${PG}/main/pg_hba.conf
 sudo pg_ctlcluster ${PG} main reload
 # sudo pg_ctlcluster ${PG} main stop  # DOES NOT LIKE THIS
 # sudo pg_ctlcluster ${PG} main start # DOES NOT LIKE THIS
-
