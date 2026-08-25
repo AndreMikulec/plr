@@ -3,6 +3,7 @@ set -x -v -e
 
 # REL_XX_/master  "build and install from source" does not add this to the PATH.
 export PATH=/usr/local/pgsql/bin:$PATH
+# (ABOVE does not seem usefule with "sudo -u postgres psql")
 #### psql -d postgres -c "SELECT version();"
 #### psql -d postgres -c "SELECT current_setting('server_version_num') "server_version_num";"
 
@@ -45,7 +46,10 @@ export PATH=/usr/local/pgsql/bin:$PATH
 
 # XX repo PGUSER is "runner"
 # REL_XX_ PGUSER is "postgres"
-psql -h 127.0.0.1 -U postgres -d postgres -c "SELECT version();" || true
-psql -h 127.0.0.1 -U runner   -d postgres -c "SELECT version();" || true
-psql -h 127.0.0.1 -U postgres -d postgres -c "SELECT current_setting('server_version_num') "server_version_num";" || true
-psql -h 127.0.0.1 -U runner   -d postgres -c "SELECT current_setting('server_version_num') "server_version_num";" || true
+# psql -h 127.0.0.1 -U postgres -d postgres -c "SELECT version();" || true
+# psql -h 127.0.0.1 -U runner   -d postgres -c "SELECT version();" || true
+# psql -h 127.0.0.1 -U postgres -d postgres -c "SELECT current_setting('server_version_num') "server_version_num";" || true
+# psql -h 127.0.0.1 -U runner   -d postgres -c "SELECT current_setting('server_version_num') "server_version_num";" || true
+
+sudo -u postgres psql -c "SELECT version();" || true
+sudo -u postgres psql -c "SELECT current_setting('server_version_num') "server_version_num";" || true
