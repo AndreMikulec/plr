@@ -75,6 +75,13 @@ jobs:
           bash ./get_latest_postgres_source_branch_or_tag.sh ${{ matrix.PG }}
           bash ./build_install_postgres_from_source_on_ubuntu.sh
         fi
+
+    - name: Acquire R-Dev (and R to test)
+      run: |
+        set -x -v -e
+        echo "R from CRAN ..."
+        bash ./get_debian_r_binaries_on_ubuntu_from_cran.sh
+
  
     - name: Debug with SSH owenthereal/action-upterm@v1
 #     if: ${{ inputs.debug_enabled == true }}
@@ -83,11 +90,6 @@ jobs:
         wait-timeout-minutes: 5
         limit-access-to-actor: true
 
-    - name: Acquire R-Dev (and R to test)
-      run: |
-        set -x -v -e
-        echo "R from CRAN ..."
-        bash ./get_debian_r_binaries_on_ubuntu_from_cran.sh
 
     - name: Of PLR, Build, Install, and Check
       run: |

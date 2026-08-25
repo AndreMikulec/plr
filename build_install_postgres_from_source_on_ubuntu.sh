@@ -60,23 +60,33 @@ sudo make install
 popd
 
 
+# 30 seconds long
+sudo useradd -r -s /bin/bash -m -d /var/lib/postgresql postgres
 
-## # TEST THIS
-##
-## sudo useradd -r -s /bin/bash -m -d /var/lib/postgresql postgres
-## sudo mkdir -p                data
-## sudo chown postgres:postgres data
-##
-##
-## # When you initialize a PostgreSQL database using initdb without any extra flags, 
-## # the initial superuser role is automatically 
-## # given the same name as your operating system username, not "postgres"
-## sudo -u postgres /usr/local/pgsql/bin/initdb -D data
-## # automatically created: os user postgres, cluster role postgres, database postgres
-##
-## sudo -u postgres /usr/local/pgsql/bin/pg_ctl -D data -l logfile start
-## sudo -u postgres /usr/local/pgsql/bin/pg_ctl -D data -l logfile status
-## 
+# When you initialize a PostgreSQL database using initdb without any extra flags, 
+# the initial superuser role is automatically 
+# given the same name as your operating system username, not "postgres"
+/usr/local/pgsql/bin/initdb -D data
+# automatically created: cluster role "runner", database "postgres"
+
+/usr/local/pgsql/bin/pg_ctl -D data -l logfile start
+/usr/local/pgsql/bin/psql -d postgres -U runner -c "CREATE DATABASE runner OWNER runner;"
+
+/usr/local/pgsql/bin/psql -c "CREATE ROLE postgres WITH LOGIN SUPERUSER;"
+
+# OPTIONAL 
+# (Just ONLY the USER-DATABASE pair mappings must exist for automatic unconstrained logging-in.)
+/usr/local/pgsql/bin/psql -d postgres -c "ALTER DATABASE postgres OWNER TO postgres;"
+# /usr/local/pgsql/bin/psql -d postgres -c "REASSIGN OWNED BY runner TO postgres;"
+# ERROR:  cannot reassign ownership of objects owned by role runner because they are required by the database system
+
+sudo -u postgres /usr/local/pgsql/bin/psql -c "SELECT version();"
+sudo -u postgres /usr/local/pgsql/bin/psql -c "SELECT current_setting('server_version_num') "server_version_num";"
+
+/usr/local/pgsql/bin/psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
+/usr/local/pgsql/bin/psql -c "CREATE DATABASE root OWNER root;"
+
+
 ## # runner@runnervmgx7h7:~/work/plr/plr$ ls -alrt data/*.conf
 ## # -rw------- 1 runner runner 45968 Aug 25 18:47 data/postgresql.conf
 ## # ...

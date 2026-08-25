@@ -9,6 +9,11 @@ fi
 sudo apt-get remove --purge postgresql\*
 sudo rm -rf /etc/postgresql /var/lib/postgresql
 
+if [ $(id postgres >/dev/null 2>&1 && echo 0) ]
+then 
+  sudo deluser --remove-home postgres
+fi
+
 # Additionally, you will likely need to define a higher "pinning" priority 
 #  as otherwise the versions of the packages provided 
 #   by the operating system would be preferred (SEEN AUG 2026)
