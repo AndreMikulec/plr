@@ -58,12 +58,17 @@ export PATH=/usr/local/pgsql/bin:$PATH
 
 # Create a superuser named 'runner' with no password prompt
 # sudo -u postgres createuser -s -d -r -w runner
-sudo PATH=/usr/local/pgsql/bin:${PATH} -u postgres psql -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
-sudo PATH=/usr/local/pgsql/bin:${PATH} -u postgres psql -c "CREATE DATABASE runner OWNER runner;"
+# sudo PATH=/usr/local/pgsql/bin:${PATH} -u postgres psql -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
+# sudo PATH=/usr/local/pgsql/bin:${PATH} -u postgres psql -c "CREATE DATABASE runner OWNER runner;"
 # Create a superuser named 'root' with no password prompt
 # sudo -u postgres createuser -s -d -r -w root
-sudo PATH=/usr/local/pgsql/bin:${PATH} -u postgres psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
-sudo PATH=/usr/local/pgsql/bin:${PATH} -u postgres psql -c "CREATE DATABASE root OWNER root;"
+# sudo PATH=/usr/local/pgsql/bin:${PATH} -u postgres psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
+# sudo PATH=/usr/local/pgsql/bin:${PATH} -u postgres psql -c "CREATE DATABASE root OWNER root;"
+
+psql -U postgres -d postgres -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
+psql -U postgres -d postgres -c "CREATE DATABASE runner OWNER runner;"
+psql -U postgres -d postgres -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
+psql -U postgres -d postgres -c "CREATE DATABASE root OWNER runner;"
 
 # looking for a database "runner", the same name as the user "runner"
 psql -c "SELECT version();"
