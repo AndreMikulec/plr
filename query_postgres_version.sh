@@ -3,7 +3,7 @@ set -x -v -e
 
 # REL_XX_/master  "build and install from source" does not add this to the PATH.
 export PATH=/usr/local/pgsql/bin:$PATH
-# (ABOVE does not seem usefule with "sudo -u postgres psql")
+# (PG XY repo using"sudo -u postgres psql" does not need the above PATH addition)
 #### psql -d postgres -c "SELECT version();"
 #### psql -d postgres -c "SELECT current_setting('server_version_num') "server_version_num";"
 

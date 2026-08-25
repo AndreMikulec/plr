@@ -142,7 +142,7 @@ printf '%s\n' \
 )
 
 # ADDED
-sudo apt update
+sudo apt-get -qq update
 
 # The cran40 suffix identifies the repository ABI introduced with R 4.0; 
 #   it does not limit you to R 4.0. 
