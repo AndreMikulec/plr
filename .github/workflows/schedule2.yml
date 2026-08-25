@@ -78,9 +78,9 @@ jobs:
 #     target: ${{ matrix.target }}
       ragged_schedule: >
         [
-          {"PG": "18",      "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"}
+          {"PG": "REL_19_", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"}
         ]
-#         {"PG": "REL_19_", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"}
+#         {"PG": "18",      "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"}
 
 # WANT TO TEST - BUT NOT WORTH THE CPU
 #         {"PG": "17", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
