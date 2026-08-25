@@ -86,7 +86,7 @@ jobs:
     - name: Query the PostgreSQL Version
       run: |
         set -x -v -e
-        bash ./query_postgres_version.sh
+        bash ./query_postgres_version.sh ${PG}
  
     - name: Acquire R-Dev (and R to test)
       run: |
