@@ -63,7 +63,6 @@ jobs:
         sudo apt-get update -qq
 
 
-
     - name: Acquire PostgreSQL-Dev (and PostgreSQL to test)
       run: |
         set -x -v -e
@@ -78,6 +77,7 @@ jobs:
           bash ./build_install_postgres_from_source_on_ubuntu.sh
         fi
 
+
     - name: Acquire R-Dev (and R to test)
       run: |
         set -x -v -e
@@ -91,6 +91,7 @@ jobs:
 #     with:
 #       wait-timeout-minutes: 5
 #       limit-access-to-actor: true
+
 
     - name: Of PLR, Build, Install, and Check
       run: |
