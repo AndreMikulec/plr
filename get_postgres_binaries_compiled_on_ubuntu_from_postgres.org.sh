@@ -61,6 +61,8 @@ Components: main
 Signed-By: /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
 EOF
 
+cat /etc/apt/sources.list.d/pgdg.sources
+
 # REQUIRED (at least by "non-snapshots")
 sudo apt-get update -qq
 
@@ -72,49 +74,60 @@ sudo apt-get install -qq postgresql-${PG} -y
 
 sudo apt-get install -qq postgresql-server-dev-${PG} -y
 
-# echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
-# TYPE  DATABASE        USER            ADDRESS                 METHOD
-# replace contents and keep file permissions
-#    echo 'host    all             all             all                     trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
-sudo chmod 777 /etc/postgresql/${PG}/main/pg_hba.conf
-# append contents
-sudo echo 'local   all             postgres                                trust' >>         /etc/postgresql/${PG}/main/pg_hba.conf
-sudo echo 'local   all             root                                    trust' >>         /etc/postgresql/${PG}/main/pg_hba.conf
-sudo echo 'local   all             runner                                  trust' >>         /etc/postgresql/${PG}/main/pg_hba.conf
-sudo echo 'host    all             all             all                     trust' >>         /etc/postgresql/${PG}/main/pg_hba.conf
-# access if the OS username matches the database username.
-sudo echo 'local   all             all                                     peer'  >>         /etc/postgresql/${PG}/main/pg_hba.conf
-# peer authentication is only supported on local sockets (Unix-domain sockets)
-# sudo echo 'host    all             all             all                     peer'  >>         /etc/postgresql/${PG}/main/pg_hba.conf
-sudo cat  /etc/postgresql/${PG}/main/pg_hba.conf
-# PG pg_hba.conf file change requires reload (see below)
+## # echo 'local   all             postgres                                trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
+## # TYPE  DATABASE        USER            ADDRESS                 METHOD
+## # replace contents and keep file permissions
+## #    echo 'host    all             all             all                     trust' | sudo tee /etc/postgresql/${PG}/main/pg_hba.conf > /dev/null
+## sudo chmod 777 /etc/postgresql/${PG}/main/pg_hba.conf
+## # append contents
+## sudo echo 'local   all             postgres                                trust' >>         /etc/postgresql/${PG}/main/pg_hba.conf
+## sudo echo 'local   all             root                                    trust' >>         /etc/postgresql/${PG}/main/pg_hba.conf
+## sudo echo 'local   all             runner                                  trust' >>         /etc/postgresql/${PG}/main/pg_hba.conf
+## sudo echo 'host    all             all             all                     trust' >>         /etc/postgresql/${PG}/main/pg_hba.conf
+## # access if the OS username matches the database username.
+## sudo echo 'local   all             all                                     peer'  >>         /etc/postgresql/${PG}/main/pg_hba.conf
+## # peer authentication is only supported on local sockets (Unix-domain sockets)
+## # sudo echo 'host    all             all             all                     peer'  >>         /etc/postgresql/${PG}/main/pg_hba.conf
+## sudo cat  /etc/postgresql/${PG}/main/pg_hba.conf
+## # PG pg_hba.conf file change requires reload (see below)
+## 
+## # PostgreSQL still uses localhost as its internal default
+## # sudo cat /etc/postgresql/${PG}/main/postgresql.conf | grep "listen_addresses"
+## # sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/${PG}/main/postgresql.conf
+## # sudo cat /etc/postgresql/${PG}/main/postgresql.conf | grep "listen_addresses"
+## # PG postgresql.conf file change requires a stop then start (see below)
+## 
+## # Builds under "runner"
+## # Ubuntu non-arm64: ubuntu-latest or ubuntu-24.04
+## # Ubuntu                             ubuntu-24.04-arm
+## # https://github.com/actions/runner-images
+## # acl is no longer required
+## # sudo apt-get install -qq acl -y
+## # sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner  || true
+## 
+## # only RELOAD when I know that the server is started
+## sudo pg_ctlcluster ${PG} main reload
+## # sudo pg_ctlcluster ${PG} main stop  # DOES NOT LIKE THIS
+## # sudo pg_ctlcluster ${PG} main start # DOES NOT LIKE THIS
+## 
+## # ## repo (correct works AFTER pg_hba.conf configuration)
+## 
+## sudo -u postgres /usr/bin/psql -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
+## sudo -u postgres /usr/bin/psql -c "CREATE DATABASE runner OWNER runner;"
+## sudo -u postgres /usr/bin/psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
+## sudo -u postgres /usr/bin/psql -c "CREATE DATABASE root OWNER runner;"
+## 
+## /usr/bin/psql -c "SELECT version();"
+## /usr/bin/psql -c "SELECT current_setting('server_version_num') "server_version_num";"
 
-# PostgreSQL still uses localhost as its internal default
-# sudo cat /etc/postgresql/${PG}/main/postgresql.conf | grep "listen_addresses"
-# sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/${PG}/main/postgresql.conf
-# sudo cat /etc/postgresql/${PG}/main/postgresql.conf | grep "listen_addresses"
-# PG postgresql.conf file change requires a stop then start (see below)
 
-# Builds under "runner"
-# Ubuntu non-arm64: ubuntu-latest or ubuntu-24.04
-# Ubuntu                             ubuntu-24.04-arm
-# https://github.com/actions/runner-images
-# acl is no longer required
-# sudo apt-get install -qq acl -y
-# sudo setfacl -Rm u:postgres:rwx,d:u:runner:rwx /home/runner  || true
+# maps to "/usr/bin/psql"
+sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres -U postgres -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
+sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres -U postgres -c "CREATE DATABASE runner OWNER runner;"
 
-# only RELOAD when I know that the server is started
-sudo pg_ctlcluster ${PG} main reload
-# sudo pg_ctlcluster ${PG} main stop  # DOES NOT LIKE THIS
-# sudo pg_ctlcluster ${PG} main start # DOES NOT LIKE THIS
+/usr/lib/postgresql/${PG}/bin/psql -c "SELECT version();"
+/usr/lib/postgresql/${PG}/bin/psql -c "SELECT current_setting('server_version_num') "server_version_num";"
 
-# ## repo (correct works AFTER pg_hba.conf configuration)
-
-sudo -u postgres /usr/bin/psql -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
-sudo -u postgres /usr/bin/psql -c "CREATE DATABASE runner OWNER runner;"
-sudo -u postgres /usr/bin/psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
-sudo -u postgres /usr/bin/psql -c "CREATE DATABASE root OWNER runner;"
-
-/usr/bin/psql -c "SELECT version();"
-/usr/bin/psql -c "SELECT current_setting('server_version_num') "server_version_num";"
+/usr/lib/postgresql/${PG}/bin/psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
+/usr/lib/postgresql/${PG}/bin/psql -c "CREATE DATABASE root OWNER root;"
 
