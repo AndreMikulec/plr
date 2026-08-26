@@ -1250,6 +1250,7 @@ jobs:
           echo "Install Windows mingw Software Repository PostgreSQL"
           set -x -v -e
           pacman -S --needed --noconfirm ${{ env.MINGW_PACKAGE_PREFIX }}-postgresql
+          pacman                    --Ql ${{ env.MINGW_PACKAGE_PREFIX }}-postgresql
 
       - name: Set up Cygwin
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'cygwin' }}
