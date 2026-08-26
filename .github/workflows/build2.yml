@@ -85,12 +85,12 @@ jobs:
         bash ./get_debian_r_binaries_on_ubuntu_from_cran.sh
 
 
-    - name: Debug with SSH owenthereal/action-upterm@v1
+#   - name: Debug with SSH owenthereal/action-upterm@v1
 #     if: ${{ inputs.debug_enabled == true }}
-      uses: owenthereal/action-upterm@v1
-      with:
-        wait-timeout-minutes: 5
-        limit-access-to-actor: true
+#     uses: owenthereal/action-upterm@v1
+#     with:
+#       wait-timeout-minutes: 5
+#       limit-access-to-actor: true
 
     - name: Of PLR, Build, Install, and Check
       run: |
