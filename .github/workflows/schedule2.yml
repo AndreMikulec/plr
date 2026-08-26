@@ -78,7 +78,7 @@ jobs:
 #     target: ${{ matrix.target }}
       ragged_schedule: >
         [
-          {"PG": "master",  "R": "next", "os": "ubuntu-latest",    "GithubActionsIgnoreFail": "false"},
+          {"PG": "master",  "R": "repo", "os": "ubuntu-latest",    "GithubActionsIgnoreFail": "false"},
           {"PG": "REL_19_", "R": "repo", "os": "ubuntu-latest",    "GithubActionsIgnoreFail": "false"},
           {"PG": "18",      "R": "repo", "os": "ubuntu-24.04-arm", "GithubActionsIgnoreFail": "false"},
           {"PG": "18", "R": "repo", "os": "ubuntu-latest", "GithubActionsIgnoreFail": "false"},
