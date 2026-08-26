@@ -466,9 +466,34 @@ jobs:
             #
             pgSRCversion: master
             PG_SOURCE: 'C:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: meson
+            # Install repository "postgres" (whatever version)
+            buildpgFromSRC: false
+            # buildpgFromSRC: true
+            # buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
+
+
+####      - matid: '13'
+####        os: windows-11-arm
+####        GithubActionsIgnoreFail: false
+####        compilerEnv: CLANGARM64
+####        shellEnv: msys2 {0}
+####        compilerExe: clang
+####        Platform: x64
+####        Configuration: Debug
+####        #
+####        rversion: devel-aarch64
+####        R_HOME: 'C:\RINSTALL'
+####        # R_ARCH - not a multiarchitecture
+####        #
+####        pgSRCversion: master
+####        PG_SOURCE: 'C:\PGSOURCE'
+####        # ../src/common/pg_get_line.c:129:30: error
+####        # incompatible pointer types passing 'sigjmp_buf' (aka 'long long[5]') to parameter of type 'void **' [-Wincompatible-pointer-types]
+####        buildpgFromSRC: true
+####        PG_HOME: 'C:\PGINSTALL'
+####        buildpgFromSRCmethod: meson
+
 
 #         # test finding from the correct R repository
 #         # test R is not a multiarchitecture
