@@ -35,7 +35,7 @@ on:
 jobs:
 
   ubuntu_job_runner:
-    name: Ubuntu - PG ${{ matrix.pg }} R ${{ matrix.R }} os ${{ matrix.os }}
+    name: PG ${{ matrix.pg }} R ${{ matrix.R }} os ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     # Unexpected value 'false'
     continue-on-error: ${{ matrix.GithubActionsIgnoreFail == 'true' && true || false }}
