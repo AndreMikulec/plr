@@ -448,7 +448,7 @@ jobs:
 
           # Requested labels: windows-11-arm
           # Job defined at: AndreMikulec/plr/.github/workflows/...
-          # Waiting for a runner to pick up this job... WAITING ... WAITING
+          # Waiting for a runner to pick up this job
           #
           # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
           - matid: '13'
@@ -462,15 +462,16 @@ jobs:
             #
             rversion: devel-aarch64
             R_HOME: 'C:\RINSTALL'
-            # R_ARCH - not a multiarchitecture
+            # R_ARCH - not a multiarchitecture (like cygwin)
             #
-            pgSRCversion: master
-            PG_SOURCE: 'C:\PGSOURCE'
+            # pgSRCversion: master
+            # PG_SOURCE: 'C:\PGSOURCE'
             # Install repository "postgres" (whatever version)
             buildpgFromSRC: false
             # buildpgFromSRC: true
             # buildpgFromSRCmethod: meson
-            PG_HOME: 'C:\PGINSTALL'
+            # PG_HOME: 'C:\PGINSTALL'
+            PG_HOME: 'C:\msys64\ucrt64'
 
 
 ####      - matid: '13'
@@ -484,7 +485,7 @@ jobs:
 ####        #
 ####        rversion: devel-aarch64
 ####        R_HOME: 'C:\RINSTALL'
-####        # R_ARCH - not a multiarchitecture
+####        # R_ARCH - not a multiarchitecture (like cygwin)
 ####        #
 ####        pgSRCversion: master
 ####        PG_SOURCE: 'C:\PGSOURCE'
