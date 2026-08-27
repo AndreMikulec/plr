@@ -1637,11 +1637,10 @@ jobs:
             if [ -f "${R_HOME}/bin${R_ARCH}/R.dll" ]
             then
               pushd "${R_HOME}/bin${R_ARCH}"
-              gendef  -         R.dll >     R.def
-              dlltool --dllname R.dll --def R.def --output-lib libR.dll.a
+              bash . ./create_an_R_import_library_if_needed.sh
               #
               # Put libR.dll.a into the general library location {...ORIG}${R_ARCH}/libR.dll.a
-              mv libR.dll.a "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}/libR.dll.a"
+              if [ -f "libR.dll.a" ]; then mv libR.dll.a "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}/libR.dll.a"; fi
               popd # from "${R_HOME}/bin${R_ARCH}"
             fi
           fi
@@ -2309,11 +2308,10 @@ jobs:
             if [ -f "${R_HOME}/bin${R_ARCH}/R.dll" ]
             then
               pushd "${R_HOME}/bin${R_ARCH}"
-              gendef  -         R.dll >     R.def
-              dlltool --dllname R.dll --def R.def --output-lib libR.dll.a
+              bash . ./create_an_R_import_library_if_needed.sh
               #
               # Put libR.dll.a into the general library location {...ORIG}${R_ARCH}/libR.dll.a
-              mv libR.dll.a "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}/libR.dll.a"
+              if [ -f "libR.dll.a" ]; then mv libR.dll.a "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}/libR.dll.a"; fi
               popd # from "${R_HOME}/bin${R_ARCH}"
             fi
           fi

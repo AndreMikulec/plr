@@ -10,6 +10,11 @@ set -x -v -e
 #
 # Late brute force detection.  I need some thing or some system more elegant here.
 #
+if [ "${OperatingSystem}" == "Msys" ] || [ "${OperatingSystem}" == "Cygwin" ]
+then
+  gendef  -         R.dll >     R.def
+fi
+
 if [ "${isKernelNamedARM}" == "false" ] && ( [ "${OperatingSystem}" == "Msys" ] || [ "${OperatingSystem}" == "Cygwin" ] )
 then
   dlltool --dllname R.dll --def R.def --output-lib libR.dll.a
