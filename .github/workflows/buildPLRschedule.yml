@@ -349,7 +349,7 @@ jobs:
             # buildpgFromSRC: true
             # buildpgFromSRCmethod: meson
             # PG_HOME: 'C:\PGINSTALL'
-            PG_HOME: 'C:\msys64\clangarm64'
+            PG_HOME: repo
 
           # test finding from the correct R repository
           # test R is not a multiarchitecture
@@ -1208,6 +1208,13 @@ jobs:
             exit 1
           fi
 
+          # An MSYS2-repository-installable-package-ONLY-that-needs-THE-package-HOME
+          if [ "${PG_HOME}" == "repo" ] && [ "${OperatingSystem}" == "Msys" ]
+          then
+            export PG_HOME="${MSYSTEM_PREFIX}"
+            echo "PG_HOME: ${PG_HOME}"
+          fi
+
           export PG_HOME=$(cygpath "${PG_HOME}")
           echo  "cygpath   PG_HOME: ${PG_HOME}"
 
@@ -1376,6 +1383,14 @@ jobs:
           echo "rversion: ${rversion}"
           echo "PG_SOURCE: ${PG_SOURCE}"
           echo "PG_HOME: ${PG_HOME}"
+
+          # An MSYS2-repository-installable-package-ONLY-that-needs-THE-package-HOME
+          if [ "${PG_HOME}" == "repo" ] && [ "${OperatingSystem}" == "Msys" ]
+          then
+            export PG_HOME="${MSYSTEM_PREFIX}"
+            echo "PG_HOME: ${PG_HOME}"
+          fi
+
           echo "PGROOT2: ${PGROOT2}"
 
           export WORKSPACE=$(pwd)
@@ -1952,6 +1967,14 @@ jobs:
           echo "R_ARCH: ${R_ARCH}"
           echo "rversion: ${rversion}"
           echo "PG_HOME: ${PG_HOME}"
+
+          # An MSYS2-repository-installable-package-ONLY-that-needs-THE-package-HOME
+          if [ "${PG_HOME}" == "repo" ] && [ "${OperatingSystem}" == "Msys" ]
+          then
+            export PG_HOME="${MSYSTEM_PREFIX}"
+            echo "PG_HOME: ${PG_HOME}"
+          fi
+
           echo "PGROOT2: ${PGROOT2}"
 
           export WORKSPACE=$(pwd)
