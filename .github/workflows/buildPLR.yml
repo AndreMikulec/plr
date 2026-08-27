@@ -1316,6 +1316,14 @@ jobs:
             export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin
           fi
           uname -a
+          uname -s
+          uname -n
+          uname -r
+          uname -v
+          uname -m
+          uname -p
+          uname -i
+          uname -o
           echo "compilerEnv: ${{ env.compilerEnv }}"
           echo "bash: $(which bash)"
           echo "Present Working Directory: $(pwd)"
@@ -1511,6 +1519,14 @@ jobs:
             export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin
           fi
           uname -a
+          uname -s
+          uname -n
+          uname -r
+          uname -v
+          uname -m
+          uname -p
+          uname -i
+          uname -o
           echo "compilerEnv: ${{ env.compilerEnv }}"
           echo "bash: $(which bash)"
           echo "Present Working Directory: $(pwd)"
@@ -2096,6 +2112,14 @@ jobs:
             export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin
           fi
           uname -a
+          uname -s
+          uname -n
+          uname -r
+          uname -v
+          uname -m
+          uname -p
+          uname -i
+          uname -o
           echo "compilerEnv: ${{ env.compilerEnv }}"
           echo "bash: $(which bash)"
           echo "Present Working Directory: $(pwd)"
