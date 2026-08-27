@@ -1103,7 +1103,15 @@ jobs:
           echo "Install Windows mingw Software Repository PostgreSQL"
           set -x -v -e
           pacman -S --needed --noconfirm ${{ env.MINGW_PACKAGE_PREFIX }}-postgresql
-          pacman                    --Ql ${{ env.MINGW_PACKAGE_PREFIX }}-postgresql
+          pacman                     -Ql ${{ env.MINGW_PACKAGE_PREFIX }}-postgresql
+
+          # Did the file or directory actually get installed to disk.
+          echo " Did the file or directory actually get installed to disk."
+          # "-d" if a directory just list the name. Do not dive into the directory contents.
+          for file in $(pacman -Ql mingw-w64-ucrt-x86_64-postgresql | cut -d " " -f 2-)
+          do
+            ls  -alrt -d $file
+          done
 
       - name: Set up Cygwin
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'cygwin' }}
