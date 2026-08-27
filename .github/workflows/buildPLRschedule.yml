@@ -326,9 +326,8 @@ jobs:
 
           # Requested labels: windows-11-arm
           # Job defined at: AndreMikulec/plr/.github/workflows/...
-          # Waiting for a runner to pick up this job... WAITING ... WAITING
+          # Waiting for a runner to pick up this job
           #
-          # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
           # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
           - matid: '13'
             os: windows-11-arm
@@ -341,13 +340,16 @@ jobs:
             #
             rversion: devel-aarch64
             R_HOME: 'C:\RINSTALL'
-            # R_ARCH - not a multiarchitecture
+            # R_ARCH - not a multiarchitecture (like cygwin)
             #
-            pgSRCversion: master
-            PG_SOURCE: 'C:\PGSOURCE'
-            buildpgFromSRC: true
-            buildpgFromSRCmethod: meson
-            PG_HOME: 'C:\PGINSTALL'
+            # pgSRCversion: master
+            # PG_SOURCE: 'C:\PGSOURCE'
+            # Install repository "postgres" (whatever version)
+            buildpgFromSRC: false
+            # buildpgFromSRC: true
+            # buildpgFromSRCmethod: meson
+            # PG_HOME: 'C:\PGINSTALL'
+            PG_HOME: 'C:\msys64\clangarm64'
 
           # test finding from the correct R repository
           # test R is not a multiarchitecture
@@ -1107,7 +1109,7 @@ jobs:
 
           # Did the file or directory actually get installed to disk.
           echo " Did the file or directory actually get installed to disk."
-          # "-d" if a directory just list the name. Do not dive into the directory contents.
+          # "-d" if a directory, then just list the name. Do not dive into the directory contents.
           for file in $(pacman -Ql ${{ env.MINGW_PACKAGE_PREFIX }}-postgresql | cut -d " " -f 2-)
           do
             ls  -alrt -d $file

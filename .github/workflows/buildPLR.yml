@@ -471,7 +471,7 @@ jobs:
             # buildpgFromSRC: true
             # buildpgFromSRCmethod: meson
             # PG_HOME: 'C:\PGINSTALL'
-            PG_HOME: 'C:\msys64\ucrt64'
+            PG_HOME: 'C:\msys64\clangarm64'
 
 
 ####      - matid: '13'
@@ -1254,7 +1254,7 @@ jobs:
 
           # Did the file or directory actually get installed to disk.
           echo " Did the file or directory actually get installed to disk."
-          # "-d" if a directory just list the name. Do not dive into the directory contents.
+          # "-d" if a directory, then just list the name. Do not dive into the directory contents.
           for file in $(pacman -Ql ${{ env.MINGW_PACKAGE_PREFIX }}-postgresql | cut -d " " -f 2-)
           do
             ls  -alrt -d $file
