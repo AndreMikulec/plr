@@ -59,15 +59,15 @@ jobs:
           # Package: postgresql
           # https://www.cygwin.com/packages/summary/postgresql.html
           #
-#         # current Cygwin repository
-#         - matid: '01'
-#           os: windows-2025-vs2026
-#           GithubActionsIgnoreFail: false
-#           compilerEnv: cygwin
-#           Platform: x64
-#           Configuration: Release
-#
-#
+          # current Cygwin repository
+          - matid: '01'
+            os: windows-2025-vs2026
+            GithubActionsIgnoreFail: false
+            compilerEnv: cygwin
+            Platform: x64
+            Configuration: Release
+
+
 #         # plr for "R 4.3.0 (and later) for Windows" can not be compiled with Microsoft Visual Studio.
 #         # Therefore, here, plr for "R 4.3.0 (and later) for Windows" is compiled with MSYS2(UCRT64/MINGW32).
 #         # It is regression tested twice.
@@ -1308,15 +1308,12 @@ jobs:
         run: |
           echo "Compile PG using pgSRCversion and PG_SOURCE and Install to here PG_HOME"
           set -x -v -e
-          if [ "${OperatingSystem}" == "" ]; then export OperatingSystem=$(uname -o); fi
-          echo "OperatingSystem: ${OperatingSystem}"
+          bash . ./get_uname_info.sh
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
             # because I set CHERE_INVOKING to be 1
             export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin
           fi
-          uname -a
-          uname -m
           echo "compilerEnv: ${{ env.compilerEnv }}"
           echo "bash: $(which bash)"
           echo "Present Working Directory: $(pwd)"
@@ -1324,8 +1321,6 @@ jobs:
           if [ "${OperatingSystem}" == "Msys" ]
           then
             echo "msystem: ${msystem}"
-            export | grep MINGW
-            export | grep MSYSTEM
           fi
           #
           echo "pgSRCversion: ${pgSRCversion}"
@@ -1504,15 +1499,12 @@ jobs:
           set -x -v -e
           echo "Windows Meson PG and Meson PL/R Setup Compile and Non-Meson Manual Test"
           set -x -v -e
-          if [ "${OperatingSystem}" == "" ]; then export OperatingSystem=$(uname -o); fi
-          echo "OperatingSystem: ${OperatingSystem}"
+          bash . ./get_uname_info.sh
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
             # because I set CHERE_INVOKING to be 1
             export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin
           fi
-          uname -a
-          uname -m
           echo "compilerEnv: ${{ env.compilerEnv }}"
           echo "bash: $(which bash)"
           echo "Present Working Directory: $(pwd)"
@@ -1520,8 +1512,6 @@ jobs:
           if [ "${OperatingSystem}" == "Msys" ]
           then
             echo "msystem: ${msystem}"
-            export | grep MINGW
-            export | grep MSYSTEM
           fi
           #
           echo "R_HOME: ${R_HOME}"
@@ -2090,15 +2080,12 @@ jobs:
         run: |
           echo "Windows Meson PL/R Setup Compile and Non-Meson Manual Test"
           set -x -v -e
-          if [ "${OperatingSystem}" == "" ]; then export OperatingSystem=$(uname -o); fi
-          echo "OperatingSystem: ${OperatingSystem}"
+          bash . ./get_uname_info.sh
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
             # because I set CHERE_INVOKING to be 1
             export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin
           fi
-          uname -a
-          uname -m
           echo "compilerEnv: ${{ env.compilerEnv }}"
           echo "bash: $(which bash)"
           echo "Present Working Directory: $(pwd)"
@@ -2106,8 +2093,6 @@ jobs:
           if [ "${OperatingSystem}" == "Msys" ]
           then
             echo "msystem: ${msystem}"
-            export | grep MINGW
-            export | grep MSYSTEM
           fi
           #
           echo "R_HOME: ${R_HOME}"
