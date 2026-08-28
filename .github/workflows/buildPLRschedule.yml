@@ -1,5 +1,5 @@
-name: daily Meson Builds PL/R
-run-name: daily Meson Builds PL/R - ${{ github.event.head_commit.message }}
+name: daily Windows Builds PL/R
+run-name: daily Windows Builds PL/R - ${{ github.event.head_commit.message }}
 
 permissions:
   contents: write
