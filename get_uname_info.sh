@@ -18,17 +18,9 @@ export KernelName=$(uname -s)
 echo "KernelName=${KernelName}" >> ${GITHUB_ENV}
 echo "KernelName: ${KernelName}"
 
-export NetworkNodeHostName=$(uname -n)
-echo "NetworkNodeHostName=${NetworkNodeHostName}" >> ${GITHUB_ENV}
-echo "NetworkNodeHostName: ${NetworkNodeHostName}"
-
-export KernelRelease=$(uname -r)
-echo "KernelRelease=${KernelRelease}" >> ${GITHUB_ENV}
-echo "KernelRelease: ${KernelRelease}"
-
-# Windows OS computers -- Msys and Cygwin [generally] only
+# Windows OS computers -- Msys and Cygwin [generally] only a good ARM detection
 export isKernelNamedARM="notset"
-if [ $(uname -r | grep -qEi "arm" && echo 0) ];
+if [ $(uname -s | grep -qEi "arm" && echo 0) ];
 then
   export isKernelNamedARM="true"
 else
@@ -40,6 +32,14 @@ echo "isKernelNamedARM: ${isKernelNamedARM}"
 export KernelVersion=$(uname -v)
 echo "KernelVersion=${KernelVersion}" >> ${GITHUB_ENV}
 echo "KernelVersion: ${KernelVersion}"
+
+export NetworkNodeHostName=$(uname -n)
+echo "NetworkNodeHostName=${NetworkNodeHostName}" >> ${GITHUB_ENV}
+echo "NetworkNodeHostName: ${NetworkNodeHostName}"
+
+export KernelRelease=$(uname -r)
+echo "KernelRelease=${KernelRelease}" >> ${GITHUB_ENV}
+echo "KernelRelease: ${KernelRelease}"
 
 export MachineHardwareName=$(uname -m)
 echo "MachineHardwareName=${MachineHardwareName}" >> ${GITHUB_ENV}
