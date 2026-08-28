@@ -1163,7 +1163,7 @@ jobs:
         run: |
           echo "Compile PG using pgSRCversion and PG_SOURCE and Install to here PG_HOME"
           set -x -v -e
-          bash . ./get_uname_info.sh
+          . ./get_uname_info.sh
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
             # because I set CHERE_INVOKING to be 1
@@ -1354,7 +1354,7 @@ jobs:
           set -x -v -e
           echo "Windows Meson PG and Meson PL/R Setup Compile and Non-Meson Manual Test"
           set -x -v -e
-          bash . ./get_uname_info.sh
+          . ./get_uname_info.sh
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
             # because I set CHERE_INVOKING to be 1
@@ -1637,7 +1637,7 @@ jobs:
             if [ -f "${R_HOME}/bin${R_ARCH}/R.dll" ]
             then
               pushd "${R_HOME}/bin${R_ARCH}"
-              bash . ./create_an_R_import_library_if_needed.sh
+              . ./create_an_R_import_library_if_needed.sh
               #
               # Put libR.dll.a into the general library location {...ORIG}${R_ARCH}/libR.dll.a
               if [ -f "libR.dll.a" ]; then mv libR.dll.a "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}/libR.dll.a"; fi
@@ -1934,7 +1934,7 @@ jobs:
         run: |
           echo "Windows Meson PL/R Setup Compile and Non-Meson Manual Test"
           set -x -v -e
-          bash . ./get_uname_info.sh
+          . ./get_uname_info.sh
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
             # because I set CHERE_INVOKING to be 1
@@ -2308,7 +2308,7 @@ jobs:
             if [ -f "${R_HOME}/bin${R_ARCH}/R.dll" ]
             then
               pushd "${R_HOME}/bin${R_ARCH}"
-              bash . ./create_an_R_import_library_if_needed.sh
+              . ./create_an_R_import_library_if_needed.sh
               #
               # Put libR.dll.a into the general library location {...ORIG}${R_ARCH}/libR.dll.a
               if [ -f "libR.dll.a" ]; then mv libR.dll.a "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}/libR.dll.a"; fi
