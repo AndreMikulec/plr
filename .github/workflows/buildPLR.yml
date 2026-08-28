@@ -267,7 +267,7 @@ jobs:
             shellEnv: msys2 {0}
             compilerExe: gcc
             Platform: x64
-            Configuration: Debug
+            Configuration: Release
             #
             rversion: 4.6.1
             R_HOME: 'C:\RINSTALL'
