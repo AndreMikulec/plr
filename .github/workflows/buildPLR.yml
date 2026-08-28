@@ -446,13 +446,13 @@ jobs:
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
 
-          # Requested labels: windows-11-arm
+          # Requested labels: windows-11-vs2026-arm
           # Job defined at: AndreMikulec/plr/.github/workflows/...
           # Waiting for a runner to pick up this job
           #
           # R bleeding edge and PostgreSQL bleeding edge (buildpgFromSRCmethod meson)
           - matid: '13'
-            os: windows-11-arm
+            os: windows-11-vs2026-arm
             GithubActionsIgnoreFail: false
             compilerEnv: CLANGARM64
             shellEnv: msys2 {0}
@@ -475,7 +475,7 @@ jobs:
 
 
 ####      - matid: '13'
-####        os: windows-11-arm
+####        os: windows-11-vs2026-arm
 ####        GithubActionsIgnoreFail: false
 ####        compilerEnv: CLANGARM64
 ####        shellEnv: msys2 {0}
@@ -525,7 +525,7 @@ jobs:
     steps:
 
       - name: Windows Machine Stats systeminfo
-        if: ${{ matrix.os == 'windows-2025-vs2026' || matrix.os == 'windows-11-arm' }}
+        if: ${{ matrix.os == 'windows-2025-vs2026' || matrix.os == 'windows-11-vs2026-arm' }}
         shell: cmd
         run: |
           systeminfo
@@ -537,7 +537,7 @@ jobs:
           git config --global advice.detachedHead false
 
       - name: Matrix Variables
-        if: ${{ matrix.os == 'windows-2025-vs2026' || matrix.os == 'windows-11-arm' }}
+        if: ${{ matrix.os == 'windows-2025-vs2026' || matrix.os == 'windows-11-vs2026-arm' }}
         shell: powershell
         run: |
           # systeminfo
@@ -562,7 +562,7 @@ jobs:
           echo "os: ${env:os}"
 
           ${env:osClass} = "notset"
-          if("${env:os}" -in "windows-2025-vs2026", "windows-11-arm") {
+          if("${env:os}" -in "windows-2025-vs2026", "windows-11-vs2026-arm") {
             ${env:osClass} = "windows"
           }
           Set-EnvVar "osClass=${env:osClass}"
