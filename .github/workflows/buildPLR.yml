@@ -1225,7 +1225,7 @@ jobs:
             ${{ env.MINGW_PACKAGE_PREFIX }}-make
             make
             ${{ env.MINGW_PACKAGE_PREFIX }}-${{ env.compilerExe }}
-            ${{ env.compilerExe == 'clang' && env.MINGW_PACKAGE_PREFIX-llvm-openmp || '' }}
+            ${{ env.compilerExe == 'clang' && env.MINGW_PACKAGE_PREFIX || '' }}${{ env.compilerExe == 'clang' && '-llvm-openmp' || '' }}
             tar
             gzip
             ${{ env.MINGW_PACKAGE_PREFIX }}-readline
