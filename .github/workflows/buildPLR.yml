@@ -1782,7 +1782,7 @@ jobs:
             if [ -f "${R_HOME}/bin${R_ARCH}/R.dll" ]
             then
               pushd "${R_HOME}/bin${R_ARCH}"
-              . ./create_an_R_import_library_if_needed.sh
+              . $(cygpath "${GITHUB_WORKSPACE}")/create_an_R_import_library_if_needed.sh
               #
               # Put libR.dll.a into the general library location {...ORIG}${R_ARCH}/libR.dll.a
               if [ -f "libR.dll.a" ]; then mv libR.dll.a "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}/libR.dll.a"; fi
@@ -2453,7 +2453,7 @@ jobs:
             if [ -f "${R_HOME}/bin${R_ARCH}/R.dll" ]
             then
               pushd "${R_HOME}/bin${R_ARCH}"
-              . ./create_an_R_import_library_if_needed.sh
+              . $(cygpath "${GITHUB_WORKSPACE}")/create_an_R_import_library_if_needed.sh
               #
               # Put libR.dll.a into the general library location {...ORIG}${R_ARCH}/libR.dll.a
               if [ -f "libR.dll.a" ]; then mv libR.dll.a "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}/libR.dll.a"; fi
