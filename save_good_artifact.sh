@@ -1,8 +1,8 @@
 #!/bin/bash
 set -x -v -e
 
-export PG_SOURCE= "$1"
-export PGROOT2= "$2"
+export PG_SOURCE="$1"
+export PGROOT2="$2"
 
 # save GOOD artifact plr.dll
 #
