@@ -122,8 +122,8 @@ sudo apt-get install -qq postgresql-server-dev-${PG} -y
 
 
 # maps to "/usr/bin/psql"
-sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres -U postgres -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
-sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres -U postgres -c "CREATE DATABASE runner OWNER runner;"
+sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres             -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
+sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres             -c "CREATE DATABASE runner OWNER runner;"
 
 /usr/lib/postgresql/${PG}/bin/psql -c "SELECT version();"
 /usr/lib/postgresql/${PG}/bin/psql -c "SELECT current_setting('server_version_num') "server_version_num";"

@@ -2,7 +2,15 @@
 set -x -v -e
 
 export PG_SOURCE="$1"
+echo "PG_SOURCE: ${PG_SOURCE}"
+
 export PGROOT2="$2"
+echo "PGROOT2: ${PGROOT2}"
+
+export GITHUB_WORKSPACE=$(cygpath "${GITHUB_WORKSPACE}")
+echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
+
+ls -alrt "${PG_SOURCE}/build/contrib/plr/plr.dll"
 
 # save GOOD artifact plr.dll
 #

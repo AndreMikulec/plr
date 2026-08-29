@@ -1214,9 +1214,10 @@ jobs:
           # cygcheck -c R
           Rscript --version
           Rscript --vanilla -e "writeLines(paste0('R_HOME: ', R.home()))"
-          set +x +v +e
-          Rscript --vanilla -e "print(R.version)"
-          set -x -v -e
+          # Bizzare Fail
+          # set +x +v +e
+          # Rscript --vanilla -e "print(R.version)"
+          # set -x -v -e
 
 
       # If the PostgreSQL version is 16 or greater, I can compile PostgreSQL using meson.

@@ -73,7 +73,7 @@ sudo useradd -r -s /bin/bash -m -d /var/lib/postgresql postgres
 # NOTE "sudo -u postgres /usr/local/pgsql/bin/initdb -D data" IS NOT ALLOWED
 
 /usr/local/pgsql/bin/pg_ctl -D data -l logfile start
-/usr/local/pgsql/bin/psql -d postgres -U runner -c "CREATE DATABASE runner OWNER runner;"
+/usr/local/pgsql/bin/psql -d postgres           -c "CREATE DATABASE runner OWNER runner;"
 
 /usr/local/pgsql/bin/psql -c "CREATE ROLE postgres WITH LOGIN SUPERUSER;"
 
