@@ -148,9 +148,17 @@ pg_ctl -D ${PGDATA} -l logfile start
 
 if [ "${compiler}" == "msys2" ]
 then
-  winpty -Xallow-non-tty psql -d postgres -c 'SELECT version();'
+  winpty -Xallow-non-tty psql -d postgres -c "SELECT version();"
 else
-                         psql -d postgres -c 'SELECT version();'
+                         psql -d postgres -c "SELECT version();"
+fi
+
+
+if [ "${compiler}" == "msys2" ]
+then
+  winpty -Xallow-non-tty psql -d postgres -c "SELECT version();"
+else
+                         psql -d postgres -c "SELECT current_setting('server_version_num') "server_version_num";"
 fi
 
 pg_ctl -D ${PGDATA} -l logfile stop
@@ -159,7 +167,7 @@ pg_ctl -D ${PGDATA} -l logfile stop
 
 
 #
-# not yet tried/tested in cygwin
+#
 #                                                                                                                           # cygwin case
 if [ "${githubcache}" == "true" ] && [ "${pggithubbincachefound}" == "false" ] && ([ -f "${pgroot}/bin/postgres" ] || [ -f "${pgroot}/sbin/postgres" ])
 then

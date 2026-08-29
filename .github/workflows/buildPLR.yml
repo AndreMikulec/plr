@@ -1,6 +1,9 @@
 name: Windows Builds PL/R
 run-name: Windows Builds PL/R - ${{ github.event.head_commit.message }}
 
+env:
+  TZ: UTC
+
 permissions:
   contents: write
 
@@ -94,12 +97,13 @@ jobs:
             # R_ARCH - not a multiarchitecture (like cygwin)
             #
             # pgSRCversion: master
-            # PG_SOURCE: 'C:\PGSOURCE'
             # Install repository "postgres" (whatever version)
-            buildpgFromSRC: false
             # buildpgFromSRC: true
             # buildpgFromSRCmethod: meson
             # PG_HOME: 'C:\PGINSTALL'
+            #
+            # 3rd allowable combination
+            buildpgFromSRC: false
             PG_HOME: repo
 
 
@@ -123,7 +127,6 @@ jobs:
             R_ARCH: /x64
             #
             pgSRCversion: master
-            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
@@ -171,7 +174,6 @@ jobs:
             R_ARCH: /x64
             #
             pgSRCversion: master
-            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
@@ -192,7 +194,6 @@ jobs:
             R_ARCH: /x64
             #
             pgSRCversion: master
-            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
@@ -222,13 +223,13 @@ jobs:
   #          # Otherwise, just choose the latest REL_XX_Y or better just REL_XX_STABLE
   #          # https://github.com/postgres/postgres/tags
   #          pgSRCversion: REL_20_BETA1
-  #          PG_SOURCE: 'C:\PGSOURCE'
   #          #
   #          buildpgFromSRC: true
   #          buildpgFromSRCmethod: make/meson(PostgreSQL 16+)
   #          #   Add meson build system (Andres Freund, Nazir Bilal Yavuz, Peter Eisentraut)
   #          #   https://www.postgresql.org/docs/16/release-16.html
   #          # xor
+  #        # # 2nd combination allowed
   #        # # DOES NOT WORK ANYMORE
   #        # buildpgANDplrInSRCcontrib: true
   #          #
@@ -250,7 +251,6 @@ jobs:
             R_ARCH: /x64
             #
             pgSRCversion: REL_19_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
@@ -274,7 +274,6 @@ jobs:
             R_ARCH: /x64
             #
             pgSRCversion: REL_19_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
@@ -309,7 +308,6 @@ jobs:
             R_ARCH: /x64
             #
             pgSRCversion: REL_18_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
@@ -333,7 +331,6 @@ jobs:
             R_ARCH: /x64
             #
             pgSRCversion: REL_17_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
@@ -372,7 +369,6 @@ jobs:
             R_ARCH: /x64
             #
             pgSRCversion: REL_16_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
@@ -398,7 +394,6 @@ jobs:
             R_ARCH: /x64
             #
             pgSRCversion: REL_15_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: make
             PG_HOME: 'C:\PGINSTALL'
@@ -422,7 +417,6 @@ jobs:
             R_ARCH: /x64
             #
             pgSRCversion: REL_14_STABLE
-            PG_SOURCE: 'C:\PGSOURCE'
             buildpgFromSRC: true
             buildpgFromSRCmethod: make
             PG_HOME: 'C:\PGINSTALL'
@@ -620,7 +614,8 @@ jobs:
           echo "pgSRCversion: ${env:pgSRCversion}"
 
           ${env:PG_SOURCE} = "${{ matrix.PG_SOURCE }}"
-          if("${env:PG_SOURCE}" -eq ""){${env:PG_SOURCE} = "notset"}
+          # permanant AUG 2026 default change from "netset" to "C:\PGSOURCE"
+          if("${env:PG_SOURCE}" -eq ""){${env:PG_SOURCE} = "C:\PGSOURCE"}
           Set-EnvVar "PG_SOURCE=${env:PG_SOURCE}"
 
           echo "PG_SOURCE: ${env:PG_SOURCE}"
@@ -1015,7 +1010,9 @@ jobs:
           "${{ env.rversionlong }}.exe" /VERYSILENT /COMPONENTS=main,%R_ARCHplat% /DIR=%R_HOME% /NOICONS /TASKS= /LOG=${{ env.rversionlong }}.exe__install.log /SAVEINF=${{ env.rversionlong }}.exe__setup.inf
           type ${{ env.rversionlong }}.exe__setup.inf
           type ${{ env.rversionlong }}.exe__install.log
-          "%R_HOME%\bin\R" --version
+          "%R_HOME%\bin\Rscript" --version
+          "%R_HOME%\bin\Rscript" --vanilla -e "writeLines(paste0('R_HOME: ', R.home()))"
+          "%R_HOME%\bin\Rscript" --vanilla -e "print(R.version)"
           dir "%R_HOME%"
 
       # Github Actions provided PostgreSQL x64-17 (as of Aug 2025)
@@ -1195,15 +1192,29 @@ jobs:
              libpq-devel
              R  R-debuginfo
 
-      - name: View Cygwin R Version
+      - name: View Cygwin Versions
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'cygwin' }}
         env:
+          # Cygwin OS variables
+          SHELLOPTS: igncr
+          CHERE_INVOKING: 1
+          CYGWIN: 'winsymlinks:native'
           # Msys OS variable
           msystem: ${{ env.compilerEnv }}
         run: |
           echo "View Cygwin R Version"
+          set -x -v -e
+          . ./get_uname_info.sh
+          if [ "${OperatingSystem}" == "Cygwin" ]
+          then
+            # because I set CHERE_INVOKING to be 1
+            export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin:$(cygpath ${SYSTEMROOT})/system32:$(cygpath ${SYSTEMROOT}):$(cygpath ${SYSTEMROOT})/System32/Wbem
+          fi
           # cygwin query R package version
-          cygcheck -c R
+          # cygcheck -c R
+          Rscript --version
+          Rscript --vanilla -e "writeLines(paste0('R_HOME: ', R.home()))"
+          Rscript --vanilla -e "print(R.version)"
 
       # If the PostgreSQL version is 16 or greater, I can compile PostgreSQL using meson.
       - name: Compile PG using pgSRCversion and PG_SOURCE and Install to here PG_HOME
@@ -1212,6 +1223,7 @@ jobs:
           # Cygwin OS variables
           SHELLOPTS: igncr
           CHERE_INVOKING: 1
+          CYGWIN: 'winsymlinks:native'
           # Msys OS variable
           msystem: ${{ env.compilerEnv }}
           Configuration: ${{ env.Configuration }}
@@ -1226,7 +1238,7 @@ jobs:
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
             # because I set CHERE_INVOKING to be 1
-            export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin
+            export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin:$(cygpath ${SYSTEMROOT})/system32:$(cygpath ${SYSTEMROOT}):$(cygpath ${SYSTEMROOT})/System32/Wbem
           fi
           echo "compilerEnv: ${{ env.compilerEnv }}"
           echo "bash: $(which bash)"
@@ -1397,6 +1409,7 @@ jobs:
           # Cygwin shell variables
           SHELLOPTS: igncr
           CHERE_INVOKING: 1
+          CYGWIN: 'winsymlinks:native'
           # Msys shell variable
           msystem: ${{ env.compilerEnv }}
           Configuration: ${{ env.Configuration }}
@@ -1417,7 +1430,7 @@ jobs:
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
             # because I set CHERE_INVOKING to be 1
-            export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin
+            export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin:$(cygpath ${SYSTEMROOT})/system32:$(cygpath ${SYSTEMROOT}):$(cygpath ${SYSTEMROOT})/System32/Wbem
           fi
           echo "compilerEnv: ${{ env.compilerEnv }}"
           echo "bash: $(which bash)"
@@ -1846,6 +1859,9 @@ jobs:
           export PGUSER=$(whoami)
           echo "PGUSER: ${PGUSER}"
 
+          psql -d postgres                 -c "SELECT version();"
+          psql -d postgres                 -c "SELECT current_setting('server_version_num') "server_version_num";"
+
           pushd     "${PG_SOURCE}/contrib/cube"
           "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${PG_HOME}/bin" --dbname=pl_regression cube cube_sci || (cat regression.diffs && false)
           popd # fr "${PG_SOURCE}/contrib/cube"
@@ -1980,6 +1996,7 @@ jobs:
           # Cygwin shell variables
           SHELLOPTS: igncr
           CHERE_INVOKING: 1
+          CYGWIN: 'winsymlinks:native'
           # Msys shell variable
           msystem: ${{ env.compilerEnv }}
           Configuration: ${{ env.Configuration }}
@@ -1997,7 +2014,7 @@ jobs:
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
             # because I set CHERE_INVOKING to be 1
-            export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin
+            export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin:$(cygpath ${SYSTEMROOT})/system32:$(cygpath ${SYSTEMROOT}):$(cygpath ${SYSTEMROOT})/System32/Wbem
           fi
           echo "compilerEnv: ${{ env.compilerEnv }}"
           echo "bash: $(which bash)"
@@ -2474,6 +2491,10 @@ jobs:
           # Some environments require it
           export PGUSER=$(whoami)
           echo "PGUSER: ${PGUSER}"
+
+          psql -d postgres                 -c "SELECT version();"
+          psql -d postgres                 -c "SELECT current_setting('server_version_num') "server_version_num";"
+
           "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${PG_HOME}/bin" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
 
           # Stop the cluster after

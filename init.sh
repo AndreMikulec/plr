@@ -125,6 +125,10 @@ else
 fi
 loginfo "R_HOME is in the PATH $(echo ${PATH})"
 
+Rscript --version
+Rscript --vanilla -e "writeLines(paste0('R_HOME: ', R.home()))"
+Rscript --vanilla -e "print(R.version)"
+
 set +v +x +e
 # set +e
 
