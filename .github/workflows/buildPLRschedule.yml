@@ -1229,12 +1229,11 @@ jobs:
           # cygwin query R package version
           # cygcheck -c R
           unset R_ARCH
+          set +x +v +e
           Rscript --version
           Rscript --vanilla -e "writeLines(paste0('R_HOME: ', R.home()))"
-          # Bizzare Fail
-          # set +x +v +e
           Rscript --vanilla -e "print(R.version)"
-          # set -x -v -e
+          set -x -v -e
 
       # If the PostgreSQL version is 16 or greater, I can compile PostgreSQL using meson.
       - name: Compile PG using pgSRCversion and PG_SOURCE and Install to here PG_HOME
