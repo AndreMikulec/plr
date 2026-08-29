@@ -1215,8 +1215,8 @@ jobs:
           CHERE_INVOKING: 1
           CYGWIN: 'winsymlinks:native'
           # Msys OS variable
-          # Msys OS variable
           msystem: ${{ env.compilerEnv }}
+          R_ARCH: ${{ env.R_ARCH }}
         run: |
           echo "View Cygwin R Version"
           set -x -v -e
@@ -1228,11 +1228,12 @@ jobs:
           fi
           # cygwin query R package version
           # cygcheck -c R
+          unset R_ARCH
           Rscript --version
           Rscript --vanilla -e "writeLines(paste0('R_HOME: ', R.home()))"
           # Bizzare Fail
           # set +x +v +e
-          # Rscript --vanilla -e "print(R.version)"
+          Rscript --vanilla -e "print(R.version)"
           # set -x -v -e
 
       # If the PostgreSQL version is 16 or greater, I can compile PostgreSQL using meson.
@@ -1949,7 +1950,7 @@ jobs:
 
           #### END BUILD PG AND PLR AND TEST PLR ####
 
-          bash save_good_artifact.sh "${PG_SOURCE}" "${PGROOT2}"
+          bash save_good_artifact.sh "${PG_SOURCE}" "${PGROOT2}" "${GITHUB_WORKSPACE}"
 
 
       - name: Windows Meson PL/R Setup Compile and Non-Meson Manual Test

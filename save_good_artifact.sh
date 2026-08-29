@@ -1,15 +1,24 @@
 #!/bin/bash
 set -x -v -e
 
+echo "pwd: $(pwd)"
+
 export PG_SOURCE="$1"
+echo "PG_SOURCE: ${PG_SOURCE}"
+export PG_SOURCE=$(cygpath "${PG_SOURCE}")
 echo "PG_SOURCE: ${PG_SOURCE}"
 
 export PGROOT2="$2"
 echo "PGROOT2: ${PGROOT2}"
+export PGROOT2=$(cygpath "${PGROOT2}")
+echo "PGROOT2: ${PGROOT2}"
 
+export GITHUB_WORKSPACE="$3"
+echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
 export GITHUB_WORKSPACE=$(cygpath "${GITHUB_WORKSPACE}")
 echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
 
+# If the file is not there, then do not bother to continue
 ls -alrt "${PG_SOURCE}/build/contrib/plr/plr.dll"
 
 # save GOOD artifact plr.dll
