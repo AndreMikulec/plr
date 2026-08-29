@@ -122,6 +122,10 @@ sudo apt-get install -qq postgresql-server-dev-${PG} -y
 
 
 # maps to "/usr/bin/psql"
+
+sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres             -c "\du"
+sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres             -c "\l"
+
 sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres             -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
 sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres             -c "CREATE DATABASE runner OWNER runner;"
 

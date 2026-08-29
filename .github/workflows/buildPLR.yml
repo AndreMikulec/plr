@@ -2462,7 +2462,7 @@ jobs:
 
           #### END BUILD PG AND PLR AND TEST PLR ####
 
-          bash save_good_artifact.sh "${PG_SOURCE}" "${PGROOT2}"
+          bash save_good_artifact.sh "${PG_SOURCE}" "${PGROOT2}" "${GITHUB_WORKSPACE}"
 
 
       # @v4 - Due to how Artifacts are created in this new version,
