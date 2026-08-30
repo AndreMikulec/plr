@@ -2478,10 +2478,6 @@ jobs:
 
           #### END BUILD PG AND PLR AND TEST PLR ####
 
-          echo "WORKSPACE: ${WORKSPACE}"
-          echo "pwd: $(pwd)"
-          ls -alrt /c/PGSOURCE/build/contrib/plr/plr.dll
-
           bash save_good_artifact_from_place.sh "${PG_HOME}" "${PGROOT2}" "${WORKSPACE}"
 
 

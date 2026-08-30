@@ -18,17 +18,14 @@ echo "CURRENT_WORKSPACE: ${CURRENT_WORKSPACE}"
 export CURRENT_WORKSPACE=$(cygpath "${CURRENT_WORKSPACE}")
 echo "CURRENT_WORKSPACE: ${CURRENT_WORKSPACE}"
 
-# If the file is not there, then do not bother to continue
-ls -alrt "${PG_PLACE}/build/contrib/plr/plr.dll"
-
 # save GOOD artifact plr.dll
 #
-if [ -f "${PG_PLACE}/build/contrib/plr/plr.dll" ]
+if [ -f "${PG_PLACE}/contrib/plr/plr.dll" ]
 then
   echo "Save plr.dll to be an artifact."
   mkdir -p                                             ${CURRENT_WORKSPACE}/tmp/lib
   cp    LICENSE                                        ${CURRENT_WORKSPACE}/tmp/PLR_LICENSE
-  cp    "${PG_PLACE}/build/contrib/plr/plr.dll"        ${CURRENT_WORKSPACE}/tmp/lib
+  cp    "${PG_PLACE}/contrib/plr/plr.dll"              ${CURRENT_WORKSPACE}/tmp/lib
   ls -alrt                                             ${CURRENT_WORKSPACE}/tmp/lib/plr.dll
   mkdir -p                                             ${CURRENT_WORKSPACE}/tmp/share/extension
   cp    *.control                                      ${CURRENT_WORKSPACE}/tmp/share/extension
@@ -39,11 +36,11 @@ export CURRENT_WORKSPACE=$(cygpath "${CURRENT_WORKSPACE}")
 #
 # save GOOD artifact plr.dll.a
 #
-if [ -f "${PG_PLACE}/build/contrib/plr/plr.dll.a" ]
+if [ -f "${PG_PLACE}/contrib/plr/plr.dll.a" ]
 then
   echo "Save plr.dll.a to be an artifact."
   mkdir -p                                               ${CURRENT_WORKSPACE}/tmp/lib
-  cp    "${PG_PLACE}/build/contrib/plr/plr.dll.a"        ${CURRENT_WORKSPACE}/tmp/lib
+  cp    "${PG_PLACE}/contrib/plr/plr.dll.a"              ${CURRENT_WORKSPACE}/tmp/lib
   ls -alrt                                               ${CURRENT_WORKSPACE}/tmp/lib/plr.dll.a
 fi
 
@@ -66,11 +63,11 @@ then
 
   if [ -d "${PGROOT2}" ]
   then
-    if [ -f "${PG_PLACE}/build/contrib/plr/plr.dll" ]
+    if [ -f "${PG_PLACE}/contrib/plr/plr.dll" ]
     then
       echo "PGROOT2 is found. Preparing PostgreSQL for Windows testing."
 
-      cp  "${PG_PLACE}/build/contrib/plr/plr.dll"   "${PGROOT2}/lib"
+      cp  "${PG_PLACE}/contrib/plr/plr.dll"          "${PGROOT2}/lib"
       ls -alrt                                       "${PGROOT2}/lib/plr.dll"
       cp plr.control                                 "${PGROOT2}/share/extension"
       ls -alrt                                       "${PGROOT2}/share/extension/plr.control"
