@@ -2468,11 +2468,12 @@ jobs:
           # 
           # bash save_good_artifact.sh "${PG_SOURCE}" "${PGROOT2}" "${GITHUB_WORKSPACE}"
 
-     - name: Debug with SSH owenthereal/action-upterm@v1
-       uses: owenthereal/action-upterm@v1
-       with:
-         wait-timeout-minutes: 5
-         limit-access-to-actor: true
+
+      - name: Debug with SSH owenthereal/action-upterm@v1
+        uses: owenthereal/action-upterm@v1
+        with:
+          wait-timeout-minutes: 5
+          limit-access-to-actor: true
 
 
       # @v4 - Due to how Artifacts are created in this new version,
