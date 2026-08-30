@@ -1933,7 +1933,7 @@ jobs:
 
           #### END BUILD PG AND PLR AND TEST PLR ####
 
-          bash save_good_artifact.sh "${PG_SOURCE}" "${PGROOT2}" "${GITHUB_WORKSPACE}"
+          bash save_good_artifact_from_place.sh "${PG_SOURCE}/build" "${PGROOT2}" "${GITHUB_WORKSPACE}"
 
 
       - name: Windows Meson PL/R Setup Compile and Non-Meson Manual Test
@@ -2462,18 +2462,14 @@ jobs:
 
           #### END BUILD PG AND PLR AND TEST PLR ####
 
-          # echo "WORKSPACE: ${WORKSPACE}"
-          # echo "pwd: $(pwd)"
-          # ls -alrt /c/PGSOURCE/build/contrib/plr/plr.dll
-          # 
-          # bash save_good_artifact.sh "${PG_SOURCE}" "${PGROOT2}" "${GITHUB_WORKSPACE}"
+          bash save_good_artifact_from_place.sh "${PG_HOME}" "${PGROOT2}" "${WORKSPACE}"
 
 
-      - name: Debug with SSH owenthereal/action-upterm@v1
-        uses: owenthereal/action-upterm@v1
-        with:
-          wait-timeout-minutes: 5
-          limit-access-to-actor: true
+#     - name: Debug with SSH owenthereal/action-upterm@v1
+#       uses: owenthereal/action-upterm@v1
+#       with:
+#         wait-timeout-minutes: 5
+#         limit-access-to-actor: true
 
 
       # @v4 - Due to how Artifacts are created in this new version,
