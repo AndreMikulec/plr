@@ -68,14 +68,18 @@ sudo useradd -r -s /bin/bash -m -d /var/lib/postgresql postgres
 # When you initialize a PostgreSQL database using initdb without any extra flags, 
 # the initial superuser role is automatically 
 # given the same name as your operating system username, not "postgres"
+# NOTE "sudo -u postgres /usr/local/pgsql/bin/initdb -D data" IS NOT ALLOWED
 /usr/local/pgsql/bin/initdb -D data
 # automatically created: cluster role "runner", database "postgres"
-# NOTE "sudo -u postgres /usr/local/pgsql/bin/initdb -D data" IS NOT ALLOWED
 
 /usr/local/pgsql/bin/pg_ctl -D data -l logfile start
 
 /usr/local/pgsql/bin/psql -d postgres           -c "\du"
 /usr/local/pgsql/bin/psql -d postgres           -c "\l"
+
+# In a PG database compiled from source the user "runner" is created.
+# In a database compiled from source, the database "postgres" is created.
+# The owner of the database "postgres" database is the user "runner"
 
 # role "runner" already exists
 # /usr/local/pgsql/bin/psql -d postgres           -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
@@ -89,14 +93,13 @@ sudo useradd -r -s /bin/bash -m -d /var/lib/postgresql postgres
 
 # OPTIONAL 
 # (Just ONLY the USER-DATABASE pair mappings must exist for automatic unconstrained logging-in.)
-# /usr/local/pgsql/bin/psql -d postgres -c "ALTER DATABASE postgres OWNER TO postgres;" # GOOD
+/usr/local/pgsql/bin/psql -c "ALTER DATABASE postgres OWNER TO postgres;"
 # /usr/local/pgsql/bin/psql -d postgres -c "REASSIGN OWNED BY runner TO postgres;"
 # ERROR:  cannot reassign ownership of objects owned by role runner because they are required by the database system
 # HOWEVER this REASSIGN works in Cygwin
 
 /usr/local/pgsql/bin/psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
 /usr/local/pgsql/bin/psql -c "CREATE DATABASE root OWNER root;"
-
 
 ## # runner@runnervmgx7h7:~/work/plr/plr$ ls -alrt data/*.conf
 ## # -rw------- 1 runner runner 45968 Aug 25 18:47 data/postgresql.conf

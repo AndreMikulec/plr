@@ -120,11 +120,16 @@ sudo apt-get install -qq postgresql-server-dev-${PG} -y
 ## /usr/bin/psql -c "SELECT version();"
 ## /usr/bin/psql -c "SELECT current_setting('server_version_num') "server_version_num";"
 
+# The case seems that installing a PG database from an Ubuntu package automatically starts the database.
 
 # maps to "/usr/bin/psql"
 
 sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres             -c "\du"
 sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres             -c "\l"
+
+# In a PG database created from an Ubuntu package the user "postgres" is created.
+# In a database reated from an Ubuntu package, the database "postgres" is created.
+# The owner of the database "postgres" database is the user "postgres".
 
 sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres             -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
 sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres             -c "CREATE DATABASE runner OWNER runner;"

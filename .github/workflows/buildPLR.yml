@@ -2462,6 +2462,10 @@ jobs:
 
           #### END BUILD PG AND PLR AND TEST PLR ####
 
+          echo "WORKSPACE: ${WORKSPACE}"
+          echo "pwd: $(pwd)"
+          ls -alrt /c/PGSOURCE/build/contrib/plr/plr.dll
+
           bash save_good_artifact.sh "${PG_SOURCE}" "${PGROOT2}" "${GITHUB_WORKSPACE}"
 
 
