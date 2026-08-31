@@ -1308,6 +1308,7 @@ jobs:
           then
             export PG_HOME="${MSYSTEM_PREFIX}"
             echo "PG_HOME: ${PG_HOME}"
+            # but actually -- $(dirname "$(pg_config | grep "^INCLUDEDIR " | sed "s/ = /=/" | sed "s/^.*=//")")
           fi
 
           export PG_HOME=$(cygpath "${PG_HOME}")
