@@ -6,13 +6,17 @@ then
   sudo /etc/init.d/postgresql stop
 fi
 
-sudo apt-get remove --purge postgresql\*
+sudo apt-get remove -qq --purge postgresql\* -y
 sudo rm -rf /etc/postgresql /var/lib/postgresql
 
 if [ $(id postgres >/dev/null 2>&1 && echo 0) ]
 then 
   sudo deluser --remove-home postgres
 fi
+
+# dpkg -S /usr/bin/pg_config
+#   libpq-dev: /usr/bin/pg_config
+sudo apt-get remove -qq --purge libpq\* -y
 
 # Additionally, you will likely need to define a higher "pinning" priority 
 #  as otherwise the versions of the packages provided 
