@@ -60,6 +60,9 @@ pushd postgres
 # ./configure
 # make
 # sudo make install
+#
+# https://mesonbuild.com/Quick-guide.html
+sudo apt-get install -qq python3 ninja-build meson -y
 meson setup -Dbuildtype=release -Ddebug=false -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 meson compile -C build -v
 meson install -C build
