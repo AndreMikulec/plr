@@ -1,6 +1,6 @@
 
 name: Windows Builds PLR jobs
-run-name: Ubuntu Builds PLR jobs - ${{ github.event.head_commit.message }}
+run-name: Windows Builds PLR jobs - ${{ github.event.head_commit.message }}
 
 env:
   TZ: UTC
