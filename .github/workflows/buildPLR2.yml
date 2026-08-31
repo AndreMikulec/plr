@@ -35,7 +35,8 @@ jobs:
     # With "continue-on-error" (and with "fail-fast") emulate Appveyor "allow_failures"
     # Prevents a workflow run from failing when a job fails. Set to true to allow a workflow run to pass when this job fails.
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idcontinue-on-error
-    continue-on-error: ${{ matrix.GithubActionsIgnoreFail }}
+    # Unexpected value 'false'
+    continue-on-error: ${{ matrix.GithubActionsIgnoreFail == 'true' && true || false }}
     strategy:
       # Disable fail-fast as we want results from all even if one fails.
       fail-fast: false
