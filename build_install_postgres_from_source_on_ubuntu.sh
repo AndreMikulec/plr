@@ -57,9 +57,13 @@ sudo apt-get install -qq libreadline-dev -y
 sudo apt-get install -qq bison flex libssl-dev -y
 
 pushd postgres
+# six minutes
+#
 # ./configure
 # make
 # sudo make install
+#
+# one minute and four seconds
 #
 # https://mesonbuild.com/Quick-guide.html
 sudo apt-get install -qq python3 ninja-build meson -y
