@@ -26,6 +26,7 @@ pg_config
 # WRONG  dirname /usr/include/postgresql
 # export PG_HOME=$(dirname "$(pg_config | grep "^INCLUDEDIR " | sed "s/ = /=/" | sed "s/^.*=//")")
 export PG_HOME=/usr
+sudo chmod 777                                                                                     "${PG_HOME}/lib/pkgconfig"
 cat "${PG_HOME}/lib/pkgconfig/libpq.pc" | sed "s/libpq/libpostgres/g" | sed "s/-lpq/-lpostgres/" > "${PG_HOME}/lib/pkgconfig/libpostgres.pc"
 export PATH=${PG_HOME}/lib:${PATH}
 export PATH=${PG_HOME}/bin:${PATH}
