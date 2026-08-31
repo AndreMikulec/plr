@@ -32,7 +32,10 @@ export PATH=${R_HOME}/bin:${PATH}
 # cat "libR.pc" | sed "s|R_HOME|${R_HOME}|" | sed "s|R_ARCH|${R_ARCH}|" | sed "s/rversion/${rversion}/" > libR.pc"
 
 sudo mkdir     ${PG_HOME}/contrib
+sudo chmod 777 ${PG_HOME}/contrib
+
 sudo mkdir     ${PG_HOME}/contribplr
+sudo chmod 777 ${PG_HOME}/contribplr
 cp -R       *  ${PG_HOME}/contribplr
 
 pushd     ${PG_HOME}/contribplr
