@@ -21,8 +21,11 @@ set -x -v -e
 # libR.pc THAT COMES WITH "libR R INSTALLED ON UBUNTU"
 # export PKG_CONFIG_PATH=$(pwd):${PKG_CONFIG_PATH}
 
-               
-export PG_HOME=$(dirname "$(pg_config | grep "^INCLUDEDIR " | sed "s/ = /=/" | sed "s/^.*=//")")
+pg_config
+
+# WRONG  dirname /usr/include/postgresql
+# export PG_HOME=$(dirname "$(pg_config | grep "^INCLUDEDIR " | sed "s/ = /=/" | sed "s/^.*=//")")
+export PG_HOME=/usr
 cat "${PG_HOME}/lib/pkgconfig/libpq.pc" | sed "s/libpq/libpostgres/g" | sed "s/-lpq/-lpostgres/" > "${PG_HOME}/lib/pkgconfig/libpostgres.pc"
 export PATH=${PG_HOME}/lib:${PATH}
 export PATH=${PG_HOME}/bin:${PATH}
