@@ -23,14 +23,15 @@ set -x -v -e
 
                
 export PG_HOME=$(dirname "$(pg_config | grep "^INCLUDEDIR " | sed "s/ = /=/" | sed "s/^.*=//")")
+cat "${PG_HOME}/lib/pkgconfig/libpq.pc" | sed "s/libpq/libpostgres/g" | sed "s/-lpq/-lpostgres/" > "${PG_HOME}/lib/pkgconfig/libpostgres.pc"
 export PATH=${PG_HOME}/lib:${PATH}
 export PATH=${PG_HOME}/bin:${PATH}
 export R_HOME=$(pkg-config --variable=rhome libR)
-export PATH=${R_HOME}/bin:${PATH}
-
 # libR.pc THAT COMES WITH "libR R INSTALLED ON UBUNTU"
 # export rversion=$(Rscript --version | grep -oP "\d+[.]\d+[.]\d+")
 # cat "libR.pc" | sed "s|R_HOME|${R_HOME}|" | sed "s|R_ARCH|${R_ARCH}|" | sed "s/rversion/${rversion}/" > libR.pc"
+
+export PATH=${R_HOME}/bin:${PATH}
 
 sudo mkdir     ${PG_HOME}/contrib
 sudo chmod 777 ${PG_HOME}/contrib
