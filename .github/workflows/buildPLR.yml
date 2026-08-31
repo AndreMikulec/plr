@@ -51,6 +51,15 @@ jobs:
       # In the caseof "next PostgreSQL" (See far below in the matrix)
       # a HUMAN must manually see the VERSION.
 
+      # AUG 30 2026 (does the fileid stay the same or change per ${PG}?)
+      # Windows x86-64
+      # 18.6   https://sbp.enterprisedb.com/getfile.jsp?fileid=1260436
+      # 17.11  https://sbp.enterprisedb.com/getfile.jsp?fileid=1260428
+      # 16.15  https://sbp.enterprisedb.com/getfile.jsp?fileid=1260421
+      # 15.19  https://sbp.enterprisedb.com/getfile.jsp?fileid=1260414
+      # 14.24  https://sbp.enterprisedb.com/getfile.jsp?fileid=1260407
+      # https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+
         include:
 
           # Note, the x86 Cygwin Server will "not start" on Github Actions.
@@ -373,7 +382,7 @@ jobs:
             buildpgFromSRCmethod: meson
             PG_HOME: 'C:\PGINSTALL'
             #
-            pgWINversion: 16.14-2
+            pgWINversion: 16.15-1
             MSYS2testonpgWIN: true
  
           # buildpgFromSRCmethod meson - ONLY WORKS on the PostreSQL REL_16_STABLE version or later
@@ -398,7 +407,7 @@ jobs:
             buildpgFromSRCmethod: make
             PG_HOME: 'C:\PGINSTALL'
             #
-            pgWINversion: 15.18-2
+            pgWINversion: 15.19-1
             MSYS2testonpgWIN: true
  
  
@@ -421,7 +430,7 @@ jobs:
             buildpgFromSRCmethod: make
             PG_HOME: 'C:\PGINSTALL'
             #
-            pgWINversion: 14.23-2
+            pgWINversion: 14.24-1
             MSYS2testonpgWIN: true
 
 
@@ -467,6 +476,17 @@ jobs:
           Set-EnvVar "os=${env:os}"
 
           echo "os: ${env:os}"
+
+          ${env:cpuClass} = "notset"
+          if("${env:os}" -eq "windows-2025-vs2026") {
+            ${env:cpuClass} = "amd64"
+          }
+          if("${env:os}" -eq "windows-11-vs2026-arm") {
+            ${env:cpuClass} = "aarch64"
+          }
+          Set-EnvVar "cpuClass=${env:cpuClass}"
+
+          echo "cpuClass: ${env:cpuClass}"
 
           ${env:osClass} = "notset"
           if("${env:os}" -in "windows-2025-vs2026", "windows-11-vs2026-arm") {
@@ -572,7 +592,6 @@ jobs:
           Set-EnvVar "compilerClass=${env:compilerClass}"
 
           echo "compilerClass: ${env:compilerClass}"
-
 
           ${env:compilerExe} = "${{ matrix.compilerExe }}"
           if("${env:compilerExe}" -eq ""){${env:compilerExe} = "notset"}
@@ -1116,6 +1135,7 @@ jobs:
       - name: Install Windows mingw Software
         if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' }}
         uses: msys2/setup-msys2@v2
+        id: msys2_install
         with:
           # By default, the installation is not updated; hence package versions are those of the installation tarball.
           # Faster without the "update"
@@ -1196,11 +1216,13 @@ jobs:
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'cygwin' }}
         env:
           # Cygwin OS variables
-          SHELLOPTS: igncr
-          CHERE_INVOKING: 1
-          CYGWIN: 'winsymlinks:native'
-          # Msys OS variable
-          msystem: ${{ env.compilerEnv }}
+          SHELLOPTS:         ${{ env.compilerClass == 'cygwin' && 'igncr' || '' }}
+          CHERE_INVOKING:    ${{ env.compilerClass == 'cygwin' && '1' || '' }}
+          CYGWIN:            ${{ env.compilerClass == 'cygwin' && 'winsymlinks:native' || '' }}
+          # Msys OS variables
+          msystem:           ${{ env.compilerClass == 'MSYS2'  && env.compilerEnv || '' }}
+          MSYS2_LOCATION:    ${{ env.compilerClass == 'MSYS2'  && steps.msys2_install.outputs.msys2-location || '' }}
+          #
           R_ARCH: ${{ env.R_ARCH }}
         run: |
           echo "View Cygwin R Version"
@@ -1225,11 +1247,13 @@ jobs:
         if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgFromSRC == 'true' }}
         env:
           # Cygwin OS variables
-          SHELLOPTS: igncr
-          CHERE_INVOKING: 1
-          CYGWIN: 'winsymlinks:native'
-          # Msys OS variable
-          msystem: ${{ env.compilerEnv }}
+          SHELLOPTS:         ${{ env.compilerClass == 'cygwin' && 'igncr' || '' }}
+          CHERE_INVOKING:    ${{ env.compilerClass == 'cygwin' && '1' || '' }}
+          CYGWIN:            ${{ env.compilerClass == 'cygwin' && 'winsymlinks:native' || '' }}
+          # Msys OS variables
+          msystem:           ${{ env.compilerClass == 'MSYS2'  && env.compilerEnv || '' }}
+          MSYS2_LOCATION:    ${{ env.compilerClass == 'MSYS2'  && steps.msys2_install.outputs.msys2-location || '' }}
+          #
           Configuration: ${{ env.Configuration }}
           #
           PG_SOURCE: ${{ env.PG_SOURCE }}
@@ -1410,12 +1434,14 @@ jobs:
       - name: Windows Meson PG and Meson PL/R Setup Compile and Non-Meson Manual Test
         if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib == 'true' }}
         env:
-          # Cygwin shell variables
-          SHELLOPTS: igncr
-          CHERE_INVOKING: 1
-          CYGWIN: 'winsymlinks:native'
-          # Msys shell variable
-          msystem: ${{ env.compilerEnv }}
+          # Cygwin OS variables
+          SHELLOPTS:         ${{ env.compilerClass == 'cygwin' && 'igncr' || '' }}
+          CHERE_INVOKING:    ${{ env.compilerClass == 'cygwin' && '1' || '' }}
+          CYGWIN:            ${{ env.compilerClass == 'cygwin' && 'winsymlinks:native' || '' }}
+          # Msys OS variables
+          msystem:           ${{ env.compilerClass == 'MSYS2'  && env.compilerEnv || '' }}
+          MSYS2_LOCATION:    ${{ env.compilerClass == 'MSYS2'  && steps.msys2_install.outputs.msys2-location || '' }}
+          #
           Configuration: ${{ env.Configuration }}
           #
           R_HOME: ${{ env.R_HOME }}
@@ -1939,12 +1965,14 @@ jobs:
       - name: Windows Meson PL/R Setup Compile and Non-Meson Manual Test
         if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib != 'true' }}
         env:
-          # Cygwin shell variables
-          SHELLOPTS: igncr
-          CHERE_INVOKING: 1
-          CYGWIN: 'winsymlinks:native'
-          # Msys shell variable
-          msystem: ${{ env.compilerEnv }}
+          # Cygwin OS variables
+          SHELLOPTS:         ${{ env.compilerClass == 'cygwin' && 'igncr' || '' }}
+          CHERE_INVOKING:    ${{ env.compilerClass == 'cygwin' && '1' || '' }}
+          CYGWIN:            ${{ env.compilerClass == 'cygwin' && 'winsymlinks:native' || '' }}
+          # Msys OS variables
+          msystem:           ${{ env.compilerClass == 'MSYS2'  && env.compilerEnv || '' }}
+          MSYS2_LOCATION:    ${{ env.compilerClass == 'MSYS2'  && steps.msys2_install.outputs.msys2-location || '' }}
+          #
           Configuration: ${{ env.Configuration }}
           #
           R_HOME: ${{ env.R_HOME }}
@@ -2481,7 +2509,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v7
         with:
-          name: plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}
+          name: plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.osClass }}-${{ env.cpuClass }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}
           # default
           if-no-files-found: warn
           path: |
@@ -2573,8 +2601,8 @@ jobs:
         run: |
           echo on
           dir
-          if exist plr-artifact.zip copy plr-artifact.zip plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
-          if exist plr-artifact.zip dir                   plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
+          if exist plr-artifact.zip copy plr-artifact.zip plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.osClass }}-${{ env.cpuClass }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
+          if exist plr-artifact.zip dir                   plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.osClass }}-${{ env.cpuClass }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
 
       # Testing is not done here.
       # Pushing this tag assumes that the previous Github Actions workflow run had all 'successes'.
@@ -2587,5 +2615,5 @@ jobs:
           # "artifacts" means "paths" and "files"
           # set of paths representing artifacts to upload to the release
           artifacts: |
-            plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
+            plr-matid-${{ matrix.matid }}-${{ env.HEAD7_GITHUB_SHA }}-${{ env.compilerEnv }}-${{ env.osClass }}-${{ env.cpuClass }}-${{ env.Platform }}-R${{ env.rversion }}-PG${{ env.pgversion }}-${{ env.Configuration }}.zip
           token: ${{ secrets.GITHUB_TOKEN }}
