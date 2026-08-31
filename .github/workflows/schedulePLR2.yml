@@ -28,7 +28,7 @@ jobs:
           # https://www.cygwin.com/packages/summary/postgresql.html
           #
           # current Cygwin repository
-#         {"matid": "01", "os": "windows-2025-vs2026", "GithubActionsIgnoreFail": "false", "compilerEnv": "cygwin", "Platform": "x64", "Configuration: Release" }
+#         {"matid": "01", "os": "windows-2025-vs2026", "GithubActionsIgnoreFail": "false", "compilerEnv": "cygwin", "Platform": "x64", "Configuration": "Release" }
 
   windows_scheduled_daily_job_caller:
     name: Windows daily builds
@@ -37,7 +37,7 @@ jobs:
     with:
       ragged_schedule: >
         [
-          {"matid": "01", "os": "windows-2025-vs2026", "GithubActionsIgnoreFail": "false", "compilerEnv": "cygwin", "Platform": "x64", "Configuration: Release" }
+          {"matid": "01", "os": "windows-2025-vs2026", "GithubActionsIgnoreFail": "false", "compilerEnv": "cygwin", "Platform": "x64", "Configuration": "Release" }
         ]
 
   windows_fullbuildable_job_caller:
@@ -47,5 +47,5 @@ jobs:
     with:
       ragged_schedule: >
         [
-          {"matid": "01", "os": "windows-2025-vs2026", "GithubActionsIgnoreFail": "false", "compilerEnv": "cygwin", "Platform": "x64", "Configuration: Release" }
+          {"matid": "01", "os": "windows-2025-vs2026", "GithubActionsIgnoreFail": "false", "compilerEnv": "cygwin", "Platform": "x64", "Configuration": "Release" }
         ]
