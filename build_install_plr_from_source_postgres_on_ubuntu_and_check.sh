@@ -31,9 +31,9 @@ export PATH=${R_HOME}/bin:${PATH}
 # export rversion=$(Rscript --version | grep -oP "\d+[.]\d+[.]\d+")
 # cat "libR.pc" | sed "s|R_HOME|${R_HOME}|" | sed "s|R_ARCH|${R_ARCH}|" | sed "s/rversion/${rversion}/" > libR.pc"
 
-mkdir     ${PG_HOME}/contrib
-mkdir     ${PG_HOME}/contribplr
-cp -R  *  ${PG_HOME}/contribplr
+sudo mkdir     ${PG_HOME}/contrib
+sudo mkdir     ${PG_HOME}/contribplr
+cp -R       *  ${PG_HOME}/contribplr
 
 pushd     ${PG_HOME}/contribplr
 
