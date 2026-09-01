@@ -77,9 +77,8 @@ jobs:
         else
           echo "Postgres from source ..."
           bash ./get_latest_postgres_source_branch_or_tag.sh ${{ matrix.PG }}
-          bash ./build_install_postgres_from_source_on_ubuntu.sh
+          # bash ./build_install_postgres_from_source_on_ubuntu.sh
         fi
-
 
     - name: Acquire R-Dev (and R to test)
       run: |
