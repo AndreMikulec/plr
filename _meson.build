@@ -30,12 +30,22 @@ dep_libpostgres = dependency('libpostgres', required : true)
 plr_deps += dep_libpostgres
 
 plr_incdir = []
-pg_incdir1= include_directories(R_home / 'include')
+pg_incdir1= dep_libR.get_variable( pkgconfig : 'rincludedir' )
 plr_incdir += pg_incdir1
-pg_incdir2 = include_directories(pg_home / 'include' / 'postgresql' / 'server' )
+if ((host_machine.system() == 'windows') or (host_machine.system()  == 'cygwin'))
+  pg_incdir2 = include_directories(pg_home / 'include' / 'postgresql' / 'server' )
+endif
+if ((host_machine.system() == 'linux') or (host_machine.system()  == 'darwin'))
+  pg_incdir2 = include_directories(pg_home / 'include' / 'server' )
+endif
 plr_incdir += pg_incdir2
 #  mingw
-pg_incdir3 = include_directories(pg_home / 'include' / 'postgresql' / 'server' / 'port' / 'win32' )
+if ((host_machine.system() == 'windows') or (host_machine.system()  == 'cygwin'))
+  pg_incdir3 = include_directories(pg_home / 'include' / 'postgresql' / 'server' / 'port' / 'win32' )
+endif
+if ((host_machine.system() == 'linux') or (host_machine.system()  == 'darwin'))
+  pg_incdir3 = include_directories(pg_home / 'include' / 'server' / 'port' / 'win32' )
+endif
 plr_incdir += pg_incdir3
 
 # Refactor DLSUFFIX handling (PostreSQL 15 AND newer)

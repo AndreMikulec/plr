@@ -28,7 +28,7 @@ dep_R = dependency('libR')
 plr_deps +=  dep_R
 
 plr_incdir = []
-R_incdir = include_directories(R_home / 'include')
+R_incdir = dep_R.get_variable( pkgconfig : 'rincludedir' )
 plr_incdir += R_incdir
 
 if host_system == 'windows'

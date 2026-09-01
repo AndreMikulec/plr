@@ -65,7 +65,6 @@ jobs:
         set -x -v -e
         sudo apt-get update -qq
 
-
     - name: Acquire PostgreSQL-Dev (and PostgreSQL to test)
       run: |
         set -x -v -e
@@ -77,23 +76,14 @@ jobs:
         else
           echo "Postgres from source ..."
           bash ./get_latest_postgres_source_branch_or_tag.sh ${{ matrix.PG }}
-          # bash ./build_install_postgres_from_source_on_ubuntu.sh
+          bash ./build_install_postgres_from_source_on_ubuntu.sh
         fi
-
 
     - name: Acquire R-Dev (and R to test)
       run: |
         set -x -v -e
         echo "R from CRAN ..."
         bash ./get_debian_r_binaries_on_ubuntu_from_cran.sh
-
-
-    - name: Debug with SSH owenthereal/action-upterm@v1
-      uses: owenthereal/action-upterm@v1
-      with:
-        wait-timeout-minutes: 10
-        limit-access-to-actor: true
-
 
     - name: Of PLR, Build, Install, and Check
       run: |
@@ -102,8 +92,8 @@ jobs:
         if [ $(echo "${{ matrix.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
         then
           echo "Postgres originally from repository binary ..."
-          bash ./build_install_plr_from_binary_postgres_on_ubuntu_and_check.sh 
+          bash ./build_plr_from_binary_postgres_on_ubuntu_and_check.sh 
         else
           echo "Postgres originally from source ..."
-          bash ./build_install_plr_from_source_postgres_on_ubuntu_and_check.sh
+          bash ./build_plr_from_source_postgres_on_ubuntu_and_check.sh
         fi

@@ -56,36 +56,67 @@ sudo apt-get install -qq libreadline-dev -y
 
 sudo apt-get install -qq bison flex libssl-dev -y
 
-pushd postgres
-# six minutes
+export  PG_SOURCE=postgres
+
+# PREPARE for "meson ( buildpgANDplrInSRCcontrib == 'true' )"
+#
+sudo mkdir      ${PG_SOURCE}/contrib/plr
+sudo chmod 777  ${PG_SOURCE}/contrib/plr
+cp -R *         ${PG_SOURCE}/contrib/plr/
+ls -alrt        ${PG_SOURCE}/contrib/plr
+
+pushd  ${PG_SOURCE}
+
+# PREPARE FOR ( make )
 #
 # ./configure
+# # six minutes
 # make
 # sudo make install
+
+# FURTHER PREPARE for "meson ( buildpgANDplrInSRCcontrib == 'true' )"
 #
+cat _meson_options.txt_postgres_root_additional_plr_option.txt
+cat ${PG_SOURCE}/meson_options.txt
+cat _meson_options.txt_postgres_root_additional_plr_option.txt >> ${PG_SOURCE}/meson_options.txt
+cat ${PG_SOURCE}/meson_options.txt
+
+cat ${PG_SOURCE}/contrib/meson.build
+echo 'subdir('"'"'plr'"'"')'                                   >>                                 ${PG_SOURCE}/contrib/meson.build
+cat ${PG_SOURCE}/contrib/meson.build
+# R library
+cat /usr/lib/pkgconfig/libR.pc
+
+
 # one minute and four seconds
 #
 # https://mesonbuild.com/Quick-guide.html
 sudo apt-get install -qq python3 ninja-build meson -y
+
 meson setup -Dc_args="-save-temps" -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+
 meson compile -C build -v
+
 sudo meson install -C build
-popd
+export PATH=/usr/local/pgsql/bin:$[PATH}
+
+popd # from ${PG_SOURCE} back
 
 # 30 seconds long
 sudo useradd -r -s /bin/bash -m -d /var/lib/postgresql postgres
+
 
 # When you initialize a PostgreSQL database using initdb without any extra flags, 
 # the initial superuser role is automatically 
 # given the same name as your operating system username, not "postgres"
 # NOTE "sudo -u postgres /usr/local/pgsql/bin/initdb -D data" IS NOT ALLOWED
-/usr/local/pgsql/bin/initdb -D data
+initdb -D data
 # automatically created: cluster role "runner", database "postgres"
 
-/usr/local/pgsql/bin/pg_ctl -D data -l logfile start
+pg_ctl -D data -l logfile start
 
-/usr/local/pgsql/bin/psql -d postgres           -c "\du"
-/usr/local/pgsql/bin/psql -d postgres           -c "\l"
+psql -d postgres           -c "\du"
+psql -d postgres           -c "\l"
 
 # In a PG database compiled from source the user "runner" is created.
 # In a database compiled from source, the database "postgres" is created.
@@ -93,23 +124,22 @@ sudo useradd -r -s /bin/bash -m -d /var/lib/postgresql postgres
 
 # role "runner" already exists
 # /usr/local/pgsql/bin/psql -d postgres           -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
-/usr/local/pgsql/bin/psql -d postgres           -c "CREATE DATABASE runner OWNER runner;"
+psql -d postgres           -c "CREATE DATABASE runner OWNER runner;"
 
-/usr/local/pgsql/bin/psql -c "SELECT version();"
-/usr/local/pgsql/bin/psql -c "SELECT current_setting('server_version_num') "server_version_num";"
+psql -c "SELECT version();"
+psql -c "SELECT current_setting('server_version_num') "server_version_num";"
 
-/usr/local/pgsql/bin/psql -c "CREATE ROLE postgres WITH LOGIN SUPERUSER;"
-/usr/local/pgsql/bin/psql -c "ALTER DATABASE postgres OWNER TO postgres;"
+psql -c "CREATE ROLE postgres WITH LOGIN SUPERUSER;"
 
 # OPTIONAL 
 # (Just ONLY the USER-DATABASE pair mappings must exist for automatic unconstrained logging-in.)
-/usr/local/pgsql/bin/psql -c "ALTER DATABASE postgres OWNER TO postgres;"
-# /usr/local/pgsql/bin/psql -d postgres -c "REASSIGN OWNED BY runner TO postgres;"
+psql -c "ALTER DATABASE postgres OWNER TO postgres;"
+# psql -d postgres -c "REASSIGN OWNED BY runner TO postgres;"
 # ERROR:  cannot reassign ownership of objects owned by role runner because they are required by the database system
 # HOWEVER this REASSIGN works in Cygwin
 
-/usr/local/pgsql/bin/psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
-/usr/local/pgsql/bin/psql -c "CREATE DATABASE root OWNER root;"
+psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
+psql -c "CREATE DATABASE root OWNER root;"
 
 ## # runner@runnervmgx7h7:~/work/plr/plr$ ls -alrt data/*.conf
 ## # -rw------- 1 runner runner 45968 Aug 25 18:47 data/postgresql.conf
