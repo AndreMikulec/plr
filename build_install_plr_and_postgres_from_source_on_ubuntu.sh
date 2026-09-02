@@ -64,7 +64,20 @@ sudo apt-get install -qq libreadline-dev -y
 
 sudo apt-get install -qq bison flex libssl-dev -y
 
-# PREPARE for "meson ( buildpgANDplrInSRCcontrib == 'true' )"
+# PG PREPARE for "meson ( buildpgANDplrInSRCcontrib == 'true' )"
+#
+cat _meson_options.txt_postgres_root_additional_plr_option.txt
+cat ${PG_SOURCE}/meson_options.txt
+cat _meson_options.txt_postgres_root_additional_plr_option.txt >> ${PG_SOURCE}/meson_options.txt
+cat ${PG_SOURCE}/meson_options.txt
+
+cat ${PG_SOURCE}/contrib/meson.build
+echo 'subdir('"'"'plr'"'"')'                                   >>                                 ${PG_SOURCE}/contrib/meson.build
+cat ${PG_SOURCE}/contrib/meson.build
+# R library
+cat /usr/lib/pkgconfig/libR.pc
+
+# PL/R PREPARE for "meson ( buildpgANDplrInSRCcontrib == 'true' )"
 #
 sudo mkdir      ${PG_SOURCE}/contrib/plr
 sudo chmod 777  ${PG_SOURCE}/contrib/plr
@@ -80,18 +93,6 @@ pushd  ${PG_SOURCE}
 # make
 # sudo make install
 
-# FURTHER PREPARE for "meson ( buildpgANDplrInSRCcontrib == 'true' )"
-#
-cat _meson_options.txt_postgres_root_additional_plr_option.txt
-cat ${PG_SOURCE}/meson_options.txt
-cat _meson_options.txt_postgres_root_additional_plr_option.txt >> ${PG_SOURCE}/meson_options.txt
-cat ${PG_SOURCE}/meson_options.txt
-
-cat ${PG_SOURCE}/contrib/meson.build
-echo 'subdir('"'"'plr'"'"')'                                   >>                                 ${PG_SOURCE}/contrib/meson.build
-cat ${PG_SOURCE}/contrib/meson.build
-# R library
-cat /usr/lib/pkgconfig/libR.pc
 
 
 # one minute and four seconds

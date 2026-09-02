@@ -64,5 +64,6 @@ echo "PG_SOURCE: ${PG_SOURCE}"
 #           specific branch or tag you name, instead of the repository's default branch 
 # Note, if SPECGITTAG is a tag, then You are in 'detached HEAD' state.
 sudo git clone --branch "${SPECGITTAG}" --depth=1 https://github.com/postgres/postgres.git "${PG_SOURCE}"
+sudo chmod -R 777                                                                          "${PG_SOURCE}"
 
 if [ -f "discard.txt" ]; then rm discard.txt; fi

@@ -23,9 +23,9 @@ plr_sources = files(
 
 plr_deps = []
 dep_libR = dependency('libR', required : true)
-# plr_deps += dep_libR
+plr_deps += dep_libR
 # dep_libpq = dependency('libpq', required : true)
-plr_deps += dep_libpq
+# plr_deps += dep_libpq
 dep_libpostgres = dependency('libpostgres', required : true)
 plr_deps += dep_libpostgres
 
