@@ -27,6 +27,10 @@ export PATH=${R_PATHS}:${PG_PATHS}:${PATH}
 export PKGLIBDIR=$(pg_config | grep "^PKGLIBDIR" | sed "s/ = /=/" | sed "s/^.*=//")
 echo "pg_config PKGLIBDIR: ${PKGLIBDIR}"
 
+export BINDIR=$(pg_config | grep "^BINDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+echo "pg_config BINDIR: ${BINDIR}"
+
+
 #
 # manual regression tests
 #
@@ -37,12 +41,12 @@ psql -d postgres                 -c "SELECT version();"
 psql -d postgres                 -c "SELECT current_setting('server_version_num') "server_version_num";"
 
 pushd     "${PG_SOURCE}/contrib/cube"
-"${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${PG_HOME}/bin" --dbname=pl_regression cube cube_sci || (cat regression.diffs && false)
-popd # fr "${PG_SOURCE}/contrib/cube"
+"${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression cube cube_sci || (cat regression.diffs && false)
+popd # from "${PG_SOURCE}/contrib/cube"
 
 pushd     "${PG_SOURCE}/contrib/plr"
-"${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${PG_HOME}/bin" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
-popd # fr "${PG_SOURCE}/contrib/plr"
+"${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
+popd # from "${PG_SOURCE}/contrib/plr"
 
 #
 # meson regression tests ( buildpgANDplrInSRCcontrib == 'true' )

@@ -29,28 +29,37 @@ plr_deps += dep_libR
 dep_libpostgres = dependency('libpostgres', required : true)
 plr_deps += dep_libpostgres
 
+host_machine_system = host_machine.system()
+#
+is_cygwin = host_machine_system == 'cygwin'
+is_not_cygwin = host_machine_system != 'cygwin' # do not use this in testing
+is_windows =  host_machine_system == 'windows'  # do not use this in testing
+is_msys2 = is_windows and is_not_cygwin
+is_linux = host_machine_system == 'linux'
+is_darwin = host_machine_system == 'darwin'
+
 plr_incdir = []
-if ((host_machine.system()  == 'cygwin') or (host_machine.system() == 'linux') or (host_machine.system()  == 'darwin'))
+if is_cygwin or is_linux or is_darwin
   pg_incdir1 = dep_libR.get_variable( pkgconfig : 'rincludedir' )
 endif
 # meson.build ... ERROR: Include dir /c/RINSTALL/include does not exist.
 # (Maybe because "R for Windows" is not a[n] [true] MSYS2 package)
-if ((host_machine.system() == 'windows') and (import('env').get('MSYSTEM', '') != ''))
+if is_msys2 # or is_cygwin
   pg_incdir1 = include_directories(R_home / 'include')
 endif
 plr_incdir += pg_incdir1
-if ((host_machine.system() == 'windows') or (host_machine.system()  == 'cygwin'))
+if is_msys2 or is_cygwin
   pg_incdir2 = include_directories(pg_home / 'include' / 'postgresql' / 'server' )
 endif
-if ((host_machine.system() == 'linux') or (host_machine.system()  == 'darwin'))
+if is_linux or is_darwin
   pg_incdir2 = include_directories(pg_home / 'include' / 'server' )
 endif
 plr_incdir += pg_incdir2
 #  mingw
-if ((host_machine.system() == 'windows') or (host_machine.system()  == 'cygwin'))
+if is_msys2 or is_cygwin
   pg_incdir3 = include_directories(pg_home / 'include' / 'postgresql' / 'server' / 'port' / 'win32' )
 endif
-if ((host_machine.system() == 'linux') or (host_machine.system()  == 'darwin'))
+if is_linux or is_darwin
   pg_incdir3 = include_directories(pg_home / 'include' / 'server' / 'port' / 'win32' )
 endif
 plr_incdir += pg_incdir3
