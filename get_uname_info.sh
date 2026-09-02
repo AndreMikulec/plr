@@ -1,14 +1,7 @@
 #!/bin/bash
 set -x -v -e
 
-# buildPLR.yml inline scripts
-# used by: create_an_R_import_library_if_needed.sh
-
-if [ ! -f "${GITHUB_ENV}" ]
-then
-  touch discard.txt
-  export GITHUB_ENV=discard.txt
-fi
+if [ ! -f "${GITHUB_ENV}" ]; then touch discard.txt; export GITHUB_ENV=discard.txt; fi
 
 export SystemInformation=$(uname -a)
 echo "SystemInformation=${SystemInformation}" >> ${GITHUB_ENV}
@@ -69,7 +62,4 @@ export OperatingSystem=$(uname -o)
 echo "OperatingSystem=${OperatingSystem}" >> ${GITHUB_ENV}
 echo "OperatingSystem: ${OperatingSystem}"
 
-if [ -f "discard.txt" ]
-then
-  rm discard.txt
-fi
+if [ -f "discard.txt" ]; then rm discard.txt; fi

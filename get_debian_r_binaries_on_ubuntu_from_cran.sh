@@ -1,6 +1,11 @@
 #!/bin/bash
 set -x -v -e
 
+if [ ! -f "${GITHUB_ENV}" ]; then touch discard.txt; export GITHUB_ENV=discard.txt; fi
+
+# Outputs
+# R is installed
+# R_HOME, R_PATHS
 
 # # SEEN\EXPERIENCED AUG 2026 
 # # This downloads "r-base", but r-base-dev is not available, (nor an equivalent)
@@ -9,17 +14,6 @@ set -x -v -e
 # # Ubuntu 20.04, 22.04, 24.04, 26.04
 # # R binaries are built for x86_64/amd64 and aarch64/arm64.
 # # https://github.com/rstudio/r-builds
-# 
-# # Input
-# # export R=R version
-# # Input examples
-# # export R=x.y.z
-# # export R=next
-# # export R=devel
-# export R="$1"
-# 
-# # Output
-# # R is installed and started
 # 
 # echo "R versions available ..."
 # bash -c "$(curl -L https://rstd.io/r-install)"
@@ -30,7 +24,13 @@ set -x -v -e
 # #To ensure that R is available on the system path, create symbolic links to the version of R that you installed:
 # sudo ln -s /opt/R/${R}/bin/R /usr/local/bin/R 
 # sudo ln -s /opt/R/${R}/bin/Rscript /usr/local/bin/Rscript
-
+# Input
+# export R=R version
+# Input examples
+# export R=x.y.z
+# export R=next
+# export R=devel
+# export R="$1" 
 
 # arm64 (i.e., M1/M2/M3, graviton etc) CPUs
 # 24.04 (“noble”, amd64 and arm64),
@@ -155,8 +155,19 @@ apt-cache policy r-base-dev
 sudo apt-get install -qq r-base -y
 
 Rscript --version
-Rscript --vanilla -e "writeLines(paste0('R_HOME: ', R.home()))"
 Rscript --vanilla -e "print(R.version)"
+Rscript --vanilla -e "writeLines(paste0('R_HOME: ', R.home()))"
 
-# ONLY NEED r-base-dev to help create plr
+export R_HOME=$(Rscript --vanilla -e "writeLines(R.home())")
+echo "R_HOME=${R_HOME}" >> ${GITHUB_ENV}
+echo "R_HOME: ${R_HOME}"
+
+export R_PATHS="${R_HOME}/bin:${R_HOME}/lib"
+echo "R_PATHS=${R_PATHS}" >> ${GITHUB_ENV}
+echo "R_PATHS: ${R_PATHS}"
+
+# r-base-dev to help create plr
 sudo apt-get install -qq r-base-dev -y
+
+if [ -f "discard.txt" ]; then rm discard.txt; fi
+

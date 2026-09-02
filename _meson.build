@@ -23,8 +23,8 @@ plr_sources = files(
 
 plr_deps = []
 dep_libR = dependency('libR', required : true)
-plr_deps += dep_libR
-dep_libpq = dependency('libpq', required : true)
+# plr_deps += dep_libR
+# dep_libpq = dependency('libpq', required : true)
 plr_deps += dep_libpq
 dep_libpostgres = dependency('libpostgres', required : true)
 plr_deps += dep_libpostgres
@@ -90,7 +90,7 @@ if meson.version().version_compare('>=0.57')
   summary(
     {
       'libR'               : dep_libR,
-      'libpq'              : dep_libpq,
+#     'libpq'              : dep_libpq,
       'libpostgres (fake)' : dep_libpostgres,
     },
     section: 'Required Dependencies',

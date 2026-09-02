@@ -1,6 +1,14 @@
 #!/bin/bash
 set -x -v -e
 
+if [ ! -f "${GITHUB_ENV}" ]; then touch discard.txt; export GITHUB_ENV=discard.txt; fi
+
+if [ "${PG_SOURCE}" == "" ]; then echo "Environment variable PG_SOURCE is missing."; exit 99; fi
+
+# Outputs
+# PG_PATHS
+# PostgreSQL is installed and started
+
 #### # r-base-dev and r-base
 #### # Ubuntu Packages For R - Full Instructions
 #### # 
@@ -56,8 +64,6 @@ sudo apt-get install -qq libreadline-dev -y
 
 sudo apt-get install -qq bison flex libssl-dev -y
 
-export  PG_SOURCE=postgres
-
 # PREPARE for "meson ( buildpgANDplrInSRCcontrib == 'true' )"
 #
 sudo mkdir      ${PG_SOURCE}/contrib/plr
@@ -98,7 +104,13 @@ meson setup -Dc_args="-save-temps" -Dbuildtype=release -Db_pie=true -Dnls=disabl
 meson compile -C build -v
 
 sudo meson install -C build
-export PATH=/usr/local/pgsql/bin:$[PATH}
+
+export PG_PATHS="/usr/local/pgsql/bin:/usr/local/pgsql/lib"
+echo "PG_PATHS=${PG_PATHS}" > ${GITHUB_ENV}
+echo "PG_PATHS: ${PG_PATHS}"
+
+export PATH=${PG_PATHS}:${PATH}
+pg_config
 
 popd # from ${PG_SOURCE} back
 
@@ -179,3 +191,5 @@ psql -c "CREATE DATABASE root OWNER root;"
 ## 
 ## /usr/local/pgsql/bin/psql -c  "SELECT version();"
 ## /usr/local/pgsql/bin/psql -c  "SELECT current_setting('server_version_num') "server_version_num";"
+
+if [ -f "discard.txt" ]; then rm discard.txt; fi

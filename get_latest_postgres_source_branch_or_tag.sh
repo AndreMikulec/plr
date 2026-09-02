@@ -1,14 +1,19 @@
 #!/bin/bash
 set -x -v -e
 
-# Input
-# export PGSRCVERSION=REL_<major>_
+if [ ! -f "${GITHUB_ENV}" ]; then touch discard.txt; export GITHUB_ENV=discard.txt; fi
+
+# Inputs
+# PGSRCVERSION=REL_<major>_
 export PGSRCVERSION="$1"
+if [ "${PGSRCVERSION}" == "" ]; then echo "Passed 1st variable PGSRCVERSION is missing."; exit 99; fi
+
 # Input examples
 # export PGSRCVERSION=master
 # export PGSRCVERSION=REL_19_
-# Output
-# a new child Git directory called "postgres"
+# Outputs
+# PG_SOURCE
+# a new Git postgres directory located at /PGSOURCE
 
 if [ "${PGSRCVERSION}" == "master" ]
 then
@@ -49,10 +54,15 @@ else
     fi
   fi
 fi
-
 echo "SPECGITTAG: ${SPECGITTAG}"
+
+export PG_SOURCE="/PGSOURCE"
+echo "PG_SOURCE=${PG_SOURCE}" >> ${GITHUB_ENV}
+echo "PG_SOURCE: ${PG_SOURCE}"
+
 # --branch: downloads a remote repository and automatically checks out the 
 #           specific branch or tag you name, instead of the repository's default branch 
 # Note, if SPECGITTAG is a tag, then You are in 'detached HEAD' state.
-git clone --branch $SPECGITTAG --depth=1 https://github.com/postgres/postgres.git
+sudo git clone --branch "${SPECGITTAG}" --depth=1 https://github.com/postgres/postgres.git "${PG_SOURCE}"
 
+if [ -f "discard.txt" ]; then rm discard.txt; fi

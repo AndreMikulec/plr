@@ -1,11 +1,17 @@
 #!/bin/bash
 set -x -v -e
 
+if [ "${PG_PATHS}" == "" ];  then echo "Environment variable PG_PATHS is missing.";  exit 99; fi
+if [ "${R_PATHS}" == "" ];   then echo "Environment variable R_PATHS is missing.";   exit 99; fi
+if [ "${R_HOME}" == "" ];    then echo "Environment variable R_HOME is missing.";    exit 99; fi
+if [ "${PG_SOURCE}" == "" ]; then echo "Environment variable PG_SOURCE is missing."; exit 99; fi
+
 # # PREVIOUSLY DONE ALREADY in "build_install_postgres_from_source_on_ubuntu.sh"
 # pg_ctl -D data -l logfile start
 
+
 # added to the PATH
-export PATH=/usr/local/pgsql/lib:${PATH}
+export PATH=${R_PATHS}:${PG_PATHS}:${PATH}
 
 #
 # # pgxs (THIS WORKS!) - requires "PATH=/usr/local/pgsql/bin:$PATH"
@@ -18,14 +24,8 @@ export PATH=/usr/local/pgsql/lib:${PATH}
 # # #I HAVE NOT TESTED THIS
 # # sudo USE_PGXS=1 make uninstall
 
-export PG_SOURCE=postgres
-
-export        R_HOME=/usr/lib/R
-export PATH=${R_HOME}/bin:${R_HOME}/lib:${PATH}
-
 export PKGLIBDIR=$(pg_config | grep "^PKGLIBDIR" | sed "s/ = /=/" | sed "s/^.*=//")
 echo "pg_config PKGLIBDIR: ${PKGLIBDIR}"
-
 
 #
 # manual regression tests
@@ -43,9 +43,6 @@ popd # fr "${PG_SOURCE}/contrib/cube"
 pushd     "${PG_SOURCE}/contrib/plr"
 "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${PG_HOME}/bin" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
 popd # fr "${PG_SOURCE}/contrib/plr"
-
-
-
 
 #
 # meson regression tests ( buildpgANDplrInSRCcontrib == 'true' )

@@ -1,6 +1,8 @@
 #!/bin/bash
 set -x -v -e
 
+if [ ! -f "${GITHUB_ENV}" ]; then touch discard.txt; export GITHUB_ENV=discard.txt; fi
+
 # noble (24.04, LTS), plucky (25.04, amd64 only)
 # https://wiki.postgresql.org/wiki/Apt
 # https://apt.postgresql.org/pub/repos/apt/dists/
@@ -9,17 +11,17 @@ set -x -v -e
 # Regular expression search - "Package: postgresql-18$"
 # https://ftp.postgresql.org/pub/repos/apt/dists/noble-pgdg/main/binary-amd64/Packages
 
-# also start "postgres"
-
-# Input
-# export PG=<major>
-export PG="$1"
-# PG: Major postgres version 
+# Inputs
+# PG: Major postgres version
+# PG=<major>
 # Input examples
-# export PG=18
+# PG=18
+export PG="$1"
+if [ "${PG}" == "" ]; then echo "Passed variable PG is missing."; exit 99; fi
 
-# Output
-# Postgres is installed and started
+# Outputs
+# PG_HOME PG_PATHS
+# PostgreSQL is installed and started
 
 # PG non-snapshots
 # https://apt.postgresql.org/pub/repos/apt/dists/noble-pgdg/ (SEEN PG 19 (REL_19_) 20 (master))
@@ -45,6 +47,9 @@ export PG="$1"
   # wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 # fi
 
+# Christoph Berg
+# 12:01, 2 April 2026‎ Myon 
+# https://wiki.postgresql.org/index.php?title=Apt&oldid=43140
 # https://wiki.postgresql.org/wiki/Apt
 # non-snapshots
 sudo apt-get install -qq curl ca-certificates -y
@@ -70,7 +75,30 @@ sudo apt-get update -qq
 apt-cache policy postgresql-${PG}
 
 sudo apt-get install -qq postgresql-${PG} -y
-# automatically created: os user postgres, cluster role postgres, database postgres
+
+# On Ubuntu/Debian, the PostgreSQL packaging infrastructure 
+# creates the Unix account "postgres" during package installation. 
+# The PostgreSQL cluster-management tooling then uses that account as the default cluster owner.
+#
+# 30 seconds long
+# sudo useradd -r -s /bin/bash -m -d /var/lib/postgresql postgres
+
+# on Ubuntu, installing postgresql-${PG} normally creates a default ${PG}/main cluster 
+# and starts it automatically
+#
+# verify
+pg_lsclusters
+
+export PG_HOME="/usr/lib/postgresql/${PG}"
+echo "PG_HOME=${PG_HOME}" >> ${GITHUB_ENV}
+echo "PG_HOME: ${PG_HOME}"
+
+export PG_PATHS="${PG_HOME}/bin:${PG_HOME}/lib"
+echo "PG_PATHS=${PG_PATHS}" >> ${GITHUB_ENV}
+echo "PG_PATHS: ${PG_PATHS}"
+
+export PATH=${PG_PATHS}:${PATH}
+pg_config
 
 sudo apt-get install -qq postgresql-server-dev-${PG} -y
 
@@ -120,23 +148,21 @@ sudo apt-get install -qq postgresql-server-dev-${PG} -y
 ## /usr/bin/psql -c "SELECT version();"
 ## /usr/bin/psql -c "SELECT current_setting('server_version_num') "server_version_num";"
 
-# The case seems that installing a PG database from an Ubuntu package automatically starts the database.
-
-# maps to "/usr/bin/psql"
-
-sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres             -c "\du"
-sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres             -c "\l"
+sudo --preserve-env=PATH -u postgres psql -d postgres             -c "\du"
+sudo --preserve-env=PATH -u postgres psql -d postgres             -c "\l"
 
 # In a PG database created from an Ubuntu package the user "postgres" is created.
-# In a database reated from an Ubuntu package, the database "postgres" is created.
+# In a database created from an Ubuntu package, the database "postgres" is created.
 # The owner of the database "postgres" database is the user "postgres".
 
-sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres             -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
-sudo -u postgres /usr/lib/postgresql/${PG}/bin/psql -d postgres             -c "CREATE DATABASE runner OWNER runner;"
+sudo --preserve-env=PATH -u postgres psql -d postgres             -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
+sudo --preserve-env=PATH -u postgres psql -d postgres             -c "CREATE DATABASE runner OWNER runner;"
 
-/usr/lib/postgresql/${PG}/bin/psql -c "SELECT version();"
-/usr/lib/postgresql/${PG}/bin/psql -c "SELECT current_setting('server_version_num') "server_version_num";"
+psql -c "SELECT version();"
+psql -c "SELECT current_setting('server_version_num') "server_version_num";"
 
-/usr/lib/postgresql/${PG}/bin/psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
-/usr/lib/postgresql/${PG}/bin/psql -c "CREATE DATABASE root OWNER root;"
+psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
+psql -c "CREATE DATABASE root OWNER root;"
+
+if [ -f "discard.txt" ]; then rm discard.txt; fi
 

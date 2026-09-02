@@ -7,7 +7,7 @@ then
 fi
 
 sudo apt-get remove -qq --purge postgresql\* -y
-sudo rm -rf /etc/postgresql /var/lib/postgresql
+sudo rm -Rf /etc/postgresql /var/lib/postgresql
 
 if [ $(id postgres >/dev/null 2>&1 && echo 0) ]
 then 
