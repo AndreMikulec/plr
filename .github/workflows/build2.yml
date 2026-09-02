@@ -65,7 +65,7 @@ jobs:
         set -x -v -e
         sudo apt-get update -qq
 
-    - name: Acquire PostgreSQL-Dev (and PostgreSQL to test) and PL/R
+    - name: Acquire PostgreSQL-Dev (and PostgreSQL to test)
       run: |
         set -x -v -e
         # two(2) consecutive digits
@@ -73,11 +73,9 @@ jobs:
         then
           echo "Postgres from repository binary ..."
           bash ./get_postgres_binaries_compiled_on_ubuntu_from_postgres.org.sh ${{ matrix.PG }}
-          bash ./build_install_plr_from_binary_postgres_on_ubuntu.sh
         else
           echo "Postgres from source ..."
           bash ./get_latest_postgres_source_branch_or_tag.sh ${{ matrix.PG }}
-          bash ./build_install_plr_and_postgres_from_source_on_ubuntu.sh
         fi
 
     - name: Acquire R-Dev (and R to test)
@@ -86,15 +84,28 @@ jobs:
         echo "R from CRAN ..."
         bash ./get_debian_r_binaries_on_ubuntu_from_cran.sh
 
-    - name: Of PLR, Build, Install, and Check
+    - name: Install PL/R
       run: |
         set -x -v -e
         # two(2) consecutive digits
         if [ $(echo "${{ matrix.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
         then
-          echo "Postgres originally from repository binary ..."
+          echo "PL/R from Postgres from repository binary ..."
+          bash ./build_install_plr_from_binary_postgres_on_ubuntu.sh
+        else
+          echo "PL/R from Postgres from source ..."
+          bash ./build_install_plr_and_postgres_from_source_on_ubuntu.sh
+        fi
+
+    - name: Test (Check) PL/R
+      run: |
+        set -x -v -e
+        # two(2) consecutive digits
+        if [ $(echo "${{ matrix.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
+        then
+          echo "Test of PL/R from Postgres from repository binary ..."
           bash ./test_plr_from_binary_postgres_on_ubuntu.sh
         else
-          echo "Postgres originally from source ..."
+          echo "Test of PL/R from Postgres from source ..."
           bash ./test_plr_from_source_postgres_on_ubuntu.sh
         fi
