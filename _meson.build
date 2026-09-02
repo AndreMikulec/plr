@@ -30,7 +30,14 @@ dep_libpostgres = dependency('libpostgres', required : true)
 plr_deps += dep_libpostgres
 
 plr_incdir = []
-pg_incdir1= dep_libR.get_variable( pkgconfig : 'rincludedir' )
+if ((host_machine.system()  == 'cygwin') or (host_machine.system() == 'linux') or (host_machine.system()  == 'darwin'))
+  pg_incdir1 = dep_libR.get_variable( pkgconfig : 'rincludedir' )
+endif
+# meson.build ... ERROR: Include dir /c/RINSTALL/include does not exist.
+# (Maybe because "R for Windows" is not a[n] [true] MSYS2 package)
+if ((host_machine.system() == 'windows') and (import('env').get('MSYSTEM', '') != ''))
+  pg_incdir1 = include_directories(R_home / 'include')
+endif
 plr_incdir += pg_incdir1
 if ((host_machine.system() == 'windows') or (host_machine.system()  == 'cygwin'))
   pg_incdir2 = include_directories(pg_home / 'include' / 'postgresql' / 'server' )

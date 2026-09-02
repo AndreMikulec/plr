@@ -3,6 +3,8 @@ set -x -v -e
 
 if [ ! -f "${GITHUB_ENV}" ]; then touch discard.txt; export GITHUB_ENV=discard.txt; fi
 
+
+if [ "${R_HOME}" == "" ];    then echo "Environment variable R_HOME is missing."   ; exit 99; fi
 if [ "${PG_SOURCE}" == "" ]; then echo "Environment variable PG_SOURCE is missing."; exit 99; fi
 
 # Outputs
@@ -67,13 +69,13 @@ sudo apt-get install -qq bison flex libssl-dev -y
 # PG PREPARE for "meson ( buildpgANDplrInSRCcontrib == 'true' )"
 #
 cat _meson_options.txt_postgres_root_additional_plr_option.txt
-cat ${PG_SOURCE}/meson_options.txt
+cat ${PG_SOURCE}/meson_options.txt | tail
 cat _meson_options.txt_postgres_root_additional_plr_option.txt >> ${PG_SOURCE}/meson_options.txt
-cat ${PG_SOURCE}/meson_options.txt
+cat ${PG_SOURCE}/meson_options.txt | tail
 
-cat ${PG_SOURCE}/contrib/meson.build
-echo 'subdir('"'"'plr'"'"')'                                   >>                                 ${PG_SOURCE}/contrib/meson.build
-cat ${PG_SOURCE}/contrib/meson.build
+cat ${PG_SOURCE}/contrib/meson.build | tail
+echo 'subdir('"'"'plr'"'"')'                                   >>             ${PG_SOURCE}/contrib/meson.build
+cat ${PG_SOURCE}/contrib/meson.build | tail
 # R library
 cat /usr/lib/pkgconfig/libR.pc
 
@@ -100,13 +102,13 @@ pushd  ${PG_SOURCE}
 # https://mesonbuild.com/Quick-guide.html
 sudo apt-get install -qq python3 ninja-build meson -y
 
-meson setup -Dc_args="-save-temps" -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+meson setup -Dbuildtype=release -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 
 meson compile -C build -v
 
 sudo meson install -C build
 
-export PG_PATHS="/usr/local/pgsql/bin:/usr/local/pgsql/lib"
+export PG_PATHS="/usr/local/pgsql/bin"
 echo "PG_PATHS=${PG_PATHS}" > ${GITHUB_ENV}
 echo "PG_PATHS: ${PG_PATHS}"
 
@@ -117,7 +119,6 @@ popd # from ${PG_SOURCE} back
 
 # 30 seconds long
 sudo useradd -r -s /bin/bash -m -d /var/lib/postgresql postgres
-
 
 # When you initialize a PostgreSQL database using initdb without any extra flags, 
 # the initial superuser role is automatically 

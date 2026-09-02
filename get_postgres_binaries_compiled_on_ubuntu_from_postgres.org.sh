@@ -93,7 +93,7 @@ export PG_HOME="/usr/lib/postgresql/${PG}"
 echo "PG_HOME=${PG_HOME}" >> ${GITHUB_ENV}
 echo "PG_HOME: ${PG_HOME}"
 
-export PG_PATHS="${PG_HOME}/bin:${PG_HOME}/lib"
+export PG_PATHS="${PG_HOME}/bin"
 echo "PG_PATHS=${PG_PATHS}" >> ${GITHUB_ENV}
 echo "PG_PATHS: ${PG_PATHS}"
 
