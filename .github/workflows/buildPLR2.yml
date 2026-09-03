@@ -2489,35 +2489,26 @@ jobs:
 
           "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
 
-
-
-#         # Stop the cluster after
-#         # the non-setup regression test (see above).
-#         #
-#         pg_ctl -D ${WORKSPACE}/PGDATA -l logfile stop
-#
-#         if [ "${OperatingSystem}" == "Cygwin" ]
-#         then
-#           echo "cygrunsrv STOP"
-#           # shutdown current
-#           cygrunsrv -E cygserver
-#           # uninstall previous
-#           #### cygrunsrv -R cygserver
-#         fi
-#
-#         popd # from "${PG_HOME}/contribplr"
-#         # back into WORKSPACE
-#
-#         #### END BUILD PG AND PLR AND TEST PLR ####
-#
-#         bash save_good_artifact_from_place.sh "${PG_HOME}" "${PGROOT2}" "${WORKSPACE}"
-
-
-      - name: Debug with SSH owenthereal/action-upterm@v1
-        uses: owenthereal/action-upterm@v1
-        with:
-          wait-timeout-minutes: 5
-          limit-access-to-actor: true
+          # Stop the cluster after
+          # the non-setup regression test (see above).
+          #
+          pg_ctl -D ${WORKSPACE}/PGDATA -l logfile stop
+ 
+          if [ "${OperatingSystem}" == "Cygwin" ]
+          then
+            echo "cygrunsrv STOP"
+            # shutdown current
+            cygrunsrv -E cygserver
+            # uninstall previous
+            #### cygrunsrv -R cygserver
+          fi
+ 
+          popd # from "${PG_HOME}/contribplr"
+          # back into WORKSPACE
+ 
+          #### END BUILD PG AND PLR AND TEST PLR ####
+ 
+          bash save_good_artifact_from_place.sh "${PG_HOME}" "${PGROOT2}" "${WORKSPACE}"
 
 
       # @v4 - Due to how Artifacts are created in this new version,

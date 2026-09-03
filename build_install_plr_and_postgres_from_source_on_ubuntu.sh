@@ -96,13 +96,27 @@ pushd  ${PG_SOURCE}
 # sudo make install
 
 
+# (FUTURE) - trying to make "postgres" be a library on Linux 
+#
+# (So, perhaps, I can link to postgres without complete compiling PG again.)
+# Symbols must be exported from the executable 
+# with a -Wl,--export-all-symbols,--out-implib,postgres.exe.a linker flag, 
+# where foo represents the name of the executable.
+# 
+# The plugins must be linked with a -Wl,/path/to/postgres.exe.a linker flag.
+# 
+# https://www.cygwin.com/faq.html
+#
+# meson setup
+# -Dc_link_args='-Wl,--export-all-symbols,--out-implib,postgres.exe.a'
+
 
 # one minute and four seconds
 #
 # https://mesonbuild.com/Quick-guide.html
 sudo apt-get install -qq python3 ninja-build meson -y
 
-meson setup -Dbuildtype=release -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+meson setup -Dc_link_args='-Wl,--export-all-symbols,--out-implib,postgres.exe.a' -Dbuildtype=release -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
 
 meson compile -C build -v
 

@@ -29,6 +29,13 @@ plr_deps += dep_libR
 dep_libpostgres = dependency('libpostgres', required : true)
 plr_deps += dep_libpostgres
 
+#
+# Detect MinGW host #8776
+# https://github.com/mesonbuild/meson/issues/8776
+#
+# Operating system names
+# https://mesonbuild.com/Reference-tables.html#operating-system-names
+#
 host_machine_system = host_machine.system()
 #
 is_cygwin = host_machine_system == 'cygwin'
@@ -72,23 +79,17 @@ plr_incdir += pg_incdir3
 # https://github.com/postgres-plr/plr/issues/4
 #
 plr_c_args = []
-#
-# Detect MinGW host #8776
-# https://github.com/mesonbuild/meson/issues/8776
-#
-# Operating system names
-# https://mesonbuild.com/Reference-tables.html#operating-system-names
-#
-if ((host_machine.system() == 'windows') or (host_machine.system()  == 'cygwin'))
+
+if is_msys2 or is_cygwin
   message('begin -DDLSUFFIX=".dll"')
   dlsuffix = '-DDLSUFFIX=".dll"'
   message('end   -DDLSUFFIX=".dll"')
 endif
 
-if host_machine.system() == 'linux'
+if is_linux
   dlsuffix = '-DDLSUFFIX=".so"'
 endif
-if host_machine.system() == 'darwin'
+if is_darwin
   dlsuffix = '-DDLSUFFIX=".dylib"'
 endif
 plr_c_args += dlsuffix
