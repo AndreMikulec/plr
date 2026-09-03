@@ -124,9 +124,9 @@
  * __CYGWIN__
  * when building for a Cygwin environment
  *
- * non-Microsoft OS
+ * non-Microsoft OS but Cygwin is Linux
  */
-#if !defined(_MSC_VER) && !defined(__MINGW32__) && !defined(__CYGWIN__)
+#if !defined(_MSC_VER) && !defined(__MINGW32__)
 /* #if !defined(WIN32) && !defined(WIN64) && !((defined(_WIN64)) && defined(_UCRT)) */
 #include "Rinterface.h"
 #else
