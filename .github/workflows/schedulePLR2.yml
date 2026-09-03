@@ -47,8 +47,8 @@ jobs:
     with:
       ragged_schedule: >
         [
+          { "matid": "03", "os": "windows-2025-vs2026",   "GithubActionsIgnoreFail": "false", "compilerEnv": "UCRT64",     "shellEnv": "msys2 {0}", "compilerExe": "gcc",   "Platform": "x64", "Configuration": "Debug",  "rversion": "devel-x86_64",  "R_HOME":  "C:\\RINSTALL", "R_ARCH": "/x64", "pgSRCversion": "master", "buildpgFromSRC": "true",  "buildpgFromSRCmethod": "meson", "PG_HOME": "C:\\PGINSTALL" },
           { "matid": "14", "os": "windows-2025-vs2026",   "GithubActionsIgnoreFail": "false", "compilerEnv": "UCRT64",     "shellEnv": "msys2 {0}", "compilerExe": "gcc",   "Platform": "x64", "Configuration": "Debug",  "rversion": "devel-x86_64",  "R_HOME":  "C:\\RINSTALL", "R_ARCH": "/x64", "pgSRCversion": "master", "buildpgANDplrInSRCcontrib": "true",                        "PG_HOME": "C:\\PGINSTALL" }
         ]
 #         { "matid": "01", "os": "windows-2025-vs2026",   "GithubActionsIgnoreFail": "false", "compilerEnv": "cygwin",                                                      "Platform": "x64", "Configuration": "Release" },
 #         { "matid": "02", "os": "windows-11-vs2026-arm", "GithubActionsIgnoreFail": "false", "compilerEnv": "CLANGARM64", "shellEnv": "msys2 {0}", "compilerExe": "clang", "Platform": "x64", "Configuration": "Debug",  "rversion": "devel-aarch64", "R_HOME":  "C:\\RINSTALL",                                             "buildpgFromSRC": "false",                                  "PG_HOME": "repo" },
-#         { "matid": "03", "os": "windows-2025-vs2026",   "GithubActionsIgnoreFail": "false", "compilerEnv": "UCRT64",     "shellEnv": "msys2 {0}", "compilerExe": "gcc",   "Platform": "x64", "Configuration": "Debug",  "rversion": "devel-x86_64",  "R_HOME":  "C:\\RINSTALL", "R_ARCH": "/x64", "pgSRCversion": "master", "buildpgFromSRC": "true",  "buildpgFromSRCmethod": "meson", "PG_HOME": "C:\\PGINSTALL" },
