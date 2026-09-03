@@ -124,7 +124,7 @@
  * __CYGWIN__
  * when building for a Cygwin environment
  *
- * non-Microsoft OS but Cygwin is Linux
+ * non-Microsoft OS but Cygwin is Almost Linux
  */
 #if !defined(_MSC_VER) && !defined(__MINGW32__)
 /* #if !defined(WIN32) && !defined(WIN64) && !((defined(_WIN64)) && defined(_UCRT)) */
