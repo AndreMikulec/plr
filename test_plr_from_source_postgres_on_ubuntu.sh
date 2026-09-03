@@ -14,15 +14,17 @@ if [ "${PG_SOURCE}" == "" ]; then echo "Environment variable PG_SOURCE is missin
 export PATH=${R_PATHS}:${PG_PATHS}:${PATH}
 
 #
-# # pgxs (THIS WORKS!) - requires "PATH=/usr/local/pgsql/bin:$PATH"
-# 
-# USE_PGXS=1 SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
-# sudo --preserve-env=PATH USE_PGXS=1 make install
-#                          USE_PGXS=1 make installcheck || (cat regression.diffs && false)
-# USE_PGXS=1  make clean
-# 
-# # #I HAVE NOT TESTED THIS
-# # sudo USE_PGXS=1 make uninstall
+# pgxs regression tests (THIS WORKS!) - requires "PATH=/usr/local/pgsql/bin:$PATH"
+#
+USE_PGXS=1 SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
+sudo --preserve-env=PATH USE_PGXS=1 make install
+                         USE_PGXS=1 make installcheck || (cat regression.diffs && false)
+USE_PGXS=1  make clean
+
+# #I HAVE NOT TESTED THIS
+sudo USE_PGXS=1 make uninstall
+
+
 
 export PKGLIBDIR=$(pg_config | grep "^PKGLIBDIR" | sed "s/ = /=/" | sed "s/^.*=//")
 echo "pg_config PKGLIBDIR: ${PKGLIBDIR}"
@@ -33,8 +35,9 @@ echo "pg_config BINDIR: ${BINDIR}"
 #
 # manual regression tests
 #
-export PGUSER=$(whoami)
-echo "PGUSER: ${PGUSER}"
+
+# export PGUSER=$(whoami)
+# echo "PGUSER: ${PGUSER}"
 
 psql -d postgres                 -c "SELECT version();"
 psql -d postgres                 -c "SELECT current_setting('server_version_num') "server_version_num";"

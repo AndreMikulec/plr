@@ -97,12 +97,6 @@ jobs:
           bash ./build_install_plr_and_postgres_from_source_on_ubuntu.sh
         fi
 
-    - name: Debug with SSH owenthereal/action-upterm@v1
-      uses: owenthereal/action-upterm@v1
-      with:
-        wait-timeout-minutes: 5
-        limit-access-to-actor: true
-
     - name: Test (Check) PL/R
       run: |
         set -x -v -e
