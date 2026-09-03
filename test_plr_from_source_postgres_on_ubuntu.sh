@@ -30,7 +30,6 @@ echo "pg_config PKGLIBDIR: ${PKGLIBDIR}"
 export BINDIR=$(pg_config | grep "^BINDIR" | sed "s/ = /=/" | sed "s/^.*=//")
 echo "pg_config BINDIR: ${BINDIR}"
 
-
 #
 # manual regression tests
 #
@@ -53,16 +52,11 @@ popd # from "${PG_SOURCE}/contrib/plr"
 #
 pushd  ${PG_SOURCE}
 
-meson test -C build --list --suite cube-running
-meson test -C build -q --print-errorlogs --setup running --suite cube-running
-
-meson test -C build --list --suite plr-running
-meson test -C build -q --print-errorlogs --setup running --suite plr-running
+# make -C contrib/amcheck installcheck
+# https://wiki.postgresql.org/wiki/Meson
+meson test -C build -v --print-errorlogs --setup running --suite cube-running
+meson test -C build -v --print-errorlogs --setup running --suite plr-running
 
 popd # from ${PG_SOURCE} back
 
 pg_ctl -D data -l logfile stop
-
-
-
-
