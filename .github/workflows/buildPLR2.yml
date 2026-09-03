@@ -1911,11 +1911,11 @@ jobs:
           psql -d postgres                 -c "SELECT current_setting('server_version_num') "server_version_num";"
 
           pushd     "${PG_SOURCE}/contrib/cube"
-          "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${PG_HOME}/bin" --dbname=pl_regression cube cube_sci || (cat regression.diffs && false)
+          "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression cube cube_sci || (cat regression.diffs && false)
           popd # fr "${PG_SOURCE}/contrib/cube"
 
           pushd     "${PG_SOURCE}/contrib/plr"
-          "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${PG_HOME}/bin" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
+          "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
           popd # fr "${PG_SOURCE}/contrib/plr"
 
           # Stop the cluster after
@@ -2487,7 +2487,9 @@ jobs:
           psql -d postgres                 -c "SELECT version();"
           psql -d postgres                 -c "SELECT current_setting('server_version_num') "server_version_num";"
 
-          "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${PG_HOME}/bin" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
+          "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
+
+          meson test -C build -v --print-errorlogs --setup running --suite plr-running
 
           # Stop the cluster after
           # the non-setup regression test (see above).
