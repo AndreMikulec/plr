@@ -123,6 +123,8 @@
  *   both 32-bit and 64-bit Windows targets
  * __CYGWIN__
  * when building for a Cygwin environment
+ * __linux__
+ * https://sourceforge.net/p/predef/wiki/OperatingSystems/
  *
  * non-Microsoft OS but Cygwin is Almost Linux
  */
