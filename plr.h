@@ -114,7 +114,20 @@
 #if (R_VERSION >= 132096) /* R_VERSION >= 2.4.0 */
 #include "Rembedded.h"
 #endif
-#if !defined(WIN32) && !defined(WIN64) && !((defined(_WIN64)) && defined(_UCRT))
+
+/*
+ * _MSC_VER
+ * Since 2010, Microsoft compiler version
+ * __MINGW32__
+ * Defined by the MinGW-w64 compiler in MSYS2 for 
+ *   both 32-bit and 64-bit Windows targets
+ * __CYGWIN__
+ * when building for a Cygwin environment
+ *
+ * non-Microsoft OS
+ */
+#if !defined(_MSC_VER) && !defined(__MINGW32__) && !defined(__CYGWIN__)
+/* #if !defined(WIN32) && !defined(WIN64) && !((defined(_WIN64)) && defined(_UCRT)) */
 #include "Rinterface.h"
 #else
 extern int R_SignalHandlers;

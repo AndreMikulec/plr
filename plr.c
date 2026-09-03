@@ -56,6 +56,11 @@ static bool	plr_be_init_done = false;
 /* namespace OID for the PL/R language handler function */
 static Oid plr_nspOid = InvalidOid;
 
+/* Microsoft OS */
+#if !(!defined(_MSC_VER) && !defined(__MINGW32__) && !defined(__CYGWIN__))
+int R_SignalHandlers = 1;  /* Exposed in R_interface.h or variable created elsewhere for extern */
+#endif
+
 /*
  * defines
  */
