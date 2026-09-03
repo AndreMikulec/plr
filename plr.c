@@ -57,7 +57,7 @@ static bool	plr_be_init_done = false;
 static Oid plr_nspOid = InvalidOid;
 
 /* Microsoft OS but Cygwin is Almost Linux */
-#elif !(!defined(_MSC_VER) && !defined(__MINGW32__)) || defined(__linux__)
+#if !(!defined(_MSC_VER) && !defined(__MINGW32__)) || defined(__linux__)
 int R_SignalHandlers = 1;  /* Exposed in R_interface.h or variable created elsewhere for extern */
 #endif
 
