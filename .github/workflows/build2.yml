@@ -110,11 +110,11 @@ jobs:
           bash ./test_plr_from_source_postgres_on_ubuntu.sh
         fi
 
-      - name: Code Coverage (currently only the case of a Ubuntu packaged PG)
-        # success() returns true, when none of the previous steps have failed or been canceled.
-        if: ${{ success() }}
-        # Uploads code coverage to codecov.io
-        run |
+    - name: Code Coverage (currently only the case of a Ubuntu packaged PG)
+      # success() returns true, when none of the previous steps have failed or been canceled.
+      if: ${{ success() }}
+      # Uploads code coverage to codecov.io
+      run: |
         set -x -v -e
         # two(2) consecutive digits
         if [ $(echo "${{ matrix.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
