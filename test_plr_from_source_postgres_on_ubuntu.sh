@@ -13,28 +13,34 @@ if [ "${PG_SOURCE}" == "" ]; then echo "Environment variable PG_SOURCE is missin
 # added to the PATH
 export PATH=${R_PATHS}:${PG_PATHS}:${PATH}
 
+
+## # Older case
+## # This worked when (1) I compiled PG from source AND (2) DID NOT compile contrib/plr AT THE SAME TIME
+## # pgxs make
+## # pgxs install
+## # pgxs regression tests (THIS WORKS!) - requires "PATH=/usr/local/pgsql/bin:$PATH"
+## #
+## unset R_HOME ??
+## export PATH=${R_PATHS}:${PG_PATHS}:${PATH}
+## 
+## USE_PGXS=1 SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
+## sudo --preserve-env=PATH USE_PGXS=1 make install
+##                          USE_PGXS=1 make installcheck || (cat regression.diffs && false)
+## USE_PGXS=1  make clean
+## 
+## # #I HAVE NOT TESTED THIS
+## # sudo USE_PGXS=1 make uninstall
+
+
 #
-# pgxs regression tests (THIS WORKS!) - requires "PATH=/usr/local/pgsql/bin:$PATH"
+# manual regression tests
 #
-USE_PGXS=1 SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
-sudo --preserve-env=PATH USE_PGXS=1 make install
-                         USE_PGXS=1 make installcheck || (cat regression.diffs && false)
-USE_PGXS=1  make clean
-
-# #I HAVE NOT TESTED THIS
-sudo USE_PGXS=1 make uninstall
-
-
 
 export PKGLIBDIR=$(pg_config | grep "^PKGLIBDIR" | sed "s/ = /=/" | sed "s/^.*=//")
 echo "pg_config PKGLIBDIR: ${PKGLIBDIR}"
 
 export BINDIR=$(pg_config | grep "^BINDIR" | sed "s/ = /=/" | sed "s/^.*=//")
 echo "pg_config BINDIR: ${BINDIR}"
-
-#
-# manual regression tests
-#
 
 # export PGUSER=$(whoami)
 # echo "PGUSER: ${PGUSER}"
@@ -49,6 +55,7 @@ popd # from "${PG_SOURCE}/contrib/cube"
 pushd     "${PG_SOURCE}/contrib/plr"
 "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
 popd # from "${PG_SOURCE}/contrib/plr"
+
 
 #
 # meson regression tests ( buildpgANDplrInSRCcontrib == 'true' )
