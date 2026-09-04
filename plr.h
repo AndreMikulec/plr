@@ -114,28 +114,7 @@
 #if (R_VERSION >= 132096) /* R_VERSION >= 2.4.0 */
 #include "Rembedded.h"
 #endif
-
-#include <stdio.h> // Required for printf()
-#define XSTR(x) STR(x)
-#define STR(x) #x
-
-/*
- * _MSC_VER
- * Since 2010, Microsoft compiler version
- * __MINGW32__
- * Defined by the MinGW-w64 compiler in MSYS2 for 
- *   both 32-bit and 64-bit Windows targets
- * __CYGWIN__
- * when building for a Cygwin environment
- * __linux__
- * https://sourceforge.net/p/predef/wiki/OperatingSystems/
- *
- * non-Microsoft OS but Cygwin is Almost Linux
- */
-
-/* #if !defined(_MSC_VER) && !defined(__MINGW32__) */
 #if !defined(WIN32) && !defined(WIN64) && !((defined(_WIN64)) && defined(_UCRT))
-/* #if !defined(WIN32) && !defined(WIN64) && !((defined(_WIN64)) && defined(__MINGW32__)) */
 #include "Rinterface.h"
 #else
 extern int R_SignalHandlers;
