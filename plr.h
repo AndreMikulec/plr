@@ -115,6 +115,10 @@
 #include "Rembedded.h"
 #endif
 
+
+#define XSTR(x) STR(x)
+#define STR(x) #x
+
 /*
  * _MSC_VER
  * Since 2010, Microsoft compiler version
@@ -128,7 +132,15 @@
  *
  * non-Microsoft OS but Cygwin is Almost Linux
  */
-#if !defined(_MSC_VER)
+#pragma message("WIN32: " XSTR(WIN32))
+#pragma message("WIN64: " XSTR(WIN64))
+#pragma message("_WIN64: " XSTR(_WIN64))
+#pragma message("_UCRT: " XSTR(_UCRT))
+#pragma message("_MSC_VER: " XSTR(_MSC_VER))
+#pragma message("__MINGW32__: " XSTR(__MINGW32__))
+#pragma message("__CYGWIN__: " XSTR(__CYGWIN__))
+#pragma message("__linux__: " XSTR(__linux__))
+#if !defined(_MSC_VER) && !defined(__MINGW32__)
 /* #if !defined(WIN32) && !defined(WIN64) && !((defined(_WIN64)) && defined(_UCRT)) */
 #include "Rinterface.h"
 #else
