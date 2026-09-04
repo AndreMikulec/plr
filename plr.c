@@ -57,7 +57,7 @@ static bool	plr_be_init_done = false;
 static Oid plr_nspOid = InvalidOid;
 
 
-# non-Microsoft OS but Cygwin is like Linux
+/* non-Microsoft OS but Cygwin is like Linux */
 #if !defined(_MSC_VER) && !defined(__MINGW32__)
 /* #if !defined(WIN32) && !defined(WIN64) && !((defined(_WIN64)) && defined(_UCRT)) */
 #else
