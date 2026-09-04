@@ -114,7 +114,9 @@
 #if (R_VERSION >= 132096) /* R_VERSION >= 2.4.0 */
 #include "Rembedded.h"
 #endif
-#if !defined(WIN32) && !defined(WIN64) && !((defined(_WIN64)) && defined(_UCRT))
+# non-Microsoft OS but Cygwin is like Linux
+#if !defined(_MSC_VER) && !defined(__MINGW32__)
+/* #if !defined(WIN32) && !defined(WIN64) && !((defined(_WIN64)) && defined(_UCRT)) */
 #include "Rinterface.h"
 #else
 extern int R_SignalHandlers;
