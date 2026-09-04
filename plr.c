@@ -56,14 +56,11 @@ static bool	plr_be_init_done = false;
 /* namespace OID for the PL/R language handler function */
 static Oid plr_nspOid = InvalidOid;
 
-
-/* non-Microsoft OS but Cygwin is like Linux */
-#if !defined(_MSC_VER) && !defined(__MINGW32__)
-/* #if !defined(WIN32) && !defined(WIN64) && !((defined(_WIN64)) && defined(_UCRT)) */
+/* non-Microsoft OS but Cygwin is like Linux in this case */
+#if !defined(WIN32) && !defined(WIN64) && !((defined(_WIN64)) && defined(__MINGW32__))
 #else
 int R_SignalHandlers = 1;
 #endif
-
 
 /*
  * defines
