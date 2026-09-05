@@ -660,8 +660,11 @@ for:
   - ps: |
       if("${env:Platform}" -eq "x64") { ${env:R_ARCHplat} =    "x64" }
       if("${env:Platform}" -eq "x86") { ${env:R_ARCHplat} =   "i386" }
+      echo "R_ARCHplat: ${env:R_ARCHplat}"
 
+  - echo "R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /COMPONENTS=main,%R_ARCHplat% /NOICONS /TASKS= /LOG=%rversion%.exe__install.log /SAVEINF=%rversion%.exe__setup.inf"
   - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /COMPONENTS=main,%R_ARCHplat% /NOICONS /TASKS= /LOG=%rversion%.exe__install.log /SAVEINF=%rversion%.exe__setup.inf
+  - echo "call "%R_HOME%\bin\R" --version"
   - call "%R_HOME%\bin\R" --version
 
   # From the version
@@ -941,8 +944,11 @@ for:
   - ps: |
       if("${env:Platform}" -eq "x64") { ${env:R_ARCHplat} =    "x64" }
       if("${env:Platform}" -eq "x86") { ${env:R_ARCHplat} =   "i386" }
+      echo "R_ARCHplat: ${env:R_ARCHplat}"
 
+  - echo "R-%rversion%-win.exe /VERYSILENT /COMPONENTS=main,%R_ARCHplat% /NOICONS /TASKS= /LOG=%rversion%.exe__install.log /SAVEINF=%rversion%.exe__setup.inf"
   - R-%rversion%-win.exe /VERYSILENT /COMPONENTS=main,%R_ARCHplat% /NOICONS /TASKS= /LOG=%rversion%.exe__install.log /SAVEINF=%rversion%.exe__setup.inf
+  - echo "call "%pf%\R\R-%rversion%\bin\R" --version"
   - call "%pf%\R\R-%rversion%\bin\R" --version
 
   - set mingw=C:\msys64\mingw
