@@ -1,5 +1,4 @@
 
-
 ##  # Skipping commits affecting specific files (GitHub and Bitbucket only).
 ##  skip_commits:
 ##    files:
