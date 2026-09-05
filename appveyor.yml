@@ -1,5 +1,4 @@
 
-version: '1.0.{build}'
 
 ##  # Skipping commits affecting specific files (GitHub and Bitbucket only).
 ##  skip_commits:
