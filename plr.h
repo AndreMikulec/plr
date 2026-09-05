@@ -138,7 +138,8 @@
  * This also works: "!defined(_MSC_VER) && !defined(__MINGW32__)"
 /*
 /* non-Microsoft OS but Cygwin is like Linux in this case */
-#if !defined(WIN32) && !defined(WIN64) && !((defined(_WIN64)) && defined(__MINGW32__))
+/* Topic R_SignalHandlers: Part 1 of 3 */
+#if !defined(WIN32) && !defined(WIN64)
 #include "Rinterface.h"
 #else
 extern int R_SignalHandlers;
