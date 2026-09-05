@@ -936,7 +936,14 @@ for:
         curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
       }
   #
+  - echo "R-%rversion%-win.exe /VERYSILENT"
   - R-%rversion%-win.exe /VERYSILENT
+  - echo "%pf%\R\R-%rversion%\bin\R"
+  - dir  "%pf%"
+  - dir  "%pf%\R"
+  - dir  "%pf%\R\R-%rversion%"
+  - dir  "%pf%\R\R-%rversion%\bin"
+  - dir  "%pf%\R\R-%rversion%\bin\R"
   - call "%pf%\R\R-%rversion%\bin\R" --version
   #
 
