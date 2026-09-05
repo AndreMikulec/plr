@@ -662,9 +662,7 @@ for:
       if("${env:Platform}" -eq "x86") { ${env:R_ARCHplat} =   "i386" }
       echo "R_ARCHplat: ${env:R_ARCHplat}"
 
-  - echo "R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /COMPONENTS=main,%R_ARCHplat% /NOICONS /TASKS= /LOG=%rversion%.exe__install.log /SAVEINF=%rversion%.exe__setup.inf"
   - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /COMPONENTS=main,%R_ARCHplat% /NOICONS /TASKS= /LOG=%rversion%.exe__install.log /SAVEINF=%rversion%.exe__setup.inf
-  - echo "call "%R_HOME%\bin\R" --version"
   - call "%R_HOME%\bin\R" --version
 
   # From the version
@@ -946,10 +944,8 @@ for:
       if("${env:Platform}" -eq "x86") { ${env:R_ARCHplat} =   "i386" }
       echo "R_ARCHplat: ${env:R_ARCHplat}"
 
-  - echo "R-%rversion%-win.exe /VERYSILENT /COMPONENTS=main,%R_ARCHplat% /NOICONS /TASKS= /LOG=%rversion%.exe__install.log /SAVEINF=%rversion%.exe__setup.inf"
   - R-%rversion%-win.exe /VERYSILENT /COMPONENTS=main,%R_ARCHplat% /NOICONS /TASKS= /LOG=%rversion%.exe__install.log /SAVEINF=%rversion%.exe__setup.inf
-  - echo "call "%pf%\R\R-%rversion%\bin\R" --version"
-  - call "%pf%\R\R-%rversion%\bin\R" --version
+  # Note R 4.1.3 i386 DOES NOT install in "C:\Program Files (x86)"
 
   - set mingw=C:\msys64\mingw
   #
@@ -1471,11 +1467,11 @@ deploy:
     on:
       APPVEYOR_REPO_TAG: true
 
-# <PROJECT> -> Settings -> Environment tab > Add Variables
-# https://ci.appveyor.com/project/<ACCOUNT>/plr/settings/environment
-# environment APPVEYOR_RDP_PASSWORD and ...
-#
-# https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-# pause the build until a special “lock” file on VM desktop is deleted
+# # <PROJECT> -> Settings -> Environment tab > Add Variables
+# # https://ci.appveyor.com/project/<ACCOUNT>/plr/settings/environment
+# # environment APPVEYOR_RDP_PASSWORD and ...
+# #
+# # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
+# on_finish:
+#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# # pause the build until a special “lock” file on VM desktop is deleted
