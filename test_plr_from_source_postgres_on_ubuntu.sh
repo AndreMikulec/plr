@@ -13,9 +13,17 @@ if [ "${PG_SOURCE}" == "" ]; then echo "Environment variable PG_SOURCE is missin
 # added to the PATH
 export PATH=${R_PATHS}:${PG_PATHS}:${PATH}
 
-
 ## # Older case
 ## # This worked when (1) I compiled PG from source AND (2) DID NOT compile contrib/plr AT THE SAME TIME
+##
+## # In the file "build_install_plr_and_postgres_from_source_on_ubuntu.sh"
+## # if the following had been done ... without the "plr" folder
+## #   being in the "contrib" directory (without "plr" being installed)
+##
+## ./configure
+## make
+## sudo make install
+##
 ## # pgxs make
 ## # pgxs install
 ## # pgxs regression tests (THIS WORKS!) - requires "PATH=/usr/local/pgsql/bin:$PATH"

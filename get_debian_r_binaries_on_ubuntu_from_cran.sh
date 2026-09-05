@@ -75,6 +75,13 @@ if [ ! -f "${GITHUB_ENV}" ]; then touch discard.txt; export GITHUB_ENV=discard.t
 # First, download the signing key into an isolated GPG directory 
 # and compare its complete fingerprint before writing anything to APT:
 
+
+# unset MY option
+set +e
+
+####################
+# BEGIN Joshua James
+
 (
 set -euo pipefail
 
@@ -140,6 +147,13 @@ printf '%s\n' \
   "Signed-By: /etc/apt/keyrings/cran.gpg" |
   sudo tee /etc/apt/sources.list.d/cran.sources >/dev/null
 )
+
+# END   Joshua James
+####################
+
+
+# re-set MY option
+set -e
 
 # ADDED
 sudo apt-get -qq update
