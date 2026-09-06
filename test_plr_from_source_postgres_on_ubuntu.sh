@@ -39,6 +39,17 @@ export PATH=${R_PATHS}:${PG_PATHS}:${PATH}
 ## # #I HAVE NOT TESTED THIS
 ## # sudo USE_PGXS=1 make uninstall
 
+#
+# meson regression tests ( buildpgANDplrInSRCcontrib == 'true' )
+#
+pushd  ${PG_SOURCE}
+
+# make -C contrib/amcheck installcheck
+# https://wiki.postgresql.org/wiki/Meson
+meson test -C build -v --print-errorlogs --setup running --suite cube-running
+meson test -C build -v --print-errorlogs --setup running --suite plr-running
+
+popd # from ${PG_SOURCE} back
 
 #
 # manual regression tests
@@ -64,17 +75,5 @@ pushd     "${PG_SOURCE}/contrib/plr"
 "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
 popd # from "${PG_SOURCE}/contrib/plr"
 
-
-#
-# meson regression tests ( buildpgANDplrInSRCcontrib == 'true' )
-#
-pushd  ${PG_SOURCE}
-
-# make -C contrib/amcheck installcheck
-# https://wiki.postgresql.org/wiki/Meson
-meson test -C build -v --print-errorlogs --setup running --suite cube-running
-meson test -C build -v --print-errorlogs --setup running --suite plr-running
-
-popd # from ${PG_SOURCE} back
 
 pg_ctl -D data -l logfile stop

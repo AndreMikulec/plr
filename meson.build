@@ -29,12 +29,12 @@ plr_deps +=  dep_R
 
 host_machine_system = host_machine.system()
 #
-is_cygwin = host_machine_system == 'cygwin'
-is_not_cygwin = host_machine_system != 'cygwin' # do not use this in testing
-is_windows =  host_machine_system == 'windows'  # do not use this in testing
-is_msys2 = is_windows and is_not_cygwin
-is_linux = host_machine_system == 'linux'
-is_darwin = host_machine_system == 'darwin'
+is_cygwin     = host_machine_system == 'cygwin'
+is_not_cygwin = host_machine_system != 'cygwin'    # do not use this in testing
+is_windows    =  host_machine_system == 'windows'  # do not use this in testing
+is_msys2      = is_windows and is_not_cygwin
+is_linux      = host_machine_system == 'linux'
+is_darwin     = host_machine_system == 'darwin'
 
 plr_incdir = []
 if is_cygwin or is_linux or is_darwin
@@ -64,7 +64,7 @@ plr = shared_module('plr',
 
 contrib_targets += plr
 
-install_data(
+data = [
   'plr--unpackaged--8.4.8.7.sql',
   'plr--8.3.0.18--8.4.sql',
   'plr--8.4.1--8.4.2.sql',
@@ -84,8 +84,9 @@ install_data(
   'plr--8.4.8.6--8.4.8.7.sql',
   'plr--8.4.8.7.sql',
   'plr.control',
-  kwargs: contrib_data_args,
-)
+]
+
+install_data(data, kwargs: contrib_data_args)
 
 tests += {
   'name': 'plr',
