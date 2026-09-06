@@ -136,7 +136,7 @@
  # returns "something" but it is not printable(made visible) by printf
  *
  * This also works: "!defined(_MSC_VER) && !defined(__MINGW32__)"
-/*
+ */
 /* non-Microsoft OS but Cygwin is like Linux in this case */
 /* Topic R_SignalHandlers: Part 1 of 3 */
 #if !defined(WIN32) && !defined(WIN64)

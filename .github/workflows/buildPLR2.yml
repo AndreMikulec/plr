@@ -1449,7 +1449,7 @@ jobs:
           path: |
             pg-matid-${{ matrix.matid }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
 
-      - name: Windows Meson PG and Meson PL/R Setup Compile and Non-Meson Manual Test
+      - name: Windows Meson PG and Meson PL/R Setup Compile and Meson Test and Manual Test
         if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib == 'true' }}
         env:
           # Cygwin OS variables
@@ -1910,6 +1910,9 @@ jobs:
           psql -d postgres                 -c "SELECT version();"
           psql -d postgres                 -c "SELECT current_setting('server_version_num') "server_version_num";"
 
+          meson test -C build -v --print-errorlogs --setup running --suite cube-running
+          meson test -C build -v --print-errorlogs --setup running --suite plr-running
+
           pushd     "${PG_SOURCE}/contrib/cube"
           "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression cube cube_sci || (cat regression.diffs && false)
           popd # fr "${PG_SOURCE}/contrib/cube"
@@ -1980,7 +1983,7 @@ jobs:
           bash save_good_artifact_from_place.sh "${PG_SOURCE}/build" "${PGROOT2}" "${GITHUB_WORKSPACE}"
 
 
-      - name: Windows Meson PL/R Setup Compile and Non-Meson Manual Test
+      - name: Windows Meson PL/R Setup Compile and Meson Manual and Manual Test
         if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib != 'true' }}
         env:
           # Cygwin OS variables
@@ -2486,6 +2489,9 @@ jobs:
 
           psql -d postgres                 -c "SELECT version();"
           psql -d postgres                 -c "SELECT current_setting('server_version_num') "server_version_num";"
+
+          meson test -C ../contrib/plr --list
+          meson test -C ../contrib/plr "plr:regress" -v || (cat regression.diffs && false)
 
           "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
 

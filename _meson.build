@@ -102,6 +102,41 @@ plr = shared_module('plr',
   dependencies: plr_deps,
 )
 
+# test in a standalone meson.build ( "not built with PG at the same time")
+# orafce/meson.build
+# Pavel Stehule
+# https://github.com/orafce/orafce/blob/aec025fafa7862c08722239e614b9bbd959a45c9/meson.build
+
+plr_regress = [
+  'plr',
+  'bad_fun',
+  'opt_window',
+  'do',
+  'out_args',
+  'plr_transaction',
+  'opt_window_frame',
+  'parallel'
+]
+
+pg_config = find_program('pg_config' , dirs: [ pg_home / 'bin'])
+# pg_config = find_program('pg_config')
+
+pkglibdir = run_command(pg_config, '--pkglibdir', check: true).stdout().strip()
+bindir    = run_command(pg_config, '--bindir',    check: true).stdout().strip()
+
+pg_regress = find_program(
+  'pg_regress',
+  dirs: [ pkglibdir / 'pgxs/src/test/regress' ]
+)
+
+test('regress',
+  pg_regress,
+  args: [ '--bindir', bindir,
+         '--inputdir', meson.current_source_dir(),
+         '--encoding', 'utf8',
+        ]  + plr_regress,
+)
+
 if meson.version().version_compare('>=0.57')
 
   summary(
