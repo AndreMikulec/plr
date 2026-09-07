@@ -148,6 +148,8 @@ printf '%s\n' \
   sudo tee /etc/apt/sources.list.d/cran.sources >/dev/null
 )
 
+cat /etc/apt/sources.list.d/cran.sources
+
 # END   Joshua James
 ####################
 

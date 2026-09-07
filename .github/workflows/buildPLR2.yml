@@ -2491,7 +2491,7 @@ jobs:
           psql -d postgres                 -c "SELECT current_setting('server_version_num') "server_version_num";"
 
           meson test -C ../contrib/plr --list
-          meson test -C ../contrib/plr "plr:regress" -v || (cat regression.diffs && false)
+          meson test -C ../contrib/plr "plr:regress" -v || (cat ../contrib/plr/regression.diffs && false)
 
           "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
 

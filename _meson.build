@@ -3,6 +3,33 @@ project('plr', 'c',
   license : 'GNU Public License Version 2',
 )
 
+# 1
+# This has only been tested\used on msys2 and cygwin
+# where "postgres" as a library is provided.
+# "Other" compiling platforms (is_linux or is_darwin) 
+# may or may not work (because can not easily get postgres to be a library).
+#
+# For more on non-windows, see "Building postgres statically"
+# Postgres server as a library
+# 2025-12-09
+# hello@davidv.dev
+# https://blog.davidv.dev/posts/postgres-library/
+#
+# see
+# Lines 127 and 134 and 152
+# https://github.com/orafce/orafce/blob/aec025fafa7862c08722239e614b9bbd959a45c9/meson.build
+# Lines . . . 
+# if meson.get_compiler('c').get_id() == 'msvc'
+#   postgres_lib = meson.get_compiler('c').find_library('postgres', ... )
+# ...
+# dependencies: postgres_lib,
+#
+# 2
+# Also, for "other" platforms (if ever possible)  the "include_directories" 
+# are estimates (educated guesses)
+# based on parallel similar directory layouts.
+#
+
 R_home = get_option('R_HOME')
 if R_home == ''
   error('One must supply: -DR_HOME=newvalue')
@@ -21,6 +48,35 @@ plr_sources = files(
   'pg_rsupport.c',
 )
 
+# ADDED SEP 2026
+# test/install
+#   in a standalone meson.build ( "not built with PG at the same time")
+# orafce/meson.build
+# Pavel Stehule
+# https://github.com/orafce/orafce/blob/aec025fafa7862c08722239e614b9bbd959a45c9/meson.build
+
+data = [
+  'plr--unpackaged--8.4.8.7.sql',
+  'plr--8.3.0.18--8.4.sql',
+  'plr--8.4.1--8.4.2.sql',
+  'plr--8.4.3--8.4.4.sql',
+  'plr--8.4--8.4.1.sql',
+  'plr--8.4.2--8.4.3.sql',
+  'plr--8.4.4--8.4.5.sql',
+  'plr--8.4.5--8.4.6.sql',
+  'plr--8.4.6--8.4.7.sql',
+  'plr--8.4.7--8.4.8.sql',
+  'plr--8.4.8--8.4.8.1.sql',
+  'plr--8.4.8.1--8.4.8.2.sql',
+  'plr--8.4.8.2--8.4.8.3.sql',
+  'plr--8.4.8.3--8.4.8.4.sql',
+  'plr--8.4.8.4--8.4.8.5.sql',
+  'plr--8.4.8.5--8.4.8.6.sql',
+  'plr--8.4.8.6--8.4.8.7.sql',
+  'plr--8.4.8.7.sql',
+  'plr.control',
+]
+
 plr_deps = []
 dep_libR = dependency('libR', required : true)
 plr_deps += dep_libR
@@ -38,19 +94,21 @@ plr_deps += dep_libpostgres
 #
 host_machine_system = host_machine.system()
 #
-is_cygwin = host_machine_system == 'cygwin'
-is_not_cygwin = host_machine_system != 'cygwin' # do not use this in testing
-is_windows =  host_machine_system == 'windows'  # do not use this in testing
-is_msys2 = is_windows and is_not_cygwin
-is_linux = host_machine_system == 'linux'
-is_darwin = host_machine_system == 'darwin'
+is_cygwin     = host_machine_system == 'cygwin'
+is_not_cygwin = host_machine_system != 'cygwin'    # do not use this in testing
+is_windows    = host_machine_system == 'windows'   # do not use this in testing
+is_msys2      = is_windows and is_not_cygwin
+is_linux      = host_machine_system == 'linux'
+is_darwin     = host_machine_system == 'darwin'
 
 plr_incdir = []
 if is_cygwin or is_linux or is_darwin
   pg_incdir1 = dep_libR.get_variable( pkgconfig : 'rincludedir' )
 endif
-# meson.build ... ERROR: Include dir /c/RINSTALL/include does not exist.
-# (Maybe because "R for Windows" is not a[n] [true] MSYS2 package)
+# is_msys2 ... ep_libR.get_variable( pkgconfig : 'rincludedir' ) 
+#  ERROR: Include dir /c/RINSTALL/include does not exist.
+#  Maybe because of Msys "mixed" mode ?
+#  https://cygwin.com/cygwin-ug-net/cygpath.html
 if is_msys2 # or is_cygwin
   pg_incdir1 = include_directories(R_home / 'include')
 endif
@@ -94,18 +152,25 @@ if is_darwin
 endif
 plr_c_args += dlsuffix
 
+
+# pg_config = find_program('pg_config')
+pg_config = find_program('pg_config' , dirs: [ pg_home / 'bin' ])
+
+# here pkglibdir in "install" and below in "test"
+pkglibdir = run_command(pg_config, '--pkglibdir', check: true).stdout().strip()
+
 plr = shared_module('plr',
   plr_sources,
   c_args: plr_c_args,
   name_prefix : '',
   include_directories: plr_incdir,
   dependencies: plr_deps,
+  install: true,
+  install_dir: pkglibdir,
 )
-
-# test in a standalone meson.build ( "not built with PG at the same time")
-# orafce/meson.build
-# Pavel Stehule
-# https://github.com/orafce/orafce/blob/aec025fafa7862c08722239e614b9bbd959a45c9/meson.build
+# plus add the .sql files and the .control file
+sharedir = run_command(pg_config, '--sharedir', check: true).stdout().strip()
+install_data(data,      install_dir: sharedir / 'extension')
 
 plr_regress = [
   'plr',
@@ -118,10 +183,7 @@ plr_regress = [
   'parallel'
 ]
 
-pg_config = find_program('pg_config' , dirs: [ pg_home / 'bin'])
-# pg_config = find_program('pg_config')
-
-pkglibdir = run_command(pg_config, '--pkglibdir', check: true).stdout().strip()
+# here bindir in "test"
 bindir    = run_command(pg_config, '--bindir',    check: true).stdout().strip()
 
 pg_regress = find_program(
