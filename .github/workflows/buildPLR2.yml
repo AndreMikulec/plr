@@ -1986,7 +1986,7 @@ jobs:
           bash save_good_artifact_from_place.sh "${PG_SOURCE}/build" "${PGROOT2}" "${GITHUB_WORKSPACE}"
 
 
-      - name: Windows Meson PL/R Setup Compile and Meson Manual and Manual Test
+      - name: Windows Meson PL/R Setup Compile and Meson Test and Manual Test
         if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib != 'true' }}
         env:
           # Cygwin OS variables
@@ -2006,7 +2006,7 @@ jobs:
           PG_HOME: ${{ env.PG_HOME }} # different
           PGROOT2: ${{ env.PGROOT2 }}
         run: |
-          echo "Windows Meson PL/R Setup Compile and Non-Meson Manual Test"
+          echo "Windows Meson PL/R Setup Compile and Meson Test and Manual Test"
           set -x -v -e
           . ./get_uname_info.sh
           if [ "${OperatingSystem}" == "Cygwin" ]
