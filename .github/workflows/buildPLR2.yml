@@ -195,7 +195,7 @@ jobs:
 #           Platform: x64
 #           Configuration: Debug
 #           #
-#           rversion:  devel
+#           rversion: devel
 #           R_HOME: 'C:\RINSTALL'
 #           R_ARCH: /x64
 #           #
@@ -649,9 +649,10 @@ jobs:
 
           echo "pgSRCversion: ${env:pgSRCversion}"
 
+          # hijacked default
           ${env:PG_SOURCE} = "${{ matrix.PG_SOURCE }}"
           # permanant AUG 2026 default change from "netset" to "C:\PGSOURCE"
-          if("${env:PG_SOURCE}" -eq ""){${env:PG_SOURCE} = "C:\PGSOURCE"}
+          if(("${env:PG_SOURCE}" -eq "") -or ("${env:PG_SOURCE}" -eq "notset")){${env:PG_SOURCE} = "C:\PGSOURCE"}
           Set-EnvVar "PG_SOURCE=${env:PG_SOURCE}"
 
           echo "PG_SOURCE: ${env:PG_SOURCE}"
@@ -699,7 +700,9 @@ jobs:
           # HOWEVER, at the moment, if the variable is the values of  "" or "notset" 
           # then, the REST of the CODE breaks, just below
           # on "[int]${env:pgwinmajor}" "Cannot convert value "notset"".
-          # THEREFORE, temporarily just keep the new default "17" UNTIL I REWORK the code of PG detection and assignment logic.
+          # THEREFORE, temporarily just 
+          # keep the new default of "Windows-non-arm "image" default installed PG version" (e.g. 17)
+          # UNTIL I REWORK the code of PG detection and assignment logic.
           if("${env:pgWINServiceNameHostDefault}" -eq "") { ${env:pgWINServiceNameHostDefault} = "17" }
 
           echo "pgWINServiceNameHostDefault: ${env:pgWINServiceNameHostDefault}"
