@@ -29,7 +29,7 @@ on:
 jobs:
   
   build_test_install:
-    name: matid
+    name: matid ${{ matrix.matid }} R ${{ matrix.rversion }} PGsrc ${{ matrix.pgSRCversion }} PGbin ${{ matrix.pgWINversion }} ${{ matrix.compilerEnv }} ${{ matrix.Platform }}  ${{ matrix.os }} ${{ matrix.Configuration }} PGSRC ${{ matrix.buildpgFromSRC }} PGSRCMETH ${{ matrix.buildpgFromSRCmethod }} SRCCTB ${{ matrix.buildpgANDplrInSRCcontrib }}
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.GithubActionsIgnoreFail == 'true' && true || false }}
     strategy:
