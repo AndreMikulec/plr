@@ -28,7 +28,7 @@ on:
 
 jobs:
   
-  build:
+  build_test_install:
     name: matid
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.GithubActionsIgnoreFail == 'true' && true || false }}
