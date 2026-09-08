@@ -4,6 +4,9 @@ run-name: Windows Builds PLR jobs - ${{ github.event.head_commit.message }}
 env:
   TZ: UTC
 
+permissions:
+  contents: write
+
 on: 
   push:
   pull_request: 
