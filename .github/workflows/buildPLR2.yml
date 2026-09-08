@@ -37,6 +37,10 @@ jobs:
       matrix:
         include: ${{ fromJSON(inputs.ragged_schedule) }}
 
+    defaults:
+      run:
+        shell: ${{ matrix.shellEnv || 'bash' }}
+
     steps:
 
       - name: Echo
