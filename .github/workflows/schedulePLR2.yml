@@ -4,12 +4,9 @@ run-name: Windows Builds PLR jobs - ${{ github.event.head_commit.message }}
 env:
   TZ: UTC
 
-permissions:
-  contents: write
-
-on: 
+on:
   push:
-  pull_request: 
+  pull_request:
   workflow_dispatch:
       debug_enabled:
         type: boolean

@@ -5,6 +5,9 @@ run-name: Callee of Windows Builds PL/R - ${{ github.event.head_commit.message }
 env:
   TZ: UTC
 
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
     inputs:
