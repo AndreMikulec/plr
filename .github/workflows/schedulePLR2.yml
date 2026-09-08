@@ -46,7 +46,7 @@ jobs:
     with:
       ragged_schedule: >
         [
-          { "matid": "01" }
+          { "os": "windows-2025-vs2026" }
         ]
 
 #         { "matid": "01",     "os": "windows-2025-vs2026",   "GithubActionsIgnoreFail": "false",  "compilerEnv": "cygwin",      "shellEnv": "notset",    "compilerExe": "notset", "Platform": "x64",    "Configuration": "Release",  "rversion": "notset",        "R_HOME": "notset",       "R_ARCH": "notset", "pgSRCversion": "notset",        "buildpgFromSRC": "notset", "buildpgFromSRCmethod": "notset", "buildpgANDplrInSRCcontrib": "notset", "PG_HOME": "notset",        "pgWINversion": "notset",  "MSYS2testonpgWIN": "notset" }
