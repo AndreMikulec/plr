@@ -28,7 +28,7 @@ on:
         required: true
 
 jobs:
-  build_test_install:
+  build:
     name: matid
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.GithubActionsIgnoreFail == 'true' && true || false }}
@@ -37,12 +37,7 @@ jobs:
       matrix:
         include: ${{ fromJSON(inputs.ragged_schedule) }}
 
-#   defaults:
-#     run:
-#       shell: ${{ matrix.shellEnv || 'bash' }}
-
     steps:
-
       - name: Echo
         run: |
           echo "Nothing"
