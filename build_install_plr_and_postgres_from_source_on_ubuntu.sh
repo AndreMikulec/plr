@@ -96,21 +96,6 @@ pushd  ${PG_SOURCE}
 # sudo make install
 
 
-# (FUTURE) - trying to make "postgres" be a library on Linux 
-#
-# (So, perhaps, I can link to postgres without complete compiling PG again.)
-# Symbols must be exported from the executable 
-# with a -Wl,--export-all-symbols,--out-implib,postgres.exe.a linker flag, 
-# where foo represents the name of the executable.
-# 
-# The plugins must be linked with a -Wl,/path/to/postgres.exe.a linker flag.
-# 
-# https://www.cygwin.com/faq.html
-#
-# meson setup
-# -Dc_link_args='-Wl,--export-all-symbols,--out-implib,postgres.exe.a'
-
-
 # one minute and four seconds
 #
 # https://mesonbuild.com/Quick-guide.html
@@ -168,44 +153,5 @@ psql -c "ALTER DATABASE postgres OWNER TO postgres;"
 
 psql -c "CREATE ROLE root WITH LOGIN SUPERUSER;"
 psql -c "CREATE DATABASE root OWNER root;"
-
-## # runner@runnervmgx7h7:~/work/plr/plr$ ls -alrt data/*.conf
-## # -rw------- 1 runner runner 45968 Aug 25 18:47 data/postgresql.conf
-## # ...
-## # -rw------- 1 runner runner  5710 Aug 25 18:47 data/pg_hba.conf
-## #
-## # TYPE  DATABASE        USER            ADDRESS                 METHOD
-## sudo chmod 777 data/pg_hba.conf
-## # append contents
-## sudo echo 'local   all             postgres                                trust' >>         data/pg_hba.conf
-## sudo echo 'local   all             root                                    trust' >>         data/pg_hba.conf
-## sudo echo 'local   all             runner                                  trust' >>         data/pg_hba.conf
-## sudo echo 'host    all             all             all                     trust' >>         data/pg_hba.conf
-## # access if the OS username matches the database username.
-## sudo echo 'local   all             all                                     peer'  >>         data/pg_hba.conf
-## # peer authentication is only supported on local sockets (Unix-domain sockets)
-## # sudo echo 'host    all             all             all                     peer'  >>         data/pg_hba.conf
-## sudo cat  data/pg_hba.conf
-## # PG pg_hba.conf file change requires reload (see below)
-## 
-## # PostgreSQL still uses localhost as its internal default
-## # sudo cat data/postgresql.conf | grep "listen_addresses"
-## # sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" data/postgresql.conf
-## # sudo cat data/postgresql.conf | grep "listen_addresses"
-## # PG postgresql.conf file change requires a stop then start (see below)
-## 
-## # only RELOAD (pre-requisite is that the server is started)
-## sudo -u postgres /usr/local/pgsql/bin/pg_ctl -D data -l logfile reload
-## 
-## # REL_##_ (AFTER pg_hba.conf configuration)
-## 
-## # # LOGIN and SUPERUSER are cluster-level roles
-## sudo -u postgres /usr/local/pgsql/bin/psql -d postgres -U postgres -c "CREATE ROLE runner WITH LOGIN SUPERUSER;"
-## sudo -u postgres /usr/local/pgsql/bin/psql -d postgres -U postgres -c "CREATE DATABASE runner OWNER runner;"
-## sudo -u postgres /usr/local/pgsql/bin/psql -d postgres -U postgres -c "CREATE ROLE root  WITH LOGIN SUPERUSER;"
-## sudo -u postgres /usr/local/pgsql/bin/psql -d postgres -U postgres -c "CREATE DATABASE root OWNER root;"
-## 
-## /usr/local/pgsql/bin/psql -c  "SELECT version();"
-## /usr/local/pgsql/bin/psql -c  "SELECT current_setting('server_version_num') "server_version_num";"
 
 if [ -f "discard.txt" ]; then rm discard.txt; fi
