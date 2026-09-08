@@ -455,11 +455,6 @@ jobs:
 
     steps:
 
-      - name: Echo
-        run: |
-          echo "Nothing"
-
-
       - name: Windows Machine Stats systeminfo
         if: ${{ matrix.os == 'windows-2025-vs2026' || matrix.os == 'windows-11-vs2026-arm' }}
         shell: cmd
