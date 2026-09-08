@@ -27,8 +27,6 @@ jobs:
 # Package: postgresql
 # https://www.cygwin.com/packages/summary/postgresql.html
 
-
-
 # windows_scheduled_daily_job_caller:
 #   name: Windows daily builds
 #   if: ${{ github.event_name == 'schedule' && github.event.schedule == '30 1 * * *' }}
@@ -39,8 +37,8 @@ jobs:
 #         { "matid": "01",     "os": "windows-2025-vs2026",   "GithubActionsIgnoreFail": "false",  "compilerEnv": "cygwin",      "shellEnv": "notset",    "compilerExe": "notset", "Platform": "x64",    "Configuration": "Release",  "rversion": "notset",        "R_HOME": "notset",       "R_ARCH": "notset", "pgSRCversion": "notset",        "buildpgFromSRC": "notset", "buildpgFromSRCmethod": "notset", "buildpgANDplrInSRCcontrib": "notset", "PG_HOME": "notset",        "pgWINversion": "notset",  "MSYS2testonpgWIN": "notset" }
 #       ]
 # #       { "matid": "01", "os": "windows-2025-vs2026", "GithubActionsIgnoreFail": "false", "compilerEnv": "cygwin", "Platform": "x64", "Configuration": "Release" }
-
 #         { "matid": "notset", "os": "notset",                "GithubActionsIgnoreFail": "notset", "compilerEnv": "notset",      "shellEnv": "notset",    "compilerExe": "notset", "Platform": "notset", "Configuration": "notset",   "rversion": "notset",        "R_HOME": "notset",       "R_ARCH": "notset", "pgSRCversion": "notset",        "buildpgFromSRC": "notset", "buildpgFromSRCmethod": "notset", "buildpgANDplrInSRCcontrib": "notset", "PG_HOME": "notset",        "pgWINversion": "notset",  "MSYS2testonpgWIN": "notset" }
+
   windows_fullbuildable_job_caller:
     name: Windows all builds
     if: ${{ github.event_name != 'schedule' }}
@@ -48,8 +46,10 @@ jobs:
     with:
       ragged_schedule: >
         [
-          { "matid": "01",     "os": "windows-2025-vs2026",   "GithubActionsIgnoreFail": "false",  "compilerEnv": "cygwin",      "shellEnv": "notset",    "compilerExe": "notset", "Platform": "x64",    "Configuration": "Release",  "rversion": "notset",        "R_HOME": "notset",       "R_ARCH": "notset", "pgSRCversion": "notset",        "buildpgFromSRC": "notset", "buildpgFromSRCmethod": "notset", "buildpgANDplrInSRCcontrib": "notset", "PG_HOME": "notset",        "pgWINversion": "notset",  "MSYS2testonpgWIN": "notset" }
+          {}
         ]
+
+#         { "matid": "01",     "os": "windows-2025-vs2026",   "GithubActionsIgnoreFail": "false",  "compilerEnv": "cygwin",      "shellEnv": "notset",    "compilerExe": "notset", "Platform": "x64",    "Configuration": "Release",  "rversion": "notset",        "R_HOME": "notset",       "R_ARCH": "notset", "pgSRCversion": "notset",        "buildpgFromSRC": "notset", "buildpgFromSRCmethod": "notset", "buildpgANDplrInSRCcontrib": "notset", "PG_HOME": "notset",        "pgWINversion": "notset",  "MSYS2testonpgWIN": "notset" }
 #         { "matid": "02",     "os": "windows-11-vs2026-arm", "GithubActionsIgnoreFail": "false",  "compilerEnv": "CLANGARM64",  "shellEnv": "msys2 {0}", "compilerExe": "clang",  "Platform": "x64",    "Configuration": "Debug",    "rversion": "devel-aarch64", "R_HOME": "C:\\RINSTALL", "R_ARCH": "notset", "pgSRCversion": "notset",        "buildpgFromSRC": "false",  "buildpgFromSRCmethod": "notset", "buildpgANDplrInSRCcontrib": "notset", "PG_HOME": "repo",          "pgWINversion": "notset",  "MSYS2testonpgWIN": "notset" },
 #         { "matid": "03",     "os": "windows-2025-vs2026",   "GithubActionsIgnoreFail": "false",  "compilerEnv": "UCRT64",      "shellEnv": "msys2 {0}", "compilerExe": "gcc",    "Platform": "x64",    "Configuration": "Debug",    "rversion": "devel-x86_64",  "R_HOME": "C:\\RINSTALL", "R_ARCH": "/x64",   "pgSRCversion": "master",        "buildpgFromSRC": "true",   "buildpgFromSRCmethod": "meson",  "buildpgANDplrInSRCcontrib": "notset", "PG_HOME": "C:\\PGINSTALL", "pgWINversion": "notset",  "MSYS2testonpgWIN": "notset" },
 #         { "matid": "04",     "os": "windows-2025-vs2026",   "GithubActionsIgnoreFail": "false",  "compilerEnv": "UCRT64",      "shellEnv": "msys2 {0}", "compilerExe": "gcc",    "Platform": "x64",    "Configuration": "Debug",    "rversion": "devel",         "R_HOME": "C:\\RINSTALL", "R_ARCH": "/x64",   "pgSRCversion": "master",        "buildpgFromSRC": "true",   "buildpgFromSRCmethod": "meson",  "buildpgANDplrInSRCcontrib": "notset", "PG_HOME": "C:\\PGINSTALL", "pgWINversion": "notset",  "MSYS2testonpgWIN": "notset" },
