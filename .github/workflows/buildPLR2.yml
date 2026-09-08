@@ -971,12 +971,12 @@ jobs:
 
             if [ "${Configuration}" == "Debug" ]
             then
-              meson setup --prefix "${PG_HOME}"                                   -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+              meson setup -Db_coverage=true --prefix "${PG_HOME}"                                   -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
             fi
 
             if [ "${Configuration}" == "Release" ]
             then
-              meson setup --prefix "${PG_HOME}" -Dbuildtype=release -Ddebug=false -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+              meson setup -Db_coverage=true --prefix "${PG_HOME}" -Dbuildtype=release -Ddebug=false -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
             fi
 
             set -x -v -e
@@ -1382,12 +1382,12 @@ jobs:
 
           if [ "${Configuration}" == "Debug" ]
           then
-            meson setup --prefix "${PG_HOME}"                                   -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+            meson setup -Db_coverage=true --prefix "${PG_HOME}"                                   -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
           fi
 
           if [ "${Configuration}" == "Release" ]
           then
-            meson setup --prefix "${PG_HOME}" -Dbuildtype=release -Ddebug=false -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
+            meson setup -Db_coverage=true --prefix "${PG_HOME}" -Dbuildtype=release -Ddebug=false -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=false -Ddtrace=disabled build
           fi
 
           meson compile -C build -v
@@ -2003,12 +2003,12 @@ jobs:
 
           if [ "${Configuration}" == "Debug" ]
           then
-            meson setup --prefix="${PG_HOME}/contrib/plr"                                   -Db_pie=true -DR_HOME="${R_HOME}" -DPG_HOME="${PG_HOME}" ../contrib/plr
+            meson setup -Db_coverage=true --prefix="${PG_HOME}/contrib/plr"                                   -Db_pie=true -DR_HOME="${R_HOME}" -DPG_HOME="${PG_HOME}" ../contrib/plr
           fi
 
           if [ "${Configuration}" == "Release" ]
           then
-            meson setup --prefix="${PG_HOME}/contrib/plr" -Dbuildtype=release -Ddebug=false -Db_pie=true -DR_HOME="${R_HOME}" -DPG_HOME="${PG_HOME}" ../contrib/plr
+            meson setup -Db_coverage=true --prefix="${PG_HOME}/contrib/plr" -Dbuildtype=release -Ddebug=false -Db_pie=true -DR_HOME="${R_HOME}" -DPG_HOME="${PG_HOME}" ../contrib/plr
           fi
 
           meson compile -C ../contrib/plr  -v
