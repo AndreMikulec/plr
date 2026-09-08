@@ -147,7 +147,7 @@ jobs:
           #               Go to a blue square under "Windows x86-64"
           #               In the browser "download progress bar", check out the name of the file in the download URL.
           #               The version is part of the download URL.
-                          Do not download Postgres 17 from EDB; Postgres is already on the Windows image and can not be uninstalled.
+          #               Do not download Postgres 17 from EDB; Postgres is already on the Windows image and can not be uninstalled.
           #               Generally, EDB, does not provide Postgres for Windows for Postgress Beta versions (XY_BETA_) and 
           #               and does not supply for Release candidatates (XY_RC_).
           # 
@@ -395,9 +395,9 @@ jobs:
         ]
 
 
-###############
-# Further Notes
-###############
+# ########################################
+# Further Notes - No compilation with msvc
+# ########################################
 
 # plr for "R 4.3.0 (and later) for Windows" can not be compiled with Microsoft Visual Studio.
 # Therefore, here, plr for "R 4.3.0 (and later) for Windows" is compiled with MSYS2(UCRT64/MINGW32).
@@ -422,9 +422,14 @@ jobs:
 # https://stackoverflow.com/questions/10540228/c-complex-numbers-in-c
 
 
+# ###########
+# Other Notes
+# ###########
+
 # Note, the x86 Cygwin Server will "not start" on Github Actions.
 # Therfore cygwin x86 is "not PostgreSQL regression testable."
-#
+
+
 # Repository R and Repository Postgresql
 # Package: R
 # https://www.cygwin.com/packages/summary/R.html
@@ -442,7 +447,7 @@ jobs:
 # In two matrix items, already-compiled repository found
 # PostreSQL already compiled binaries are used.
 #
-# The repository PostgreSQL version in HERE
+# The repository PostgreSQL version in the Github Actions Windows runner
 # is not [easily] detectable ahead of the build method.
 # Therefore, a HUMAN, must often check and set the build matrix versions
 # in the Github Actions build matrix, before the Github Action runs.
@@ -479,12 +484,8 @@ jobs:
 
 
 # devel-x86_64 rversion
-# Win-installer-x86_64 on runner page
-# R-devel-x86_64.exe gh downloaded
-# https://blog.r-project.org/2024/04/23/r-on-64-bit-arm-windows/
-
-
 # devel-aarch64 rversion
+#
 # Win-installer-aarch64 on runner page
 # R-devel-aarch64.exe gh downloaded
 # 
@@ -494,6 +495,7 @@ jobs:
 #   R-devel-aarch64 LLVM is needed because GCC does not support Windows/aarch64
 #   Also, R-devel-aarch64 CRAN packages are already tested with LLVM clang
 # https://blog.r-project.org/2024/04/23/r-on-64-bit-arm-windows/
+
 
 
 
