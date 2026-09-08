@@ -16,32 +16,13 @@ on:
   schedule:
     - cron: '30 1 * * *'
 
-# SEEN AUG 2026
-# ubuntu-latest or ubuntu-24.04
-# ubuntu-24.04-arm
-# https://github.com/actions/runner-images
-
 jobs:
 
   ubuntu_scheduled_daily_job_caller:
     name: Ubuntu daily builds
     if: ${{ github.event_name == 'schedule' && github.event.schedule == '30 1 * * *' }}
-#   runs-on: ${{ matrix.os }}
-#   strategy:
-#     fail-fast: false
-#     matrix:
-#       target:
-#         include:
-#           - PG: master
-#             R: 'next'
-#             os: ubuntu-24.04
-#           - PG: REL_19_
-#             R: 'next'
-#             os: ubuntu-24.04
-
     uses: ./.github/workflows/build2.yml
     with:
-#     target: ${{ matrix.target }}
       ragged_schedule: >
         [
           { "PG": "master",  "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
@@ -51,34 +32,8 @@ jobs:
   ubuntu_fullbuildable_job_caller:
     name: Ubuntu all builds
     if: ${{ github.event_name != 'schedule' }}
-#   runs-on: ${{ matrix.os }}
-#   strategy:
-#     fail-fast: false
-#     matrix:
-#       target:
-#         PG: [20, 19, 18, 17, 16, 15, 14, 13, 12, 10]
-#         R: 'repo'
-#         os: ubuntu-24.04
-#         include:
-#           - PG: master
-#             R: 'next'
-#             os: ubuntu-24.04
-#           - PG: REL_19_
-#             R: 'next'
-#             os: ubuntu-24.04
-#           - PG: 20
-#             R: 'next'
-#             os: ubuntu-24.04
-#           - PG: 19
-#             R: 'devel'
-#             os: ubuntu-24.04
-#           - PG: 18
-#             R: 'repo'
-#             os: ubuntu-24.04-arm
-
     uses: ./.github/workflows/build2.yml
     with:
-#     target: ${{ matrix.target }}
       ragged_schedule: >
         [
           { "PG": "master",  "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
@@ -94,14 +49,3 @@ jobs:
           { "PG": "11",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
           { "PG": "10",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" }
         ]
-
-
-
-# Numbered versions of R (e.g. x.y.z are not available)
-# r-base-dev devel and next are not available
-
-# PG 20 and 19 binaries are not available in neither the non-snapshot nor the ssnapshot
-#         {"PG": "19", "R": "repo", "os": "ubuntu-24.04",       "GithubActionsIgnoreFail": "false"},
-#         {"PG": "20", "R": "repo", "os": "ubuntu-24.04",       "GithubActionsIgnoreFail": "false"},
-#         {"PG": "19",      "R": "devel", "os": "ubuntu-24.04", "GithubActionsIgnoreFail": "false"},
-#         {"PG": "20",      "R": "next",  "os": "ubuntu-24.04", "GithubActionsIgnoreFail": "false"},

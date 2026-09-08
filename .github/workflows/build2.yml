@@ -19,18 +19,6 @@ on:
         type: boolean
         required: false
         default: false
-#     PG:
-#       required: true
-#       default: '18'
-#       type: string
-#     R:
-#       required: true
-#       default: 'repo'
-#       type: string
-#     os:
-#       required: true
-#       default: 'ubuntu-latest'
-#       type: string
       ragged_schedule:
         type: string
         required: true
@@ -40,7 +28,6 @@ jobs:
   ubuntu_job_runner:
     name: PG ${{ matrix.pg }} R ${{ matrix.R }} os ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    # Unexpected value 'false'
     continue-on-error: ${{ matrix.GithubActionsIgnoreFail == 'true' && true || false }}
     strategy:
       fail-fast: false
