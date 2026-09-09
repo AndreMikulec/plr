@@ -10,5 +10,6 @@ unset R_HOME
 
 # SHLIB_LINK PG_CPPFLAGS
 # https://www.postgresql.org/docs/current/extend-pgxs.html
-USE_PGXS=1 LCOVFLAGS="-q --legend --ignore-errors usage,empty" SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
+USE_PGXS=1 LCOVFLAGS="-q --legend --ignore-errors usage,empty" SHLIB_LINK=-lgcov \
+PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" PG_CFLAGS="-fprofile-arcs -ftest-coverage -O0" make
 sudo USE_PGXS=1 make install
