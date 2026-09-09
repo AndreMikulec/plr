@@ -36,7 +36,7 @@ jobs:
     with:
       ragged_schedule: >
         [
-          { "PG": "11",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" }
+          { "PG": "10",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" }
         ]
 #         { "PG": "master",  "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
 #         { "PG": "18",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
@@ -48,4 +48,4 @@ jobs:
 #         { "PG": "14",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
 #         { "PG": "13",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
 #         { "PG": "12",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
-#         { "PG": "10",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" }
+#         { "PG": "11",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
