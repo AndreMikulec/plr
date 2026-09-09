@@ -2003,7 +2003,7 @@ jobs:
 
           if [ "${Configuration}" == "Debug" ]
           then
-            meson setup -Db_coverage=true --prefix="${PG_HOME}/contrib/plr"                                   -Db_pie=true -DR_HOME="${R_HOME}" -DPG_HOME="${PG_HOME}" ../contrib/plr
+            meson setup -Dc_args="-fprofile-arcs -ftest-coverage -O0" -Dc_link_args="-fprofile-arcs -ftest-coverage -O0" --prefix="${PG_HOME}/contrib/plr"                                   -Db_pie=true -DR_HOME="${R_HOME}" -DPG_HOME="${PG_HOME}" ../contrib/plr
           fi
 
           if [ "${Configuration}" == "Release" ]
