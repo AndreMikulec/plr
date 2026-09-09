@@ -83,12 +83,16 @@ jobs:
           # matid: identifier to easily match the matrix item with the job, asset, and realease.
           #        This can be anything. E.g. alpha, beta, gama.  E.g. apollo athena hurcules
           # 
+          # Each matrix item has Configure.
+          #
+          # Configure: values are Release and Debug.  Debug will add debugging symbols.
+          #
           # Two types of combinations exist:"flexible" and "inflexible".
           # 
           # The "inflexible" are fixed.  
           # They have only been developed/tested/implemented in ONE way.
           # 
-          # The inflexible combinations are "Cygwin" and "CLANGARM64"(and only on the image windows 11-arm).
+          # The inflexible combinations are "Cygwin" and "CLANGARM64 only on the image windows 11-arm".
           # 
           # The flexible combinations items ...
           # 
@@ -164,12 +168,21 @@ jobs:
         [
 
           { 
+          "matid": "00",
+          "os": "windows-2025-vs2026",
+          "GithubActionsIgnoreFail": "false",
+          "compilerEnv": "cygwin",
+          "Platform": "x64",
+          "Configuration": "Debug"
+          },
+
+          { 
           "matid": "01",
           "os": "windows-2025-vs2026",
           "GithubActionsIgnoreFail": "false",
           "compilerEnv": "cygwin",
           "Platform": "x64",
-          "Configuration": "Release" 
+          "Configuration": "Release"
           },
 
           { 
