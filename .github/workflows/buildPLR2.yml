@@ -934,12 +934,12 @@ jobs:
 
             if [ "${Configuration}" == "Debug" ]
             then
-              ./configure --enable-coverage --prefix="${PG_HOME}" --enable-depend --disable-rpath --without-icu --enable-debug --enable-cassert CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer"
+              ./configure --prefix="${PG_HOME}" --enable-depend --disable-rpath --without-icu --enable-debug --enable-cassert CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer"
             fi
 
             if [ "${Configuration}" == "Release" ]
             then
-              ./configure --enable-coverage --prefix="${PG_HOME}" --enable-depend --disable-rpath --without-icu
+              ./configure --prefix="${PG_HOME}" --enable-depend --disable-rpath --without-icu
             fi
 
             set -x -v -e
