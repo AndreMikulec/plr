@@ -1573,6 +1573,35 @@ jobs:
           bash save_good_artifact_from_place.sh "${PG_SOURCE}/build" "${PGROOT2}" "${GITHUB_WORKSPACE}"
 
 
+      - name: Generate the Ninja coverage.xml report
+        if: {{ env.Configuration == 'Debug' && env.buildpgANDplrInSRCcontrib == 'true' }}
+        env:
+          # Cygwin OS variables
+          SHELLOPTS:         ${{ env.compilerClass == 'cygwin' && 'igncr' || '' }}
+          CHERE_INVOKING:    ${{ env.compilerClass == 'cygwin' && '1' || '' }}
+          CYGWIN:            ${{ env.compilerClass == 'cygwin' && 'winsymlinks:native' || '' }}
+          # Msys OS variables
+          msystem:           ${{ env.compilerClass == 'MSYS2'  && env.compilerEnv || '' }}
+          MSYS2_LOCATION:    ${{ env.compilerClass == 'MSYS2'  && steps.msys2_install.outputs.msys2-location || '' }}
+        run: |
+          echo "Generate the Ninja coverage.xml report"
+          set -x -v -e
+          . ./get_uname_info.sh
+          if [ "${OperatingSystem}" == "Cygwin" ]
+          then
+            # because I set CHERE_INVOKING to be 1
+            export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin:$(cygpath ${SYSTEMROOT})/system32:$(cygpath ${SYSTEMROOT}):$(cygpath ${SYSTEMROOT})/System32/Wbem
+          fi
+          echo "bash: $(which bash)"
+          echo "Present Working Directory: $(pwd)"
+          #
+          if [ "${OperatingSystem}" == "Msys" ]
+          then
+            echo "msystem: ${msystem}"
+          fi
+          ninja coverage-xml -C build
+
+
 
       - name: Windows Meson PL/R Setup Compile and Meson Test and Manual Test
         if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib != 'true' }}
