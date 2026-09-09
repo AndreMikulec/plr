@@ -2081,9 +2081,11 @@ jobs:
           meson test -C ../contrib/plr --list
           meson test -C ../contrib/plr "plr:regress" -v || (cat ../contrib/plr/regression.diffs && false)
 
-          ninja coverage -C ../contrib/plr
-
-          bash <(curl -s https://codecov.io/bash) -f ../contrib/plr/meson-logs/coverage.xml -t "${{ secrets.CODECOV_TOKEN }}"
+          if [ "${Configuration}" == "Debug" ]
+          then
+            ninja coverage -C ../contrib/plr
+            bash <(curl -s https://codecov.io/bash) -f ../contrib/plr/meson-logs/coverage.xml -t "${{ secrets.CODECOV_TOKEN }}" -v
+          fi
 
           "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
 
