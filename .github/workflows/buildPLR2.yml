@@ -1682,7 +1682,7 @@ jobs:
       #         pg_userfuncs.c.gcov,pg_conversion.c.gcov
       #
       - name: Upload the C files coverage reports to Codecov
-        if: {{ env.Configuration == 'Debug' && env.buildpgANDplrInSRCcontrib == 'true' }}
+        if: ${{ env.Configuration == 'Debug' && env.buildpgANDplrInSRCcontrib == 'true' }}
         uses: codecov/codecov-action@v7
         with:
           verbose: true
