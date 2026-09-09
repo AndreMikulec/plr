@@ -37,7 +37,7 @@ jobs:
           sudo make install
           export PATH=/usr/local/pgsql/bin:$PATH
           initdb -D data
-          pg_ctl -D data -l logfile start
+          pg_ctl -D data -l logfile -w start
           psql -d postgres -c "SELECT version();"
           psql -d postgres -c "SELECT current_setting('server_version_num');"
           popd
@@ -124,7 +124,7 @@ jobs:
           sudo make install
           export PATH=/usr/local/pgsql/bin:$PATH
           initdb -D data
-          pg_ctl -D data -l logfile start
+          pg_ctl -D data -l logfile -w start
           psql -d postgres -c "SELECT version();"
           psql -d postgres -c "SELECT current_setting('server_version_num');"
           popd

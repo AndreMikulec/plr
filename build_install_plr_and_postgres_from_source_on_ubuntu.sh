@@ -126,7 +126,7 @@ sudo useradd -r -s /bin/bash -m -d /var/lib/postgresql postgres
 initdb -D data
 # automatically created: cluster role "runner", database "postgres"
 
-pg_ctl -D data -l logfile start
+pg_ctl -D data -l logfile -w start
 
 psql -d postgres           -c "\du"
 psql -d postgres           -c "\l"

@@ -132,19 +132,19 @@ else
 fi
 
 # Success. You can now start the database server using:
-# C:/msys64/mingw64/bin/pg_ctl -D C:/msys64//home/appveyor/mingw64/postgresql/Data -l logfile start
-# C:/msys64/mingw64/bin/pg_ctl -D ${PGDATA} -l logfile start
+# C:/msys64/mingw64/bin/pg_ctl -D C:/msys64//home/appveyor/mingw64/postgresql/Data -l logfile -w start
+# C:/msys64/mingw64/bin/pg_ctl -D ${PGDATA} -l logfile -w start
 
 # first
-pg_ctl -D ${PGDATA} -l logfile start
+pg_ctl -D ${PGDATA} -l logfile -w start
 pg_ctl -D ${PGDATA} -l logfile stop
 
 # do again
-pg_ctl -D ${PGDATA} -l logfile start
+pg_ctl -D ${PGDATA} -l logfile -w start
 pg_ctl -D ${PGDATA} -l logfile stop
 
 # leave it up
-pg_ctl -D ${PGDATA} -l logfile start
+pg_ctl -D ${PGDATA} -l logfile -w start
 
 if [ "${compiler}" == "msys2" ]
 then
@@ -215,7 +215,7 @@ then
 fi
 
 # do again
-pg_ctl -D ${PGDATA} -l logfile start
+pg_ctl -D ${PGDATA} -l logfile -w start
 
 
 # -g3 because of the many macros

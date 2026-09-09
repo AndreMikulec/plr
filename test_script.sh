@@ -36,7 +36,7 @@ logok   "pg_config . . ."
 pg_config
 loginfo "END   verified that PLR has linked to the correct postgreSQL"
 
-pg_ctl -D ${PGDATA} -l logfile start
+pg_ctl -D ${PGDATA} -l logfile -w start
 
 loginfo "BEGIN plr INSTALLCHECK"
 USE_PGXS=1 make installcheck || (cat regression.diffs && false)

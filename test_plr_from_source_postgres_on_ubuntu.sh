@@ -7,7 +7,7 @@ if [ "${R_HOME}" == "" ];    then echo "Environment variable R_HOME is missing."
 if [ "${PG_SOURCE}" == "" ]; then echo "Environment variable PG_SOURCE is missing."; exit 99; fi
 
 # # PREVIOUSLY DONE ALREADY in "build_install_postgres_from_source_on_ubuntu.sh"
-# pg_ctl -D data -l logfile start
+# pg_ctl -D data -l logfile -w start
 
 
 # added to the PATH

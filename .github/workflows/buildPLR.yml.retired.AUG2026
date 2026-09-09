@@ -1881,7 +1881,7 @@ jobs:
           # the non-setup regression test (see FAR below).
           #
           initdb -D ${WORKSPACE}/PGDATA
-          pg_ctl -D ${WORKSPACE}/PGDATA -l logfile start
+          pg_ctl -D ${WORKSPACE}/PGDATA -l logfile -w start
 
           # non-setup regression test
           # Directories of testing "sql" and testing "expected" results exist here
@@ -2458,7 +2458,7 @@ jobs:
           # the non-setup regression test (see FAR below).
           #
           initdb -D ${WORKSPACE}/PGDATA
-          pg_ctl -D ${WORKSPACE}/PGDATA -l logfile start
+          pg_ctl -D ${WORKSPACE}/PGDATA -l logfile -w start
 
           # non-setup regression test
           # Directories of testing "sql" and testing "expected" results exist here

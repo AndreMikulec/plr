@@ -26,7 +26,7 @@ then
   export PATH=${pgroot}/sbin:${PATH}
 fi
 
-pg_ctl -D ${PGDATA} -l logfile start
+pg_ctl -D ${PGDATA} -l logfile -w start
 
 if [ "${compiler}" == "msys2" ]
 then
