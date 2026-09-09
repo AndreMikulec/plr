@@ -25,7 +25,7 @@ jobs:
       ragged_array: >
         [
 
-          {
+          { 
           "matid": "05",
           "os": "windows-2025-vs2026",
           "GithubActionsIgnoreFail": "false",
@@ -40,8 +40,7 @@ jobs:
           "pgSRCversion": "master",
           "buildpgFromSRC": "true",
           "buildpgFromSRCmethod": "meson",
-          "PG_HOME": "C:\\PGINSTALL"
-          }
+          "PG_HOME": "C:\\PGINSTALL" }
 
         ]
 
@@ -52,9 +51,9 @@ jobs:
     with:
 
           # Matrix items options are the following ...
-          #
+          # 
           # matid
-          #
+          # 
           # os
           # GithubActionsIgnoreFail
           # compilerEnv
@@ -62,47 +61,47 @@ jobs:
           # compilerExe
           # Platform
           # Configuration
-          #
+          # 
           # rversion
           # R_HOME
           # R_ARCH
-          #
+          # 
           # pgSRCversion
           # buildpgFromSRC
           # buildpgFromSRCmethod
           # buildpgANDplrInSRCcontrib
           # PG_HOME
-          #
+          # 
           # pgWINversion
           # MSYS2testonpgWIN
-          #
-          #
+          # 
+          # 
           # Descriptons of Matrix items follow.
-          #
+          # 
           # Each matrix item has a matid.
-          #
+          # 
           # matid: identifier to easily match the matrix item with the job, asset, and realease.
           #        This can be anything. E.g. alpha, beta, gama.  E.g. apollo athena hurcules
-          #
+          # 
           # Two types of combinations exist:"flexible" and "inflexible".
-          #
-          # The "inflexible" are fixed.
+          # 
+          # The "inflexible" are fixed.  
           # They have only been developed/tested/implemented in ONE way.
-          #
+          # 
           # The inflexible combinations are "Cygwin" and "CLANGARM64"(and only on the image windows 11-arm).
-          #
+          # 
           # The flexible combinations items ...
-          #
+          # 
           # os: operating system of the [Github Actions] runner.
-          #     Any recent Windows runner images
-          #     at https://github.com/actions/runner-images
+          #     Any recent Windows runner images 
+          #     at https://github.com/actions/runner-images 
           #     The values are in the "YAML Label".  MacOS images have not been tested.
           # Platform: Generally x86 or x64.
           #           Generally this represents the bitness of the supporting compiling and library software.
           #           This correlates with the R_ARCH (if any).
           # Configuration: Debug or Release
-          #                If the rversion or pgSRCversion is "devel", "devel-*", "master", (Postgres Release Candidates) "XY_RC_"
-          #                (Postgres Beta builds) "XY_BETA_" then the better choice is "Debug."
+          #                If the rversion or pgSRCversion is "devel", "devel-*", "master", (Postgres Release Candidates) "XY_RC_" 
+          #                (Postgres Beta builds) "XY_BETA_" then the better choice is "Debug." 
           # rversion: The user requested version of R for Windows.
           #           This is downloaded from CRAN.
           # R_ARCH: For a multiarchiture R. Currenly only R for windows. Values can be /x64 or  /i386
@@ -110,7 +109,7 @@ jobs:
           #         This correlates with the Platform.
           # compilerEnv: Collection of compiling software and libraries.
           #              Current values on Windows are: Cygwin and MSYS2 flavors.
-          #              Of the MSYS2 flavors, the only developed/tested/implmented are UCRT64
+          #              Of the MSYS2 flavors, the only developed/tested/implmented are UCRT64 
           #              and CLANGARM64(and only on the image windows 11-arm)
           # compilerExe: executable of the compliler.
           #              This is meant for MSYS2.  On Windows 11 choose "gcc". On Windows 11 arm, choose "clang"
@@ -125,7 +124,7 @@ jobs:
           #            One must also supply "pgSRCversion" and "buildpgFromSRC".
           # buildpgFromSRC: If "true" then compile Postgres using source code.
           #                 If "true", then one must supply "PG_SOURCE", "pgSRCVersion", and "PG_HOME".
-          # buildpgFromSRCmethod: "meson" or "make".
+          # buildpgFromSRCmethod: "meson" or "make".  
           #                        If "buildpgANDplrInSRCcontrib" is true, then only "meson" is allowed to work.
           #                        "meson" is only available for Postgres 16 and later (actually 15.9 and later).
           # buildpgANDplrInSRCcontrib: If "true" then build both Postgres and PLR at the same time.
@@ -149,22 +148,81 @@ jobs:
           #               In the browser "download progress bar", check out the name of the file in the download URL.
           #               The version is part of the download URL.
           #               Do not download Postgres 17 from EDB; Postgres is already on the Windows image and can not be uninstalled.
-          #               Generally, EDB, does not provide Postgres for Windows for Postgress Beta versions (XY_BETA_) and
+          #               Generally, EDB, does not provide Postgres for Windows for Postgress Beta versions (XY_BETA_) and 
           #               and does not supply for Release candidatates (XY_RC_).
-          #
-          # Below are the ONLY combinations that have been
+          # 
+          # Below are the ONLY combinations that have been 
           # developed, tested, and implemented.  Explanations follow.
-          #
+          # 
           # Do not try any other combinations.
-          # If a different combinations works than what is listed below,
-          # then THAT combination just works by "luck" only
+          # If a different combinations works than what is listed below, 
+          # then THAT combination just works by "luck" only  
           # and that combination can/will "stop working" at any time..
           #
 
       ragged_array: >
         [
 
-          {
+          { 
+          "matid": "01",
+          "os": "windows-2025-vs2026",
+          "GithubActionsIgnoreFail": "false",
+          "compilerEnv": "cygwin",
+          "Platform": "x64",
+          "Configuration": "Release" 
+          },
+
+          { 
+          "matid": "02",
+          "os": "windows-11-vs2026-arm",
+          "GithubActionsIgnoreFail": "false",
+          "compilerEnv": "CLANGARM64",
+          "shellEnv": "msys2 {0}",
+          "compilerExe": "clang",
+          "Platform": "x64",
+          "Configuration": "Debug",
+          "rversion": "devel-aarch64",
+          "R_HOME": "C:\\RINSTALL",
+          "buildpgFromSRC": "false",
+          "PG_HOME": "repo" 
+          },
+
+          { 
+          "matid": "03",
+          "os": "windows-2025-vs2026",
+          "GithubActionsIgnoreFail": "false",
+          "compilerEnv": "UCRT64",
+          "shellEnv": "msys2 {0}",
+          "compilerExe": "gcc",
+          "Platform": "x64",
+          "Configuration": "Debug",
+          "rversion": "devel-x86_64",
+          "R_HOME": "C:\\RINSTALL",
+          "R_ARCH": "/x64",
+          "pgSRCversion": "master",
+          "buildpgFromSRC": "true",
+          "buildpgFromSRCmethod": "meson",
+          "PG_HOME": "C:\\PGINSTALL" 
+          },
+
+          { 
+          "matid": "04",
+          "os": "windows-2025-vs2026",
+          "GithubActionsIgnoreFail": "false",
+          "compilerEnv": "UCRT64",
+          "shellEnv": "msys2 {0}",
+          "compilerExe": "gcc",
+          "Platform": "x64",
+          "Configuration": "Debug",
+          "rversion": "devel-x86_64",
+          "R_HOME": "C:\\RINSTALL",
+          "R_ARCH": "/x64",
+          "pgSRCversion": "master",
+          "buildpgANDplrInSRCcontrib": "true",
+          "PG_HOME": "C:\\PGINSTALL" 
+          },
+
+          { 
           "matid": "05",
           "os": "windows-2025-vs2026",
           "GithubActionsIgnoreFail": "false",
@@ -179,225 +237,162 @@ jobs:
           "pgSRCversion": "master",
           "buildpgFromSRC": "true",
           "buildpgFromSRCmethod": "meson",
-          "PG_HOME": "C:\\PGINSTALL"
+          "PG_HOME": "C:\\PGINSTALL" },
+
+          { 
+          "matid": "06",
+          "os": "windows-2025-vs2026",
+          "GithubActionsIgnoreFail": "false",
+          "compilerEnv": "UCRT64",
+          "shellEnv": "msys2 {0}",
+          "compilerExe": "gcc",
+          "Platform": "x64",
+          "Configuration": "Debug",
+          "rversion": "4.6.1",
+          "R_HOME": "C:\\RINSTALL",
+          "R_ARCH": "/x64",
+          "pgSRCversion": "master",
+          "buildpgFromSRC": "true",
+          "buildpgFromSRCmethod": "meson",
+          "PG_HOME": "C:\\PGINSTALL" 
+          },
+
+          { 
+          "matid": "07",
+          "os": "windows-2025-vs2026",
+          "GithubActionsIgnoreFail": "false",
+          "compilerEnv": "UCRT64",
+          "shellEnv": "msys2 {0}",
+          "compilerExe": "gcc",
+          "Platform": "x64",
+          "Configuration": "Debug",
+          "rversion": "devel",
+          "R_HOME": "C:\\RINSTALL",
+          "R_ARCH": "/x64",
+          "pgSRCversion": "REL_19_STABLE",
+          "buildpgFromSRC": "true",
+          "buildpgFromSRCmethod": "meson",
+          "PG_HOME": "C:\\PGINSTALL" 
+          },
+
+          { 
+          "matid": "08",
+          "os": "windows-2025-vs2026",
+          "GithubActionsIgnoreFail": "false",
+          "compilerEnv": "UCRT64",
+          "shellEnv": "msys2 {0}",
+          "compilerExe": "gcc",
+          "Platform": "x64",
+          "Configuration": "Release",
+          "rversion": "4.6.1",
+          "R_HOME": "C:\\RINSTALL",
+          "R_ARCH": "/x64",
+          "pgSRCversion": "REL_19_STABLE",
+          "buildpgFromSRC": "true",
+          "buildpgFromSRCmethod": "meson",
+          "PG_HOME": "C:\\PGINSTALL" 
+          },
+
+          { 
+          "matid": "09",
+          "os": "windows-2025-vs2026",
+          "GithubActionsIgnoreFail": "false",
+          "compilerEnv": "UCRT64",
+          "shellEnv": "msys2 {0}",
+          "compilerExe": "gcc",
+          "Platform": "x64",
+          "Configuration": "Release",
+          "rversion": "4.6.1",
+          "R_HOME": "C:\\RINSTALL",
+          "R_ARCH": "/x64",
+          "pgSRCversion": "REL_18_STABLE",
+          "buildpgFromSRC": "true",
+          "buildpgFromSRCmethod": "meson",
+          "PG_HOME": "C:\\PGINSTALL",
+          "pgWINversion": "18.6-1",
+          "MSYS2testonpgWIN": "true" 
+          },
+
+          { 
+          "matid": "10",
+          "os": "windows-2025-vs2026",
+          "GithubActionsIgnoreFail": "false",
+          "compilerEnv": "UCRT64",
+          "shellEnv": "msys2 {0}",
+          "compilerExe": "gcc",
+          "Platform": "x64",
+          "Configuration": "Release",
+          "rversion": "4.6.1",
+          "R_HOME": "C:\\RINSTALL",
+          "R_ARCH": "/x64",
+          "pgSRCversion": "REL_17_STABLE",
+          "buildpgFromSRC": "true",
+          "buildpgFromSRCmethod": "meson",
+          "PG_HOME": "C:\\PGINSTALL",
+          "MSYS2testonpgWIN": "true" 
+          },
+
+          { 
+          "matid": "11",
+          "os": "windows-2025-vs2026",
+          "GithubActionsIgnoreFail": "false",
+          "compilerEnv": "UCRT64",
+          "shellEnv": "msys2 {0}",
+          "compilerExe": "gcc",
+          "Platform": "x64",
+          "Configuration": "Release",
+          "rversion": "4.6.1",
+          "R_HOME": "C:\\RINSTALL",
+          "R_ARCH": "/x64",
+          "pgSRCversion": "REL_16_STABLE",
+          "buildpgFromSRC": "true",
+          "buildpgFromSRCmethod": "meson",
+          "PG_HOME": "C:\\PGINSTALL",
+          "pgWINversion": "16.15-1",
+          "MSYS2testonpgWIN": "true" 
+          },
+
+          { 
+          "matid": "12",
+          "os": "windows-2025-vs2026",
+          "GithubActionsIgnoreFail": "false",
+          "compilerEnv": "UCRT64",
+          "shellEnv": "msys2 {0}",
+          "compilerExe": "gcc",
+          "Platform": "x64",
+          "Configuration": "Release",
+          "rversion": "4.6.1",
+          "R_HOME": "C:\\RINSTALL",
+          "R_ARCH": "/x64",
+          "pgSRCversion": "REL_15_STABLE",
+          "buildpgFromSRC": "true",
+          "buildpgFromSRCmethod": "make",
+          "PG_HOME": "C:\\PGINSTALL",
+          "pgWINversion": "15.19-1",
+          "MSYS2testonpgWIN": "true" 
+          },
+
+          { 
+          "matid": "13",
+          "os": "windows-2025-vs2026",
+          "GithubActionsIgnoreFail": "false",
+          "compilerEnv": "UCRT64",
+          "shellEnv": "msys2 {0}",
+          "compilerExe": "gcc",
+          "Platform": "x64",
+          "Configuration": "Release",
+          "rversion": "4.6.1",
+          "R_HOME": "C:\\RINSTALL",
+          "R_ARCH": "/x64",
+          "pgSRCversion": "REL_14_STABLE",
+          "buildpgFromSRC": "true",
+          "buildpgFromSRCmethod": "make",
+          "PG_HOME": "C:\\PGINSTALL",
+          "pgWINversion": "14.24-1",
+          "MSYS2testonpgWIN": "true" 
           }
 
         ]
-
-#         {
-#         "matid": "01",
-#         "os": "windows-2025-vs2026",
-#         "GithubActionsIgnoreFail": "false",
-#         "compilerEnv": "cygwin",
-#         "Platform": "x64",
-#         "Configuration": "Release"
-#         },
-#
-#         {
-#         "matid": "02",
-#         "os": "windows-11-vs2026-arm",
-#         "GithubActionsIgnoreFail": "false",
-#         "compilerEnv": "CLANGARM64",
-#         "shellEnv": "msys2 {0}",
-#         "compilerExe": "clang",
-#         "Platform": "x64",
-#         "Configuration": "Debug",
-#         "rversion": "devel-aarch64",
-#         "R_HOME": "C:\\RINSTALL",
-#         "buildpgFromSRC": "false",
-#         "PG_HOME": "repo"
-#         },
-#
-#         {
-#         "matid": "03",
-#         "os": "windows-2025-vs2026",
-#         "GithubActionsIgnoreFail": "false",
-#         "compilerEnv": "UCRT64",
-#         "shellEnv": "msys2 {0}",
-#         "compilerExe": "gcc",
-#         "Platform": "x64",
-#         "Configuration": "Debug",
-#         "rversion": "devel-x86_64",
-#         "R_HOME": "C:\\RINSTALL",
-#         "R_ARCH": "/x64",
-#         "pgSRCversion": "master",
-#         "buildpgFromSRC": "true",
-#         "buildpgFromSRCmethod": "meson",
-#         "PG_HOME": "C:\\PGINSTALL"
-#         },
-#
-#         {
-#         "matid": "04",
-#         "os": "windows-2025-vs2026",
-#         "GithubActionsIgnoreFail": "false",
-#         "compilerEnv": "UCRT64",
-#         "shellEnv": "msys2 {0}",
-#         "compilerExe": "gcc",
-#         "Platform": "x64",
-#         "Configuration": "Debug",
-#         "rversion": "devel-x86_64",
-#         "R_HOME": "C:\\RINSTALL",
-#         "R_ARCH": "/x64",
-#         "pgSRCversion": "master",
-#         "buildpgANDplrInSRCcontrib": "true",
-#         "PG_HOME": "C:\\PGINSTALL"
-#         },
-#
-#
-#
-#         {
-#         "matid": "06",
-#         "os": "windows-2025-vs2026",
-#         "GithubActionsIgnoreFail": "false",
-#         "compilerEnv": "UCRT64",
-#         "shellEnv": "msys2 {0}",
-#         "compilerExe": "gcc",
-#         "Platform": "x64",
-#         "Configuration": "Debug",
-#         "rversion": "4.6.1",
-#         "R_HOME": "C:\\RINSTALL",
-#         "R_ARCH": "/x64",
-#         "pgSRCversion": "master",
-#         "buildpgFromSRC": "true",
-#         "buildpgFromSRCmethod": "meson",
-#         "PG_HOME": "C:\\PGINSTALL"
-#         },
-#
-#         {
-#         "matid": "07",
-#         "os": "windows-2025-vs2026",
-#         "GithubActionsIgnoreFail": "false",
-#         "compilerEnv": "UCRT64",
-#         "shellEnv": "msys2 {0}",
-#         "compilerExe": "gcc",
-#         "Platform": "x64",
-#         "Configuration": "Debug",
-#         "rversion": "devel",
-#         "R_HOME": "C:\\RINSTALL",
-#         "R_ARCH": "/x64",
-#         "pgSRCversion": "REL_19_STABLE",
-#         "buildpgFromSRC": "true",
-#         "buildpgFromSRCmethod": "meson",
-#         "PG_HOME": "C:\\PGINSTALL"
-#         },
-#
-#         {
-#         "matid": "08",
-#         "os": "windows-2025-vs2026",
-#         "GithubActionsIgnoreFail": "false",
-#         "compilerEnv": "UCRT64",
-#         "shellEnv": "msys2 {0}",
-#         "compilerExe": "gcc",
-#         "Platform": "x64",
-#         "Configuration": "Release",
-#         "rversion": "4.6.1",
-#         "R_HOME": "C:\\RINSTALL",
-#         "R_ARCH": "/x64",
-#         "pgSRCversion": "REL_19_STABLE",
-#         "buildpgFromSRC": "true",
-#         "buildpgFromSRCmethod": "meson",
-#         "PG_HOME": "C:\\PGINSTALL"
-#         },
-#
-#         {
-#         "matid": "09",
-#         "os": "windows-2025-vs2026",
-#         "GithubActionsIgnoreFail": "false",
-#         "compilerEnv": "UCRT64",
-#         "shellEnv": "msys2 {0}",
-#         "compilerExe": "gcc",
-#         "Platform": "x64",
-#         "Configuration": "Release",
-#         "rversion": "4.6.1",
-#         "R_HOME": "C:\\RINSTALL",
-#         "R_ARCH": "/x64",
-#         "pgSRCversion": "REL_18_STABLE",
-#         "buildpgFromSRC": "true",
-#         "buildpgFromSRCmethod": "meson",
-#         "PG_HOME": "C:\\PGINSTALL",
-#         "pgWINversion": "18.6-1",
-#         "MSYS2testonpgWIN": "true"
-#         },
-#
-#         {
-#         "matid": "10",
-#         "os": "windows-2025-vs2026",
-#         "GithubActionsIgnoreFail": "false",
-#         "compilerEnv": "UCRT64",
-#         "shellEnv": "msys2 {0}",
-#         "compilerExe": "gcc",
-#         "Platform": "x64",
-#         "Configuration": "Release",
-#         "rversion": "4.6.1",
-#         "R_HOME": "C:\\RINSTALL",
-#         "R_ARCH": "/x64",
-#         "pgSRCversion": "REL_17_STABLE",
-#         "buildpgFromSRC": "true",
-#         "buildpgFromSRCmethod": "meson",
-#         "PG_HOME": "C:\\PGINSTALL",
-#         "MSYS2testonpgWIN": "true"
-#         },
-#
-#         {
-#         "matid": "11",
-#         "os": "windows-2025-vs2026",
-#         "GithubActionsIgnoreFail": "false",
-#         "compilerEnv": "UCRT64",
-#         "shellEnv": "msys2 {0}",
-#         "compilerExe": "gcc",
-#         "Platform": "x64",
-#         "Configuration": "Release",
-#         "rversion": "4.6.1",
-#         "R_HOME": "C:\\RINSTALL",
-#         "R_ARCH": "/x64",
-#         "pgSRCversion": "REL_16_STABLE",
-#         "buildpgFromSRC": "true",
-#         "buildpgFromSRCmethod": "meson",
-#         "PG_HOME": "C:\\PGINSTALL",
-#         "pgWINversion": "16.15-1",
-#         "MSYS2testonpgWIN": "true"
-#         },
-#
-#         {
-#         "matid": "12",
-#         "os": "windows-2025-vs2026",
-#         "GithubActionsIgnoreFail": "false",
-#         "compilerEnv": "UCRT64",
-#         "shellEnv": "msys2 {0}",
-#         "compilerExe": "gcc",
-#         "Platform": "x64",
-#         "Configuration": "Release",
-#         "rversion": "4.6.1",
-#         "R_HOME": "C:\\RINSTALL",
-#         "R_ARCH": "/x64",
-#         "pgSRCversion": "REL_15_STABLE",
-#         "buildpgFromSRC": "true",
-#         "buildpgFromSRCmethod": "make",
-#         "PG_HOME": "C:\\PGINSTALL",
-#         "pgWINversion": "15.19-1",
-#         "MSYS2testonpgWIN": "true"
-#         },
-#
-#         {
-#         "matid": "13",
-#         "os": "windows-2025-vs2026",
-#         "GithubActionsIgnoreFail": "false",
-#         "compilerEnv": "UCRT64",
-#         "shellEnv": "msys2 {0}",
-#         "compilerExe": "gcc",
-#         "Platform": "x64",
-#         "Configuration": "Release",
-#         "rversion": "4.6.1",
-#         "R_HOME": "C:\\RINSTALL",
-#         "R_ARCH": "/x64",
-#         "pgSRCversion": "REL_14_STABLE",
-#         "buildpgFromSRC": "true",
-#         "buildpgFromSRCmethod": "make",
-#         "PG_HOME": "C:\\PGINSTALL",
-#         "pgWINversion": "14.24-1",
-#         "MSYS2testonpgWIN": "true"
-#         }
-
 
 
 # ########################################
@@ -442,7 +437,7 @@ jobs:
 # https://www.cygwin.com/packages/summary/postgresql.html
 
 
-# EDB Postgres for Windows 17 hardcoded into the
+# EDB Postgres for Windows 17 hardcoded into the 
 # Github Actions runner image windows-2025-vs2026
 # It can not be uninstalled.
 
@@ -493,14 +488,13 @@ jobs:
 #
 # Win-installer-aarch64 on runner page
 # R-devel-aarch64.exe gh downloaded
-#
+# 
 # R on 64-bit ARM Windows - Tomas Kalibera - 2024/04/23
 #   R-devel-aarch64 “sub-architectures” are not used
 #   Hence, e.g. Rgui.exe is located directly in bin, while it is in bin/x64 on x86_64 (R-devel-x86_64)
 #   R-devel-aarch64 LLVM is needed because GCC does not support Windows/aarch64
 #   Also, R-devel-aarch64 CRAN packages are already tested with LLVM clang
 # https://blog.r-project.org/2024/04/23/r-on-64-bit-arm-windows/
-
 
 
 
