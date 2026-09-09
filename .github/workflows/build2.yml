@@ -109,11 +109,11 @@ jobs:
 #         bash <(curl -s https://codecov.io/bash) -t "${{ secrets.CODECOV_TOKEN }}"
 #       fi
 
-    - name: Debug with SSH owenthereal/action-upterm@v1
-      uses: owenthereal/action-upterm@v1
-      with:
-        wait-timeout-minutes: 5
-        limit-access-to-actor: true
+#   - name: Debug with SSH owenthereal/action-upterm@v1
+#     uses: owenthereal/action-upterm@v1
+#     with:
+#       wait-timeout-minutes: 5
+#       limit-access-to-actor: true
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v7
