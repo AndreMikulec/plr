@@ -167,58 +167,7 @@ jobs:
       ragged_array: >
         [
 
-          { 
-          "matid": "00",
-          "os": "windows-2025-vs2026",
-          "GithubActionsIgnoreFail": "false",
-          "compilerEnv": "cygwin",
-          "Platform": "x64",
-          "Configuration": "Debug"
-          },
-
-          { 
-          "matid": "01",
-          "os": "windows-2025-vs2026",
-          "GithubActionsIgnoreFail": "false",
-          "compilerEnv": "cygwin",
-          "Platform": "x64",
-          "Configuration": "Release"
-          },
-
-          { 
-          "matid": "02",
-          "os": "windows-11-vs2026-arm",
-          "GithubActionsIgnoreFail": "false",
-          "compilerEnv": "CLANGARM64",
-          "shellEnv": "msys2 {0}",
-          "compilerExe": "clang",
-          "Platform": "x64",
-          "Configuration": "Debug",
-          "rversion": "devel-aarch64",
-          "R_HOME": "C:\\RINSTALL",
-          "buildpgFromSRC": "false",
-          "PG_HOME": "repo" 
-          },
-
-          { 
-          "matid": "03",
-          "os": "windows-2025-vs2026",
-          "GithubActionsIgnoreFail": "false",
-          "compilerEnv": "UCRT64",
-          "shellEnv": "msys2 {0}",
-          "compilerExe": "gcc",
-          "Platform": "x64",
-          "Configuration": "Debug",
-          "rversion": "devel-x86_64",
-          "R_HOME": "C:\\RINSTALL",
-          "R_ARCH": "/x64",
-          "pgSRCversion": "master",
-          "buildpgFromSRC": "true",
-          "buildpgFromSRCmethod": "meson",
-          "PG_HOME": "C:\\PGINSTALL" 
-          },
-
-          { 
+         { 
           "matid": "04",
           "os": "windows-2025-vs2026",
           "GithubActionsIgnoreFail": "false",
@@ -233,179 +182,231 @@ jobs:
           "pgSRCversion": "master",
           "buildpgANDplrInSRCcontrib": "true",
           "PG_HOME": "C:\\PGINSTALL" 
-          },
-
-          { 
-          "matid": "05",
-          "os": "windows-2025-vs2026",
-          "GithubActionsIgnoreFail": "false",
-          "compilerEnv": "UCRT64",
-          "shellEnv": "msys2 {0}",
-          "compilerExe": "gcc",
-          "Platform": "x64",
-          "Configuration": "Debug",
-          "rversion": "devel",
-          "R_HOME": "C:\\RINSTALL",
-          "R_ARCH": "/x64",
-          "pgSRCversion": "master",
-          "buildpgFromSRC": "true",
-          "buildpgFromSRCmethod": "meson",
-          "PG_HOME": "C:\\PGINSTALL" },
-
-          { 
-          "matid": "06",
-          "os": "windows-2025-vs2026",
-          "GithubActionsIgnoreFail": "false",
-          "compilerEnv": "UCRT64",
-          "shellEnv": "msys2 {0}",
-          "compilerExe": "gcc",
-          "Platform": "x64",
-          "Configuration": "Debug",
-          "rversion": "4.6.1",
-          "R_HOME": "C:\\RINSTALL",
-          "R_ARCH": "/x64",
-          "pgSRCversion": "master",
-          "buildpgFromSRC": "true",
-          "buildpgFromSRCmethod": "meson",
-          "PG_HOME": "C:\\PGINSTALL" 
-          },
-
-          { 
-          "matid": "07",
-          "os": "windows-2025-vs2026",
-          "GithubActionsIgnoreFail": "false",
-          "compilerEnv": "UCRT64",
-          "shellEnv": "msys2 {0}",
-          "compilerExe": "gcc",
-          "Platform": "x64",
-          "Configuration": "Debug",
-          "rversion": "devel",
-          "R_HOME": "C:\\RINSTALL",
-          "R_ARCH": "/x64",
-          "pgSRCversion": "REL_19_STABLE",
-          "buildpgFromSRC": "true",
-          "buildpgFromSRCmethod": "meson",
-          "PG_HOME": "C:\\PGINSTALL" 
-          },
-
-          { 
-          "matid": "08",
-          "os": "windows-2025-vs2026",
-          "GithubActionsIgnoreFail": "false",
-          "compilerEnv": "UCRT64",
-          "shellEnv": "msys2 {0}",
-          "compilerExe": "gcc",
-          "Platform": "x64",
-          "Configuration": "Release",
-          "rversion": "4.6.1",
-          "R_HOME": "C:\\RINSTALL",
-          "R_ARCH": "/x64",
-          "pgSRCversion": "REL_19_STABLE",
-          "buildpgFromSRC": "true",
-          "buildpgFromSRCmethod": "meson",
-          "PG_HOME": "C:\\PGINSTALL" 
-          },
-
-          { 
-          "matid": "09",
-          "os": "windows-2025-vs2026",
-          "GithubActionsIgnoreFail": "false",
-          "compilerEnv": "UCRT64",
-          "shellEnv": "msys2 {0}",
-          "compilerExe": "gcc",
-          "Platform": "x64",
-          "Configuration": "Release",
-          "rversion": "4.6.1",
-          "R_HOME": "C:\\RINSTALL",
-          "R_ARCH": "/x64",
-          "pgSRCversion": "REL_18_STABLE",
-          "buildpgFromSRC": "true",
-          "buildpgFromSRCmethod": "meson",
-          "PG_HOME": "C:\\PGINSTALL",
-          "pgWINversion": "18.6-1",
-          "MSYS2testonpgWIN": "true" 
-          },
-
-          { 
-          "matid": "10",
-          "os": "windows-2025-vs2026",
-          "GithubActionsIgnoreFail": "false",
-          "compilerEnv": "UCRT64",
-          "shellEnv": "msys2 {0}",
-          "compilerExe": "gcc",
-          "Platform": "x64",
-          "Configuration": "Release",
-          "rversion": "4.6.1",
-          "R_HOME": "C:\\RINSTALL",
-          "R_ARCH": "/x64",
-          "pgSRCversion": "REL_17_STABLE",
-          "buildpgFromSRC": "true",
-          "buildpgFromSRCmethod": "meson",
-          "PG_HOME": "C:\\PGINSTALL",
-          "MSYS2testonpgWIN": "true" 
-          },
-
-          { 
-          "matid": "11",
-          "os": "windows-2025-vs2026",
-          "GithubActionsIgnoreFail": "false",
-          "compilerEnv": "UCRT64",
-          "shellEnv": "msys2 {0}",
-          "compilerExe": "gcc",
-          "Platform": "x64",
-          "Configuration": "Release",
-          "rversion": "4.6.1",
-          "R_HOME": "C:\\RINSTALL",
-          "R_ARCH": "/x64",
-          "pgSRCversion": "REL_16_STABLE",
-          "buildpgFromSRC": "true",
-          "buildpgFromSRCmethod": "meson",
-          "PG_HOME": "C:\\PGINSTALL",
-          "pgWINversion": "16.15-1",
-          "MSYS2testonpgWIN": "true" 
-          },
-
-          { 
-          "matid": "12",
-          "os": "windows-2025-vs2026",
-          "GithubActionsIgnoreFail": "false",
-          "compilerEnv": "UCRT64",
-          "shellEnv": "msys2 {0}",
-          "compilerExe": "gcc",
-          "Platform": "x64",
-          "Configuration": "Release",
-          "rversion": "4.6.1",
-          "R_HOME": "C:\\RINSTALL",
-          "R_ARCH": "/x64",
-          "pgSRCversion": "REL_15_STABLE",
-          "buildpgFromSRC": "true",
-          "buildpgFromSRCmethod": "make",
-          "PG_HOME": "C:\\PGINSTALL",
-          "pgWINversion": "15.19-1",
-          "MSYS2testonpgWIN": "true" 
-          },
-
-          { 
-          "matid": "13",
-          "os": "windows-2025-vs2026",
-          "GithubActionsIgnoreFail": "false",
-          "compilerEnv": "UCRT64",
-          "shellEnv": "msys2 {0}",
-          "compilerExe": "gcc",
-          "Platform": "x64",
-          "Configuration": "Release",
-          "rversion": "4.6.1",
-          "R_HOME": "C:\\RINSTALL",
-          "R_ARCH": "/x64",
-          "pgSRCversion": "REL_14_STABLE",
-          "buildpgFromSRC": "true",
-          "buildpgFromSRCmethod": "make",
-          "PG_HOME": "C:\\PGINSTALL",
-          "pgWINversion": "14.24-1",
-          "MSYS2testonpgWIN": "true" 
           }
 
         ]
+
+#         { 
+#         "matid": "00",
+#         "os": "windows-2025-vs2026",
+#         "GithubActionsIgnoreFail": "false",
+#         "compilerEnv": "cygwin",
+#         "Platform": "x64",
+#         "Configuration": "Debug"
+#         },
+#
+#         { 
+#         "matid": "01",
+#         "os": "windows-2025-vs2026",
+#         "GithubActionsIgnoreFail": "false",
+#         "compilerEnv": "cygwin",
+#         "Platform": "x64",
+#         "Configuration": "Release"
+#         },
+#
+#         { 
+#         "matid": "02",
+#         "os": "windows-11-vs2026-arm",
+#         "GithubActionsIgnoreFail": "false",
+#         "compilerEnv": "CLANGARM64",
+#         "shellEnv": "msys2 {0}",
+#         "compilerExe": "clang",
+#         "Platform": "x64",
+#         "Configuration": "Debug",
+#         "rversion": "devel-aarch64",
+#         "R_HOME": "C:\\RINSTALL",
+#         "buildpgFromSRC": "false",
+#         "PG_HOME": "repo" 
+#         },
+#
+#         { 
+#         "matid": "03",
+#         "os": "windows-2025-vs2026",
+#         "GithubActionsIgnoreFail": "false",
+#         "compilerEnv": "UCRT64",
+#         "shellEnv": "msys2 {0}",
+#         "compilerExe": "gcc",
+#         "Platform": "x64",
+#         "Configuration": "Debug",
+#         "rversion": "devel-x86_64",
+#         "R_HOME": "C:\\RINSTALL",
+#         "R_ARCH": "/x64",
+#         "pgSRCversion": "master",
+#         "buildpgFromSRC": "true",
+#         "buildpgFromSRCmethod": "meson",
+#         "PG_HOME": "C:\\PGINSTALL" 
+#         },
+#
+#
+#         { 
+#         "matid": "05",
+#         "os": "windows-2025-vs2026",
+#         "GithubActionsIgnoreFail": "false",
+#         "compilerEnv": "UCRT64",
+#         "shellEnv": "msys2 {0}",
+#         "compilerExe": "gcc",
+#         "Platform": "x64",
+#         "Configuration": "Debug",
+#         "rversion": "devel",
+#         "R_HOME": "C:\\RINSTALL",
+#         "R_ARCH": "/x64",
+#         "pgSRCversion": "master",
+#         "buildpgFromSRC": "true",
+#         "buildpgFromSRCmethod": "meson",
+#         "PG_HOME": "C:\\PGINSTALL" },
+#
+#         { 
+#         "matid": "06",
+#         "os": "windows-2025-vs2026",
+#         "GithubActionsIgnoreFail": "false",
+#         "compilerEnv": "UCRT64",
+#         "shellEnv": "msys2 {0}",
+#         "compilerExe": "gcc",
+#         "Platform": "x64",
+#         "Configuration": "Debug",
+#         "rversion": "4.6.1",
+#         "R_HOME": "C:\\RINSTALL",
+#         "R_ARCH": "/x64",
+#         "pgSRCversion": "master",
+#         "buildpgFromSRC": "true",
+#         "buildpgFromSRCmethod": "meson",
+#         "PG_HOME": "C:\\PGINSTALL" 
+#         },
+#
+#         { 
+#         "matid": "07",
+#         "os": "windows-2025-vs2026",
+#         "GithubActionsIgnoreFail": "false",
+#         "compilerEnv": "UCRT64",
+#         "shellEnv": "msys2 {0}",
+#         "compilerExe": "gcc",
+#         "Platform": "x64",
+#         "Configuration": "Debug",
+#         "rversion": "devel",
+#         "R_HOME": "C:\\RINSTALL",
+#         "R_ARCH": "/x64",
+#         "pgSRCversion": "REL_19_STABLE",
+#         "buildpgFromSRC": "true",
+#         "buildpgFromSRCmethod": "meson",
+#         "PG_HOME": "C:\\PGINSTALL" 
+#         },
+#
+#         { 
+#         "matid": "08",
+#         "os": "windows-2025-vs2026",
+#         "GithubActionsIgnoreFail": "false",
+#         "compilerEnv": "UCRT64",
+#         "shellEnv": "msys2 {0}",
+#         "compilerExe": "gcc",
+#         "Platform": "x64",
+#         "Configuration": "Release",
+#         "rversion": "4.6.1",
+#         "R_HOME": "C:\\RINSTALL",
+#         "R_ARCH": "/x64",
+#         "pgSRCversion": "REL_19_STABLE",
+#         "buildpgFromSRC": "true",
+#         "buildpgFromSRCmethod": "meson",
+#         "PG_HOME": "C:\\PGINSTALL" 
+#         },
+#
+#         { 
+#         "matid": "09",
+#         "os": "windows-2025-vs2026",
+#         "GithubActionsIgnoreFail": "false",
+#         "compilerEnv": "UCRT64",
+#         "shellEnv": "msys2 {0}",
+#         "compilerExe": "gcc",
+#         "Platform": "x64",
+#         "Configuration": "Release",
+#         "rversion": "4.6.1",
+#         "R_HOME": "C:\\RINSTALL",
+#         "R_ARCH": "/x64",
+#         "pgSRCversion": "REL_18_STABLE",
+#         "buildpgFromSRC": "true",
+#         "buildpgFromSRCmethod": "meson",
+#         "PG_HOME": "C:\\PGINSTALL",
+#         "pgWINversion": "18.6-1",
+#         "MSYS2testonpgWIN": "true" 
+#         },
+#
+#         { 
+#         "matid": "10",
+#         "os": "windows-2025-vs2026",
+#         "GithubActionsIgnoreFail": "false",
+#         "compilerEnv": "UCRT64",
+#         "shellEnv": "msys2 {0}",
+#         "compilerExe": "gcc",
+#         "Platform": "x64",
+#         "Configuration": "Release",
+#         "rversion": "4.6.1",
+#         "R_HOME": "C:\\RINSTALL",
+#         "R_ARCH": "/x64",
+#         "pgSRCversion": "REL_17_STABLE",
+#         "buildpgFromSRC": "true",
+#         "buildpgFromSRCmethod": "meson",
+#         "PG_HOME": "C:\\PGINSTALL",
+#         "MSYS2testonpgWIN": "true" 
+#         },
+#
+#         { 
+#         "matid": "11",
+#         "os": "windows-2025-vs2026",
+#         "GithubActionsIgnoreFail": "false",
+#         "compilerEnv": "UCRT64",
+#         "shellEnv": "msys2 {0}",
+#         "compilerExe": "gcc",
+#         "Platform": "x64",
+#         "Configuration": "Release",
+#         "rversion": "4.6.1",
+#         "R_HOME": "C:\\RINSTALL",
+#         "R_ARCH": "/x64",
+#         "pgSRCversion": "REL_16_STABLE",
+#         "buildpgFromSRC": "true",
+#         "buildpgFromSRCmethod": "meson",
+#         "PG_HOME": "C:\\PGINSTALL",
+#         "pgWINversion": "16.15-1",
+#         "MSYS2testonpgWIN": "true" 
+#         },
+#
+#         { 
+#         "matid": "12",
+#         "os": "windows-2025-vs2026",
+#         "GithubActionsIgnoreFail": "false",
+#         "compilerEnv": "UCRT64",
+#         "shellEnv": "msys2 {0}",
+#         "compilerExe": "gcc",
+#         "Platform": "x64",
+#         "Configuration": "Release",
+#         "rversion": "4.6.1",
+#         "R_HOME": "C:\\RINSTALL",
+#         "R_ARCH": "/x64",
+#         "pgSRCversion": "REL_15_STABLE",
+#         "buildpgFromSRC": "true",
+#         "buildpgFromSRCmethod": "make",
+#         "PG_HOME": "C:\\PGINSTALL",
+#         "pgWINversion": "15.19-1",
+#         "MSYS2testonpgWIN": "true" 
+#         },
+#
+#         { 
+#         "matid": "13",
+#         "os": "windows-2025-vs2026",
+#         "GithubActionsIgnoreFail": "false",
+#         "compilerEnv": "UCRT64",
+#         "shellEnv": "msys2 {0}",
+#         "compilerExe": "gcc",
+#         "Platform": "x64",
+#         "Configuration": "Release",
+#         "rversion": "4.6.1",
+#         "R_HOME": "C:\\RINSTALL",
+#         "R_ARCH": "/x64",
+#         "pgSRCversion": "REL_14_STABLE",
+#         "buildpgFromSRC": "true",
+#         "buildpgFromSRCmethod": "make",
+#         "PG_HOME": "C:\\PGINSTALL",
+#         "pgWINversion": "14.24-1",
+#         "MSYS2testonpgWIN": "true" 
+#         }
 
 
 # ########################################
