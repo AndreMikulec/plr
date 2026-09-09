@@ -1574,7 +1574,7 @@ jobs:
 
 
       - name: Generate the Ninja coverage.xml report
-        if: {{ env.Configuration == 'Debug' && env.buildpgANDplrInSRCcontrib == 'true' }}
+        if: ${{ env.Configuration == 'Debug' && env.buildpgANDplrInSRCcontrib == 'true' }}
         env:
           # Cygwin OS variables
           SHELLOPTS:         ${{ env.compilerClass == 'cygwin' && 'igncr' || '' }}
@@ -1601,6 +1601,97 @@ jobs:
           fi
           ninja coverage-xml -C build
 
+
+      # Ninja coverage.xml is expected to be in build/meson-logs/coverage.xml
+      # .gcno files are generated at compile time 
+      # .gcda (gcov data) files are generated at runtime
+      - name: Find all coverage.xml, .gcno files and .gcda files
+        if: ${{ env.Configuration == 'Debug' && env.buildpgANDplrInSRCcontrib == 'true' }}
+        env:
+          # Cygwin OS variables
+          SHELLOPTS:         ${{ env.compilerClass == 'cygwin' && 'igncr' || '' }}
+          CHERE_INVOKING:    ${{ env.compilerClass == 'cygwin' && '1' || '' }}
+          CYGWIN:            ${{ env.compilerClass == 'cygwin' && 'winsymlinks:native' || '' }}
+          # Msys OS variables
+          msystem:           ${{ env.compilerClass == 'MSYS2'  && env.compilerEnv || '' }}
+          MSYS2_LOCATION:    ${{ env.compilerClass == 'MSYS2'  && steps.msys2_install.outputs.msys2-location || '' }}
+        run: |
+          echo "Find all coverage.xml, .gcno files and .gcda files"
+          set -x -v -e
+          . ./get_uname_info.sh
+          if [ "${OperatingSystem}" == "Cygwin" ]
+          then
+            # because I set CHERE_INVOKING to be 1
+            export PATH=/usr/local/bin:/usr/bin:/usr/lib/lapack:/bin:/usr/sbin:/sbin:$(cygpath ${SYSTEMROOT})/system32:$(cygpath ${SYSTEMROOT}):$(cygpath ${SYSTEMROOT})/System32/Wbem
+          fi
+          echo "bash: $(which bash)"
+          echo "Present Working Directory: $(pwd)"
+          #
+          if [ "${OperatingSystem}" == "Msys" ]
+          then
+            echo "msystem: ${msystem}"
+          fi
+          #
+          echo "Looking for coverage.xml files
+          find / -name 'coverage.xml' -print 2/dev/null || true
+
+          echo "Looking for .gcno files
+          find / -name '*.gcno'       -print 2/dev/null || true
+          
+          echo "Looking for .gcda files
+          find / -name '*.gcda'       -print 2/dev/null || true
+
+
+#     - name: Debug with SSH owenthereal/action-upterm@v1
+#       uses: owenthereal/action-upterm@v1
+#       with:
+#         wait-timeout-minutes: 5
+#         limit-access-to-actor: true
+
+      # Tokenless uploading is unsupported. (SEEN AUG 2026)
+      # https://github.com/codecov/codecov-action
+      #
+      # Know the repository token CODECOV_TOKEN
+      # https://app.codecov.io/gh/USERNAME/plr/config/general
+      #
+      # Add the repository token to be a Github secret called CODECOV_TOKEN
+      # https://github.com/USERNAME/plr/settings/secrets/actions
+
+
+      - name: Upload the Ninja coverage.xml report to Codecov
+        if: ${{ env.Configuration == 'Debug' && env.buildpgANDplrInSRCcontrib == 'true' }}
+        uses: codecov/codecov-action@v7
+        with:
+          verbose: true
+          name: plr-Ninja-coverage.xml-report
+          disable_search: true
+          files: build/meson-logs/coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }} 
+
+
+      # gcov works only on code compiled with GCC
+      # https://linux.die.net/man/1/gcov
+      #
+      # Gemini AI
+      # By default, both .gcno and .gcda files are generated in the 
+      # specific build/compilation directory where the object (.o) files are created, 
+      # not in your root project directory or the directory where you execute the binary
+      #
+      #
+      # want -  plr.c.gcov, pg_rsupport.c.gcov, pg_backend_support.c.gcov,
+      #         pg_userfuncs.c.gcov,pg_conversion.c.gcov
+      #
+      - name: Upload the C files coverage reports to Codecov
+        if: {{ env.Configuration == 'Debug' && env.buildpgANDplrInSRCcontrib == 'true' }}
+        uses: codecov/codecov-action@v7
+        with:
+          verbose: true
+          name: plr-C-files-coverage-reports
+          gcov_args: >- 
+            --preserve-paths --branch-probabilities --all-blocks
+            --object-directory ${{ env.PKGLIBDIR }}
+            plr pg_rsupport pg_backend_support pg_userfuncs pg_conversion
+          token: ${{ secrets.CODECOV_TOKEN }} 
 
 
       - name: Windows Meson PL/R Setup Compile and Meson Test and Manual Test
