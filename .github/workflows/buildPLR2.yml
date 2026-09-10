@@ -1392,7 +1392,7 @@ jobs:
 
           if [ "${Configuration}" == "Debug" ]
           then
-            meson setup --prefix "${PG_HOME}"                                   -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=true -Dc_args="-fprofile-arcs -ftest-coverage -O0" -Dcpp_args="-fprofile-arcs -ftest-coverage -O0" -Dc_link_args="-fprofile-arcs -ftest-coverage -O0" -Dcpp_link_args="-fprofile-arcs -ftest-coverage -O0" -Ddtrace=disabled build
+            meson setup --prefix "${PG_HOME}"                                   -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled                    -Dc_args="-fprofile-arcs -ftest-coverage -O0" -Dcpp_args="-fprofile-arcs -ftest-coverage -O0" -Dc_link_args="-fprofile-arcs -ftest-coverage -O0" -Dcpp_link_args="-fprofile-arcs -ftest-coverage -O0" -Db_coverage=true -Ddtrace=disabled build
           fi
 
           if [ "${Configuration}" == "Release" ]
@@ -1609,7 +1609,10 @@ jobs:
           then
             echo "msystem: ${msystem}"
           fi
-          ninja coverage-xml -C ${{ env.POSIX_PG_SOURCE }}/build
+          echo "Recursively inpecting the contents of the BUILD directory"
+          ls -alrt -R       ${{ env.POSIX_PG_SOURCE }}/build
+          echo "Ninja generate coverage."
+          ninja coverage -C ${{ env.POSIX_PG_SOURCE }}/build
 
 
       # Ninja coverage.xml is expected to be in build/meson-logs/coverage.xml
