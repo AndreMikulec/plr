@@ -393,7 +393,7 @@ jobs:
           echo "POSIX Form Specific Variables"
           set -x -v -e
           # for codecov
-          export "POSIX_PG_SOURCE=$(cygpath "${PG_SOURCE}")
+          export  POSIX_PG_SOURCE=$(cygpath "${PG_SOURCE}")
           echo   "POSIX_PG_SOURCE=${POSIX_PG_SOURCE}" >> ${GITHUB_ENV}
           echo   "POSIX_PG_SOURCE: ${POSIX_PG_SOURCE}"
 
