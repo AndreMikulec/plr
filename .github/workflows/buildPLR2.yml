@@ -1645,13 +1645,13 @@ jobs:
             echo "msystem: ${msystem}"
           fi
           #
-          echo "Looking for coverage.xml files
+          echo "Looking for coverage.xml files"
           find / -name 'coverage.xml' -print 2/dev/null || true
 
-          echo "Looking for .gcno files
+          echo "Looking for .gcno files"
           find / -name '*.gcno'       -print 2/dev/null || true
           
-          echo "Looking for .gcda files
+          echo "Looking for .gcda files"
           find / -name '*.gcda'       -print 2/dev/null || true
 
 
