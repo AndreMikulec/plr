@@ -1263,7 +1263,7 @@ jobs:
           if [ ! "${PG_SOURCE}" == "notset" ] && [ ! "${PG_SOURCE}" == "" ]
           then
             export PG_SOURCE=$(cygpath "${PG_SOURCE}")
-            echo "cygpath PG_SOURCE: ${PG_SOURCE}""
+            echo "cygpath PG_SOURCE: ${PG_SOURCE}"
           fi
 
           if [ ! "${PG_HOME}" == "notset" ] && [ ! "${PG_HOME}" == "" ]
