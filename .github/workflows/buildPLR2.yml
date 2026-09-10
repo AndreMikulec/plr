@@ -387,6 +387,16 @@ jobs:
           echo "PGROOT2: ${env:PGROOT2}"
 
 
+      - name: POSIX Form Specific Variables
+        shell: bash
+        run: |
+          echo "POSIX Form Specific Variables"
+          set -x -v -e
+          # for codecov
+          export "POSIX_PG_SOURCE=$(cygpath "${PG_SOURCE}")
+          echo   "POSIX_PG_SOURCE=${POSIX_PG_SOURCE}" >> ${GITHUB_ENV}
+          echo   "POSIX_PG_SOURCE: ${POSIX_PG_SOURCE}"
+
       - name: Matrix Windows Platform Specific Variables
         if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' }}
         shell: powershell
@@ -1253,7 +1263,7 @@ jobs:
           if [ ! "${PG_SOURCE}" == "notset" ] && [ ! "${PG_SOURCE}" == "" ]
           then
             export PG_SOURCE=$(cygpath "${PG_SOURCE}")
-            echo "cygpath PG_SOURCE: ${PG_SOURCE}"
+            echo "cygpath PG_SOURCE: ${PG_SOURCE}""
           fi
 
           if [ ! "${PG_HOME}" == "notset" ] && [ ! "${PG_HOME}" == "" ]
@@ -1599,7 +1609,7 @@ jobs:
           then
             echo "msystem: ${msystem}"
           fi
-          ninja coverage-xml -C ${{ env.PG_SOURCE }}/build
+          ninja coverage-xml -C ${{ env.POSIX_PG_SOURCE }}/build
 
 
       # Ninja coverage.xml is expected to be in build/meson-logs/coverage.xml
@@ -1665,7 +1675,7 @@ jobs:
           verbose: true
           name: plr-Ninja-coverage.xml-report
           disable_search: true
-          files: ${{ env.PG_SOURCE }}/build/meson-logs/coverage.xml
+          files: ${{ env.POSIX_PG_SOURCE }}/build/meson-logs/coverage.xml
           token: ${{ secrets.CODECOV_TOKEN }} 
 
 
