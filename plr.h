@@ -123,7 +123,7 @@
  *   both 32-bit and 64-bit Windows targets
  * __CYGWIN__
  *   when building for a Cygwin environment
-/*
+ */
 /*
  * Msys 
  * gcc -dM -E -xc /dev/null >gcc.txt

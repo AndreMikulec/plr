@@ -101,17 +101,28 @@ is_msys2      = is_windows and is_not_cygwin
 is_linux      = host_machine_system == 'linux'
 is_darwin     = host_machine_system == 'darwin'
 
+if is_msys2
+  cygpath = find_program('cygpath')
+  # -m -- mixed mode
+  # https://cygwin.com/cygwin-ug-net/cygpath.html
+endif
+
 plr_incdir = []
-if is_cygwin or is_linux or is_darwin
-  pg_incdir1 = dep_libR.get_variable( pkgconfig : 'rincludedir' )
+
+pg_incdir1 = dep_libR.get_variable( pkgconfig : 'rincludedir' )
+#
+# for "msys2", for meson "User defined options" 
+#   change "pg_incdir1" to the "mixed mode" "path form".
+if is_msys2
+# pg_incdir1 = '/c/RINSTALL/include'    # NOT WORK # ERROR: Include dir /c/RINSTALL/include does not exist.
+# pg_incdir1 = 'C:\\RINSTALL\\bin\\x64' # WORKS
+# pg_incdir1 = 'C:/RINSTALL/include'    # WORKS - mixed mode (-m)
+  pg_incdir1 = run_command(cygpath, '-ml', pg_incdir1, check: true).stdout().strip()
 endif
-# is_msys2 ... ep_libR.get_variable( pkgconfig : 'rincludedir' ) 
-#  ERROR: Include dir /c/RINSTALL/include does not exist.
-#  Maybe because of Msys "mixed" mode ?
-#  https://cygwin.com/cygwin-ug-net/cygpath.html
-if is_msys2 # or is_cygwin
-  pg_incdir1 = include_directories(R_home / 'include')
-endif
+# if is_msys2 # or is_cygwin (works in both)
+# # pg_incdir1 = include_directories(R_home / 'include')
+# endif
+
 plr_incdir += pg_incdir1
 if is_msys2 or is_cygwin
   pg_incdir2 = include_directories(pg_home / 'include' / 'postgresql' / 'server' )
@@ -138,22 +149,28 @@ plr_incdir += pg_incdir3
 #
 plr_c_args = []
 
-if is_msys2 or is_cygwin
-  message('begin -DDLSUFFIX=".dll"')
-  dlsuffix = '-DDLSUFFIX=".dll"'
-  message('end   -DDLSUFFIX=".dll"')
-endif
+#
+# # name_suffix    str
+# # For shared libraries, the default value is 
+# # "dylib" on macOS, "dll" on Windows, and "so" everywhere else. 
+# # https://mesonbuild.com/Reference-manual_functions_shared_library.html
+#
+# if is_msys2 or is_cygwin
+#   message('begin -DDLSUFFIX=".dll"')
+#   dlsuffix = '-DDLSUFFIX=".dll"'
+#   message('end   -DDLSUFFIX=".dll"')
+# endif
+# 
+# if is_linux
+#   dlsuffix = '-DDLSUFFIX=".so"'
+# endif
+# if is_darwin
+#   dlsuffix = '-DDLSUFFIX=".dylib"'
+# endif
+# plr_c_args += dlsuffix
+#
 
-if is_linux
-  dlsuffix = '-DDLSUFFIX=".so"'
-endif
-if is_darwin
-  dlsuffix = '-DDLSUFFIX=".dylib"'
-endif
-plr_c_args += dlsuffix
 
-
-# pg_config = find_program('pg_config')
 pg_config = find_program('pg_config' , dirs: [ pg_home / 'bin' ])
 
 # here pkglibdir in "install" and below in "test"
