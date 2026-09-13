@@ -92,7 +92,7 @@ jobs:
         fi
 
     # Uploads code coverage to codecov.io
-    - name: Gather (if any) gcno and .gcda files, and Submit to codecov.io
+    - name: Gather (if any) .gcno with .gcda files, and Then Submit to codecov.io
       # success() returns true, when none of the previous steps have failed or been canceled.
       if: ${{ success() }}
       run: |
