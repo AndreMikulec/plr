@@ -20,7 +20,7 @@ export PATH=${R_PATHS}:${PG_PATHS}:${PATH}
 ## # if the following had been done ... without the "plr" folder
 ## #   being in the "contrib" directory (without "plr" being installed)
 ##
-## ./configure
+## ./configure --enable-depend --disable-rpath --without-icu
 ## make
 ## sudo make install
 ##
