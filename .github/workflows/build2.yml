@@ -110,33 +110,33 @@ jobs:
         fi
 
 
-    # Uploads code coverage to codecov.io
-    - name: Gather (any) .gcno with .gcda files, and Then Submit to codecov.io
-      # NOT "two(2) consecutive digits"
-      if: ${{ env.PGfromSource == 'true' }}
-      run: |
-        set -x -v -e
-        echo "Upload to codecov.io of PL/R from Postgres from source ..."
-        # gcc flag "--coverage" produce .gcno and .gcna (required) files here.
-        bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -a "--gcov-ignore-parse-errors" -s ${{ env.PG_SOURCE }}/build/contrib/plr/plr.so.p -n bash-plr-C-files-coverage-reports
-        # # UNTRIED
-        # #
-        # # FAILED: [code=1] meson-internal__coverage-xml
-        # # (WARNING) Unrecognized GCOV output for /PGSOURCE/src/backend/utils/adt/numeric.c
-        # # (ERROR) Exiting because of parse errors.
-        # # You can run gcovr with --gcov-ignore-parse-errors
-        #
-        # # Ninja produced the (PG and PLR) from source C files coverage.xml (gcov or lcov/genhtml)
-        # # gcovr required for "coverage-text AND coverage-xml"
-        # # https://mesonbuild.com/Feature-autodetection.html
-        # meson coverage location (not used)
-        # bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -f ${{ env.PG_SOURCE }}/build/meson-logs/coverage.xml -n bash-plr-Ninja-coverage.xml-report
+#   # Uploads code coverage to codecov.io
+#   - name: Gather (any) .gcno with .gcda files, and Then Submit to codecov.io
+#     # NOT "two(2) consecutive digits"
+#     if: ${{ env.PGfromSource == 'true' }}
+#     run: |
+#       set -x -v -e
+#       echo "Upload to codecov.io of PL/R from Postgres from source ..."
+#       # gcc flag "--coverage" produce .gcno and .gcna (required) files here.
+#       bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -s ${{ env.PG_SOURCE }}/build/contrib/plr/plr.so.p -n bash-plr-C-files-coverage-reports
+#       # # UNTRIED
+#       # #
+#       # # FAILED: [code=1] meson-internal__coverage-xml
+#       # # (WARNING) Unrecognized GCOV output for /PGSOURCE/src/backend/utils/adt/numeric.c
+#       # # (ERROR) Exiting because of parse errors.
+#       # # You can run gcovr with --gcov-ignore-parse-errors
+#       #
+#       # # Ninja produced the (PG and PLR) from source C files coverage.xml (gcov or lcov/genhtml)
+#       # # gcovr required for "coverage-text AND coverage-xml"
+#       # # https://mesonbuild.com/Feature-autodetection.html
+#       # meson coverage location (not used)
+#       # bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -f ${{ env.PG_SOURCE }}/build/meson-logs/coverage.xml -n bash-plr-Ninja-coverage.xml-report
 
 
     # .gcno files are generated at compile time 
     # .gcda (gcov data) files are generated at runtime
     # I USED "lcov" to create the coverage.info trace file (that is what it wants)
-    - name: Upload the (PG and PLR) from source PLR C files coverage reports to Codecov
+    - name: Upload the (PG and PLR) from source PLR C files coverage.info report to Codecov
       # NOT "two(2) consecutive digits"
       if: ${{ env.PGfromSource == 'true' }}
       uses: codecov/codecov-action@v7
