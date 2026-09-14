@@ -32,7 +32,21 @@ jobs:
 
     - name: Git Checkout this Repository Code
       uses: actions/checkout@v6
-      
+
+    - name: Matrix Variables
+      run: |
+        set -x -v -e
+        export PGfromSource="notset"
+        if [ $(echo "${{ matrix.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
+        then
+          export PGfromSource="false"
+        else
+          export PGfromSource="true"
+        fi
+        echo "PGfromSource=${PGfromSource}" >> ${GITHUB_ENV}
+        
+        echo "PGfromSource: ${PGfromSource}"
+
     - name: Get Linux Host Information
       run: |
         bash ./get_linux_host_info.sh
@@ -87,6 +101,7 @@ jobs:
           echo "Test of PL/R from Postgres from repository binary ..."
           bash ./test_plr_from_binary_postgres_on_ubuntu.sh
         else
+          # NOT "two(2) consecutive digits" (PG is from Source)
           echo "Test of PL/R from Postgres from source ..."
           bash ./test_plr_from_source_postgres_on_ubuntu.sh
           # PG and PLR build results. Show me everything
@@ -96,8 +111,6 @@ jobs:
 
     # Uploads code coverage to codecov.io
     - name: Gather (any) .gcno with .gcda files, and Then Submit to codecov.io
-      # two(2) consecutive digits
-      if: ${{ ! matches(matrix.PG, '^[0-9]{2}$') }}
       run: |
         set -x -v -e
         # two(2) consecutive digits
@@ -105,7 +118,7 @@ jobs:
         then
           echo "No upload to codecov.io of PL/R from Postgres from repository binary ..."
         else
-          # NOT "two(2) consecutive digits"
+          # NOT "two(2) consecutive digits" (PG is from Source)
           echo "Upload to codecov.io of PL/R from Postgres from source ..."
           # gcc flag "--coverage" produce .gcno and .gcna (required) files here.
           bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -s ${{ env.PGSOURCE }}/build/contrib/plr/plr.so.p     -n bash-plr-C-files-coverage-reports
@@ -119,7 +132,7 @@ jobs:
     # .gcda (gcov data) files are generated at runtime
     - name: Upload the (PG and PLR) from source PLR C files coverage reports to Codecov
       # NOT "two(2) consecutive digits"
-      if: ${{ ! matches(matrix.PG, '^[0-9]{2}$') }}
+      if: ${{ env.PGfromSource == 'true' }}
       uses: codecov/codecov-action@v7
       with:
         verbose: true
@@ -133,7 +146,7 @@ jobs:
     # Ninja coverage.xml is expected to be in build/meson-logs/coverage.xml
     - name: Upload the (PG and PLR) from source C files Ninja coverage.xml Report to Codecov
       # NOT "two(2) consecutive digits"
-      if: ${{ ! matches(matrix.PG, '^[0-9]{2}$') }}
+      if: ${{ env.PGfromSource == 'true' }}
       uses: codecov/codecov-action@v7
       with:
         verbose: true
