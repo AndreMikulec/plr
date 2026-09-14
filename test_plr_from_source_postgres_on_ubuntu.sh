@@ -54,9 +54,8 @@ meson test -C build -v --print-errorlogs --setup running --suite plr-running
 # (ERROR) Exiting because of parse errors.
 # You can run gcovr with --gcov-ignore-parse-errors
 #
-
-export CC_GCOV_ARGS="--gcov-ignore-parse-errors"
-ninja      -C build -v coverage-xml 
+# export CC_GCOV_ARGS="--gcov-ignore-parse-errors" (DID NOT WORK)
+# ninja      -C build -v coverage-xml 
 
 popd # from ${PG_SOURCE} back
 
