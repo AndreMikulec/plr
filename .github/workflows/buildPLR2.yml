@@ -16,7 +16,7 @@ on:
         type: boolean
         required: false
         default: false
-      ragged_array:
+      ragged_strategy_matrix:
         type: string
         required: true
 
@@ -34,7 +34,7 @@ jobs:
       fail-fast: false
       matrix:
 
-        include: ${{ fromJSON(inputs.ragged_array) }}
+        include: ${{ fromJSON(inputs.ragged_strategy_matrix) }}
 
     defaults:
       run:

@@ -13,7 +13,10 @@ on:
         type: boolean
         required: false
         default: false
-      ragged_schedule:
+      caller_event_name:
+        type: string
+        required: true
+      ragged_strategy_matrix:
         type: string
         required: true
 
@@ -26,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJSON(inputs.ragged_schedule) }}
+        include: ${{ fromJSON(inputs.ragged_strategy_matrix) }}
 
     steps:
 
@@ -104,72 +107,23 @@ jobs:
           # NOT "two(2) consecutive digits" (PG is from Source)
           echo "Test of PL/R from Postgres from source ..."
           bash ./test_plr_from_source_postgres_on_ubuntu.sh
-          # PG and PLR build results. Show me everything
-          echo "**** ${PG_SOURCE} ****"
-          ls -alrt -R "${PG_SOURCE}"
+          # Show me everything
+          # ls -alrt -R "${PG_SOURCE}"
         fi
-
-
-#   # Uploads code coverage to codecov.io
-#   - name: Gather (any) .gcno with .gcda files, and Then Submit to codecov.io
-#     # NOT "two(2) consecutive digits"
-#     if: ${{ env.PGfromSource == 'true' }}
-#     run: |
-#       set -x -v -e
-#       echo "Upload to codecov.io of PL/R from Postgres from source ..."
-#       # gcc flag "--coverage" produce .gcno and .gcna (required) files here.
-#       bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -s ${{ env.PG_SOURCE }}/build/contrib/plr/plr.so.p -n bash-plr-C-files-coverage-reports
-#       # # UNTRIED
-#       # #
-#       # # FAILED: [code=1] meson-internal__coverage-xml
-#       # # (WARNING) Unrecognized GCOV output for /PGSOURCE/src/backend/utils/adt/numeric.c
-#       # # (ERROR) Exiting because of parse errors.
-#       # # You can run gcovr with --gcov-ignore-parse-errors
-#       #
-#       # # Ninja produced the (PG and PLR) from source C files coverage.xml (gcov or lcov/genhtml)
-#       # # gcovr required for "coverage-text AND coverage-xml"
-#       # # https://mesonbuild.com/Feature-autodetection.html
-#       # meson coverage location (not used)
-#       # bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -f ${{ env.PG_SOURCE }}/build/meson-logs/coverage.xml -n bash-plr-Ninja-coverage.xml-report
-
 
     # .gcno files are generated at compile time 
     # .gcda (gcov data) files are generated at runtime
-    # I USED "lcov" to create the coverage.info trace file (that is what it wants)
-    - name: Upload the (PG and PLR) from source PLR C files coverage.info report to Codecov
+    # I USED "lcov" (that uses gcov) to create the coverage.info trace file (that is what it wants)
+    - name: From "source PG and PLR" Upload the PLR C files coverage.info report to Codecov
       # NOT "two(2) consecutive digits"
-      if: ${{ env.PGfromSource == 'true' }}
+      if: ${{ env.PGfromSource == 'true' && fromJSON(inputs.caller_event_name) != 'schedule' }}
       uses: codecov/codecov-action@v7
       with:
         verbose: true
         disable_search: true
         files: coverage.info
-        name: plr-C-files-coverage-reports
+        name: plr-C-files
         # Tokenless uploading is unsupported. (SEEN SEP 2026)
         # This assumes that you've set your Codecov token inside Settings > Secrets as CODECOV_TOKEN.
         # https://github.com/codecov/codecov-action
         token: ${{ secrets.CODECOV_TOKEN }} 
-
-    # # UNTRIED
-    # #
-    # # FAILED: [code=1] meson-internal__coverage-xml
-    # # (WARNING) Unrecognized GCOV output for /PGSOURCE/src/backend/utils/adt/numeric.c
-    # # (ERROR) Exiting because of parse errors.
-    # # You can run gcovr with --gcov-ignore-parse-errors
-    #
-    # Ninja coverage.xml is expected to be in build/meson-logs/coverage.xml
-#   - name: Upload the (PG and PLR) from source C files Ninja coverage.xml Report to Codecov
-#     # NOT "two(2) consecutive digits"
-#     if: ${{ env.PGfromSource == 'true' }}
-#     uses: codecov/codecov-action@v7
-#     with:
-#       verbose: true
-#       name: plr-Ninja-coverage.xml-report
-#       disable_search: true
-#       # gcovr required for "coverage-text AND coverage-xml"
-#       # https://mesonbuild.com/Feature-autodetection.html
-#       files: ${{ env.PG_SOURCE }}/build/meson-logs/coverage.xml
-#       # Tokenless uploading is unsupported. (SEEN SEP 2026)
-#       # This assumes that you've set your Codecov token inside Settings > Secrets as CODECOV_TOKEN.
-#       # https://github.com/codecov/codecov-action
-#       token: ${{ secrets.CODECOV_TOKEN }} 

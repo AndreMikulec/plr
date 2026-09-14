@@ -164,7 +164,6 @@ if is_msys2 or is_cygwin
   dlsuffix = '-DDLSUFFIX=".dll"'
   message('end   -DDLSUFFIX=".dll"')
 endif
-
 if is_linux
   dlsuffix = '-DDLSUFFIX=".so"'
 endif
