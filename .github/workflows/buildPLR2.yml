@@ -1436,8 +1436,8 @@ jobs:
           meson install -C build --no-rebuild
           set -x -v -e
 
-          export WORKSPACE=$(pwd)
-          echo "WORKSPACE ${WORKSPACE}"
+          #### export WORKSPACE=$(pwd)
+          #### echo "WORKSPACE ${WORKSPACE}"
 
           #
           # Trying smartly and hard to find the PG_HOME
@@ -1544,7 +1544,8 @@ jobs:
 
           #### END BUILD PG AND PLR AND TEST PLR ####
 
-          bash save_good_artifact_from_place.sh "${PG_SOURCE}/build" "${PGROOT2}" "${GITHUB_WORKSPACE}"
+          #### bash save_good_artifact_from_place.sh "${PG_SOURCE}/build" "${PGROOT2}" "${GITHUB_WORKSPACE}"
+          save_good_artifact_from_place.sh "${PG_SOURCE}/build" "${PGROOT2}" "${WORKSPACE}"
 
 
       - name: Windows Meson PL/R Setup Compile and Meson Test and Manual Test
@@ -1756,9 +1757,6 @@ jobs:
 
           #### BEGIN PG_HOME SECTION ####
 
-          #
-          # Trying smartly and hard to find the PG_HOME
-          #
           if [ ! "${PG_HOME}" == "notset" ] && [ ! "${PG_HOME}" == "" ]
           then
             export PG_HOME=$(cygpath "${PG_HOME}")
