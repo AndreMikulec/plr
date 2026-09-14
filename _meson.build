@@ -149,27 +149,32 @@ plr_incdir += pg_incdir3
 #
 plr_c_args = []
 
+# A defined "DDLSUFFIX on WIN32 (on __CYGWIN__ ?)" 
+# is still required for PG 14 and earlier.
+# DDLSUFFIX code remains here for Legacy purposes.
 #
-# # name_suffix    str
-# # For shared libraries, the default value is 
-# # "dylib" on macOS, "dll" on Windows, and "so" everywhere else. 
-# # https://mesonbuild.com/Reference-manual_functions_shared_library.html
+# FUTURE use "pg_config --version - Postgres 14abcd"
+#   to conditionally not execute this code 
+# of "DDLSUFFIX on WIN32 (on __CYGWIN__ ?)".
 #
-# if is_msys2 or is_cygwin
-#   message('begin -DDLSUFFIX=".dll"')
-#   dlsuffix = '-DDLSUFFIX=".dll"'
-#   message('end   -DDLSUFFIX=".dll"')
-# endif
-# 
-# if is_linux
-#   dlsuffix = '-DDLSUFFIX=".so"'
-# endif
-# if is_darwin
-#   dlsuffix = '-DDLSUFFIX=".dylib"'
-# endif
-# plr_c_args += dlsuffix
+# name_suffix    str (SEEN AUG 2026)
+# For shared libraries, the default value is 
+# "dylib" on macOS, "dll" on Windows, and "so" everywhere else. 
+# https://mesonbuild.com/Reference-manual_functions_shared_library.html
 #
+if is_msys2 or is_cygwin
+  message('begin -DDLSUFFIX=".dll"')
+  dlsuffix = '-DDLSUFFIX=".dll"'
+  message('end   -DDLSUFFIX=".dll"')
+endif
 
+if is_linux
+  dlsuffix = '-DDLSUFFIX=".so"'
+endif
+if is_darwin
+  dlsuffix = '-DDLSUFFIX=".dylib"'
+endif
+plr_c_args += dlsuffix
 
 pg_config = find_program('pg_config' , dirs: [ pg_home / 'bin' ])
 
