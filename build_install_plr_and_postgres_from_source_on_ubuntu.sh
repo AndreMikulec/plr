@@ -73,7 +73,7 @@ sudo apt-get install -qq lcov -y
 # gcovr required for "coverage-text AND coverage-xml"
 # https://mesonbuild.com/Feature-autodetection.html
 # https://launchpad.net/ubuntu/+source/gcovr
-sudo apt-get -qq gcovr -y
+sudo apt-get install -qq gcovr -y
 
 # provides to PostgreSQL package libreadline-dev
 # sudo apt-get install -qq r-base-dev -y
