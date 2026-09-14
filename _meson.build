@@ -122,21 +122,18 @@ endif
 # if is_msys2 # or is_cygwin (works in both)
 # # pg_incdir1 = include_directories(R_home / 'include')
 # endif
-
 plr_incdir += pg_incdir1
-if is_msys2 or is_cygwin
-  pg_incdir2 = include_directories(pg_home / 'include' / 'postgresql' / 'server' )
-endif
-if is_linux or is_darwin
-  pg_incdir2 = include_directories(pg_home / 'include' / 'server' )
-endif
+
+pg_config = find_program('pg_config' , dirs: [ pg_home / 'bin' ])
+
+includedir_server = run_command(pg_config, '--includedir-server', check: true).stdout().strip()
+
+pg_incdir2 = include_directories(includedir_server)
 plr_incdir += pg_incdir2
-#  mingw
-if is_msys2 or is_cygwin
-  pg_incdir3 = include_directories(pg_home / 'include' / 'postgresql' / 'server' / 'port' / 'win32' )
-endif
-if is_linux or is_darwin
-  pg_incdir3 = include_directories(pg_home / 'include' / 'server' / 'port' / 'win32' )
+pg_incdir3 = ''
+if is_msys2
+  # Read the PG ./configure file - search for "win32" and "PORTNAME"
+  pg_incdir3 = include_directories(includedir_server / 'port' / 'win32')
 endif
 plr_incdir += pg_incdir3
 
@@ -150,12 +147,12 @@ plr_incdir += pg_incdir3
 plr_c_args = []
 
 # A defined "DDLSUFFIX on WIN32 (on __CYGWIN__ ?)" 
-# is still required for PG 14 and earlier.
+# is still required for PG 14 and older.
 # DDLSUFFIX code remains here for Legacy purposes.
 #
 # FUTURE use "pg_config --version - Postgres 14abcd"
 #   to conditionally not execute this code 
-# of "DDLSUFFIX on WIN32 (on __CYGWIN__ ?)".
+#     of "DDLSUFFIX on WIN32 (on __CYGWIN__ ?)".
 #
 # name_suffix    str (SEEN AUG 2026)
 # For shared libraries, the default value is 
@@ -176,9 +173,6 @@ if is_darwin
 endif
 plr_c_args += dlsuffix
 
-pg_config = find_program('pg_config' , dirs: [ pg_home / 'bin' ])
-
-# here pkglibdir in "install" and below in "test"
 pkglibdir = run_command(pg_config, '--pkglibdir', check: true).stdout().strip()
 
 plr = shared_module('plr',
