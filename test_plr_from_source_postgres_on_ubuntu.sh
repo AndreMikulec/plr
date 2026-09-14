@@ -57,6 +57,9 @@ meson test -C build -v --print-errorlogs --setup running --suite plr-running
 # export CC_GCOV_ARGS="--gcov-ignore-parse-errors" (DID NOT WORK)
 # ninja      -C build -v coverage-xml 
 
+# so, so that the coverage.info file is written to the Github Workspace
+lcov --capture --directory build/contrib/plr/plr.so.p -o ${GITHUB_WORKSPACE}/coverage.info
+
 popd # from ${PG_SOURCE} back
 
 #
