@@ -4,7 +4,7 @@ project('plr', 'c',
 )
 
 # 1
-# This has only been tested\used on msys2 and cygwin
+# This has only been tested\used on mingw and cygwin
 # where "postgres" as a library is provided.
 # "Other" compiling platforms (is_linux or is_darwin) 
 # may or may not work (because can not easily get postgres to be a library).
@@ -95,13 +95,13 @@ plr_deps += dep_libpostgres
 host_machine_system = host_machine.system()
 #
 is_cygwin     = host_machine_system == 'cygwin'
-is_not_cygwin = host_machine_system != 'cygwin'    # do not use this in testing
-is_windows    = host_machine_system == 'windows'   # do not use this in testing
-is_msys2      = is_windows and is_not_cygwin
+is_not_cygwin = host_machine_system != 'cygwin'    # do not use
+is_windows    = host_machine_system == 'windows'   # do not use
+is_mingw      = is_windows and is_not_cygwin       # pre-processor variable WIN32
 is_linux      = host_machine_system == 'linux'
 is_darwin     = host_machine_system == 'darwin'
 
-if is_msys2
+if is_mingw
   cygpath = find_program('cygpath')
   # -m -- mixed mode
   # https://cygwin.com/cygwin-ug-net/cygpath.html
@@ -111,15 +111,15 @@ plr_incdir = []
 
 pg_incdir1 = dep_libR.get_variable( pkgconfig : 'rincludedir' )
 #
-# for "msys2", for meson "User defined options" 
+# for "mingw", for meson "User defined options" 
 #   change "pg_incdir1" to the "mixed mode" "path form".
-if is_msys2
+if is_mingw
 # pg_incdir1 = '/c/RINSTALL/include'    # NOT WORK # ERROR: Include dir /c/RINSTALL/include does not exist.
 # pg_incdir1 = 'C:\\RINSTALL\\bin\\x64' # WORKS
 # pg_incdir1 = 'C:/RINSTALL/include'    # WORKS - mixed mode (-m)
   pg_incdir1 = run_command(cygpath, '-ml', pg_incdir1, check: true).stdout().strip()
 endif
-# if is_msys2 # or is_cygwin (works in both)
+# if is_mingw # or is_cygwin (works in both)
 # # pg_incdir1 = include_directories(R_home / 'include')
 # endif
 plr_incdir += pg_incdir1
@@ -131,7 +131,7 @@ includedir_server = run_command(pg_config, '--includedir-server', check: true).s
 pg_incdir2 = include_directories(includedir_server)
 plr_incdir += pg_incdir2
 pg_incdir3 = ''
-if is_msys2
+if is_mingw
   # Read the PG ./configure file - search for "win32" and "PORTNAME"
   pg_incdir3 = include_directories(includedir_server / 'port' / 'win32')
 endif
@@ -159,7 +159,7 @@ plr_c_args = []
 # "dylib" on macOS, "dll" on Windows, and "so" everywhere else. 
 # https://mesonbuild.com/Reference-manual_functions_shared_library.html
 #
-if is_msys2 or is_cygwin
+if is_mingw or is_cygwin
   message('begin -DDLSUFFIX=".dll"')
   dlsuffix = '-DDLSUFFIX=".dll"'
   message('end   -DDLSUFFIX=".dll"')

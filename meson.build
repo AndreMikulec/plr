@@ -30,15 +30,15 @@ plr_deps +=  dep_R
 host_machine_system = host_machine.system()
 #
 is_cygwin     = host_machine_system == 'cygwin'
-is_not_cygwin = host_machine_system != 'cygwin'    # do not use this in testing
-is_windows    = host_machine_system == 'windows'  # do not use this in testing
-is_msys2      = is_windows and is_not_cygwin
+is_not_cygwin = host_machine_system != 'cygwin'   # do not use
+is_windows    = host_machine_system == 'windows'  # do not use
+is_mingw      = is_windows and is_not_cygwin      # pre-processor variable WIN32
 is_linux      = host_machine_system == 'linux'
 is_darwin     = host_machine_system == 'darwin'
 
 plr_incdir = []
 
-if is_msys2
+if is_mingw
   cygpath = find_program('cygpath')
   # -m -- mixed mode
   # https://cygwin.com/cygwin-ug-net/cygpath.html
@@ -46,9 +46,9 @@ endif
 
 R_incdir = dep_R.get_variable( pkgconfig : 'rincludedir' )
 #
-# for "msys2", for meson "User defined options" 
+# for "mingw", for meson "User defined options" 
 #   change "R_incdir" to the "mixed mode" "path form".
-if is_msys2
+if is_mingw
   # mixed mode (-m)
   R_incdir = run_command(cygpath, '-ml', R_incdir, check: true).stdout().strip()
 endif
