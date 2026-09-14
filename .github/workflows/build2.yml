@@ -89,6 +89,7 @@ jobs:
         else
           echo "Test of PL/R from Postgres from source ..."
           bash ./test_plr_from_source_postgres_on_ubuntu.sh
+          ls -alrt
         fi
 
     # Uploads code coverage to codecov.io
