@@ -49,6 +49,8 @@ pushd  ${PG_SOURCE}
 meson test -C build -v --print-errorlogs --setup running --suite cube-running
 meson test -C build -v --print-errorlogs --setup running --suite plr-running
 
+ninja      -C build -v coverage-xml 
+
 popd # from ${PG_SOURCE} back
 
 #

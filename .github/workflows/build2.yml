@@ -74,7 +74,7 @@ jobs:
           echo "PL/R from Postgres from repository binary ..."
           bash ./build_install_plr_from_binary_postgres_on_ubuntu.sh
         else
-          echo "PL/R from Postgres from source ..."
+          echo "PG and PL/R from Postgres from source ... DEBUG and CODE COVERAGE"
           bash ./build_install_plr_and_postgres_from_source_on_ubuntu.sh
         fi
 
@@ -89,9 +89,10 @@ jobs:
         else
           echo "Test of PL/R from Postgres from source ..."
           bash ./test_plr_from_source_postgres_on_ubuntu.sh
-          # PG and PLR compiles (SHOULD BE HERE) - ${PG_SOURCE}/contrib/plr
-          echo "**** ${PG_SOURCE} ****"
+          ninja  -C ../contrib/plr coverage-xml  -v
+          # PG and PLR build results
           # Show me everything
+          echo "**** ${PG_SOURCE} ****"
           ls -alrt -R "${PG_SOURCE}"
         fi
 
@@ -104,5 +105,46 @@ jobs:
         # two(2) consecutive digits
         if [ $(echo "${{ matrix.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
         then
-          bash <(curl -s https://codecov.io/bash)
+          echo "No upload to codecov.io of PL/R from Postgres from repository binary ..."
+        else
+          # NOT "two(2) consecutive digits"
+          echo "Upload to codecov.io of PL/R from Postgres from source ..."
+          # gcc flag "--coverage" produce .gcno and .gcna (required) files here.
+          bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -s ${{ env.PGSOURCE }}/build/contrib/plr/plr.so.p     -n bash-plr-C-files-coverage-reports
+          # Ninja produced the (PG and PLR) from source C files coverage.xml (gcov or lcov/genhtml)
+          # gcovr required for "coverage-text AND coverage-xml"
+          # https://mesonbuild.com/Feature-autodetection.html
+          bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }} -f ${{ env.PG_SOURCE }}/build/meson-logs/coverage.xml -n bash-plr-Ninja-coverage.xml-report
         fi
+
+     # .gcno files are generated at compile time 
+     # .gcda (gcov data) files are generated at runtime
+     - name: Upload the (PG and PLR) from source PLR C files coverage reports to Codecov
+       # NOT "two(2) consecutive digits"
+       if: ${{ ! matches(matrix.PG, '^[0-9]{2}$') }}
+       uses: codecov/codecov-action@v7
+       with:
+         verbose: true
+         directory: ${{ env.PGSOURCE }}/build/contrib/plr/plr.so.p
+         name: plr-C-files-coverage-reports
+         # Tokenless uploading is unsupported. (SEEN SEP 2026)
+         # This assumes that you've set your Codecov token inside Settings > Secrets as CODECOV_TOKEN.
+         # https://github.com/codecov/codecov-action
+         token: ${{ secrets.CODECOV_TOKEN }} 
+
+     # Ninja coverage.xml is expected to be in build/meson-logs/coverage.xml
+     - name: Upload the (PG and PLR) from source C files Ninja coverage.xml Report to Codecov
+       # NOT "two(2) consecutive digits"
+       if: ${{ ! matches(matrix.PG, '^[0-9]{2}$') }}
+       uses: codecov/codecov-action@v7
+       with:
+         verbose: true
+         name: plr-Ninja-coverage.xml-report
+         disable_search: true
+         # gcovr required for "coverage-text AND coverage-xml"
+         # https://mesonbuild.com/Feature-autodetection.html
+         files: ${{ env.PG_SOURCE }}/build/meson-logs/coverage.xml
+         # Tokenless uploading is unsupported. (SEEN SEP 2026)
+         # This assumes that you've set your Codecov token inside Settings > Secrets as CODECOV_TOKEN.
+         # https://github.com/codecov/codecov-action
+         token: ${{ secrets.CODECOV_TOKEN }} 

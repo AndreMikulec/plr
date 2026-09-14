@@ -70,7 +70,10 @@ sudo apt-get install -qq build-essential -y
 # meson setup (for ninja) - WARNING Need gcovr or lcov/genhtml to generate any coverage reports
 # lcov and genhtml
 sudo apt-get install -qq lcov -y
-
+# gcovr required for "coverage-text AND coverage-xml"
+# https://mesonbuild.com/Feature-autodetection.html
+# https://launchpad.net/ubuntu/+source/gcovr
+sudo apt-get -qq gcovr -y
 
 # provides to PostgreSQL package libreadline-dev
 # sudo apt-get install -qq r-base-dev -y
@@ -113,7 +116,8 @@ pushd  ${PG_SOURCE}
 # https://mesonbuild.com/Quick-guide.html
 sudo apt-get install -qq python3 ninja-build meson -y
 
-meson setup -Dbuildtype=release -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=true -Ddtrace=disabled build
+# DEBUG AND CODE COVERAGE
+meson setup                     -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=true -Dc_args="-O0" -Dcpp_args="-O0" -Dc_link_args="-O0" -Dcpp_link_args="-O0" -Ddtrace=disabled build
 
 meson compile -C build -v
 
