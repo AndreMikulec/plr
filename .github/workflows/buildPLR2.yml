@@ -563,6 +563,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash # Git for Windows Bash
         run: |
+          #
+          # Note, since Aug 6, 2026, these are also available here (a second location)
+          # https://github.com/r-devel/windows-arm64/releases
+          #
           echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
           gh repo set-default "${GITHUB_REPOSITORY}"
           git remote add "github_r-devel_r-svn" "https://github.com/r-devel/r-svn"

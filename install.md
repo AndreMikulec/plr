@@ -11,7 +11,7 @@ This presumes you installed PostgreSQL using the PGDG repositories found [here](
 yum install plr-nn
 ```
 
-Where nn is the major version number such as 18 for PostgreSQL version 18.x
+Where nn is the major version number such as 19 for PostgreSQL version 19.x
 
 To set R_HOME for use by PostgreSQL.
 
@@ -73,8 +73,8 @@ You may explicitly include the path of pg_config to `PATH`, such as
 
 ```bash
 cd plr
-PATH=/usr/pgsql-18/bin/:$PATH; USE_PGXS=1 make
-echo "PATH=/usr/pgsql-18/bin/:$PATH; USE_PGXS=1 make install" | sudo sh
+PATH=/usr/pgsql-19/bin/:$PATH; USE_PGXS=1 make
+echo "PATH=/usr/pgsql-19/bin/:$PATH; USE_PGXS=1 make install" | sudo sh
 ```
 If you want to use git to pull the repository, run the following command before the make command:
 
@@ -92,15 +92,15 @@ USE_PGXS=1 make install
 ```
 
 
-In MSYS:
+Using https://www.msys2.org/ UCRT64 or MINGW32:
 ```
 export R_HOME=/c/progra~1/R/R-4.6.1 
-export PATH=$PATH:/c/progra~1/PostgreSQL/18/bin
+export PATH=$PATH:/c/progra~1/PostgreSQL/19/bin
 USE_PGXS=1 make
 USE_PGXS=1 make install
 ```
 
-In Mingw, MSYS, or MSYS2:
+Using https://www.msys2.org/ UCRT64 or MINGW32:
 
 If R is built and installed using a sub-architecture, as explained in the section Sub-architectures in
 https://cran.r-project.org/doc/manuals/r-release/R-admin.html
@@ -116,14 +116,14 @@ then, include the environment variable R_ARCH.
 For example R_ARCH=/x64 (or R_ARCH=/i386 as appropriate):
 ```
 export R_HOME=/c/progra~1/R/R-4.6.1
-export PATH=$PATH:/c/progra~1/PostgreSQL/18/bin
+export PATH=$PATH:/c/progra~1/PostgreSQL/19/bin
 export R_ARCH=/x64
 USE_PGXS=1 make
 USE_PGXS=1 make install
 ```
 ```
 export R_HOME=/c/progra~1/R/R-4.1.3
-export PATH=$PATH:/c/progra~1/PostgreSQL/18/bin
+export PATH=$PATH:/c/progra~1/PostgreSQL/19/bin
 export R_ARCH=/i386
 USE_PGXS=1 make
 USE_PGXS=1 make install
@@ -144,7 +144,7 @@ Status: CLOSED WONTFIX
 
 [C Complex Numbers in C++?](https://stackoverflow.com/questions/10540228/c-complex-numbers-in-c)
 
-Instead, for PL/R that uses R for Windows 4.3.0 and later, compile PL/R with MSYS2(UCRT64 or MINGW32).
+Instead, for PL/R that uses R for Windows 4.3.0 and later, compile PL/R with https://www.msys2.org/ UCRT64.
 
 ### Compiling from source using the meson build system
 
@@ -177,10 +177,10 @@ UCRT should be installed manually on systems older than Windows 10 or Windows Se
 This is documented at `CHANGES IN R 4.2.0`
 https://cran.r-project.org/doc/manuals/r-release/NEWS.html
 
-Acquire UCRT through `Windows Update` or at the following URL query result:
-https://www.google.com/search?q=download+UCRT
+Acquire UCRT64 through `Windows Update` or at the following URL query result:
+https://www.google.com/search?q=download+UCRT64
 
-In a Windows environment, with a PL/R compiled using MSYS2(UCRT64 or MINGW32) or Microsoft Visual Studio
+In a Windows environment, with a PL/R compiled using UCRT64 or MINGW32 or Microsoft Visual Studio
 [https://github.com/postgres-plr/plr/releases/latest](https://github.com/postgres-plr/plr/releases/latest), with a PostgreSQL compiled
 with Microsoft Visual Studio [https://www.enterprisedb.com/downloads/postgres-postgresql-downloads](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads),
 and an R acquired from CRAN [https://cran.r-project.org/bin/windows/base/](https://cran.r-project.org/bin/windows/base/) do the following.
@@ -192,8 +192,8 @@ and an R acquired from CRAN [https://cran.r-project.org/bin/windows/base/](https
 
 Download and install PostgreSQL compiled with Microsoft Visual Studio
 [https://www.enterprisedb.com/downloads/postgres-postgresql-downloads](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
-For R versions earlier than 4.3.0 Download PL/R compiled using Microsoft Visual Studio
-For R versions greather or equal to 4.3.0 Download PL/R compiled using MSYS2 (UCRT64 or MINGW32)
+For R versions earlier than 4.3.0 Download PL/R compiled using Microsoft Visual Studio.
+For R versions greather or equal to 4.3.0 Download PL/R compiled using UCRT64
 [https://github.com/postgres-plr/plr/releases/latest](https://github.com/postgres-plr/plr/releases/latest)
 
 Unzip the plr.zip file into a folder, that is called the "unzipped folder".
@@ -212,7 +212,7 @@ then from the unzipped PL/R folder, place the following
 Install R with the feature checked [x] "Save version number in registry"."
 See the "Tip" item below.
 
-### Alternately:
+#### Second Alternately:
 
 Acquire R from the same location
 and choose [ ] "Save version number in registry".
@@ -221,7 +221,7 @@ and using wherever your path to R may be, do:
 ```
 setx R_HOME "C:\Program Files\R\R-4.6.1" /M
 ```
-### Optionally:
+#### Second Optionally:
 
 Acquire R from the same location
 and choose [ ] "Save version number in registry".
@@ -241,7 +241,7 @@ HINT:  R_HOME must be defined in the environment of the user that starts the pos
 ```
 
 
-### Third:
+#### Third:
 
 
 
@@ -257,34 +257,34 @@ instead of "bin\i386" or "bin\x64", it is "bin".
 Note, a 64bit compiled PL/R can only run with a 64bit compiled PostgreSQL.
 A 32bit compiled PL/R can only run with a 32bit compiled PostgreSQL.
 The last 32bit PostgreSQL was version ten(10) from  [https://www.enterprisedb.com/downloads/postgres-postgresql-downloads](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads).
-Of course, you, yourselfm may try to compile a 32bit PostgreSQL using Microsoft Visual Studio.
+Of course, you, yourself may try to compile a 32bit PostgreSQL using Microsoft Visual Studio.
 
 Note, R 4.2.0 and greater is not "single architecture."
 It is still "subarchitecture" with only 64bit.
 32bit has been removed.
 
-### Fourth:
+#### Fourth:
 
 Restart the PostgreSQL cluster, do:
 
 At a Command Prompt run (and you may have to be in an Administrator Command Prompt):
 Use the service name of whatever service your PostgreSQL is running under.
 ```
-net stop postgresql-x64-18
+net stop postgresql-x64-19
 ```
 Alternately, do the following:
 Control Panel -> Administrative Tools -> Services
-Find postgresql-x64-18 (or whatever service your PostgreSQL is running under).
+Find postgresql-x64-19 (or whatever service your PostgreSQL is running under).
 Right click and choose "Stop"
 
 At a Command Prompt run (and you may have to be in an Administrator Command Prompt):
 Use the service name of whatever service your PostgreSQL is running under.
 ```
-net start postgresql-x64-18
+net start postgresql-x64-19
 ```
 Alternately, do the following:
 Control Panel -> Administrative Tools -> Services
-Find postgresql-x64-18 (or whatever service your PostgreSQL is running under).
+Find postgresql-x64-19 (or whatever service your PostgreSQL is running under).
 Right click and choose "Start"
 
 
@@ -309,8 +309,37 @@ there is no need to set R_HOME on this platform. Be careful removing older versi
 away InstallPath entry away from HKLM\SOFTWARE\R-core\R a.k.a. Computer\HKEY_LOCAL_MACHINE\SOFTWARE\R-core\R.
 
 
-### Creating the PLR Extension
 
+### General Windows ARM Environment
+
+#### Experimental PL/R for Windows ARM is Now Available
+
+Some information is here (in chronological order):
+
+Will R Work on 64-bit ARM Windows? - 2023/08/23 - Tomas Kalibera
+https://blog.r-project.org/2023/08/23/will-r-work-on-64-bit-arm-windows/
+
+R on 64-bit ARM Windows - 2024/04/23 - Tomas Kalibera
+https://blog.r-project.org/2024/04/23/r-on-64-bit-arm-windows/index.html
+
+Windows ARM64 comes to R-universe -- Thursday, August 6, 2026 -- By Jeroen Ooms
+https://ropensci.org/blog/2026/08/06/r-universe-winarm/
+
+
+The R architecture is reverted to simplification: 
+
+* The architecture is only 64bit and is "single architecture." like the old Windows 95. Therefore R_ARCH and is not used
+
+The installation instructions are the same as installation instructions for "PL/R for Windows" as described this markdown file with the following exceptions:
+
+1. Experimental "PL/R for Windows ARM" can only run on a "Windows ARM" Operating system.
+2. "R for Windows ARM" is available here: https://github.com/r-devel/windows-arm64/releases . Or the original location here https://github.com/r-devel/r-svn/actions; choose the "Build" action. Choose the artifact `Win-installer-aarch64`.
+3. EDB DOES NOT build a PostgreSQL for Windows ARM. https://www.enterprisedb.com/downloads/postgres-postgresql-downloads .  Therefore, instead use PostgreSQL for CLANGARM32 https://packages.msys2.org/packages/mingw-w64-clang-aarch64-postgresql .
+4. For the files in the `plr.zip` file, and the new corresponding target locations, run from the CLANGARM64 command line the program `pg_config`.  To find the new location for the `plr.dll` file, run `echo "$(cygpath -wl "$(pg_config --pkglibdir)")"`. To find the new location of `plr.control` file and `.sql files`, run `echo "$(cygpath -wl "$(pg_config --sharedir)"/extension)"`.
+
+
+
+### Creating the PLR Extension
 
 As of PostgreSQL 9.1 you can use the new ```CREATE EXTENSION``` command:
 
