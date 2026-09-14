@@ -49,7 +49,12 @@ pushd  ${PG_SOURCE}
 meson test -C build -v --print-errorlogs --setup running --suite cube-running
 meson test -C build -v --print-errorlogs --setup running --suite plr-running
 
-ninja      -C build -v coverage-xml 
+# FAILED: [code=1] meson-internal__coverage-xml
+# (WARNING) Unrecognized GCOV output for /PGSOURCE/src/backend/utils/adt/numeric.c
+# (ERROR) Exiting because of parse errors.
+# You can run gcovr with --gcov-ignore-parse-errors
+#
+# ninja      -C build -v coverage-xml 
 
 popd # from ${PG_SOURCE} back
 
