@@ -1545,7 +1545,7 @@ jobs:
           #### END BUILD PG AND PLR AND TEST PLR ####
 
           #### bash save_good_artifact_from_place.sh "${PG_SOURCE}/build" "${PGROOT2}" "${GITHUB_WORKSPACE}"
-          save_good_artifact_from_place.sh "${PG_SOURCE}/build" "${PGROOT2}" "${WORKSPACE}"
+          bash save_good_artifact_from_place.sh "${PG_SOURCE}/build" "${PGROOT2}" "${WORKSPACE}"
 
 
       - name: Windows Meson PL/R Setup Compile and Meson Test and Manual Test
