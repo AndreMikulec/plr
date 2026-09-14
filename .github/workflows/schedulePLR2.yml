@@ -175,7 +175,7 @@ jobs:
           "Platform": "x64",
           "Configuration": "Debug"
           },
- 
+
           { 
           "matid": "01",
           "os": "windows-2025-vs2026",
@@ -184,7 +184,7 @@ jobs:
           "Platform": "x64",
           "Configuration": "Release"
           },
- 
+
           { 
           "matid": "02",
           "os": "windows-11-vs2026-arm",
@@ -199,7 +199,7 @@ jobs:
           "buildpgFromSRC": "false",
           "PG_HOME": "repo" 
           },
- 
+
           { 
           "matid": "03",
           "os": "windows-2025-vs2026",
@@ -217,7 +217,7 @@ jobs:
           "buildpgFromSRCmethod": "meson",
           "PG_HOME": "C:\\PGINSTALL" 
           },
- 
+
           { 
           "matid": "04",
           "os": "windows-2025-vs2026",
@@ -234,7 +234,7 @@ jobs:
           "buildpgANDplrInSRCcontrib": "true",
           "PG_HOME": "C:\\PGINSTALL" 
           },
- 
+
           { 
           "matid": "05",
           "os": "windows-2025-vs2026",
@@ -252,7 +252,7 @@ jobs:
           "buildpgFromSRCmethod": "meson",
           "PG_HOME": "C:\\PGINSTALL" 
           },
- 
+
           { 
           "matid": "06",
           "os": "windows-2025-vs2026",
@@ -270,7 +270,7 @@ jobs:
           "buildpgFromSRCmethod": "meson",
           "PG_HOME": "C:\\PGINSTALL" 
           },
- 
+
           { 
           "matid": "07",
           "os": "windows-2025-vs2026",
@@ -288,7 +288,7 @@ jobs:
           "buildpgFromSRCmethod": "meson",
           "PG_HOME": "C:\\PGINSTALL" 
           },
- 
+
           { 
           "matid": "08",
           "os": "windows-2025-vs2026",
@@ -306,7 +306,7 @@ jobs:
           "buildpgFromSRCmethod": "meson",
           "PG_HOME": "C:\\PGINSTALL" 
           },
- 
+
           { 
           "matid": "09",
           "os": "windows-2025-vs2026",
@@ -326,7 +326,7 @@ jobs:
           "pgWINversion": "18.6-1",
           "MSYS2testonpgWIN": "true" 
           },
- 
+
           { 
           "matid": "10",
           "os": "windows-2025-vs2026",
@@ -345,7 +345,7 @@ jobs:
           "PG_HOME": "C:\\PGINSTALL",
           "MSYS2testonpgWIN": "true" 
           },
- 
+
           { 
           "matid": "11",
           "os": "windows-2025-vs2026",
@@ -365,7 +365,7 @@ jobs:
           "pgWINversion": "16.15-1",
           "MSYS2testonpgWIN": "true" 
           },
- 
+
           { 
           "matid": "12",
           "os": "windows-2025-vs2026",

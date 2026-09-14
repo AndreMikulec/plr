@@ -89,12 +89,10 @@ jobs:
         else
           echo "Test of PL/R from Postgres from source ..."
           bash ./test_plr_from_source_postgres_on_ubuntu.sh
-          # PG and PLR compiles (SHOULD BE HERE)
-          echo "**** ${PG_SOURCE}/contrib/plr ****"
-          ls -alrt  "${PG_SOURCE}/contrib/plr"
-          # Standalone PLR not exist
-          # echo "**** ${PG_SOURCE}/contribplr ****"
-          # ls -alrt  "${PG_SOURCE}/contribplr"
+          # PG and PLR compiles (SHOULD BE HERE) - ${PG_SOURCE}/contrib/plr
+          echo "**** ${PG_SOURCE} ****"
+          # Show me everything
+          ls -alrt -R "${PG_SOURCE}"
         fi
 
     # Uploads code coverage to codecov.io

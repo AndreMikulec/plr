@@ -60,6 +60,18 @@ if [ "${PG_SOURCE}" == "" ]; then echo "Environment variable PG_SOURCE is missin
 # # recursively list all dependent packages down the chain
 # apt-rdepends r-base-dev
 
+
+# Everything coverage
+# Ubuntu
+# actually just "gcov" executable
+sudo apt-get install -qq gcc -y
+# actually just libgcov library in ( libgcc-XY-dev )
+sudo apt-get install -qq build-essential -y
+# meson setup (for ninja) - WARNING Need gcovr or lcov/genhtml to generate any coverage reports
+# lcov and genhtml
+sudo apt-get install -qq lcov -y
+
+
 # provides to PostgreSQL package libreadline-dev
 # sudo apt-get install -qq r-base-dev -y
 sudo apt-get install -qq libreadline-dev -y
