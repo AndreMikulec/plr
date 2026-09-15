@@ -50,6 +50,8 @@ jobs:
         
         echo "PGfromSource: ${PGfromSource}"
 
+
+
     - name: Get Linux Host Information
       run: |
         bash ./get_linux_host_info.sh
@@ -116,7 +118,7 @@ jobs:
     # I USED "lcov" (that uses gcov) to create the coverage.info trace file (that is what it wants)
     - name: From "source PG and PLR" Upload the PLR C files coverage.info report to Codecov
       # NOT "two(2) consecutive digits"
-      if: ${{ env.PGfromSource == 'true' && fromJSON(inputs.caller_event_name) != 'schedule' }}
+      if: ${{ env.PGfromSource == 'true' && inputs.caller_event_name != 'schedule' }}
       uses: codecov/codecov-action@v7
       with:
         verbose: true
