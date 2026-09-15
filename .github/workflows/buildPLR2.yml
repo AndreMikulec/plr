@@ -1436,9 +1436,6 @@ jobs:
           meson install -C build --no-rebuild
           set -x -v -e
 
-          #### export WORKSPACE=$(pwd)
-          #### echo "WORKSPACE ${WORKSPACE}"
-
           #
           # Trying smartly and hard to find the PG_HOME
           #
@@ -1544,7 +1541,6 @@ jobs:
 
           #### END BUILD PG AND PLR AND TEST PLR ####
 
-          #### bash save_good_artifact_from_place.sh "${PG_SOURCE}/build" "${PGROOT2}" "${GITHUB_WORKSPACE}"
           bash save_good_artifact_from_place.sh "${PG_SOURCE}/build" "${PGROOT2}" "${WORKSPACE}"
 
 
