@@ -42,7 +42,8 @@ is_mingw      = is_windows and is_not_cygwin and is_not_msvc # pre-processor var
 #   e.g. "gcc -mwin32 -dM -E -xc /dev/null >gcc-mwin32.txt"
 # https://www.cygwin.com/faq.html
 # Not exactly, because Microsoft "WIN32" comes from "windows.h", but "close enough" to be useful.
-#   Makefiles are not processed by "msvc", but the Makefile "may" or "may not" distinguish Cygwin
+#   Makefiles are not processed by "msvc", but the Makefile "may" or "may not" distinguish Cygwin.
+#     PG Makefile does distinguish.
 is_win32      = is_mingw or is_msvc
 is_not_win32  = not is_win32                    # use OFTEN - much better reliable detection than is_linux
 #
