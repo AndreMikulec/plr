@@ -27,12 +27,25 @@ plr_deps = []
 dep_R = dependency('libR')
 plr_deps +=  dep_R
 
-host_machine_system = host_machine.system()
+is_msvc     = meson.get_compiler('c').get_id() == 'msvc'
+is_not_msvc = not is_msvc
 #
+host_machine_system = host_machine.system()
 is_cygwin     = host_machine_system == 'cygwin'
-is_not_cygwin = host_machine_system != 'cygwin'   # do not use
+is_not_cygwin = not is_cygwin                     # do not use
+#
 is_windows    = host_machine_system == 'windows'  # do not use
-is_mingw      = is_windows and is_not_cygwin      # pre-processor variable WIN32
+is_mingw      = is_windows and is_not_cygwin and is_not_msvc # pre-processor variable WIN32 (see NOTE below)
+# Non-microsoft, check compiler flags, check ...
+#   e.g. "gcc (or clang) -dM -E -xc /dev/null >gcc.txt (or clang.txt)" 
+#   e.g.  Cygwin or Mingw(non-clang), and gcc only
+#   e.g. "gcc -mwin32 -dM -E -xc /dev/null >gcc-mwin32.txt"
+# https://www.cygwin.com/faq.html
+# Not exactly, because Microsoft "WIN32" comes from "windows.h", but "close enough" to be useful.
+#   Makefiles are not processed by "msvc", but the Makefile "may" or "may not" distinguish Cygwin
+is_win32      = is_mingw or is_msvc
+is_not_win32  = not is_win32                    # use OFTEN - much better reliable detection than is_linux
+#
 is_linux      = host_machine_system == 'linux'
 is_darwin     = host_machine_system == 'darwin'
 

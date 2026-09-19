@@ -92,12 +92,25 @@ plr_deps += dep_libpostgres
 # Operating system names
 # https://mesonbuild.com/Reference-tables.html#operating-system-names
 #
-host_machine_system = host_machine.system()
+is_msvc     = meson.get_compiler('c').get_id() == 'msvc'
+is_not_msvc = not is_msvc
 #
+host_machine_system = host_machine.system()
 is_cygwin     = host_machine_system == 'cygwin'
-is_not_cygwin = host_machine_system != 'cygwin'    # do not use
-is_windows    = host_machine_system == 'windows'   # do not use
-is_mingw      = is_windows and is_not_cygwin       # pre-processor variable WIN32
+is_not_cygwin = not is_cygwin                     # do not use
+#
+is_windows    = host_machine_system == 'windows'  # do not use
+is_mingw      = is_windows and is_not_cygwin and is_not_msvc # pre-processor variable WIN32 (see NOTE below)
+# Non-microsoft, check compiler flags, check ...
+#   e.g. "gcc (or clang) -dM -E -xc /dev/null >gcc.txt (or clang.txt)" 
+#   e.g.  Cygwin or Mingw(non-clang), and gcc only
+#   e.g. "gcc -mwin32 -dM -E -xc /dev/null >gcc-mwin32.txt"
+# https://www.cygwin.com/faq.html
+#   Makefiles are not processed by "msvc", but the Makefile "may" or "may not" distinguish Cygwin.
+#     PG Makefile does distinguish.
+is_win32      = is_mingw or is_msvc
+is_not_win32  = not is_win32                    # use OFTEN - much better reliable detection than is_linux
+#
 is_linux      = host_machine_system == 'linux'
 is_darwin     = host_machine_system == 'darwin'
 
@@ -131,6 +144,11 @@ includedir_server = run_command(pg_config, '--includedir-server', check: true).s
 pg_incdir2 = include_directories(includedir_server)
 plr_incdir += pg_incdir2
 pg_incdir3 = ''
+#
+# msvc
+# port / win32_msvc
+# https://github.com/orafce/orafce/blob/aec025fafa7862c08722239e614b9bbd959a45c9/meson.build
+#
 if is_mingw
   # Read the PG ./configure file - search for "win32" and "PORTNAME"
   pg_incdir3 = include_directories(includedir_server / 'port' / 'win32')
