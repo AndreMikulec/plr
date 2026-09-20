@@ -119,19 +119,19 @@
  * _MSC_VER
  *   Since 2010, Microsoft compiler version
  * __MINGW32__
- *   Defined by the MinGW-w64 compiler in MSYS2 for 
+ *   Defined by the MinGW-w64 compiler in Mingw for 
  *   both 32-bit and 64-bit Windows targets
  * __CYGWIN__
  *   when building for a Cygwin environment
  */
 /*
- * Msys 
+ * Mingw 
  * gcc -dM -E -xc /dev/null >gcc.txt
  *   also returns ... WIN32: 1, WIN64: 1, _WIN64: 1, 
  * gcc -mwin32 -dM -E -xc /dev/null >gcc-mwin32.txt
  * https://www.cygwin.com/faq.html
  *
- * Msys 
+ * Mingw 
  * tested _UCRT with printf 
  # returns "something" but it is not printable(made visible) by printf
  *

@@ -73,7 +73,7 @@ jobs:
           # PG_HOME
           #
           # pgWINversion
-          # MSYS2testonpgWIN
+          # MingwtestonpgWIN
           #
           #
           # Descriptons of Matrix items follow.
@@ -112,11 +112,11 @@ jobs:
           #         Recently, Windows /i386 support has ended.  Therefore, the only useful value for R for Windows is /x64.
           #         This correlates with the Platform.
           # compilerEnv: Collection of compiling software and libraries.
-          #              Current values on Windows are: Cygwin and MSYS2 flavors.
-          #              Of the MSYS2 flavors, the only developed/tested/implmented are UCRT64
+          #              Current values on Windows are: Cygwin and Mingw flavors.
+          #              Of the Mingw flavors, the only developed/tested/implmented are UCRT64
           #              and CLANGARM64(and only on the image windows 11-arm)
           # compilerExe: executable of the compliler.
-          #              This is meant for MSYS2.  On Windows 11 choose "gcc". On Windows 11 arm, choose "clang"
+          #              This is meant for Mingw.  On Windows 11 choose "gcc". On Windows 11 arm, choose "clang"
           # pgSRCversion: Postgres version given by Github branch or tag.
           #               This is needed when compiling Postgres from source.
           #               One must also supply, "PG_SOURCE" AND "buildpgFromSRC"
@@ -142,10 +142,10 @@ jobs:
           #                            compiled by setting the values "pgSRCversion" "PG_SOURCE", "buildpgFromSRC:true", and "PG_HOME"
           # PG_HOME: Location where a compiling Postgres will be installed.
           #          A good option is "C:\PGINSTALL"
-          # MSYS2testonpgWIN: If "true" then run a Second regression test against EDB Postgres for Windows.
+          # MingwtestonpgWIN: If "true" then run a Second regression test against EDB Postgres for Windows.
           #                   This also requires to supply the parameter "pgWINversion"
           # pgWINversion: EDB Postgres for Windows version.  This will have the form X.Y-Z. Each letter represents a number.
-          #               This requires "MSYS2testonpgWIN: true".
+          #               This requires "MingwtestonpgWIN: true".
           #               One must check in Advance to see if the version exists.
           #               To check visit https://www.enterprisedb.com/downloads/postgres-postgresql-downloads.
           #               Go to a blue square under "Windows x86-64"
@@ -324,7 +324,7 @@ jobs:
           "buildpgFromSRCmethod": "meson",
           "PG_HOME": "C:\\PGINSTALL",
           "pgWINversion": "18.6-1",
-          "MSYS2testonpgWIN": "true"
+          "MingwtestonpgWIN": "true"
           },
 
           {
@@ -343,7 +343,7 @@ jobs:
           "buildpgFromSRC": "true",
           "buildpgFromSRCmethod": "meson",
           "PG_HOME": "C:\\PGINSTALL",
-          "MSYS2testonpgWIN": "true"
+          "MingwtestonpgWIN": "true"
           },
 
           {
@@ -363,7 +363,7 @@ jobs:
           "buildpgFromSRCmethod": "meson",
           "PG_HOME": "C:\\PGINSTALL",
           "pgWINversion": "16.15-1",
-          "MSYS2testonpgWIN": "true"
+          "MingwtestonpgWIN": "true"
           },
 
           {
@@ -383,7 +383,7 @@ jobs:
           "buildpgFromSRCmethod": "make",
           "PG_HOME": "C:\\PGINSTALL",
           "pgWINversion": "15.19-1",
-          "MSYS2testonpgWIN": "true"
+          "MingwtestonpgWIN": "true"
           },
 
           {
@@ -403,7 +403,7 @@ jobs:
           "buildpgFromSRCmethod": "make",
           "PG_HOME": "C:\\PGINSTALL",
           "pgWINversion": "14.24-1",
-          "MSYS2testonpgWIN": "true"
+          "MingwtestonpgWIN": "true"
           }
 
         ]
@@ -414,10 +414,10 @@ jobs:
 # ########################################
 
 # plr for "R 4.3.0 (and later) for Windows" can not be compiled with Microsoft Visual Studio.
-# Therefore, here, plr for "R 4.3.0 (and later) for Windows" is compiled with MSYS2(UCRT64/MINGW32).
+# Therefore, here, plr for "R 4.3.0 (and later) for Windows" is compiled with Mingw(UCRT64/MINGW32).
 # It is regression tested twice.
 #
-#   The first regression test is within PostgreSQL on MSYS2.
+#   The first regression test is within PostgreSQL on Mingw.
 #
 #   The second regression test is within PostgreSQL that had been compiled with Microsoft Visual Studio
 #   from EnterpriseDB (if available: master _RC* and _BETA* versions are often not available).

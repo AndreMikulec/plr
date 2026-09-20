@@ -11,7 +11,7 @@ export KernelName=$(uname -s)
 echo "KernelName=${KernelName}" >> ${GITHUB_ENV}
 echo "KernelName: ${KernelName}"
 
-# Windows OS computers -- Msys and Cygwin [generally] only a good ARM detection
+# Windows OS computers -- Mingw and Cygwin [generally] only a good ARM detection
 export isKernelNamedARM="notset"
 if [ $(uname -s | grep -qEi "arm" && echo 0) ];
 then
@@ -59,6 +59,7 @@ echo "HardwarePlatform=${HardwarePlatform}" >> ${GITHUB_ENV}
 echo "HardwarePlatform: ${HardwarePlatform}"
 
 export OperatingSystem=$(uname -o)
+if [ "${OperatingSystem}" == "Msys" ]; then OperatingSystem="Mingw"; fi
 echo "OperatingSystem=${OperatingSystem}" >> ${GITHUB_ENV}
 echo "OperatingSystem: ${OperatingSystem}"
 

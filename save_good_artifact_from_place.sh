@@ -54,9 +54,9 @@ then
 fi
 
 # if "PostgreSQL for Windows" exists, then
-# copy "Msys artifacts into "PostgreSQL for Windows" for future testing if env.MSYS2testonpgWIN == 'true'.
+# copy "Mingw artifacts into "PostgreSQL for Windows" for future testing if env.MingwtestonpgWIN == 'true'.
 #
-if ( [ ! "${PGROOT2}" == "notset" ] && [ ! "${PGROOT2}" == "" ] ) && [ "${OperatingSystem}" == "Msys" ]
+if ( [ ! "${PGROOT2}" == "notset" ] && [ ! "${PGROOT2}" == "" ] ) && [ "${OperatingSystem}" == "Mingw" ]
 then
   export PGROOT2=$(cygpath "${PGROOT2}")
   echo  "cygpath PGROOT2: ${PGROOT2}"

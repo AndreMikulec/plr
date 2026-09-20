@@ -10,12 +10,12 @@ set -x -v -e
 #
 # Late brute force detection.  I need some thing or some system more elegant here.
 #
-if [ "${OperatingSystem}" == "Msys" ] || [ "${OperatingSystem}" == "Cygwin" ]
+if [ "${OperatingSystem}" == "Mingw" ] || [ "${OperatingSystem}" == "Cygwin" ]
 then
   gendef  -         R.dll >     R.def
 fi
 
-if [ "${isKernelNamedARM}" == "false" ] && ( [ "${OperatingSystem}" == "Msys" ] || [ "${OperatingSystem}" == "Cygwin" ] )
+if [ "${isKernelNamedARM}" == "false" ] && ( [ "${OperatingSystem}" == "Mingw" ] || [ "${OperatingSystem}" == "Cygwin" ] )
 then
   dlltool --dllname R.dll --def R.def --output-lib libR.dll.a
 fi
@@ -24,7 +24,7 @@ fi
 # Windows 11 ARM has ONLY llvm support and does not have any gcc support.
 # uname -a on Github Actions windows-11-arm CLANGARM64 (SEEN AUG 2026)
 #   MINGW64_NT-10.0-26200-ARM64 runnervmmioek 3.6.10-8fbd9808.x86_64 2026-08-13 11:15 UTC x86_64 Msys
-if [ "${isKernelNamedARM}" == "true" ] && ( [ "${OperatingSystem}" == "Msys" ] || [ "${OperatingSystem}" == "Cygwin" ] )
+if [ "${isKernelNamedARM}" == "true" ] && ( [ "${OperatingSystem}" == "Mingw" ] || [ "${OperatingSystem}" == "Cygwin" ] )
 then 
   if [ "${isMachineHardwareNamed64}" == "true" ]
   then

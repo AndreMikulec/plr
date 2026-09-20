@@ -185,7 +185,7 @@ jobs:
 
           ${env:compilerClass} = "notset"
           if("${env:compilerEnv}" -in "MING64", "MINGW32", "UCRT64", "CLANG32", "CLANG64", "CLANGARM64") {
-            ${env:compilerClass} = "MSYS2"
+            ${env:compilerClass} = "Mingw"
           }
           if("${env:compilerEnv}" -eq "cygwin") {
             ${env:compilerClass} = "cygwin"
@@ -266,11 +266,11 @@ jobs:
 
           echo "PG_HOME: ${env:PG_HOME}"
 
-          ${env:MSYS2testonpgWIN} = "${{ matrix.MSYS2testonpgWIN }}"
-          if("${env:MSYS2testonpgWIN}" -eq ""){${env:MSYS2testonpgWIN} = "notset"}
-          Set-EnvVar "MSYS2testonpgWIN=${env:MSYS2testonpgWIN}"
+          ${env:MingwtestonpgWIN} = "${{ matrix.MingwtestonpgWIN }}"
+          if("${env:MingwtestonpgWIN}" -eq ""){${env:MingwtestonpgWIN} = "notset"}
+          Set-EnvVar "MingwtestonpgWIN=${env:MingwtestonpgWIN}"
 
-          echo "MSYS2testonpgWIN: ${env:MSYS2testonpgWIN}"
+          echo "MingwtestonpgWIN: ${env:MingwtestonpgWIN}"
 
           ${env:pgWINversion} = "${{ matrix.pgWINversion }}"
           if("${env:pgWINversion}" -eq ""){${env:pgWINversion} = "notset"}
@@ -300,8 +300,8 @@ jobs:
           if("${env:pgWINversion}" -ne "notset") { ${env:pgwinmajor} = ${env:pgWINversion} -replace "[.]\d+-\d+$" }
           if("${env:pgWINversion}" -eq "notset") {
             if("${env:pgWINServiceNameHostDefault}" -match "(\d+[.]{0,1}\d+$)") {
-              # if (1) no entry "pgWINversion: whatever" and yes entry "MSYS2testonpgWIN: true"
-              # then THIS(17) is the default TESTING(17) "MSYS2testonpgWIN PostgreSQL"
+              # if (1) no entry "pgWINversion: whatever" and yes entry "MingwtestonpgWIN: true"
+              # then THIS(17) is the default TESTING(17) "MingwtestonpgWIN PostgreSQL"
               # 9.6
               # 13
               ${env:pgwinmajor} = $matches[1]; $matches = @()
@@ -398,7 +398,7 @@ jobs:
           echo   "POSIX_PG_SOURCE: ${POSIX_PG_SOURCE}"
 
       - name: Matrix Windows Platform Specific Variables
-        if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' }}
+        if: ${{ env.osClass == 'windows' && env.compilerClass == 'Mingw' }}
         shell: powershell
         run: |
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
@@ -489,7 +489,7 @@ jobs:
       #
       - name: Cache R-x.y.z Windows Installer Exe
         if: >-
-          ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' && env.rversion != 'devel'  &&
+          ${{ env.osClass == 'windows' && env.compilerClass == 'Mingw' && env.rversion != 'devel'  &&
           env.rversion != 'devel-aarch64' && env.rversion != 'devel-x86_64' &&
           env.CRAN_R_DOWNLOAD_URL != 'notset'
           }}
@@ -503,7 +503,7 @@ jobs:
 
       - name: Cache PostgreSQL for Windows
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' &&
+          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true' &&
           env.PGVER2 != '17' && env.Platform == 'x64'
           }}
         uses: actions/cache@v5
@@ -515,7 +515,7 @@ jobs:
           SEGMENT_DOWNLOAD_TIMEOUT_MINS: 10
 
 #     - name: Cache GNU diffutils for Test on PostgreSQL for Windows
-#       if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) }}
+#       if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true' ) }}
 #       uses: actions/cache@v5
 #       id: cacheDiffutilsZip
 #       with:
@@ -525,7 +525,7 @@ jobs:
 #         SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
 
 #     - name: Cache StrawberryPerl
-#       if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' }}
+#       if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.compilerEnv == 'MINGW32' }}
 #       uses: actions/cache@v5
 #       id: cacheStrawberryPerlMsi
 #       with:
@@ -545,7 +545,7 @@ jobs:
       # five seconds
       - name: Download R from CRAN_R_DOWNLOAD_URL for Windows R-x.y.z R-rmajor.rminor.rpatch
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'MSYS2' ) &&
+          ${{ env.os == 'windows-2025-vs2026' && ( env.compilerClass == 'Mingw' ) &&
           env.CRAN_R_DOWNLOAD_URL != 'notset' &&
           steps.cacheRWindowsInstallerExe.outputs.cache-hit != 'true'
           }}
@@ -556,7 +556,7 @@ jobs:
 
       - name: Download R Development for Windows or Windows-Arm, x86_64 or aarch64, respectively
         if: >-
-          ${{ env.compilerClass == 'MSYS2' &&
+          ${{ env.compilerClass == 'Mingw' &&
           env.osClass == 'windows' && ( env.rversion == 'devel-aarch64' || env.rversion == 'devel-x86_64' )
           }}
         env:
@@ -589,7 +589,7 @@ jobs:
 
       - name: Download PostgreSQL for Windows
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' &&
+          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true' &&
           env.PGVER2 != '17' && env.Platform == 'x64' &&
           steps.cachePGWindowsInstallerExe.outputs.cache-hit != 'true'
           }}
@@ -605,7 +605,7 @@ jobs:
 #         args: install diffutils
 
 #     - name: Download GNU diffutils for Test on PostgreSQL for Windows
-#       if: ${{ ( ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) ) &&
+#       if: ${{ ( ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true' ) ) &&
 #         steps.cacheDiffutilsZip.outputs.cache-hit != 'true'
 #         }}
 #       uses: suisei-cn/actions-download-file@v1.6.1
@@ -618,7 +618,7 @@ jobs:
 
 #     - name: Download StrawberryPerl
 #       if: >-
-#         ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' &&
+#         ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.compilerEnv == 'MINGW32' &&
 #         steps.cacheStrawberryPerlMsi.outputs.cache-hit != 'true'
 #         }}
 #       uses: suisei-cn/actions-download-file@v1.6.1
@@ -632,7 +632,7 @@ jobs:
 #         url: https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_53822_64bit/strawberry-perl-5.38.2.2-64bit.msi
 
       - name: Install R for Windows R-x.y.z R-rmajor.rminor.rpatch
-        if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' }}
+        if: ${{ env.osClass == 'windows' && env.compilerClass == 'Mingw' }}
         env:
           R_HOME: ${{ env.R_HOME }}
           R_ARCHplat: ${{ env.R_ARCHplat }}
@@ -672,7 +672,7 @@ jobs:
       #
       - name: From Disabled, Enable PostgreSQL x64-17 for Windows and Start and Stop
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' &&
+          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true' &&
           env.PGVER2 == '17' && env.Platform == 'x64'
           }}
         shell: cmd
@@ -684,7 +684,7 @@ jobs:
 
       - name: Install PostgreSQL for Windows and Stop PostgreSQL
         if: >-
-          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true'  &&
+          ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true'  &&
           env.PGVER2 != '17' && env.Platform == 'x64' 
           }}
         env:
@@ -721,7 +721,7 @@ jobs:
 #     # Choco Install GNU diffutils
 #     # BUT the "crazy-max/ghaction-chocolatey@v4" "install diffutils" file download often times-out
 #     - name: Extract Diffuntils and add Diffuntils bin directory to the PATH for Test on PostgreSQL for Windows
-#       if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' ) }}
+#       if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true' ) }}
 #       shell: cmd
 #       run: |
 #         rem MKDIR creates any intermediate directories in the path, if needed.
@@ -734,7 +734,7 @@ jobs:
 #         printf                               "C:\\OTHERBIN\\diffutils\\bin" >> %GITHUB_PATH%
 
 #     - name: Install Strawberry Perl
-#       if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.compilerEnv == 'MINGW32' }}
+#       if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.compilerEnv == 'MINGW32' }}
 #       shell: cmd
 #       run: |
 #         msiexec.exe /i strawberry-perl-5.38.2.2-64bit.msi /qn /norestart /l*v strawberry-perl-5.38.2.2-64bit.msiInstall.log
@@ -752,9 +752,9 @@ jobs:
       # Gemini says icu and icu-devel are not required for posgres unless I select "--with-icu" in configuration
       # perl
       - name: Install Windows mingw Software
-        if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' }}
+        if: ${{ env.osClass == 'windows' && env.compilerClass == 'Mingw' }}
         uses: msys2/setup-msys2@v2
-        id: msys2_install
+        id: mingw_install
         with:
           # By default, the installation is not updated; hence package versions are those of the installation tarball.
           # Faster without the "update"
@@ -792,9 +792,9 @@ jobs:
             ${{ env.MINGW_PACKAGE_PREFIX }}-lz4
 
       - name: Install Windows mingw Software Repository PostgreSQL
-        if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' && env.buildpgFromSRC != 'true' }}
+        if: ${{ env.osClass == 'windows' && env.compilerClass == 'Mingw' && env.buildpgFromSRC != 'true' }}
         env:
-          # Msys OS variable
+          # Mingw OS variable
           msystem: ${{ env.compilerEnv }}
         run: |
           echo "Install Windows mingw Software Repository PostgreSQL"
@@ -838,9 +838,9 @@ jobs:
           SHELLOPTS:         ${{ env.compilerClass == 'cygwin' && 'igncr' || '' }}
           CHERE_INVOKING:    ${{ env.compilerClass == 'cygwin' && '1' || '' }}
           CYGWIN:            ${{ env.compilerClass == 'cygwin' && 'winsymlinks:native' || '' }}
-          # Msys OS variables
-          msystem:           ${{ env.compilerClass == 'MSYS2'  && env.compilerEnv || '' }}
-          MSYS2_LOCATION:    ${{ env.compilerClass == 'MSYS2'  && steps.msys2_install.outputs.msys2-location || '' }}
+          # Mingw OS variables
+          msystem:           ${{ env.compilerClass == 'Mingw'  && env.compilerEnv || '' }}
+          MSYS2_LOCATION:    ${{ env.compilerClass == 'Mingw'  && steps.mingw_install.outputs.msys2-location || '' }}
           #
           R_ARCH: ${{ env.R_ARCH }}
         run: |
@@ -863,15 +863,15 @@ jobs:
 
       # If the PostgreSQL version is 16 or greater, I can compile PostgreSQL using meson.
       - name: Compile PG using pgSRCversion and PG_SOURCE and Install to here PG_HOME
-        if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgFromSRC == 'true' }}
+        if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'Mingw' || env.compilerClass == 'cygwin' ) && env.buildpgFromSRC == 'true' }}
         env:
           # Cygwin OS variables
           SHELLOPTS:         ${{ env.compilerClass == 'cygwin' && 'igncr' || '' }}
           CHERE_INVOKING:    ${{ env.compilerClass == 'cygwin' && '1' || '' }}
           CYGWIN:            ${{ env.compilerClass == 'cygwin' && 'winsymlinks:native' || '' }}
-          # Msys OS variables
-          msystem:           ${{ env.compilerClass == 'MSYS2'  && env.compilerEnv || '' }}
-          MSYS2_LOCATION:    ${{ env.compilerClass == 'MSYS2'  && steps.msys2_install.outputs.msys2-location || '' }}
+          # Mingw OS variables
+          msystem:           ${{ env.compilerClass == 'Mingw'  && env.compilerEnv || '' }}
+          MSYS2_LOCATION:    ${{ env.compilerClass == 'Mingw'  && steps.mingw_install.outputs.msys2-location || '' }}
           #
           Configuration: ${{ env.Configuration }}
           #
@@ -891,7 +891,7 @@ jobs:
           echo "bash: $(which bash)"
           echo "Present Working Directory: $(pwd)"
           #
-          if [ "${OperatingSystem}" == "Msys" ]
+          if [ "${OperatingSystem}" == "Mingw" ]
           then
             echo "msystem: ${msystem}"
           fi
@@ -922,8 +922,8 @@ jobs:
             exit 1
           fi
 
-          # An MSYS2-repository-installable-package-ONLY-that-needs-THE-package-HOME
-          if [ "${PG_HOME}" == "repo" ] && [ "${OperatingSystem}" == "Msys" ]
+          # An Mingw-repository-installable-package-ONLY-that-needs-THE-package-HOME
+          if [ "${PG_HOME}" == "repo" ] && [ "${OperatingSystem}" == "Mingw" ]
           then
             export PG_HOME="${MSYSTEM_PREFIX}"
             echo "PG_HOME: ${PG_HOME}"
@@ -1027,7 +1027,7 @@ jobs:
           fi
 
       - name: Windows Prep PG Artifact
-        if: ${{ env.osClass == 'windows' && env.compilerClass == 'MSYS2' && env.buildpgFromSRC == 'true' }}
+        if: ${{ env.osClass == 'windows' && env.compilerClass == 'Mingw' && env.buildpgFromSRC == 'true' }}
         env:
           PGVER2: ${{ env.PGVER2 }}
           Platform: ${{ env.Platform }}
@@ -1044,7 +1044,7 @@ jobs:
       # github.com/actions/upload-artifact
       #
       - name: Upload artifact PG for export for LOCAL testing
-        if: ${{ env.osClass == 'windows' &&  env.compilerClass == 'MSYS2' && env.buildpgFromSRC == 'true' }}
+        if: ${{ env.osClass == 'windows' &&  env.compilerClass == 'Mingw' && env.buildpgFromSRC == 'true' }}
         uses: actions/upload-artifact@v7
         with:
           name: pg-matid-${{ matrix.matid }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}
@@ -1052,15 +1052,15 @@ jobs:
             pg-matid-${{ matrix.matid }}-${{ env.compilerEnv }}-${{ env.Platform }}-PG${{ env.pgversion }}-${{ env.Configuration }}-R${{ env.rversion }}-PGSRC${{ env.buildpgFromSRC }}-PGSRCMETH${{ env.buildpgFromSRCmethod }}-SRCCTB${{ env.buildpgANDplrInSRCcontrib }}.7z
 
       - name: Windows Meson PG and Meson PL/R Setup Compile and Meson Test and Manual Test
-        if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib == 'true' }}
+        if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'Mingw' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib == 'true' }}
         env:
           # Cygwin OS variables
           SHELLOPTS:         ${{ env.compilerClass == 'cygwin' && 'igncr' || '' }}
           CHERE_INVOKING:    ${{ env.compilerClass == 'cygwin' && '1' || '' }}
           CYGWIN:            ${{ env.compilerClass == 'cygwin' && 'winsymlinks:native' || '' }}
-          # Msys OS variables
-          msystem:           ${{ env.compilerClass == 'MSYS2'  && env.compilerEnv || '' }}
-          MSYS2_LOCATION:    ${{ env.compilerClass == 'MSYS2'  && steps.msys2_install.outputs.msys2-location || '' }}
+          # Mingw OS variables
+          msystem:           ${{ env.compilerClass == 'Mingw'  && env.compilerEnv || '' }}
+          MSYS2_LOCATION:    ${{ env.compilerClass == 'Mingw'  && steps.mingw_install.outputs.msys2-location || '' }}
           #
           Configuration: ${{ env.Configuration }}
           #
@@ -1086,7 +1086,7 @@ jobs:
           echo "bash: $(which bash)"
           echo "Present Working Directory: $(pwd)"
           #
-          if [ "${OperatingSystem}" == "Msys" ]
+          if [ "${OperatingSystem}" == "Mingw" ]
           then
             echo "msystem: ${msystem}"
           fi
@@ -1098,8 +1098,8 @@ jobs:
           echo "PG_SOURCE: ${PG_SOURCE}"
           echo "PG_HOME: ${PG_HOME}"
 
-          # An MSYS2-repository-installable-package-ONLY-that-needs-THE-package-HOME
-          if [ "${PG_HOME}" == "repo" ] && [ "${OperatingSystem}" == "Msys" ]
+          # An Mingw-repository-installable-package-ONLY-that-needs-THE-package-HOME
+          if [ "${PG_HOME}" == "repo" ] && [ "${OperatingSystem}" == "Mingw" ]
           then
             export PG_HOME="${MSYSTEM_PREFIX}"
             echo "PG_HOME: ${PG_HOME}"
@@ -1153,7 +1153,7 @@ jobs:
             fi
 
             # R for Windows SUFFICIENT
-            if [ "${OperatingSystem}" == "Msys" ]
+            if [ "${OperatingSystem}" == "Mingw" ]
             then
               # ONLY "R for Windows"
               # dangerously assumes that
@@ -1170,10 +1170,10 @@ jobs:
             export PATH="${R_HOME}/bin:${PATH}"
           fi
 
-          # Pipes have been known to fail in Msys
-          # when piping from a non-Msys program. E.g "R for Windows".
+          # Pipes have been known to fail in Mingw
+          # when piping from a non-Mingw program. E.g "R for Windows".
           #
-          if [ ! "${OperatingSystem}" == "Msys" ]
+          if [ ! "${OperatingSystem}" == "Mingw" ]
           then
             # determine rversion xor verify user supplied rversion
             #
@@ -1286,8 +1286,8 @@ jobs:
 
           # note "Cygwin" has "no defaults"
           #
-          # note MSYS(mingw) UCRT uses MSYSTEM_PREFIX="/ucrt64" in place of "/usr"
-          # note MSYS(mingw) UCRT variable PKG_CONFIG_PATH at the tail also has "/ucrt64/share/pkgconfig"
+          # note Mingw UCRT uses MSYSTEM_PREFIX="/ucrt64" in place of "/usr"
+          # note Mingw UCRT variable PKG_CONFIG_PATH at the tail also has "/ucrt64/share/pkgconfig"
           #
           # This case handles Cygwin.
           if [ "${PKG_CONFIG_PATH}" == "" ];                then export PKG_CONFIG_PATH="/usr/lib/pkgconfig"; fi
@@ -1300,10 +1300,10 @@ jobs:
           export PKG_CONFIG_SYSTEM_INCLUDE_PATH_ORIG=$(echo "${PKG_CONFIG_SYSTEM_INCLUDE_PATH}" |  grep -o '^[^:]*')
           echo "PKG_CONFIG_SYSTEM_INCLUDE_PATH_ORIG: ${PKG_CONFIG_SYSTEM_INCLUDE_PATH_ORIG}"
 
-          # For MSYS(mingw) and R environment variable R_ARCH and Rlib.dll.a.
+          # For Mingw and R environment variable R_ARCH and Rlib.dll.a.
           # Need ONE single leftmost headish important library path.
           export PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG=$(echo "${PKG_CONFIG_SYSTEM_LIBRARY_PATH}" |  grep -o '^[^:]*')
-          # MSYS2(mingw) environments
+          # Mingw environments
           # e.g. UCRT
           # export PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG="/ucrt64/lib"
           echo "PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG: ${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}"
@@ -1330,7 +1330,7 @@ jobs:
           fi
 
           # Cygwin already has the file /usr/lib/R/lib/libR.dll.a
-          # MSYS2 (mingw) compilers require libR.dll.a.
+          # Mingw compilers require libR.dll.a.
           # That file is created by dlltool program parameter "--output-lib".
           #
           if [ ! -d "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}" ]
@@ -1354,7 +1354,7 @@ jobs:
               cp libR.dll.a "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}/libR.dll.a"
               popd # from   "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}/R/lib"
             fi
-            # Msys case using "R for Windows" from CRAN
+            # Mingw case using "R for Windows" from CRAN
             # If I am given the R.dll, then I can myself, create the static library libR.dll.a.
             if [ -f "${R_HOME}/bin${R_ARCH}/R.dll" ]
             then
@@ -1545,15 +1545,15 @@ jobs:
 
 
       - name: Windows Meson PL/R Setup Compile and Meson Test and Manual Test
-        if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib != 'true' }}
+        if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'Mingw' || env.compilerClass == 'cygwin' ) && env.buildpgANDplrInSRCcontrib != 'true' }}
         env:
           # Cygwin OS variables
           SHELLOPTS:         ${{ env.compilerClass == 'cygwin' && 'igncr' || '' }}
           CHERE_INVOKING:    ${{ env.compilerClass == 'cygwin' && '1' || '' }}
           CYGWIN:            ${{ env.compilerClass == 'cygwin' && 'winsymlinks:native' || '' }}
-          # Msys OS variables
-          msystem:           ${{ env.compilerClass == 'MSYS2'  && env.compilerEnv || '' }}
-          MSYS2_LOCATION:    ${{ env.compilerClass == 'MSYS2'  && steps.msys2_install.outputs.msys2-location || '' }}
+          # Mingw OS variables
+          msystem:           ${{ env.compilerClass == 'Mingw'  && env.compilerEnv || '' }}
+          MSYS2_LOCATION:    ${{ env.compilerClass == 'Mingw'  && steps.mingw_install.outputs.msys2-location || '' }}
           #
           Configuration: ${{ env.Configuration }}
           #
@@ -1576,7 +1576,7 @@ jobs:
           echo "bash: $(which bash)"
           echo "Present Working Directory: $(pwd)"
           #
-          if [ "${OperatingSystem}" == "Msys" ]
+          if [ "${OperatingSystem}" == "Mingw" ]
           then
             echo "msystem: ${msystem}"
           fi
@@ -1587,8 +1587,8 @@ jobs:
           echo "rversion: ${rversion}"
           echo "PG_HOME: ${PG_HOME}"
 
-          # An MSYS2-repository-installable-package-ONLY-that-needs-THE-package-HOME
-          if [ "${PG_HOME}" == "repo" ] && [ "${OperatingSystem}" == "Msys" ]
+          # An Mingw-repository-installable-package-ONLY-that-needs-THE-package-HOME
+          if [ "${PG_HOME}" == "repo" ] && [ "${OperatingSystem}" == "Mingw" ]
           then
             export PG_HOME="${MSYSTEM_PREFIX}"
             echo "PG_HOME: ${PG_HOME}"
@@ -1642,7 +1642,7 @@ jobs:
             fi
 
             # R for Windows SUFFICIENT
-            if [ "${OperatingSystem}" == "Msys" ]
+            if [ "${OperatingSystem}" == "Mingw" ]
             then
               # ONLY "R for Windows"
               # dangerously assumes that
@@ -1659,10 +1659,10 @@ jobs:
             export PATH="${R_HOME}/bin:${PATH}"
           fi
 
-          # Pipes have been known to fail in Msys
-          # when piping from a non-Msys program. E.g "R for Windows".
+          # Pipes have been known to fail in Mingw
+          # when piping from a non-Mingw program. E.g "R for Windows".
           #
-          if [ ! "${OperatingSystem}" == "Msys" ]
+          if [ ! "${OperatingSystem}" == "Mingw" ]
           then
             # determine rversion xor verify user supplied rversion
             #
@@ -1827,8 +1827,8 @@ jobs:
 
           # note "Cygwin" has "no defaults"
           #
-          # note MSYS(mingw) UCRT uses MSYSTEM_PREFIX="/ucrt64" in place of "/usr"
-          # note MSYS(mingw) UCRT variable PKG_CONFIG_PATH at the tail also has "/ucrt64/share/pkgconfig"
+          # note Mingw UCRT uses MSYSTEM_PREFIX="/ucrt64" in place of "/usr"
+          # note Mingw UCRT variable PKG_CONFIG_PATH at the tail also has "/ucrt64/share/pkgconfig"
           #
           # This case handles Cygwin.
           if [ "${PKG_CONFIG_PATH}" == "" ];                then export PKG_CONFIG_PATH="/usr/lib/pkgconfig"; fi
@@ -1841,10 +1841,10 @@ jobs:
           export PKG_CONFIG_SYSTEM_INCLUDE_PATH_ORIG=$(echo "${PKG_CONFIG_SYSTEM_INCLUDE_PATH}" |  grep -o '^[^:]*')
           echo "PKG_CONFIG_SYSTEM_INCLUDE_PATH_ORIG: ${PKG_CONFIG_SYSTEM_INCLUDE_PATH_ORIG}"
 
-          # For MSYS(mingw) and R environment variable R_ARCH and Rlib.dll.a.
+          # For Mingw and R environment variable R_ARCH and Rlib.dll.a.
           # Need ONE single leftmost headish important library path.
           export PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG=$(echo "${PKG_CONFIG_SYSTEM_LIBRARY_PATH}" |  grep -o '^[^:]*')
-          # MSYS2(mingw) environments
+          # Mingw environments
           # e.g. UCRT
           # export PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG="/ucrt64/lib"
           echo "PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG: ${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}"
@@ -1908,7 +1908,7 @@ jobs:
           fi
 
           # Cygwin already has the file /usr/lib/R/lib/libR.dll.a
-          # MSYS2 (mingw) compilers require libR.dll.a.
+          # Mingw compilers require libR.dll.a.
           # That file is created by dlltool program parameter "--output-lib".
           #
           if [ ! -d "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}" ]
@@ -1932,7 +1932,7 @@ jobs:
               cp libR.dll.a "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}${R_ARCH}/libR.dll.a"
               popd # from   "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}/R/lib"
             fi
-            # Msys case using "R for Windows" from CRAN
+            # Mingw case using "R for Windows" from CRAN
             # If I am given the R.dll, then I can myself, create the static library libR.dll.a.
             if [ -f "${R_HOME}/bin${R_ARCH}/R.dll" ]
             then
@@ -2092,7 +2092,7 @@ jobs:
             tmp\PLR_LICENSE
 
       - name: Set R_HOME and PG PATH, Start PG(read OS variables), Test on PostgreSQL for Windows
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' }}
+        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true' }}
         env:
           R_HOME: ${{ env.R_HOME }}
           R_ARCH: ${{ env.R_ARCH }}
@@ -2153,7 +2153,7 @@ jobs:
           if "%ERRORLEVEL%"=="1" exit 1
 
       - name: Stop PostgreSQL for Windows
-        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'MSYS2' && env.MSYS2testonpgWIN == 'true' }}
+        if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true' }}
         env:
           PGVER2: ${{ env.PGVER2 }}
           Platform: ${{ env.Platform }}
@@ -2168,7 +2168,7 @@ jobs:
           if "%Platform%"=="notset" (echo Platform is not set, therefore no net stop happens.)
 
       - name: Windows Prep PL/R Artifact for Release
-        if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'MSYS2' || env.compilerClass == 'cygwin' ) }}
+        if: ${{ env.osClass == 'windows' && ( env.compilerClass == 'Mingw' || env.compilerClass == 'cygwin' ) }}
         env:
           PGVER2: ${{ env.PGVER2 }}
           Platform: ${{ env.Platform }}
