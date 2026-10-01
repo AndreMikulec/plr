@@ -4,6 +4,8 @@ run-name: Callee of Windows Builds PL/R - ${{ github.event.head_commit.message }
 
 env:
   TZ: UTC
+  # exact and only the whole number
+  GITHUB_ACTIONS_WINDOWS_RUNNER_PG_VERSION: 17
 
 permissions:
   contents: write
@@ -61,10 +63,10 @@ jobs:
           # systeminfo
           echo "${{ matrix.compilerEnv }} on ${{ matrix.os }}"
           # AUG 2025 - THIS exists in Github Actions
-          if( Test-Path "C:\Program Files\PostgreSQL\17" ) {
-            "PostgreSQL for Windows x64-17 exists."
+          if( Test-Path "C:\Program Files\PostgreSQL\${env:GITHUB_ACTIONS_WINDOWS_RUNNER_PG_VERSION}" ) {
+            "PostgreSQL for Windows x64-${env:GITHUB_ACTIONS_WINDOWS_RUNNER_PG_VERSION} exists."
           } else {
-            "PostgreSQL for Windows x64-17 does not exist."
+            "PostgreSQL for Windows x64-${env:GITHUB_ACTIONS_WINDOWS_RUNNER_PG_VERSION} does not exist."
           }
           function Set-EnvVar {param($X)     Add-Content -Path ${env:GITHUB_ENV} -Value "$X"}
           #
@@ -288,7 +290,7 @@ jobs:
           # THEREFORE, temporarily just 
           # keep the new default of "Windows-non-arm "image" default installed PG version" (e.g. 17)
           # UNTIL I REWORK the code of PG detection and assignment logic.
-          if("${env:pgWINServiceNameHostDefault}" -eq "") { ${env:pgWINServiceNameHostDefault} = "17" }
+          if("${env:pgWINServiceNameHostDefault}" -eq "") { ${env:pgWINServiceNameHostDefault} = "${env:GITHUB_ACTIONS_WINDOWS_RUNNER_PG_VERSION}" }
 
           echo "pgWINServiceNameHostDefault: ${env:pgWINServiceNameHostDefault}"
           Set-EnvVar "pgWINServiceNameHostDefault=${env:pgWINServiceNameHostDefault}"
@@ -352,7 +354,7 @@ jobs:
           ${env:PGROOT2}     = "notset"
           if("${env:Platform}" -eq "x64") {
             ${env:PGBIN2}      = "C:\Program Files\PostgreSQL\${env:pgwinmajor}\bin"
-            if([int]${env:pgwinmajor} -ge 17) {
+            if([int]${env:pgwinmajor} -ge [int]"${env:GITHUB_ACTIONS_WINDOWS_RUNNER_PG_VERSION}") {
               ${env:PGREGRESS2}  = "C:\Program Files\PostgreSQL\${env:pgwinmajor}\lib\pgxs\src\test\regress"
             } else {
               ${env:PGREGRESS2}  = "C:\Program Files\PostgreSQL\${env:pgwinmajor}\bin"
@@ -362,7 +364,7 @@ jobs:
           }
           if("${env:Platform}" -eq "x86") {
             ${env:PGBIN2}      = "C:\Program Files (x86)\PostgreSQL\${env:pgwinmajor}\bin"
-            if([int]${env:pgwinmajor} -ge 17) {
+            if([int]${env:pgwinmajor} -ge [int]"${env:GITHUB_ACTIONS_WINDOWS_RUNNER_PG_VERSION}") {
               ${env:PGREGRESS2}  = "C:\Program Files (x86)\PostgreSQL\${env:pgwinmajor}\lib\pgxs\src\test\regress"
             } else {
               ${env:PGREGRESS2}  = "C:\Program Files (x86)\PostgreSQL\${env:pgwinmajor}\bin"
@@ -504,7 +506,7 @@ jobs:
       - name: Cache PostgreSQL for Windows
         if: >-
           ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true' &&
-          env.PGVER2 != '17' && env.Platform == 'x64'
+          env.PGVER2 != env.GITHUB_ACTIONS_WINDOWS_RUNNER_PG_VERSION && env.Platform == 'x64'
           }}
         uses: actions/cache@v5
         id: cachePGWindowsInstallerExe
@@ -590,7 +592,7 @@ jobs:
       - name: Download PostgreSQL for Windows
         if: >-
           ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true' &&
-          env.PGVER2 != '17' && env.Platform == 'x64' &&
+          env.PGVER2 != env.GITHUB_ACTIONS_WINDOWS_RUNNER_PG_VERSION && env.Platform == 'x64' &&
           steps.cachePGWindowsInstallerExe.outputs.cache-hit != 'true'
           }}
         uses: suisei-cn/actions-download-file@v1.6.1
@@ -670,22 +672,22 @@ jobs:
       # https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md
       # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-software
       #
-      - name: From Disabled, Enable PostgreSQL x64-17 for Windows and Start and Stop
+      - name: From Disabled, Enable PostgreSQL x64-${{ env.GITHUB_ACTIONS_WINDOWS_RUNNER_PG_VERSION }} for Windows and Start and Stop
         if: >-
           ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true' &&
-          env.PGVER2 == '17' && env.Platform == 'x64'
+          env.PGVER2 == env.GITHUB_ACTIONS_WINDOWS_RUNNER_PG_VERSION && env.Platform == 'x64'
           }}
         shell: cmd
         run: |
           echo on
-          sc config "postgresql-x64-17" start= auto
-          net start  postgresql-x64-17
-          net stop   postgresql-x64-17
+          sc config "postgresql-x64-%GITHUB_ACTIONS_WINDOWS_RUNNER_PG_VERSION%" start= auto
+          net start  postgresql-x64-%GITHUB_ACTIONS_WINDOWS_RUNNER_PG_VERSION%
+          net stop   postgresql-x64-%GITHUB_ACTIONS_WINDOWS_RUNNER_PG_VERSION%
 
       - name: Install PostgreSQL for Windows and Stop PostgreSQL
         if: >-
           ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true'  &&
-          env.PGVER2 != '17' && env.Platform == 'x64' 
+          env.PGVER2 != env.GITHUB_ACTIONS_WINDOWS_RUNNER_PG_VERSION && env.Platform == 'x64' 
           }}
         env:
           PGVER2: ${{ env.PGVER2 }}
