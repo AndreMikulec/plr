@@ -101,7 +101,7 @@ jobs:
           #     at https://github.com/actions/runner-images
           #     The values are in the "YAML Label".  MacOS images have not been tested.
           #
-          # GithubActionsIgnoreFail: If 'true' and if the job, fails, do not report the failure to the build.
+          # GithubActionsIgnoreFail: If 'true' and if the job fails, do not report the failure to the build.
           #
           # Platform: Generally x86 or x64.
           #           Generally this represents the bitness of the supporting compiling and library software.
