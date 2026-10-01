@@ -56,6 +56,10 @@ jobs:
       ragged_strategy_matrix: >
         [
           { "PG": "master",  "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
+
+          { "PG": "20",      "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
+          { "PG": "19",      "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
+
           { "PG": "18",      "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
           { "PG": "18",      "R": "repo", "os": "ubuntu-26.04-arm",  "GithubActionsIgnoreFail": "false" },
           { "PG": "REL_19_", "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
