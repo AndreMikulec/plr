@@ -177,6 +177,12 @@ plr_c_args = []
 # "dylib" on macOS, "dll" on Windows, and "so" everywhere else. 
 # https://mesonbuild.com/Reference-manual_functions_shared_library.html
 #
+
+# just make sure the program "sed" is available
+sed = find_program('sed')
+pg_major_version = run_command(pg_config, '--version | sed -En "s/.*([0-9][0-9]).*/\1/p"', check: true).stdout().strip()
+message('pg_major_version: ', pg_major_version)
+
 if is_mingw or is_cygwin
   message('begin -DDLSUFFIX=".dll"')
   dlsuffix = '-DDLSUFFIX=".dll"'
