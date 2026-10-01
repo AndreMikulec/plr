@@ -466,9 +466,12 @@ jobs:
 
           # # non-statics
           # master
+          # REL_19_STABLE
+          # REL_18_STABLE
           # REL_17_STABLE
           # REL_16_STABLE
           # REL_15_STABLE
+          # REL_14_STABLE
           #
           ref: '${{ env.pgSRCversion }}'
           # Relative path under $GITHUB_WORKSPACE to place the repository
@@ -655,11 +658,11 @@ jobs:
           "%R_HOME%\bin\Rscript" --vanilla -e "print(R.version)"
           dir "%R_HOME%"
 
-      # Github Actions provided PostgreSQL x64-17 (as of Aug 2025)
+      # Github Actions provided PostgreSQL x64-17 (as of OCT 2026)
       #
-      # # Aug 2025
+      # # OCT 2025
       # ServiceName postgresql-x64-17
-      # Version 17.5
+      # Version 17.11
       # ServiceStatus Stopped
       # ServiceStartType Disabled
       # EnvironmentVariables PGBIN=C:\Program Files\PostgreSQL\17\bin
@@ -697,20 +700,20 @@ jobs:
         run: |
           echo on
           "${{ env.pgWINversionlong }}.exe" --unattendedmodeui none --mode unattended --enable-components server,commandlinetools --disable-components pgAdmin,stackbuilder --superpassword "root" > nul
-          rem postgresql-15.3-4-windows-x64.exe
-          rem "C:\Program Files\PostgreSQL\15"
-          rem "C:\Program Files\PostgreSQL\15\data"
+          rem postgresql-17.11
+          rem "C:\Program Files\PostgreSQL\17" (OCT 2026)
+          rem "C:\Program Files\PostgreSQL\17\data"
           rem root
           rem 5432
-          rem "Installation Directory: C:\Program Files\PostgreSQL\15"
-          rem "Server Installation Directory: C:\Program Files\PostgreSQL\15"
-          rem "Data Directory: C:\Program Files\PostgreSQL\15\data"
+          rem "Installation Directory: C:\Program Files\PostgreSQL\17"
+          rem "Server Installation Directory: C:\Program Files\PostgreSQL\17"
+          rem "Data Directory: C:\Program Files\PostgreSQL\17\data"
           rem "Database Port: 5432"
           rem "Database Superuser: postgres"
           rem "Operating System Account: NT AUTHORITY\NetworkService"
-          rem "Database Service: postgresql-x64-15"
-          rem "Command Line Tools Installation Directory: C:\Program Files\PostgreSQL\15"
-          rem "Installation Log: C:\Users\AnonymousUser\AppData\Local\Temp\install-postgresql.log"
+          rem "Database Service: postgresql-x64-17"
+          rem "Command Line Tools Installation Directory: C:\Program Files\PostgreSQL\17"
+          rem "Installation Log: C:\Users\%USERNAME%\AppData\Local\Temp\install-postgresql.log"
           rem
           rem "Starting the database server"
           rem
