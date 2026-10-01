@@ -100,60 +100,87 @@ jobs:
           #     Any recent Windows runner images
           #     at https://github.com/actions/runner-images
           #     The values are in the "YAML Label".  MacOS images have not been tested.
+          #
           # Platform: Generally x86 or x64.
           #           Generally this represents the bitness of the supporting compiling and library software.
           #           This correlates with the R_ARCH (if any).
+          #
           # Configuration: Debug or Release
           #                If the rversion or pgSRCversion is "devel", "devel-*", "master", (Postgres Release Candidates) "XY_RC_"
           #                (Postgres Beta builds) "XY_BETA_" then the better choice is "Debug."
+          #
           # rversion: The user requested version of R for Windows.
           #           This is downloaded from CRAN.
+          #
           # R_ARCH: For a multiarchiture R. Currenly only R for windows. Values can be /x64 or  /i386
           #         Recently, Windows /i386 support has ended.  Therefore, the only useful value for R for Windows is /x64.
-          #         This correlates with the Platform.
+          #         This correlates with the Platform.  Windows 11 arm does not use R_ARCH.
+          #
           # compilerEnv: Collection of compiling software and libraries.
           #              Current values on Windows are: Cygwin and Mingw flavors.
           #              Of the Mingw flavors, the only developed/tested/implmented are UCRT64
           #              and CLANGARM64(and only on the image windows 11-arm)
+          #
           # compilerExe: executable of the compliler.
           #              This is meant for Mingw.  On Windows 11 choose "gcc". On Windows 11 arm, choose "clang"
+          #
           # pgSRCversion: Postgres version given by Github branch or tag.
           #               This is needed when compiling Postgres from source.
           #               One must also supply, "PG_SOURCE" AND "buildpgFromSRC"
           #               The exception is "repo" that is only developed/tested/implement on CLANGARM64 on Windows 11 arm.
           #               This "repo" is not a popular choice, because the version of Postgres is not known in advance.
-          #               If chooing "repo" do not supply "PG_SOURCE", "buildpgFromSRC", "buildpgFromSRCmethod", and "PG_HOME"
+          #               If chooing "repo" do not supply: "PG_SOURCE", "buildpgFromSRC", "buildpgFromSRCmethod", and "PG_HOME".
+          #
           # PG_SOURCE: Location on the Github Actions disk where "Compiling Postgres from source" will install Postgress.
-          #            If no value is supplied, then a "hijacked default" value "C:\PGSOURCE is implemented.
+          #            If no value is supplied, then a "hijacked default" value "C:\PGSOURCE" is implemented.
           #            One must also supply "pgSRCversion" and "buildpgFromSRC".
+          #
           # buildpgFromSRC: If "true" then compile Postgres using source code.
           #                 If "true", then one must supply "PG_SOURCE", "pgSRCVersion", and "PG_HOME".
+          #
           # buildpgFromSRCmethod: "meson" or "make".
           #                        If "buildpgANDplrInSRCcontrib" is true, then only "meson" is allowed to work.
           #                        "meson" is only available for Postgres 16 and later (actually 15.9 and later).
+          #
           # buildpgANDplrInSRCcontrib: If "true" then build both Postgres and PLR at the same time.
           #                            This builds PLR the same way that all of Postgres contrib modules
-          #                            are built: all together at the same time.  This uses meson.build.
+          #                            are built: PG all contrib modules together at the same time.  This uses meson.build.
           #                            If "buildpgANDplrInSRCcontrib" is omitted or its value is "" or "notset",
           #                            then PLR is built as a standalone application. This uses _build.meson.
           #                            This works for any version of Postgres.
-          #                            This feature is only available on the Windows Operating System.
+          #                            This feature is only available on the Windows Operating System,
+          #                              because "postgres" as a "library" is provided.)
+          #                              (Non-windows cannot and do not provide "postgres" as a "library")
           #                            Postgres is either supplied "pre-built" from "repo" or
-          #                            compiled by setting the values "pgSRCversion" "PG_SOURCE", "buildpgFromSRC:true", and "PG_HOME"
+          #                            compiled by setting the values "pgSRCversion" "PG_SOURCE", "buildpgFromSRC:true", and "PG_HOME".
+          #
           # PG_HOME: Location where a compiling Postgres will be installed.
-          #          A good option is "C:\PGINSTALL"
+          #          A good option is "C:\PGINSTALL".
+          #
+          # prepare for the "MingwtestonpgWIN" true and pgWINversion X.Y-Z
+          #               To prepare for the "MingwtestonpgWIN" true and pgWINversion X.Y-Z
+          #               at "https://github.com/actions/runner-images",
+          #                 check the PG major software version installed on the Github Actions Windows runner (e.g. PG 17)
+          #               In the file buildPLR2.yml, in the top of the file, in the OS environment variable
+          #                 GITHUB_ACTIONS_WINDOWS_RUNNER_PG_MAJOR_VERSION, verify/place that whole number X there.
+          #
           # MingwtestonpgWIN: If "true" then run a Second regression test against EDB Postgres for Windows.
           #                   This also requires to supply the parameter "pgWINversion"
-          # pgWINversion: EDB Postgres for Windows version.  This will have the form X.Y-Z. Each letter represents a number.
+          #
+          # pgWINversion:
+          #               This "pgWINversion" is the EDB Postgres for Windows version.
+          #                  This will have the form X.Y-Z. Each letter represents a number.
           #               This requires "MingwtestonpgWIN: true".
-          #               One must check in Advance to see if the version exists.
+          #               One must check in Advance to see if the version exists (and it will be attempted to be downloaded.)
           #               To check visit https://www.enterprisedb.com/downloads/postgres-postgresql-downloads.
           #               Go to a blue square under "Windows x86-64"
           #               In the browser "download progress bar", check out the name of the file in the download URL.
           #               The version is part of the download URL.
-          #               Do not download Postgres 17 from EDB; Postgres is already on the Windows image and can not be uninstalled.
+          #               Do not download Postgres GITHUB_ACTIONS_WINDOWS_RUNNER_PG_MAJOR_VERSION from EDB; 
+          #                 Postgres is already on the Windows image and can not be uninstalled.
           #               Generally, EDB, does not provide Postgres for Windows for Postgress Beta versions (XY_BETA_) and
           #               and does not supply for Release candidatates (XY_RC_).
+          #               EDB does not [yet] provide a PostgreSQL for Windows ARM.
           #
           # Below are the ONLY combinations that have been
           # developed, tested, and implemented.  Explanations follow.
