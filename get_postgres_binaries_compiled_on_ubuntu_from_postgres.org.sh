@@ -46,7 +46,7 @@ sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail htt
 sudo tee /etc/apt/sources.list.d/pgdg.sources <<EOF
 Types: deb deb-src
 URIs: https://apt.postgresql.org/pub/repos/apt
-Suites: $VERSION_CODENAME-pgdg-testing
+Suites: $VERSION_CODENAME-pgdg
 Architectures: $(dpkg --print-architecture)
 Components: main
 Signed-By: /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
