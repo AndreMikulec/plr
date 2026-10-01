@@ -36,6 +36,18 @@ jobs:
     uses: ./.github/workflows/build2.yml
     with:
       caller_event_name: ${{ github.event_name }}
+
+          # PG: PostgreSQL major version; whole number only.
+          #
+          # R:  R version.  The only option is 'repo.'
+          #
+          # os: operating system of the [Github Actions] runner.
+          #     Any recent Ubuntu Linux runner images
+          #     at https://github.com/actions/runner-images
+          #     The values are in the "YAML Label".  MacOS images have not been tested.
+          #
+          # GithubActionsIgnoreFail: If 'true' and if the job fails, do not report the failure to the build.
+
       ragged_strategy_matrix: >
         [
           { "PG": "master",  "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
