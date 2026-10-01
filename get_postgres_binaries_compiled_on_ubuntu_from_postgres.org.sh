@@ -3,13 +3,22 @@ set -x -v -e
 
 if [ ! -f "${GITHUB_ENV}" ]; then touch discard.txt; export GITHUB_ENV=discard.txt; fi
 
-# noble (24.04, LTS), plucky (25.04, amd64 only)
+# Docs
+# resolute (26.04)
 # https://wiki.postgresql.org/wiki/Apt
 # https://apt.postgresql.org/pub/repos/apt/dists/
-# ##
-# https://ftp.postgresql.org/pub/repos/apt/dists/noble-pgdg/
-# Regular expression search - "Package: postgresql-18$"
-# https://ftp.postgresql.org/pub/repos/apt/dists/noble-pgdg/main/binary-amd64/Packages
+# 
+# Image available ?
+# SEEN OCT 2026
+# YAML Label
+# ubuntu-26.04
+# https://github.com/actions/runner-images
+#
+# Pre-built PG available?
+# SEEN OCT 2026
+# https://ftp.postgresql.org/pub/repos/apt/dists/resolute-pgdg/
+# file "Packages" Regular expression search - "Package: postgresql-18$"
+# https://ftp.postgresql.org/pub/repos/apt/dists/resolute-pgdg/main/binary-amd64/Packages
 
 # Inputs
 # PG: Major postgres version
@@ -22,30 +31,7 @@ if [ "${PG}" == "" ]; then echo "Passed variable PG is missing."; exit 99; fi
 # Outputs
 # PG_HOME PG_PATHS
 # PostgreSQL is installed and started
-
-# PG non-snapshots
-# https://apt.postgresql.org/pub/repos/apt/dists/noble-pgdg/ (SEEN PG 19 (REL_19_) 20 (master))
 #
-# These "PG snapshots" are always younger than "PG non-snapshots" 
-# (but the youth is sometimes only by less than 10 days)
-# The CURRENT version of PG, both in the "PG non-snapshot" and the "PG snapshot"
-#   is the same day and OLD. (SEEN AUG 22 2026)
-# https://apt.postgresql.org/pub/repos/apt/dists/noble-pgdg-snapshot/ (SEEN PG 19 (REL_19_) 20 (master))
-# Read about the snaphsots
-# https://wiki.postgresql.org/wiki/Apt/FAQ#Development_snapshots
-#
-# if [ "${PG}" -gt "18" ]
-# then
-#   # snapshots (I can not find a binary package! They SHOULD BE THERE, but I can not find them.)
-#   # sudo add-apt-repository "deb https://apt.postgresql.org/pub/repos/apt/ $(lsb_release -s -c)-pgdg-snapshot main ${PG}"
-#   # BETTER non-snap syntax ... (I can not find a binary package! They SHOULD BE THERE, but I can not find them.)
-#   # sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main-snapshot" > /etc/apt/sources.list.d/pgdg.list'
-#   # wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-# else
-  # non-snapshots
-  # sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-  # wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-# fi
 
 # Christoph Berg
 # 12:01, 2 April 2026‎ Myon 
