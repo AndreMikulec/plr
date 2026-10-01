@@ -1115,7 +1115,7 @@ jobs:
           export WORKSPACE=$(pwd)
           echo "WORKSPACE ${WORKSPACE}"
 
-          #### BEGIN R SECTION ####
+          echo "::group::PG and PLR - R SECTION"
 
           #
           # Trying smartly and hard to find the R_HOME
@@ -1265,9 +1265,9 @@ jobs:
             export PATH="${R_HOME}/bin${R_ARCH}:${PATH}"
           fi
 
-          #### END R SECTION ####
+          echo "::endgroup::"
 
-          #### BEGIN PG_SOURCE AND PG_HOME SECTION ####
+          echo "::group::PG and PLR - PG_SOURCE AND PG_HOME SECTION"
 
           if [ ! "${PG_SOURCE}" == "notset" ] && [ ! "${PG_SOURCE}" == "" ]
           then
@@ -1281,9 +1281,9 @@ jobs:
             echo "cygpath PG_HOME: ${PG_HOME}"
           fi
 
-          #### END PG_SOURCE AND PG_HOME SECTION ####
+          echo "::endgroup::"
 
-          #### BEGIN PKGCONFIG SECTION ####
+          echo "::group::PG and PLR - PKGCONFIG SECTION"
 
           echo "PKG_CONFIG_PATH: ${PKG_CONFIG_PATH}"
           echo "PKG_CONFIG_SYSTEM_INCLUDE_PATH: ${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
@@ -1317,9 +1317,9 @@ jobs:
           echo "PKG_CONFIG_SYSTEM_INCLUDE_PATH: ${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
           echo "PKG_CONFIG_SYSTEM_LIBRARY_PATH: ${PKG_CONFIG_SYSTEM_LIBRARY_PATH}"
 
-          #### END PKGCONFIG SECTION ####
+          echo "::endgroup::"
 
-          #### BEGIN MAKE R INTO A LIBRARY ####
+          echo "::group::PG and PLR - MAKE R INTO A LIBRARY SECTION"
 
           # Make R into a library
           if [ ! -d "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}/pkgconfig" ]
@@ -1372,9 +1372,9 @@ jobs:
             fi
           fi
 
-          #### END MAKE R INTO A LIBRARY ####
+          echo "::endgroup::"
 
-          #### BEGIN SETUP MESON.BUILD FILES AND OPTIONS ####
+          echo "::group::PG and PLR - SETUP MESON.BUILD FILES AND OPTIONS SECTION"
 
           cat _meson_options.txt_postgres_root_additional_plr_option.txt >>         ${PG_SOURCE}/meson_options.txt
           echo 'subdir('"'"'plr'"'"')'                                   >> ${PG_SOURCE}/contrib/meson.build
@@ -1382,9 +1382,9 @@ jobs:
           ######## mv  meson.build meson.build.STANDALONE.HIDDEN
           ######## mv _meson.build meson.build
 
-          #### END SETUP MESON.BUILD FILES AND OPTIONS ####
+          echo "::endgroup::"
 
-          #### BEGIN CREATE THE PLR DIRECTORY ####
+          echo "::group::PG and PLR - CREATE THE PLR DIRECTORY SECTION"
 
           # Create the contrib/plr directory parallel in contrib.
           # Copy all of the PL/R source code into contrib/plr.
@@ -1392,9 +1392,9 @@ jobs:
           mkdir     "${PG_SOURCE}/contrib/plr"
           cp -R   * "${PG_SOURCE}/contrib/plr"
 
-          #### END CREATE THE PLR DIRECTORY ####
+          echo "::endgroup::"
 
-          #### BEGIN BUILD PG AND PLR AND TEST PLR ####
+          echo "::group::PG and PLR - BUILD PG AND PLR AND TEST PLR SECTION"
 
           # from WORKSPACE
           pushd "${PG_SOURCE}"
@@ -1544,7 +1544,7 @@ jobs:
           popd # from "${PG_SOURCE}"
           # back into WORKSPACE
 
-          #### END BUILD PG AND PLR AND TEST PLR ####
+          echo "::endgroup::"
 
           bash save_good_artifact_from_place.sh "${PG_SOURCE}/build" "${PGROOT2}" "${WORKSPACE}"
 
@@ -1604,7 +1604,7 @@ jobs:
           export WORKSPACE=$(pwd)
           echo "WORKSPACE ${WORKSPACE}"
 
-          #### BEGIN R SECTION ####
+          echo "::group::PLR - R SECTION"
 
           #
           # Trying smartly and hard to find the R_HOME
@@ -1754,9 +1754,9 @@ jobs:
             export PATH="${R_HOME}/bin${R_ARCH}:${PATH}"
           fi
 
-          #### END R SECTION ####
+          echo "::endgroup::"
 
-          #### BEGIN PG_HOME SECTION ####
+          echo "::group::PLR - PG_HOME SECTION"
 
           if [ ! "${PG_HOME}" == "notset" ] && [ ! "${PG_HOME}" == "" ]
           then
@@ -1822,9 +1822,9 @@ jobs:
 
           echo "pg_config SHAREDIR: ${SHAREDIR}"
 
-          #### END PG_HOME SECTION ####
+          echo "::endgroup::"
 
-          #### BEGIN PKGCONFIG SECTION ####
+          echo "::group::PLR - PKGCONFIG SECTION"
 
           echo "PKG_CONFIG_PATH: ${PKG_CONFIG_PATH}"
           echo "PKG_CONFIG_SYSTEM_INCLUDE_PATH: ${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
@@ -1871,9 +1871,9 @@ jobs:
           echo "PKG_CONFIG_SYSTEM_INCLUDE_PATH: ${PKG_CONFIG_SYSTEM_INCLUDE_PATH}"
           echo "PKG_CONFIG_SYSTEM_LIBRARY_PATH: ${PKG_CONFIG_SYSTEM_LIBRARY_PATH}"
 
-          #### END PKGCONFIG SECTION ####
+          echo "::endgroup::"
 
-          #### BEGIN MAKE POSTGRES INTO A LIBRARY ####
+          echo "::group::PLR - MAKE POSTGRES INTO A LIBRARY SECTION"
 
           # This is Part 1 of 2 of a hack to make "meson" think that "libpostgres" is a library.
           # From the libpq.pc file, create a libpostgres.pc file.
@@ -1895,9 +1895,9 @@ jobs:
 
           ls -alrt "${PG_HOME}"/lib/libpostgres*
 
-          #### END MAKE POSTGRES INTO A LIBRARY ####
+          echo "::endgroup::"
 
-          #### BEGIN MAKE R INTO A LIBRARY ####
+          echo "::group::PLR - MAKE R INTO A LIBRARY SECTION"
 
           # Make R into a library
           if [ ! -d "${PKG_CONFIG_SYSTEM_LIBRARY_PATH_ORIG}/pkgconfig" ]
@@ -1950,9 +1950,9 @@ jobs:
             fi
           fi
 
-          #### END MAKE R INTO A LIBRARY ####
+          echo "::endgroup::"
 
-          #### BEGIN CREATE THE PLR DIRECTORY ####
+          echo "::group::PLR - CREATE THE PLR DIRECTORY SECTION"
 
           # Create the contribplr directory parallel to contrib.
           # Copy all of the PL/R source code into contribplr.
@@ -1964,17 +1964,17 @@ jobs:
           #
           pushd     "${PG_HOME}/contribplr"
 
-          #### END CREATE THE PLR DIRECTORY ####
+          echo "::endgroup::"
 
-          #### BEGIN SETUP MESON.BUILD FILES AND OPTIONS ####
+          echo "::group::PLR - SETUP MESON.BUILD FILES AND OPTIONS SECTION"
 
           mv  meson.build __meson.build.ROOT_CONTRIB_METHOD.HIDDEN
           mv _meson.build   meson.build
           mv _meson_options.txt meson_options.txt
 
-          #### END CREATE THE PLR DIRECTORY ####
+          echo "::endgroup::"
 
-          #### BEGIN BUILD PLR AND TEST PLR ####
+          echo "::group::PLR - BUILD PG AND PLR AND TEST PLR SECTION"
 
           if [ "${Configuration}" == "Debug" ]
           then
@@ -2075,7 +2075,7 @@ jobs:
           popd # from "${PG_HOME}/contribplr"
           # back into WORKSPACE
  
-          #### END BUILD PG AND PLR AND TEST PLR ####
+          echo "::endgroup::"
  
           bash save_good_artifact_from_place.sh "${PG_HOME}" "${PGROOT2}" "${WORKSPACE}"
 
