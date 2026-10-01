@@ -37,7 +37,11 @@ jobs:
     with:
       caller_event_name: ${{ github.event_name }}
 
-          # PG: PostgreSQL major version; whole number only.
+          # PG: PostgreSQL version
+          #     PostgreSQL major version; whole number only.
+          #     or
+          #     PostgreSQL (in Github) branch or tag. Remove STABLE, BETA, RC.
+          #       Always guarantee that the last character is an underscore(_)
           #
           # R:  R version.  The only option is 'repo.'
           #
