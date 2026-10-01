@@ -26,8 +26,8 @@ jobs:
       caller_event_name: ${{ github.event_name }}
       ragged_strategy_matrix: >
         [
-          { "PG": "master",  "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
-          { "PG": "REL_19_", "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" }
+          { "PG": "master",  "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
+          { "PG": "REL_19_", "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" }
         ]
 
   ubuntu_fullbuildable_job_caller:
@@ -55,16 +55,16 @@ jobs:
 
       ragged_strategy_matrix: >
         [
-          { "PG": "master",  "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
-          { "PG": "18",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
-          { "PG": "18",      "R": "repo", "os": "ubuntu-24.04-arm",  "GithubActionsIgnoreFail": "false" },
-          { "PG": "REL_19_", "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
-          { "PG": "17",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
-          { "PG": "16",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
-          { "PG": "15",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
-          { "PG": "14",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
-          { "PG": "13",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
-          { "PG": "12",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
-          { "PG": "11",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" },
-          { "PG": "10",      "R": "repo", "os": "ubuntu-24.04",      "GithubActionsIgnoreFail": "false" }
+          { "PG": "master",  "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
+          { "PG": "18",      "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
+          { "PG": "18",      "R": "repo", "os": "ubuntu-26.04-arm",  "GithubActionsIgnoreFail": "false" },
+          { "PG": "REL_19_", "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
+          { "PG": "17",      "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
+          { "PG": "16",      "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
+          { "PG": "15",      "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
+          { "PG": "14",      "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
+          { "PG": "13",      "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
+          { "PG": "12",      "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
+          { "PG": "11",      "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" },
+          { "PG": "10",      "R": "repo", "os": "ubuntu-26.04",      "GithubActionsIgnoreFail": "false" }
         ]
