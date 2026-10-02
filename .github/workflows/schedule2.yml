@@ -54,6 +54,10 @@ jobs:
           #
           # GithubActionsIgnoreFail: If 'true' and if the job fails, do not report the failure to the build.
           #
+          # buildpgFromSRCmethod: If PG is detected to be a PostgreSQL (in Github) branch or tag
+          #                       then can be "" (default internally as meson) or "make".  
+          #                       This parameter is ignored otherwise.
+          #
 
       ragged_strategy_matrix: >
         [
