@@ -106,7 +106,8 @@ pushd  ${PG_SOURCE}
 if [ "${buildpgFromSRCmethod}" == "make" ]
 then
 
-  ./configure --enable-depend --disable-rpath --without-icu
+  # ./configure --enable-depend --disable-rpath --without-icu
+  ./configure
   # NOT TRIED
   # make CFLAGS+="fprofile-arcs -ftest-coverage -O0" CPPFLAGS+="fprofile-arcs -ftest-coverage -O0" LDFLAGS+="fprofile-arcs -ftest-coverage -O0"
   # make CFLAGS+="--coverage -O0" CPPFLAGS+="--coverage -O0" LDFLAGS+="--coverage -O0"
@@ -139,7 +140,7 @@ export PG_PATHS="/usr/local/pgsql/bin"
 # #
 # if [ "${buildpgFromSRCmethod}" == "make" ]
 # then
-#   # + LIBDIR
+#   # + LIBDIR of make method
 #   # avoid ..
 #   # + initdb -D data
 #   # initdb: error while loading shared libraries: libpq.so.5: cannot open shared object file: No such file or directory
@@ -154,8 +155,8 @@ pg_config
 
 popd # from ${PG_SOURCE} back
 
-echo "finding  libpq.so.5"
-find / -name 'libpq.so.5' -print 2>/dev/null
+# echo "finding  libpq.so.5"
+# find / -name 'libpq.so.5' -print 2>/dev/null
 
 
 # 30 seconds long
