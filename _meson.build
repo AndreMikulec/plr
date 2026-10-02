@@ -164,24 +164,11 @@ plr_incdir += pg_incdir3
 #
 plr_c_args = []
 
-# A defined "DDLSUFFIX on WIN32 (on __CYGWIN__ ?)" 
-# is still required for PG 14 and older.
-# DDLSUFFIX code remains here for Legacy purposes.
-#
-# FUTURE use "pg_config --version - Postgres 14abcd"
-#   to conditionally not execute this code 
-#     of "DDLSUFFIX on WIN32 (on __CYGWIN__ ?)".
-#
-# name_suffix    str (SEEN AUG 2026)
-# For shared libraries, the default value is 
-# "dylib" on macOS, "dll" on Windows, and "so" everywhere else. 
-# https://mesonbuild.com/Reference-manual_functions_shared_library.html
-#
-
 # PG 14 and earlier needs -DDLSUFFIX
 pg_config_version = run_command(pg_config, '--version', check: true).stdout().strip()
+# use "split by dot" to truncate. E.g. 'PostgreSQL 14devel' 'PostgreSQL 14beta3' '14.6'
 pg_wordy_version = pg_config_version.replace('PostgreSQL ','').split('.')[0]
-message('DETECTED pg_major_version:', pg_major_version)
+message('DETECTED pg_wordy_version:', pg_wordy_version)
 #
 # Note STRING.version_compare considers "__tail" to be "__"
 if pg_wordy_version.version_compare('<15') 
