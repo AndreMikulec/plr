@@ -30,6 +30,7 @@ unset R_HOME
      USE_PGXS=1 make installcheck || (cat regression.diffs && false)
 
 # Uploads code coverage to codecov.io
-bash <(curl -s https://codecov.io/bash)
+# {"message":"Token required - not valid tokenless upload"}
+bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
 
 # USE_PGXS=1 make clean

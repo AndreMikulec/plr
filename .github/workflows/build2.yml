@@ -4,7 +4,6 @@ run-name: Callee of plr Ubuntu jobs - ${{ github.event.head_commit.message }}
 
 env:
   TZ: UTC
-  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
 on:
 
