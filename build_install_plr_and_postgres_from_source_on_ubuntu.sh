@@ -136,15 +136,15 @@ fi
 
 # BINDIR
 export PG_PATHS="/usr/local/pgsql/bin"
-#
-if [ "${buildpgFromSRCmethod}" == "make" ]
-then
-  # + LIBDIR
-  # avoid ..
-  # + initdb -D data
-  # initdb: error while loading shared libraries: libpq.so.5: cannot open shared object file: No such file or directory
-  export PG_PATHS=${PG_PATHS}:"/usr/local/pgsql/lib"
-fi
+# #
+# if [ "${buildpgFromSRCmethod}" == "make" ]
+# then
+#   # + LIBDIR
+#   # avoid ..
+#   # + initdb -D data
+#   # initdb: error while loading shared libraries: libpq.so.5: cannot open shared object file: No such file or directory
+#   export PG_PATHS=${PG_PATHS}:"/usr/local/pgsql/lib"
+# fi
 
 echo "PG_PATHS=${PG_PATHS}" > ${GITHUB_ENV}
 echo "PG_PATHS: ${PG_PATHS}"
@@ -153,6 +153,10 @@ export PATH=${PG_PATHS}:${PATH}
 pg_config
 
 popd # from ${PG_SOURCE} back
+
+echo "finding  libpq.so.5"
+find / -name 'libpq.so.5' -print 2>/dev/null
+
 
 # 30 seconds long
 sudo useradd -r -s /bin/bash -m -d /var/lib/postgresql postgres
