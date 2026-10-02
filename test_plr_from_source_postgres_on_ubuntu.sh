@@ -51,6 +51,7 @@ then
                            USE_PGXS=1 make installcheck || (cat regression.diffs && false)
 
   # Uploads code coverage to codecov.io
+  export CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }
   bash <(curl -s https://codecov.io/bash)
 
   # USE_PGXS=1  make clean
@@ -90,29 +91,34 @@ then
 fi
 
 
-#
-# manual regression tests
-#
+# STILL meson (seems wrong directory for the "make" method)
+if [ "${buildpgFromSRCmethod}" != "make" ]
+then
 
-export PKGLIBDIR=$(pg_config | grep "^PKGLIBDIR" | sed "s/ = /=/" | sed "s/^.*=//")
-echo "pg_config PKGLIBDIR: ${PKGLIBDIR}"
+  #
+  # manual regression tests
+  #
 
-export BINDIR=$(pg_config | grep "^BINDIR" | sed "s/ = /=/" | sed "s/^.*=//")
-echo "pg_config BINDIR: ${BINDIR}"
+  export PKGLIBDIR=$(pg_config | grep "^PKGLIBDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+  echo "pg_config PKGLIBDIR: ${PKGLIBDIR}"
 
-# export PGUSER=$(whoami)
-# echo "PGUSER: ${PGUSER}"
+  export BINDIR=$(pg_config | grep "^BINDIR" | sed "s/ = /=/" | sed "s/^.*=//")
+  echo "pg_config BINDIR: ${BINDIR}"
 
-psql -d postgres                 -c "SELECT version();"
-psql -d postgres                 -c "SELECT current_setting('server_version_num') "server_version_num";"
+  # export PGUSER=$(whoami)
+  # echo "PGUSER: ${PGUSER}"
 
-pushd     "${PG_SOURCE}/contrib/cube"
-"${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression cube cube_sci || (cat regression.diffs && false)
-popd # from "${PG_SOURCE}/contrib/cube"
+  psql -d postgres                 -c "SELECT version();"
+  psql -d postgres                 -c "SELECT current_setting('server_version_num') "server_version_num";"
 
-pushd     "${PG_SOURCE}/contrib/plr"
-"${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
-popd # from "${PG_SOURCE}/contrib/plr"
+  pushd     "${PG_SOURCE}/contrib/cube"
+  "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression cube cube_sci || (cat regression.diffs && false)
+  popd # from "${PG_SOURCE}/contrib/cube"
 
+  pushd     "${PG_SOURCE}/contrib/plr"
+  "${PKGLIBDIR}/pgxs/src/test/regress/pg_regress" --bindir="${BINDIR}" --dbname=pl_regression plr bad_fun opt_window do out_args plr_transaction opt_window_frame parallel || (cat regression.diffs && false)
+  popd # from "${PG_SOURCE}/contrib/plr"
+
+fi
 
 pg_ctl -D data -l logfile stop
