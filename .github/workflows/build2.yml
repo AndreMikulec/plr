@@ -23,7 +23,7 @@ on:
 jobs:
 
   ubuntu_job_runner:
-    name: PG ${{ matrix.pg }} R ${{ matrix.R }} os ${{ matrix.os }}
+    name: PG ${{ matrix.pg }} R ${{ matrix.R }} os ${{ matrix.os }} ${{ matrix.buildpgFromSRCmethod }}
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.GithubActionsIgnoreFail == 'true' && true || false }}
     strategy:
@@ -91,7 +91,7 @@ jobs:
         echo "R from CRAN ..."
         bash ./get_debian_r_binaries_on_ubuntu_from_cran.sh
 
-    - name: Install PL/R
+    - name: Build and Install PL/R
       run: |
         set -x -v -e
         # two(2) consecutive digits
@@ -104,7 +104,7 @@ jobs:
           bash ./build_install_plr_and_postgres_from_source_on_ubuntu.sh
         fi
 
-    - name: Test (Check) PL/R
+    - name: Test or Check PL/R
       run: |
         set -x -v -e
         # two(2) consecutive digits
