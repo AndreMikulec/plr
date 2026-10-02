@@ -13,6 +13,7 @@ if [ "${PG_SOURCE}" == "" ]; then echo "Environment variable PG_SOURCE is missin
 # added to the PATH
 export PATH=${R_PATHS}:${PG_PATHS}:${PATH}
 
+
 ## # Older case
 ## # This worked when (1) I compiled PG from source AND (2) DID NOT compile contrib/plr AT THE SAME TIME
 ##
@@ -39,28 +40,55 @@ export PATH=${R_PATHS}:${PG_PATHS}:${PATH}
 ## # #I HAVE NOT TESTED THIS
 ## # sudo USE_PGXS=1 make uninstall
 
-#
-# meson regression tests ( buildpgANDplrInSRCcontrib == 'true' )
-#
-pushd  ${PG_SOURCE}
+if [ "${buildpgFromSRCmethod}" == "make" ]
+then
 
-# make -C contrib/amcheck installcheck
-# https://wiki.postgresql.org/wiki/Meson
-meson test -C build -v --print-errorlogs --setup running --suite cube-running
-meson test -C build -v --print-errorlogs --setup running --suite plr-running
+  pushd  ${PG_SOURCE}/contrib/plr
 
-# FAILED: [code=1] meson-internal__coverage-xml
-# (WARNING) Unrecognized GCOV output for /PGSOURCE/src/backend/utils/adt/numeric.c
-# (ERROR) Exiting because of parse errors.
-# You can run gcovr with --gcov-ignore-parse-errors
-#
-# export CC_GCOV_ARGS="--gcov-ignore-parse-errors" (DID NOT WORK)
-# ninja      -C build -v coverage-xml 
+  unset R_HOME
+  USE_PGXS=1 SHLIB_LINK=-lgcov PG_CPPFLAGS="-fprofile-arcs -ftest-coverage -O0" make
+  sudo --preserve-env=PATH USE_PGXS=1 make install
+                           USE_PGXS=1 make installcheck || (cat regression.diffs && false)
 
-# so, so that the coverage.info file is written to the Github Workspace
-lcov --capture --directory build/contrib/plr/plr.so.p -o ${GITHUB_WORKSPACE}/coverage.info
+  # Uploads code coverage to codecov.io
+  bash <(curl -s https://codecov.io/bash)
 
-popd # from ${PG_SOURCE} back
+  # USE_PGXS=1  make clean
+
+  popd # from ${PG_SOURCE}/contrib/plr back
+
+fi
+
+# meson
+if [ "${buildpgFromSRCmethod}" != "make" ]
+then
+
+  pushd  ${PG_SOURCE}
+
+  #
+  # regression tests ( buildpgANDplrInSRCcontrib == 'true' )
+  #
+
+  # make -C contrib/amcheck installcheck
+  # https://wiki.postgresql.org/wiki/Meson
+  meson test -C build -v --print-errorlogs --setup running --suite cube-running
+  meson test -C build -v --print-errorlogs --setup running --suite plr-running
+
+  # FAILED: [code=1] meson-internal__coverage-xml
+  # (WARNING) Unrecognized GCOV output for /PGSOURCE/src/backend/utils/adt/numeric.c
+  # (ERROR) Exiting because of parse errors.
+  # You can run gcovr with --gcov-ignore-parse-errors
+  #
+  # export CC_GCOV_ARGS="--gcov-ignore-parse-errors" (DID NOT WORK)
+  # ninja      -C build -v coverage-xml 
+
+  # so, so that the coverage.info file is written to the Github Workspace
+  lcov --capture --directory build/contrib/plr/plr.so.p -o ${GITHUB_WORKSPACE}/coverage.info
+
+  popd # from ${PG_SOURCE} back
+
+fi
+
 
 #
 # manual regression tests

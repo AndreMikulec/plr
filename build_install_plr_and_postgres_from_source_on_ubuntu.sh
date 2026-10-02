@@ -103,25 +103,36 @@ ls -alrt        ${PG_SOURCE}/contrib/plr
 
 pushd  ${PG_SOURCE}
 
-# PREPARE FOR ( make )
-#
-# ./configure --enable-depend --disable-rpath --without-icu
-# # six minutes
-# make
-# sudo make install
+if [ "${buildpgFromSRCmethod}" == "make" ]
+then
 
+  ./configure --enable-depend --disable-rpath --without-icu
+  # NOT TRIED
+  # make CFLAGS+="fprofile-arcs -ftest-coverage -O0" CPPFLAGS+="fprofile-arcs -ftest-coverage -O0" LDFLAGS+="fprofile-arcs -ftest-coverage -O0"
+  # make CFLAGS+="--coverage -O0" CPPFLAGS+="--coverage -O0" LDFLAGS+="--coverage -O0"
+  # six minutes
+  make
+  sudo make install
 
-# one minute and four seconds
-#
-# https://mesonbuild.com/Quick-guide.html
-sudo apt-get install -qq python3 ninja-build meson -y
+fi
 
-# DEBUG AND CODE COVERAGE
-meson setup                     -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=true -Dc_args="-O0" -Dcpp_args="-O0" -Dc_link_args="-O0" -Dcpp_link_args="-O0" -Ddtrace=disabled build
+# meson
+if [ "${buildpgFromSRCmethod}" != "make" ]
+then
 
-meson compile -C build -v
+  # one minute and four seconds
+  #
+  # https://mesonbuild.com/Quick-guide.html
+  sudo apt-get install -qq python3 ninja-build meson -y
 
-sudo meson install -C build
+  # DEBUG AND CODE COVERAGE
+  meson setup                     -Db_pie=true -DR_HOME=${R_HOME} -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Db_coverage=true -Dc_args="-O0" -Dcpp_args="-O0" -Dc_link_args="-O0" -Dcpp_link_args="-O0" -Ddtrace=disabled build
+
+  meson compile -C build -v
+
+  sudo meson install -C build
+
+fi
 
 export PG_PATHS="/usr/local/pgsql/bin"
 echo "PG_PATHS=${PG_PATHS}" > ${GITHUB_ENV}

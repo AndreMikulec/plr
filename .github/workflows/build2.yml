@@ -42,13 +42,21 @@ jobs:
         export PGfromSource="notset"
         # two(2) consecutive digits
         if [ $(echo "${{ matrix.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
-        then
+        then # build from PG binary
           export PGfromSource="false"
-        else
+        else # build from PG source
           export PGfromSource="true"
+          # conditionally
+          if [ "${{ matrix.buildpgFromSRCmethod }}" != "" ]
+          then
+            export buildpgFromSRCmethod="${{ matrix.buildpgFromSRCmethod }}"
+            echo "buildpgFromSRCmethod=${buildpgFromSRCmethod}" >> ${GITHUB_ENV}
+            
+            echo "buildpgFromSRCmethod: ${buildpgFromSRCmethod}"
+          fi
         fi
         echo "PGfromSource=${PGfromSource}" >> ${GITHUB_ENV}
-        
+
         echo "PGfromSource: ${PGfromSource}"
 
     - name: Get Linux Host Information
