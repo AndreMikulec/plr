@@ -31,6 +31,6 @@ unset R_HOME
 
 # Uploads code coverage to codecov.io
 # {"message":"Token required - not valid tokenless upload"}
-bash <(curl -s https://codecov.io/bash) -n "plr-C-files"
+bash <(curl -s https://codecov.io/bash)
 
 # USE_PGXS=1 make clean
