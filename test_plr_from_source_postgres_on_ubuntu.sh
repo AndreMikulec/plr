@@ -51,7 +51,6 @@ then
                            USE_PGXS=1 make installcheck || (cat regression.diffs && false)
 
   # Uploads code coverage to codecov.io
-  export CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }
   bash <(curl -s https://codecov.io/bash)
 
   # USE_PGXS=1  make clean
