@@ -105,6 +105,8 @@ jobs:
         fi
 
     - name: Test or Check PL/R
+      env:
+        CODECOV_TOKEN: '${{ secrets.CODECOV_TOKEN }}'
       run: |
         set -x -v -e
         # two(2) consecutive digits

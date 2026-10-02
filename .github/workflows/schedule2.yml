@@ -22,6 +22,7 @@ jobs:
     name: Ubuntu daily builds
     if: ${{ github.event_name == 'schedule' && github.event.schedule == '30 1 * * *' }}
     uses: ./.github/workflows/build2.yml
+    secrets: inherit # Automatically passes all repo secrets
     with:
       caller_event_name: ${{ github.event_name }}
       ragged_strategy_matrix: >
@@ -34,6 +35,7 @@ jobs:
     name: Ubuntu all builds
     if: ${{ github.event_name != 'schedule' }}
     uses: ./.github/workflows/build2.yml
+    secrets: inherit # Automatically passes all repo secrets
     with:
       caller_event_name: ${{ github.event_name }}
 
