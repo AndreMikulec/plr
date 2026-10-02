@@ -155,6 +155,8 @@ if is_mingw
 endif
 plr_incdir += pg_incdir3
 
+plr_c_args = []
+
 # Refactor DLSUFFIX handling (PostreSQL 15 AND newer)
 # https://github.com/postgres/postgres/commit/23119d51a14c046dae35ae5e6ad9e35982d044fd
 #
@@ -162,8 +164,11 @@ plr_incdir += pg_incdir3
 # USE_PGXS=1 make CPPFLAGS=-DDLSUFFIX=\".so\"
 # https://github.com/postgres-plr/plr/issues/4
 #
-plr_c_args = []
-
+# name_suffix    str (SEEN AUG 2026)
+# For shared libraries, the default value is 
+# "dylib" on macOS, "dll" on Windows, and "so" everywhere else. 
+# https://mesonbuild.com/Reference-manual_functions_shared_library.html
+#
 # PG 14 and earlier needs -DDLSUFFIX
 pg_config_version = run_command(pg_config, '--version', check: true).stdout().strip()
 # use "split by dot" to truncate. E.g. 'PostgreSQL 14devel' 'PostgreSQL 14beta3' '14.6'
