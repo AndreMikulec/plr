@@ -44,7 +44,7 @@ is_mingw      = is_windows and is_not_cygwin and is_not_msvc # pre-processor var
 # Not exactly, because Microsoft "WIN32" comes from "windows.h", but "close enough" to be useful.
 #   Makefiles are not processed by "msvc", but the Makefile "may" or "may not" distinguish Cygwin.
 #     PG Makefile does distinguish.
-is_win32      = is_mingw or is_msvc             # use OFTEN - much better reliable detection than is_linux
+is_win32      = is_mingw or is_msvc             # use OFTEN - much better reliable detection than is_not_linux
 is_not_win32  = not is_win32                    # use OFTEN - much better reliable detection than is_linux
 #
 is_linux      = host_machine_system == 'linux'
@@ -53,7 +53,7 @@ is_darwin     = host_machine_system == 'darwin'
 plr_incdir = []
 
 if is_mingw
-  cygpath = find_program('cygpath')
+  cygpath = find_program('cygpath', required : true)
   # -m -- mixed mode
   # https://cygwin.com/cygwin-ug-net/cygpath.html
 endif

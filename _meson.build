@@ -108,14 +108,14 @@ is_mingw      = is_windows and is_not_cygwin and is_not_msvc # pre-processor var
 # https://www.cygwin.com/faq.html
 #   Makefiles are not processed by "msvc", but the Makefile "may" or "may not" distinguish Cygwin.
 #     PG Makefile does distinguish.
-is_win32      = is_mingw or is_msvc             # use OFTEN - much better reliable detection than is_linux
+is_win32      = is_mingw or is_msvc             # use OFTEN - much better reliable detection than is_not_linux
 is_not_win32  = not is_win32                    # use OFTEN - much better reliable detection than is_linux
 #
 is_linux      = host_machine_system == 'linux'
 is_darwin     = host_machine_system == 'darwin'
 
 if is_mingw
-  cygpath = find_program('cygpath')
+  cygpath = find_program('cygpath', required : true)
   # -m -- mixed mode
   # https://cygwin.com/cygwin-ug-net/cygpath.html
 endif
@@ -137,7 +137,7 @@ endif
 # endif
 plr_incdir += pg_incdir1
 
-pg_config = find_program('pg_config' , dirs: [ pg_home / 'bin' ])
+pg_config = find_program('pg_config' , dirs: [ pg_home / 'bin' ], required : true)
 
 includedir_server = run_command(pg_config, '--includedir-server', check: true).stdout().strip()
 
@@ -178,23 +178,27 @@ plr_c_args = []
 # https://mesonbuild.com/Reference-manual_functions_shared_library.html
 #
 
-# just make sure the program "sed" is available
-sed = find_program('sed')
-pg_major_version = run_command(pg_config, '--version | sed -En "s/.*([0-9][0-9]).*/\1/p"', check: true).stdout().strip()
-message('pg_major_version: ', pg_major_version)
-
-if is_mingw or is_cygwin
-  message('begin -DDLSUFFIX=".dll"')
-  dlsuffix = '-DDLSUFFIX=".dll"'
-  message('end   -DDLSUFFIX=".dll"')
+# PG 14 and earlier needs -DDLSUFFIX
+pg_config_version = run_command(pg_config, '--version', check: true).stdout().strip()
+pg_wordy_version = pg_config_version.replace('PostgreSQL ','').split('.')[0]
+message('DETECTED pg_major_version:', pg_major_version)
+#
+# Note STRING.version_compare considers "__tail" to be "__"
+if pg_wordy_version.version_compare('<15') 
+  message('doing -DDLSUFFIX shared library file extension determining ...')
+  if is_mingw or is_cygwin
+    message('begin -DDLSUFFIX=".dll"')
+    dlsuffix = '-DDLSUFFIX=".dll"'
+    message('end   -DDLSUFFIX=".dll"')
+  endif
+  if is_linux
+    dlsuffix = '-DDLSUFFIX=".so"'
+  endif
+  if is_darwin
+    dlsuffix = '-DDLSUFFIX=".dylib"'
+  endif
+  plr_c_args += dlsuffix
 endif
-if is_linux
-  dlsuffix = '-DDLSUFFIX=".so"'
-endif
-if is_darwin
-  dlsuffix = '-DDLSUFFIX=".dylib"'
-endif
-plr_c_args += dlsuffix
 
 pkglibdir = run_command(pg_config, '--pkglibdir', check: true).stdout().strip()
 
@@ -227,7 +231,8 @@ bindir    = run_command(pg_config, '--bindir',    check: true).stdout().strip()
 
 pg_regress = find_program(
   'pg_regress',
-  dirs: [ pkglibdir / 'pgxs/src/test/regress' ]
+  dirs: [ pkglibdir / 'pgxs/src/test/regress' ],
+  required : true
 )
 
 test('regress',
