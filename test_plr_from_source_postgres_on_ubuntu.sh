@@ -52,7 +52,7 @@ then
 
   # Uploads code coverage to codecov.io
   # {"message":"Token required - not valid tokenless upload"}
-  bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+  bash <(curl -s https://codecov.io/bash) -t "${{ secrets.CODECOV_TOKEN }}"
 
   # USE_PGXS=1  make clean
 
