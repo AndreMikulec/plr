@@ -108,7 +108,7 @@ then
 
   # ./configure --enable-depend --disable-rpath --without-icu
   ./configure
-  make CFLAGS+="fprofile-arcs -ftest-coverage -O0" CPPFLAGS+="fprofile-arcs -ftest-coverage -O0" LDFLAGS+="-O0"
+  make CFLAGS+="-fprofile-arcs -ftest-coverage -O0" CPPFLAGS+="-fprofile-arcs -ftest-coverage -O0" LDFLAGS+="-fprofile-arcs -ftest-coverage -O0"
   # make CFLAGS+="--coverage -O0" CPPFLAGS+="--coverage -O0" LDFLAGS+="-O0"
   # six minutes
   # make
