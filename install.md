@@ -11,7 +11,7 @@ This presumes you installed PostgreSQL using the PGDG repositories found [here](
 yum install plr-nn
 ```
 
-Where nn is the major version number such as 19 for PostgreSQL version 19.x
+Where nn is the major version number such as 18 for PostgreSQL version 18.x
 
 To set R_HOME for use by PostgreSQL.
 
@@ -73,8 +73,8 @@ You may explicitly include the path of pg_config to `PATH`, such as
 
 ```bash
 cd plr
-PATH=/usr/pgsql-19/bin/:$PATH; USE_PGXS=1 make
-echo "PATH=/usr/pgsql-19/bin/:$PATH; USE_PGXS=1 make install" | sudo sh
+PATH=/usr/pgsql-18/bin/:$PATH; USE_PGXS=1 make
+echo "PATH=/usr/pgsql-18/bin/:$PATH; USE_PGXS=1 make install" | sudo sh
 ```
 If you want to use git to pull the repository, run the following command before the make command:
 
@@ -95,7 +95,7 @@ USE_PGXS=1 make install
 Using https://www.msys2.org/ UCRT64 or MINGW32:
 ```
 export R_HOME=/c/progra~1/R/R-4.6.1 
-export PATH=$PATH:/c/progra~1/PostgreSQL/19/bin
+export PATH=$PATH:/c/progra~1/PostgreSQL/18/bin
 USE_PGXS=1 make
 USE_PGXS=1 make install
 ```
@@ -116,14 +116,14 @@ then, include the environment variable R_ARCH.
 For example R_ARCH=/x64 (or R_ARCH=/i386 as appropriate):
 ```
 export R_HOME=/c/progra~1/R/R-4.6.1
-export PATH=$PATH:/c/progra~1/PostgreSQL/19/bin
+export PATH=$PATH:/c/progra~1/PostgreSQL/18/bin
 export R_ARCH=/x64
 USE_PGXS=1 make
 USE_PGXS=1 make install
 ```
 ```
 export R_HOME=/c/progra~1/R/R-4.1.3
-export PATH=$PATH:/c/progra~1/PostgreSQL/19/bin
+export PATH=$PATH:/c/progra~1/PostgreSQL/10/bin
 export R_ARCH=/i386
 USE_PGXS=1 make
 USE_PGXS=1 make install
@@ -270,21 +270,21 @@ Restart the PostgreSQL cluster, do:
 At a Command Prompt run (and you may have to be in an Administrator Command Prompt):
 Use the service name of whatever service your PostgreSQL is running under.
 ```
-net stop postgresql-x64-19
+net stop postgresql-x64-18
 ```
 Alternately, do the following:
 Control Panel -> Administrative Tools -> Services
-Find postgresql-x64-19 (or whatever service your PostgreSQL is running under).
+Find postgresql-x64-18 (or whatever service your PostgreSQL is running under).
 Right click and choose "Stop"
 
 At a Command Prompt run (and you may have to be in an Administrator Command Prompt):
 Use the service name of whatever service your PostgreSQL is running under.
 ```
-net start postgresql-x64-19
+net start postgresql-x64-18
 ```
 Alternately, do the following:
 Control Panel -> Administrative Tools -> Services
-Find postgresql-x64-19 (or whatever service your PostgreSQL is running under).
+Find postgresql-x64-18 (or whatever service your PostgreSQL is running under).
 Right click and choose "Start"
 
 
