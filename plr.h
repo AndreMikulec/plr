@@ -473,14 +473,12 @@ extern void R_RunExitFinalizers(void);
 
 #endif
 
-	Datum		rv;
 #define SET_INSERT_ARGS_567 \
 	do { \
 		SET_ARG(DirectFunctionCall1(textin, CStringGetDatum("INSERT")),false,5); \
 		tup = trigdata->tg_trigtuple; \
 		dtrigtup = (HeapTupleHeader) palloc(tup->t_len); \
-		rv = heap_copy_tuple_as_datum(dtrigtup, tupdesc); \
-		SET_ARG(rv,false,6); \
+		SET_ARG(heap_copy_tuple_as_datum(dtrigtup, tupdesc),false,6); \
 		SET_ARG((Datum)0,true,7); \
 	} while (0)
 #define SET_DELETE_ARGS_567 \
@@ -489,20 +487,17 @@ extern void R_RunExitFinalizers(void);
 		SET_ARG((Datum) 0,true,6); \
 		tup = trigdata->tg_trigtuple; \
 		dtrigtup = (HeapTupleHeader) palloc(tup->t_len); \
-		rv = heap_copy_tuple_as_datum(dtrigtup, tupdesc); \
-		SET_ARG(rv,false,7); \
+		SET_ARG(heap_copy_tuple_as_datum(dtrigtup, tupdesc),false,7); \
 	} while (0)
 #define SET_UPDATE_ARGS_567 \
 	do { \
 		SET_ARG(DirectFunctionCall1(textin, CStringGetDatum("UPDATE")),false,5); \
 		tup = trigdata->tg_newtuple; \
 		dnewtup = (HeapTupleHeader) palloc(tup->t_len); \
-		rv = heap_copy_tuple_as_datum(dnewtup,  tupdesc); \
-		SET_ARG(rv,false,6); \
+		SET_ARG(heap_copy_tuple_as_datum(dnewtup,  tupdesc),false,6); \
 		tup = trigdata->tg_trigtuple; \
 		dtrigtup = (HeapTupleHeader) palloc(tup->t_len); \
-		rv = heap_copy_tuple_as_datum(dtrigtup, tupdesc); \
-		SET_ARG(rv,false,7); \
+		SET_ARG( heap_copy_tuple_as_datum(dtrigtup, tupdesc),false,7); \
 	} while (0)
 #define CONVERT_TUPLE_TO_DATAFRAME(tt) \
 	do { \
