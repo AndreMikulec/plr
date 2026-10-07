@@ -476,24 +476,20 @@ extern void R_RunExitFinalizers(void);
 #define SET_INSERT_ARGS_567 \
 	do { \
 		SET_ARG(DirectFunctionCall1(textin, CStringGetDatum("INSERT")),false,5); \
-		tup = trigdata->tg_trigtuple; \
-		SET_ARG(heap_copy_tuple_as_datum(tup, tupdesc),false,6); \
+		SET_ARG(heap_copy_tuple_as_datum(trigdata->tg_trigtuple, tupdesc),false,6); \
 		SET_ARG((Datum)0,true,7); \
 	} while (0)
 #define SET_DELETE_ARGS_567 \
 	do { \
 		SET_ARG(DirectFunctionCall1(textin, CStringGetDatum("DELETE")),false,5); \
 		SET_ARG((Datum) 0,true,6); \
-		tup = trigdata->tg_trigtuple; \
-		SET_ARG(heap_copy_tuple_as_datum(tup, tupdesc),false,7); \
+		SET_ARG(heap_copy_tuple_as_datum(trigdata->tg_trigtuple, tupdesc),false,7); \
 	} while (0)
 #define SET_UPDATE_ARGS_567 \
 	do { \
 		SET_ARG(DirectFunctionCall1(textin, CStringGetDatum("UPDATE")),false,5); \
-		tup = trigdata->tg_newtuple; \
-		SET_ARG(heap_copy_tuple_as_datum(tup,  tupdesc),false,6); \
-		tup = trigdata->tg_trigtuple; \
-		SET_ARG( heap_copy_tuple_as_datum(tup, tupdesc),false,7); \
+		SET_ARG(heap_copy_tuple_as_datum(trigdata->tg_newtuple,  tupdesc),false,6); \
+		SET_ARG(heap_copy_tuple_as_datum(trigdata->tg_trigtuple, tupdesc),false,7); \
 	} while (0)
 #define CONVERT_TUPLE_TO_DATAFRAME(tt) \
 	do { \
