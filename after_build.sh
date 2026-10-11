@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 cd "$(dirname "$0")"
 
@@ -5,7 +6,7 @@ cd "$(dirname "$0")"
 
 logok "BEGIN after_build.sh"
 
-set -v -x -e
+set -xveo pipefail
 # set -e
 
 # put this in all non-init.sh scripts - pgroot is empty, if using an Mingw binary
@@ -129,7 +130,7 @@ fi
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
 
-set +v +x +e
+set +x +v + e +o
 # set +e
 
 logok "END   after_build.sh"

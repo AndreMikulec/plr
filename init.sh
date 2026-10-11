@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 cd "$(dirname "$0")"
 
@@ -36,7 +37,7 @@ logerr() {
 
 logok "BEGIN init.sh"
 
-set -v -x -e
+set -xveo pipefail
 # set -e
 
 # pwd
@@ -129,7 +130,7 @@ Rscript --version
 Rscript --vanilla -e "writeLines(paste0('R_HOME: ', R.home()))"
 Rscript --vanilla -e "print(R.version)"
 
-set +v +x +e
+set +v +x +e +o
 # set +e
 
 logok "END   init.sh"

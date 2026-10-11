@@ -1,5 +1,5 @@
-#!/bin/bash
-set -x -v -e
+#!/usr/bin/env bash
+set -xveo pipefail
 
 echo "pwd: $(pwd)"
 

@@ -1,5 +1,5 @@
-
-set -v -x
+#!/usr/bin/env bash
+set -xveo pipefail
 
 cd "$(dirname "$0")"
 
@@ -11,4 +11,4 @@ else
   echo true  > $(cygpath ${APPVEYOR_BUILD_FOLDER})/pggithubbincachefailingfound.txt
 fi
 
-set +v +x
+set +v +x +e +o

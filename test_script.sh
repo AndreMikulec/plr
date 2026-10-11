@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 cd "$(dirname "$0")"
 
@@ -5,7 +6,7 @@ cd "$(dirname "$0")"
 
 logok "BEGIN test_script.sh"
 
-set -v -x -e
+set -xveo pipefail
 # set -e
 
 # put this in all non-init.sh scripts - pgroot is empty, if using an Mingw binary
@@ -48,7 +49,7 @@ pg_ctl -D ${PGDATA} -l logfile stop
 # USE_PGXS=1 make clean
 # rm -r ${PGDATA}
 
-set +v +x +e
+set +v +x +e +o
 # set +e
 
 logok "END   test_script.sh"

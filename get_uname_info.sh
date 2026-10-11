@@ -1,5 +1,5 @@
-#!/bin/bash
-set -x -v -e
+#!/usr/bin/env bash
+set -xveo pipefail
 
 if [ ! -f "${GITHUB_ENV}" ]; then touch discard.txt; export GITHUB_ENV=discard.txt; fi
 

@@ -1,5 +1,5 @@
-#!/bin/bash
-set -x -v -e
+#!/usr/bin/env bash
+set -xveo pipefail
 
 if [ ! -f "${GITHUB_ENV}" ]; then touch discard.txt; export GITHUB_ENV=discard.txt; fi
 
@@ -17,15 +17,15 @@ if [ "${PGSRCVERSION}" == "" ]; then echo "Passed 1st variable PGSRCVERSION is m
 
 if [ "${PGSRCVERSION}" == "master" ]
 then
-  set +x +v +e
+  set +x +v +e +o
   export SPECGITTAG="master"
-  set -x -v -e
+  set -xveo pipefail
 else
-  set +x +v +e
+  set +x +v +e +o
   export ALLGITTAGS=$(git ls-remote --tags https://github.com/postgres/postgres.git | cut -c 52-)
-  set -x -v -e
-  quantity() { set +x +v +e; echo ${ALLGITTAGS} | tr " " "\n" | grep -c "${PGSRCVERSION}${MARK}[0-9]"; set -x -v -e; }
-  quality()  { set +x +v +e; echo ${ALLGITTAGS} | tr " " "\n" | grep -e "${PGSRCVERSION}${MARK}[0-9]" | tail -n 1; set -x -v -e; }
+  set -xveo pipefail
+  quantity() { set +x +v +e +o; echo ${ALLGITTAGS} | tr " " "\n" | grep -c "${PGSRCVERSION}${MARK}[0-9]";             set -xveo pipefail; }
+  quality()  { set +x +v +e +o; echo ${ALLGITTAGS} | tr " " "\n" | grep -e "${PGSRCVERSION}${MARK}[0-9]" | tail -n 1; set -xveo pipefail; }
   export MARK=""
   export RET=$(quantity)
   if [ "${RET}" -gt "0" ]

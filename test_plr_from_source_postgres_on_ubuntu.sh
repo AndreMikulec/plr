@@ -1,5 +1,5 @@
-#!/bin/bash
-set -x -v -e
+#!/usr/bin/env bash
+set -xveo pipefail
 
 if [ "${PG_PATHS}" == "" ];  then echo "Environment variable PG_PATHS is missing.";  exit 99; fi
 if [ "${R_PATHS}" == "" ];   then echo "Environment variable R_PATHS is missing.";   exit 99; fi

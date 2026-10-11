@@ -1,5 +1,5 @@
-#!/bin/bash
-set -x -v -e
+#!/usr/bin/env bash
+set -xveo pipefail
 
 # uses ./get_uname_info.sh
 

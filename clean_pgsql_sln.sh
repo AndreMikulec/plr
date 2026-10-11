@@ -1,5 +1,6 @@
+#!/usr/bin/env bash
 
-set -v -x -e
+set -xveo pipefail
 # set -e
 
 pwd
@@ -21,5 +22,5 @@ sed -i "/= $BRACEDGUID/d" $PGSLNLOCATION
 # remove entry of Project line (and its GUID) and its EndProject line
 sed -i '/"plr", "plr"/,+1d' $PGSLNLOCATION
 
-set +v +x +e
+set +v +x +e +o
 # set +e

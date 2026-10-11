@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 cd "$(dirname "$0")"
 
@@ -5,7 +6,7 @@ cd "$(dirname "$0")"
 
 logok "BEGIN build_script.sh"
 
-set -v -x -e
+set -xveo pipefail
 # set -e
 
 # which R Mingw and Cygwin
@@ -284,7 +285,7 @@ fi
 # must stop, else Appveyor job will hang.
 pg_ctl -D ${PGDATA} -l logfile stop
 
-set +v +x +e
+set +v +x +e +o
 # set +e
 
 logok "BEGIN build_script.sh"

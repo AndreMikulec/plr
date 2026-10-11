@@ -1,5 +1,5 @@
-
-set -v -x
+#!/usr/bin/env bash
+set -xveo pipefail
 
 cd "$(dirname "$0")"
 
@@ -9,5 +9,5 @@ sed -i -r -e  's/\s+//g' -e '/^$/d' $(cygpath ${APPVEYOR_BUILD_FOLDER})/server_v
 # remove the only and last empty line
 echo -n $(cat $(cygpath ${APPVEYOR_BUILD_FOLDER})/server_version_num.txt) > $(cygpath ${APPVEYOR_BUILD_FOLDER})/server_version_num.txt
 
-set +v +x
+set +v +x +e +o
 

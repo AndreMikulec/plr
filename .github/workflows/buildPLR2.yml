@@ -393,7 +393,7 @@ jobs:
         shell: bash
         run: |
           echo "POSIX Form Specific Variables"
-          set -x -v -e
+          set -xveo pipefail
           # for codecov
           export  POSIX_PG_SOURCE=$(cygpath "${PG_SOURCE}")
           echo   "POSIX_PG_SOURCE=${POSIX_PG_SOURCE}" >> ${GITHUB_ENV}
@@ -803,7 +803,7 @@ jobs:
           msystem: ${{ env.compilerEnv }}
         run: |
           echo "Install Windows mingw Software Repository PostgreSQL"
-          set -x -v -e
+          set -xveo pipefail
           pacman -S --needed --noconfirm ${{ env.MINGW_PACKAGE_PREFIX }}-postgresql
           pacman                     -Ql ${{ env.MINGW_PACKAGE_PREFIX }}-postgresql
 
@@ -850,7 +850,7 @@ jobs:
           R_ARCH: ${{ env.R_ARCH }}
         run: |
           echo "View Cygwin R Version"
-          set -x -v -e
+          set -xveo pipefail
           . ./get_uname_info.sh
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
@@ -860,11 +860,11 @@ jobs:
           # cygwin query R package version
           # cygcheck -c R
           unset R_ARCH
-          set +x +v +e
+          set +x +v +e +o
           Rscript --version
           Rscript --vanilla -e "writeLines(paste0('R_HOME: ', R.home()))"
           Rscript --vanilla -e "print(R.version)"
-          set -x -v -e
+          set -xveo pipefail
 
       # If the PostgreSQL version is 16 or greater, I can compile PostgreSQL using meson.
       - name: Compile PG using pgSRCversion and PG_SOURCE and Install to here PG_HOME
@@ -885,7 +885,7 @@ jobs:
           buildpgFromSRCmethod: ${{ env.buildpgFromSRCmethod }}
         run: |
           echo "Compile PG using pgSRCversion and PG_SOURCE and Install to here PG_HOME"
-          set -x -v -e
+          set -xveo pipefail
           . ./get_uname_info.sh
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
@@ -949,7 +949,7 @@ jobs:
             pushd "${PG_SOURCE}"
 
             echo "BEGIN PostgreSQL make CONFIGURE"
-            set +x +v +e
+            set +x +v +e +o
 
             if [ "${Configuration}" == "Debug" ]
             then
@@ -961,19 +961,19 @@ jobs:
               ./configure --prefix="${PG_HOME}" --enable-depend --disable-rpath --without-icu
             fi
 
-            set -x -v -e
+            set -xveo pipefail
             echo "END   PostgreSQL make CONFIGURE"
 
             echo "BEGIN PostgreSQL make BUILD"
-            set +x +v +e
+            set +x +v +e +o
             make
-            set -x -v -e
+            set -xveo pipefail
             echo "END   PostgreSQL make BUILD"
 
             echo "BEGIN PostgreSQL make INSTALL to ${PG_HOME}"
-            set +x +v +e
+            set +x +v +e +o
             make install
-            set -x -v -e
+            set -xveo pipefail
             echo "END   PostgreSQL make INSTALL to ${PG_HOME}"
 
             popd # from "${PG_SOURCE}"
@@ -986,7 +986,7 @@ jobs:
             rm -Rf build
 
             echo "BEGIN PostgreSQL meson CONFIGURE"
-            set +x +v +e
+            set +x +v +e +o
 
             if [ "${Configuration}" == "Debug" ]
             then
@@ -998,19 +998,19 @@ jobs:
               meson setup --prefix "${PG_HOME}" -Dbuildtype=release -Db_pie=true -Dnls=disabled -Dplperl=disabled -Dplpython=disabled -Dpltcl=disabled -Dicu=disabled -Dllvm=disabled -Dlz4=disabled -Dzstd=disabled -Dgssapi=disabled -Dldap=disabled -Dpam=disabled -Dbsd_auth=disabled -Dsystemd=disabled -Dbonjour=disabled -Dlibxml=disabled -Dlibxslt=disabled -Dreadline=enabled -Dzlib=disabled -Ddocs=disabled -Ddocs_pdf=disabled -Dcassert=false -Dtap_tests=disabled -Ddtrace=disabled build
             fi
 
-            set -x -v -e
+            set -xveo pipefail
             echo "END   PostgreSQL meson CONFIGURE"
 
             echo "BEGIN PostgreSQL meson BUILD"
-            set +x +v +e
+            set +x +v +e +o
             meson compile -C build -v
-            set -x -v -e
+            set -xveo pipefail
             echo "END   PostgreSQL meson BUILD"
 
             echo "BEGIN PostgreSQL meson INSTALL to ${PG_HOME}"
-            set +x +v +e
+            set +x +v +e +o
             meson install -C build
-            set -x -v -e
+            set -xveo pipefail
             echo "END   PostgreSQL meson INSTALL to ${PG_HOME}"
 
             popd # from "${PG_SOURCE}"
@@ -1078,9 +1078,7 @@ jobs:
           PGROOT2: ${{ env.PGROOT2 }}
         run: |
           echo "Windows Meson PG and Meson PL/R Setup Compile and Non-Meson Manual Test"
-          set -x -v -e
-          echo "Windows Meson PG and Meson PL/R Setup Compile and Non-Meson Manual Test"
-          set -x -v -e
+          set -xveo pipefail
           . ./get_uname_info.sh
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
@@ -1424,9 +1422,9 @@ jobs:
             # must be stopped
             cygrunsrv -E cygserver
             # must be +e
-            set +x +v +e
+            set +x +v +e +o
             cygserver-config --yes
-            set -x -v -e
+            set -xveo pipefail
             # postgresql failing with below error on lion os x
             # https://stackoverflow.com/questions/6861945/postgresql-failing-with-below-error-on-lion-os-x#:~:text=Failed%20system%20call%20was%20shmget,the%20kernel%20with%20larger%20SHMMAX.
             echo kern.ipc.shmall 4096 >>     /etc/defaults/etc/cygserver.conf
@@ -1437,9 +1435,9 @@ jobs:
 
           # BEGIN MANUAL REGRESSION TEST #################################
 
-          set +x +v +e
+          set +x +v +e +o
           meson install -C build --no-rebuild
-          set -x -v -e
+          set -xveo pipefail
 
           #
           # Trying smartly and hard to find the PG_HOME
@@ -1570,7 +1568,7 @@ jobs:
           PGROOT2: ${{ env.PGROOT2 }}
         run: |
           echo "Windows Meson PL/R Setup Compile and Meson Test and Manual Test"
-          set -x -v -e
+          set -xveo pipefail
           . ./get_uname_info.sh
           if [ "${OperatingSystem}" == "Cygwin" ]
           then
@@ -2023,9 +2021,9 @@ jobs:
             # must be stopped
             cygrunsrv -E cygserver
             # must be +e
-            set +x +v +e
+            set +x +v +e +o
             cygserver-config --yes
-            set -x -v -e
+            set -xveo pipefail
             # postgresql failing with below error on lion os x
             # https://stackoverflow.com/questions/6861945/postgresql-failing-with-below-error-on-lion-os-x#:~:text=Failed%20system%20call%20was%20shmget,the%20kernel%20with%20larger%20SHMMAX.
             echo kern.ipc.shmall 4096 >>     /etc/defaults/etc/cygserver.conf

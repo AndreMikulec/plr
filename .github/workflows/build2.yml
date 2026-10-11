@@ -38,7 +38,7 @@ jobs:
 
     - name: Matrix Variables
       run: |
-        set -x -v -e
+        set -xveo pipefail
         export PGfromSource="notset"
         # two(2) consecutive digits
         if [ $(echo "${{ matrix.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
@@ -69,12 +69,12 @@ jobs:
 
     - name: Refresh APT
       run: |
-        set -x -v -e
+        set -xveo pipefail
         sudo apt-get update -qq
 
     - name: Acquire PostgreSQL-Dev (and PostgreSQL to test)
       run: |
-        set -x -v -e
+        set -xveo pipefail
         # two(2) consecutive digits
         if [ $(echo "${{ matrix.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
         then
@@ -87,13 +87,13 @@ jobs:
 
     - name: Acquire R-Dev (and R to test)
       run: |
-        set -x -v -e
+        set -xveo pipefail
         echo "R from CRAN ..."
         bash ./get_debian_r_binaries_on_ubuntu_from_cran.sh
 
     - name: Build and Install PL/R
       run: |
-        set -x -v -e
+        set -xveo pipefail
         # two(2) consecutive digits
         if [ $(echo "${{ matrix.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
         then
@@ -108,7 +108,7 @@ jobs:
       env:
         CODECOV_TOKEN: '${{ secrets.CODECOV_TOKEN }}'
       run: |
-        set -x -v -e
+        set -xveo pipefail
         # two(2) consecutive digits
         if [ $(echo "${{ matrix.PG }}" | grep -qE "^[0-9][0-9]$" && echo 0) ]
         then
