@@ -779,6 +779,7 @@ jobs:
             ${{ env.MINGW_PACKAGE_PREFIX }}-make
             make
             ${{ env.MINGW_PACKAGE_PREFIX }}-${{ env.compilerExe }}
+            ${{ ( env.compilerEnv == 'MINGW32' || env.compilerEnv == 'UCRT64' ) && env.MINGW_PACKAGE_PREFIX || '' }}${{ ( env.compilerEnv == 'MINGW32' || env.compilerEnv == 'UCRT64' ) && '-libgomp' || '' }}
             ${{ env.compilerExe == 'clang' && env.MINGW_PACKAGE_PREFIX || '' }}${{ env.compilerExe == 'clang' && '-llvm-openmp' || '' }}
             tar
             gzip
