@@ -45,6 +45,11 @@ typedef struct {
 /*
  * Global data
  */
+extern MemoryContext plr_caller_context;
+extern MemoryContext plr_SPI_context;
+extern HTAB *plr_HashTable;
+extern char *last_R_error_msg;
+
 MemoryContext plr_caller_context;
 MemoryContext plr_SPI_context = NULL;
 HTAB *plr_HashTable = (HTAB *) NULL;
