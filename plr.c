@@ -783,7 +783,6 @@ plr_trigger_handler(PG_FUNCTION_ARGS)
 	int				dims[FIXED_NUM_DIMS];
 	int				lbs[FIXED_NUM_DIMS];
 #undef FIXED_NUM_DIMS
-	TRIGGERTUPLEVARS;
 	ERRORCONTEXTCALLBACK;
 	int				i;
 
