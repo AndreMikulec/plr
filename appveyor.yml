@@ -598,7 +598,6 @@ for:
         ${env:R_ARCH} = "/i386"
       }
 
-      ${env:rbinurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
       # "make installcheck" does not like spaces
       ${env:R_HOME} = "C:\RINSTALL"
       #
@@ -627,19 +626,51 @@ for:
       # Set-PSDebug -Trace 2
       ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
 
-  # - if not exist R-%rversion%-win.exe appveyor downloadfile https://cran.r-project.org/bin/windows/base/old/%rversion%/R-%rversion%-win.exe
   - ps: |
       # Set-PSDebug -Trace 2
       # default
       # special named R version(s)
       if("${env:rlinkbinoldurl}" -eq "none") {
         if("${env:rversion}" -match "beta|alpha|devel|patched") {
+          $matches = @()
           ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
+        } else {
+
+          if("${env:Platform}" -eq "x64")  { ${env:bit} = "64" }
+          if("${env:Platform}" -eq "x86")  { ${env:bit} = "32" }
+          ${env:rversionlong} = ${env:rversion}
+
+          $matches = @()
+          if(${env:rversion} -match '(\d+)')             { ${env:rmajor} = $matches[1]; $matches = @() }
+          if(${env:rversion} -match '\d+[.](\d+)')       { ${env:rminor} = $matches[1]; $matches = @() }
+          if(${env:rversion} -match '\d+[.]\d+[.](\d+)') { ${env:rpatch} = $matches[1]; $matches = @() }
+          if(${env:rversion} -match '\d+[.]\d+[.](\d+)') {
+            ${env:rversionnumeric} = ([int]"${env:rmajor}" * 10000) + ([int]"${env:rminor}" * 100) + ([int]"${env:rpatch}")
+          }
+
+          # 2.2.0 through 2.11.1
+          if(([int]"${env:rversionnumeric}" -ge 20200) -and ([int]"${env:rversionnumeric}" -le 21101)) {
+            ${env:rversionlong} = "${env:rversion}-win${env:bit}"
+          } else {
+            # enhances and overrides #
+            ${env:rversionlong} = "${env:rversionlong}-win"
+          }
+
+          ${env:rversionlong} = "R-${env:rversionlong}"
+
+          if([int]"${env:rversionnumeric}" -ge 40200 ) {
+            ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/${env:rversionlong}.exe"
+          }
+          if([int]"${env:rversionnumeric}" -le 40103 ) {
+            ${env:rversionurl} = "https://cran-archive.r-project.org/bin/windows/base/old/${env:rversion}/${env:rversionlong}.exe"
+          }
+
         }
       } else {
           # R general download (or a specific custom build)
           ${env:rversionurl} = ${env:rlinkbinoldurl}
       }
+
       # .7z .zip .exe
       ${env:rversionurl_download_ext} = [System.IO.Path]::GetExtension(${env:rversionurl})
 
@@ -650,11 +681,57 @@ for:
       #
       # any download
       # PowerShell 4.0, an Alias of "curl"
+      # curl --retry-all-errors
+      # newer than image
+      # Curl version 7.71.0 was released on June 24, 2020
+      # https://curl.se/docs/manpage.html#--retry-all-errors
       if(-not ("${env:rversionurl_download_ext}" -eq ".exe")) {
-        curl -o "R-${env:rversion}-win${env:rversionurl_download_ext}" -v "${env:rversionurl}"
+        for ($i = 1; $i -le 10; $i++) {
+          try {
+            $Response = Invoke-WebRequest -Uri "${env:rversionurl}"  -OutFile "R-${env:rversion}-win${env:rversionurl_download_ext}"
+            $StatusCode = $Response.StatusCode
+            echo "End of Invoke-WebRequest download attempt ${i} of Invoke-WebRequest download of URL name: ${env:rversionurl}."
+            echo "Invoke-WebRequest download had succeeded."
+            break
+          }
+          catch {
+            echo "End of Invoke-WebRequest download attempt ${i} of Invoke-WebRequest download of URL name: ${env:rversionurl}."
+            if ($_.Exception.Response) {
+              $StatusCode = [int]$_.Exception.Response.StatusCode
+              echo "Invoke-WebRequest download had failed but did return a status code of ${StatusCode}."
+              if([int]"${i}" -ne 10) {
+                echo "Retrying ..."
+              } else {
+                echo "No more retries will happen.  Error in Invoke-WebRequest download."
+                exit 1
+              }
+            }
+          }
         7z e    "R-${env:rversion}-win${env:rversionurl_download_ext}" "R-${env:rversion}-win.exe"
-      } else {
-        curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
+        } else {
+          for ($i = 1; $i -le 10; $i++) {
+            try {
+              $Response = Invoke-WebRequest -Uri "${env:rversionurl}"  -OutFile "R-${env:rversion}-win.exe"  
+              $StatusCode = $Response.StatusCode
+              echo "End of Invoke-WebRequest download attempt ${i} of Invoke-WebRequest download of URL name: ${env:rversionurl}."
+              echo "Invoke-WebRequest download had succeeded."
+              break
+            }
+            catch {
+              echo "End of Invoke-WebRequest download attempt ${i} of Invoke-WebRequest download of URL name: ${env:rversionurl}."
+              if ($_.Exception.Response) {
+                $StatusCode = [int]$_.Exception.Response.StatusCode
+                echo "Invoke-WebRequest download had failed but did return a status code of ${StatusCode}."
+                if([int]"${i}" -ne 10) {
+                  echo "Retrying ..."
+                } else {
+                  echo "No more retries will happen.  Error in Invoke-WebRequest download."
+                  exit 1
+                }
+              }
+            }
+          }
+        }
       }
   #
   - R-%rversion%-win.exe /VERYSILENT /DIR=%R_HOME% /NOICONS /TASKS=
@@ -912,7 +989,39 @@ for:
       # special named R version(s)
       if("${env:rlinkbinoldurl}" -eq "none") {
         if("${env:rversion}" -match "beta|alpha|devel|patched") {
+          $matches = @()
           ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/R-${env:rversion}-win.exe"
+        } else {
+
+          if("${env:Platform}" -eq "x64")  { ${env:bit} = "64" }
+          if("${env:Platform}" -eq "x86")  { ${env:bit} = "32" }
+          ${env:rversionlong} = ${env:rversion}
+
+          $matches = @()
+          if(${env:rversion} -match '(\d+)')             { ${env:rmajor} = $matches[1]; $matches = @() }
+          if(${env:rversion} -match '\d+[.](\d+)')       { ${env:rminor} = $matches[1]; $matches = @() }
+          if(${env:rversion} -match '\d+[.]\d+[.](\d+)') { ${env:rpatch} = $matches[1]; $matches = @() }
+          if(${env:rversion} -match '\d+[.]\d+[.](\d+)') {
+            ${env:rversionnumeric} = ([int]"${env:rmajor}" * 10000) + ([int]"${env:rminor}" * 100) + ([int]"${env:rpatch}")
+          }
+
+          # 2.2.0 through 2.11.1
+          if(([int]"${env:rversionnumeric}" -ge 20200) -and ([int]"${env:rversionnumeric}" -le 21101)) {
+            ${env:rversionlong} = "${env:rversion}-win${env:bit}"
+          } else {
+            # enhances and overrides #
+            ${env:rversionlong} = "${env:rversionlong}-win"
+          }
+
+          ${env:rversionlong} = "R-${env:rversionlong}"
+
+          if([int]"${env:rversionnumeric}" -ge 40200 ) {
+            ${env:rversionurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/${env:rversionlong}.exe"
+          }
+          if([int]"${env:rversionnumeric}" -le 40103 ) {
+            ${env:rversionurl} = "https://cran-archive.r-project.org/bin/windows/base/old/${env:rversion}/${env:rversionlong}.exe"
+          }
+
         }
       } else {
           # R general download (or a specific custom build)
@@ -928,11 +1037,57 @@ for:
       #
       # any download
       # PowerShell 4.0, an Alias of "curl"
+      # curl --retry-all-errors
+      # newer than image
+      # Curl version 7.71.0 was released on June 24, 2020
+      # https://curl.se/docs/manpage.html#--retry-all-errors
       if(-not ("${env:rversionurl_download_ext}" -eq ".exe")) {
-        curl -o "R-${env:rversion}-win${env:rversionurl_download_ext}" -v "${env:rversionurl}"
+        for ($i = 1; $i -le 10; $i++) {
+          try {
+            $Response = Invoke-WebRequest -Uri "${env:rversionurl}"  -OutFile "R-${env:rversion}-win${env:rversionurl_download_ext}"
+            $StatusCode = $Response.StatusCode
+            echo "End of Invoke-WebRequest download attempt ${i} of Invoke-WebRequest download of URL name: ${env:rversionurl}."
+            echo "Invoke-WebRequest download had succeeded."
+            break
+          }
+          catch {
+            echo "End of Invoke-WebRequest download attempt ${i} of Invoke-WebRequest download of URL name: ${env:rversionurl}."
+            if ($_.Exception.Response) {
+              $StatusCode = [int]$_.Exception.Response.StatusCode
+              echo "Invoke-WebRequest download had failed but did return a status code of ${StatusCode}."
+              if([int]"${i}" -ne 10) {
+                echo "Retrying ..."
+              } else {
+                echo "No more retries will happen.  Error in Invoke-WebRequest download."
+                exit 1
+              }
+            }
+          }
         7z e    "R-${env:rversion}-win${env:rversionurl_download_ext}" "R-${env:rversion}-win.exe"
-      } else {
-        curl -o "R-${env:rversion}-win.exe" -v "${env:rversionurl}"
+        } else {
+          for ($i = 1; $i -le 10; $i++) {
+            try {
+              $Response = Invoke-WebRequest -Uri "${env:rversionurl}"  -OutFile "R-${env:rversion}-win.exe"  
+              $StatusCode = $Response.StatusCode
+              echo "End of Invoke-WebRequest download attempt ${i} of Invoke-WebRequest download of URL name: ${env:rversionurl}."
+              echo "Invoke-WebRequest download had succeeded."
+              break
+            }
+            catch {
+              echo "End of Invoke-WebRequest download attempt ${i} of Invoke-WebRequest download of URL name: ${env:rversionurl}."
+              if ($_.Exception.Response) {
+                $StatusCode = [int]$_.Exception.Response.StatusCode
+                echo "Invoke-WebRequest download had failed but did return a status code of ${StatusCode}."
+                if([int]"${i}" -ne 10) {
+                  echo "Retrying ..."
+                } else {
+                  echo "No more retries will happen.  Error in Invoke-WebRequest download."
+                  exit 1
+                }
+              }
+            }
+          }
+        }
       }
   #
   - R-%rversion%-win.exe /VERYSILENT

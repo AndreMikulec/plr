@@ -299,7 +299,7 @@ jobs:
           "compilerExe": "gcc",
           "Platform": "x64",
           "Configuration": "Debug",
-          "rversion": "4.6.1",
+          "rversion": "4.6.2",
           "R_HOME": "C:\\RINSTALL",
           "R_ARCH": "/x64",
           "pgSRCversion": "master",
@@ -335,7 +335,7 @@ jobs:
           "compilerExe": "gcc",
           "Platform": "x64",
           "Configuration": "Release",
-          "rversion": "4.6.1",
+          "rversion": "4.6.2",
           "R_HOME": "C:\\RINSTALL",
           "R_ARCH": "/x64",
           "pgSRCversion": "REL_19_STABLE",
@@ -353,14 +353,14 @@ jobs:
           "compilerExe": "gcc",
           "Platform": "x64",
           "Configuration": "Release",
-          "rversion": "4.6.1",
+          "rversion": "4.6.2",
           "R_HOME": "C:\\RINSTALL",
           "R_ARCH": "/x64",
           "pgSRCversion": "REL_18_STABLE",
           "buildpgFromSRC": "true",
           "buildpgFromSRCmethod": "meson",
           "PG_HOME": "C:\\PGINSTALL",
-          "pgWINversion": "18.6-1",
+          "pgWINversion": "18.6-5",
           "MingwtestonpgWIN": "true"
           },
 
@@ -373,7 +373,7 @@ jobs:
           "compilerExe": "gcc",
           "Platform": "x64",
           "Configuration": "Release",
-          "rversion": "4.6.1",
+          "rversion": "4.6.2",
           "R_HOME": "C:\\RINSTALL",
           "R_ARCH": "/x64",
           "pgSRCversion": "REL_17_STABLE",
@@ -392,14 +392,14 @@ jobs:
           "compilerExe": "gcc",
           "Platform": "x64",
           "Configuration": "Release",
-          "rversion": "4.6.1",
+          "rversion": "4.6.2",
           "R_HOME": "C:\\RINSTALL",
           "R_ARCH": "/x64",
           "pgSRCversion": "REL_16_STABLE",
           "buildpgFromSRC": "true",
           "buildpgFromSRCmethod": "meson",
           "PG_HOME": "C:\\PGINSTALL",
-          "pgWINversion": "16.15-1",
+          "pgWINversion": "16.15-5",
           "MingwtestonpgWIN": "true"
           },
 
@@ -412,14 +412,14 @@ jobs:
           "compilerExe": "gcc",
           "Platform": "x64",
           "Configuration": "Release",
-          "rversion": "4.6.1",
+          "rversion": "4.6.2",
           "R_HOME": "C:\\RINSTALL",
           "R_ARCH": "/x64",
           "pgSRCversion": "REL_15_STABLE",
           "buildpgFromSRC": "true",
           "buildpgFromSRCmethod": "make",
           "PG_HOME": "C:\\PGINSTALL",
-          "pgWINversion": "15.19-1",
+          "pgWINversion": "15.19-5",
           "MingwtestonpgWIN": "true"
           },
 
@@ -432,14 +432,14 @@ jobs:
           "compilerExe": "gcc",
           "Platform": "x64",
           "Configuration": "Release",
-          "rversion": "4.6.1",
+          "rversion": "4.6.2",
           "R_HOME": "C:\\RINSTALL",
           "R_ARCH": "/x64",
           "pgSRCversion": "REL_14_STABLE",
           "buildpgFromSRC": "true",
           "buildpgFromSRCmethod": "make",
           "PG_HOME": "C:\\PGINSTALL",
-          "pgWINversion": "14.24-1",
+          "pgWINversion": "14.24-4",
           "MingwtestonpgWIN": "true"
           }
 
@@ -524,13 +524,14 @@ jobs:
 
 # EDB Postgres for Windows
 # Do not download PG 17 from EDB.  PG 17 is already on the Windows image
-# AUG 30 2026 (does the fileid stay the same or change per ${PG}?)
+#  https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-VS2026-Readme.md
+# fileid always chagnes per ${PG}.XY-Z
 # Windows x86-64
-# 18.6   18.6-1  https://sbp.enterprisedb.com/getfile.jsp?fileid=1260436
-# 17.11  17.11-1 https://sbp.enterprisedb.com/getfile.jsp?fileid=1260428
-# 16.15  16.15-1 https://sbp.enterprisedb.com/getfile.jsp?fileid=1260421
-# 15.19  15.19-1 https://sbp.enterprisedb.com/getfile.jsp?fileid=1260414
-# 14.24  14.24-1 https://sbp.enterprisedb.com/getfile.jsp?fileid=1260407
+# 18.6  - https://sbp.enterprisedb.com/getfile.jsp?fileid=1260607  postgresql-18.6-5-windows-x64.exe
+# 17.11 - https://sbp.enterprisedb.com/getfile.jsp?fileid=1260614  postgresql-17.11-5-windows-x64.exe
+# 16.15 - https://sbp.enterprisedb.com/getfile.jsp?fileid=1260621  postgresql-16.15-5-windows-x64.exe
+# 15.19 - https://sbp.enterprisedb.com/getfile.jsp?fileid=1260628  postgresql-15.19-5-windows-x64.exe
+# 14.24 - https://sbp.enterprisedb.com/getfile.jsp?fileid=1260635  postgresql-14.24-4-windows-x64.exe
 # https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
 
 
