@@ -519,6 +519,16 @@ jobs:
         env:
           SEGMENT_DOWNLOAD_TIMEOUT_MINS: 10
 
+      - name: Cache WinSSL3 for Test on PostgreSQL for Windows
+        # if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.WinSSL3 == 'true' ) }}
+        uses: actions/cache@v5
+        id: cacheWinSSL3Zip
+        with:
+          path: openssl-3.6.2.zip
+          key:  openssl-3.6.2.zip
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MINS: 1
+
 #     - name: Cache GNU diffutils for Test on PostgreSQL for Windows
 #       if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true' ) }}
 #       uses: actions/cache@v5
@@ -629,6 +639,20 @@ jobs:
         with:
           url: ${{ env.ENTDB_PG_DOWNLOAD_URL }}
 
+      - name: Download WinSSL3 for Test on PostgreSQL for Windows
+        if: ${{ steps.cacheWinSSL3Zip.outputs.cache-hit != 'true' }}
+        # if: ${{ ( ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.WinSSL3 == 'true' ) ) &&
+        #   steps.cacheWinSSL3Zip.outputs.cache-hit != 'true'
+        #   }}
+        uses: suisei-cn/actions-download-file@v1.6.1
+        id: downloadWinSSL3Zip
+        with:
+          retry-times: 1
+          # verified NOV 20 2026
+          # last file update 2026-05-03
+          # url from Google Chrome triple verticle dots Download page
+          url: https://psychz.dl.sourceforge.net/project/openssl/openssl-3.6.2-x64/openssl-3.6.2.zip?viasf=1&fid=78c6a18ebfd9607f&e=1795230732&st=ZVbNUVCS0gFL-koE9NOjhg
+
 #     # The "crazy-max/ghaction-chocolatey@v4" "install SOMEHING_AT_SOURCEFORGE" file download often times-out.
 #     - name: Choco Install GNU diffutils for Test on PostgreSQL for Windows
 #       uses: crazy-max/ghaction-chocolatey@v4
@@ -661,6 +685,24 @@ jobs:
 #         # https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_53822_64bit/strawberry-perl-5.38.2.2-64bit.msi
 #         # https://strawberryperl.com/releases.html
 #         url: https://github.com/StrawberryPerl/Perl-Dist-Strawberry/releases/download/SP_53822_64bit/strawberry-perl-5.38.2.2-64bit.msi
+
+      # Install WinSSL3
+      - name: Extract WinSSL3Zip and add WinSSL3Zip bin and lib directories to the PATH for Test on PostgreSQL for Windows
+        # if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.WinSSL3 == 'true' ) }}
+        shell: cmd
+        run: |
+          @echo on
+          rem MKDIR creates any intermediate directories in the path, if needed.
+          mkdir                                "C:\OTHERBIN"
+          rem 7z is provided by Github Actions
+          7z x  openssl-3.6.2.zip            -o"C:\OTHERBIN"
+          dir                                  "C:\OTHERBIN\openssl-3.6.2"
+          dir                                  "C:\OTHERBIN\openssl-3.6.2\bin"
+          dir                                  "C:\OTHERBIN\openssl-3.6.2\lib"
+          tree /f                              "C:\OTHERBIN\openssl-3.6.2"
+          rem - man7.org/linux/man-pages/man1/printf.1.html
+          printf                               "C:\\OTHERBIN\\openssl-3.6.2\\bin" >> %GITHUB_PATH%
+          printf                               "C:\\OTHERBIN\\openssl-3.6.2\\lib" >> %GITHUB_PATH%
 
       - name: Install R for Windows R-x.y.z R-rmajor.rminor.rpatch
         if: ${{ env.osClass == 'windows' && env.compilerClass == 'Mingw' }}

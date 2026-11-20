@@ -238,6 +238,23 @@ jobs:
           # and that combination can/will "stop working" at any time..
           #
 
+#         {
+#         "matid": "00",
+#         "os": "windows-2025-vs2026",
+#         "GithubActionsIgnoreFail": "false",
+#         "compilerEnv": "cygwin",
+#         "Platform": "x64",
+#         "Configuration": "Debug"
+#         },
+#
+#         {
+#         "matid": "01",
+#         "os": "windows-2025-vs2026",
+#         "GithubActionsIgnoreFail": "false",
+#         "compilerEnv": "cygwin",
+#         "Platform": "x64",
+#         "Configuration": "Release"
+#         },
 
 #         {
 #         "matid": "02",
@@ -467,21 +484,24 @@ jobs:
         [
 
           {
-          "matid": "00",
+          "matid": "08",
           "os": "windows-2025-vs2026",
           "GithubActionsIgnoreFail": "false",
-          "compilerEnv": "cygwin",
+          "compilerEnv": "UCRT64",
+          "shellEnv": "msys2 {0}",
+          "compilerExe": "gcc",
           "Platform": "x64",
-          "Configuration": "Debug"
-          },
-
-          {
-          "matid": "01",
-          "os": "windows-2025-vs2026",
-          "GithubActionsIgnoreFail": "false",
-          "compilerEnv": "cygwin",
-          "Platform": "x64",
-          "Configuration": "Release"
+          "Configuration": "Release",
+          "rversion": "4.6.2",
+          "R_HOME": "C:\\RINSTALL",
+          "R_ARCH": "/x64",
+          "pgSRCversion": "REL_19_STABLE",
+          "buildpgFromSRC": "true",
+          "WinSSL3": "true",
+          "buildpgFromSRCmethod": "meson",
+          "PG_HOME": "C:\\PGINSTALL",
+          "pgWINversion": "19.0-1",
+          "MingwtestonpgWIN": "true"
           }
 
         ]
