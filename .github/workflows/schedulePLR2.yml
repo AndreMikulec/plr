@@ -504,6 +504,45 @@ jobs:
           "MingwtestonpgWIN": "true"
           }
 
+          {
+          "matid": "100",
+          "os": "windows-2025-vs2026",
+          "GithubActionsIgnoreFail": "false",
+          "compilerEnv": "UCRT64",
+          "shellEnv": "msys2 {0}",
+          "compilerExe": "gcc",
+          "Platform": "x64",
+          "Configuration": "Release",
+          "rversion": "4.6.2",
+          "R_HOME": "C:\\RINSTALL",
+          "R_ARCH": "/x64",
+          "pgSRCversion": "REL_17_STABLE",
+          "buildpgFromSRC": "true",
+          "buildpgFromSRCmethod": "meson",
+          "PG_HOME": "C:\\PGINSTALL",
+          "MingwtestonpgWIN": "true"
+          },
+
+          {
+          "matid": "101",
+          "os": "windows-2025-vs2026",
+          "GithubActionsIgnoreFail": "false",
+          "compilerEnv": "UCRT64",
+          "shellEnv": "msys2 {0}",
+          "compilerExe": "gcc",
+          "Platform": "x64",
+          "Configuration": "Release",
+          "rversion": "4.6.2",
+          "R_HOME": "C:\\RINSTALL",
+          "R_ARCH": "/x64",
+          "pgSRCversion": "REL_17_STABLE",
+          "buildpgFromSRC": "true",
+          "WinSSL3": "true",
+          "buildpgFromSRCmethod": "meson",
+          "PG_HOME": "C:\\PGINSTALL",
+          "MingwtestonpgWIN": "true"
+          }
+
         ]
 
 
