@@ -697,7 +697,7 @@ jobs:
         if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.WinSSL3 == 'true' ) }}
         shell: cmd
         run: |
-          @echo on
+          echo on
           rem MKDIR creates any intermediate directories in the path, if needed.
           mkdir                                "C:\OTHERBIN"
           rem 7z is provided by Github Actions
@@ -769,10 +769,12 @@ jobs:
           PGVER2: ${{ env.PGVER2 }}
           PGROOT2: ${{ env.PGROOT2 }}
           Platform: ${{ env.Platform }}
+          pgwinmajor: ${{ env.pgwinmajor }}
         shell: cmd
         run: |
           echo on
-          "${{ env.pgWINversionlong }}.exe" --unattendedmodeui none --mode unattended --enable-components server,commandlinetools --disable-components pgAdmin,stackbuilder --superpassword "root" > nul
+          if %pgwinmajor% LSS 19 "${{ env.pgWINversionlong }}.exe" --unattendedmodeui none --mode unattended --enable-components server,commandlinetools --disable-components pgAdmin,stackbuilder --superpassword "root" > nul
+          if %pgwinmajor% GEQ 19 "${{ env.pgWINversionlong }}.exe" --unattendedmodeui none --mode unattended --enable-components server,commandlinetools --disable-components stackbuilder --superpassword "root" > nul
           rem postgresql-17.11
           rem "C:\Program Files\PostgreSQL\17" (OCT 2026)
           rem "C:\Program Files\PostgreSQL\17\data"
