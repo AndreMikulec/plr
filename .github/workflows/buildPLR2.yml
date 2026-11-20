@@ -443,6 +443,13 @@ jobs:
           Set-EnvVar "CRAN_R_DOWNLOAD_URL=${env:CRAN_R_DOWNLOAD_URL}"
           echo "CRAN_R_DOWNLOAD_URL: ${env:CRAN_R_DOWNLOAD_URL}"
 
+          ${env:WinSSL3} = "${{ matrix.WinSSL3 }}"
+          if("${env:WinSSL3}" -eq ""){${env:WinSSL3} = "notset"}
+          Set-EnvVar "WinSSL3=${env:WinSSL3}"
+
+          echo "WinSSL3: ${env:WinSSL3}"
+
+
       - name: Checkout Code of This Repository
         uses: actions/checkout@v6
 
@@ -520,7 +527,7 @@ jobs:
           SEGMENT_DOWNLOAD_TIMEOUT_MINS: 10
 
       - name: Cache WinSSL3 for Test on PostgreSQL for Windows
-        # if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.WinSSL3 == 'true' ) }}
+        if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.WinSSL3 == 'true' ) }}
         uses: actions/cache@v5
         id: cacheWinSSL3Zip
         with:
@@ -640,10 +647,9 @@ jobs:
           url: ${{ env.ENTDB_PG_DOWNLOAD_URL }}
 
       - name: Download WinSSL3 for Test on PostgreSQL for Windows
-        if: ${{ steps.cacheWinSSL3Zip.outputs.cache-hit != 'true' }}
-        # if: ${{ ( ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.WinSSL3 == 'true' ) ) &&
-        #   steps.cacheWinSSL3Zip.outputs.cache-hit != 'true'
-        #   }}
+        if: ${{ ( ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.WinSSL3 == 'true' ) ) &&
+          steps.cacheWinSSL3Zip.outputs.cache-hit != 'true'
+          }}
         uses: suisei-cn/actions-download-file@v1.6.1
         id: downloadWinSSL3Zip
         with:
@@ -688,7 +694,7 @@ jobs:
 
       # Install WinSSL3
       - name: Extract WinSSL3Zip and add WinSSL3Zip bin and lib directories to the PATH for Test on PostgreSQL for Windows
-        # if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.WinSSL3 == 'true' ) }}
+        if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.WinSSL3 == 'true' ) }}
         shell: cmd
         run: |
           @echo on
