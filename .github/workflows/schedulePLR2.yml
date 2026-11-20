@@ -502,7 +502,7 @@ jobs:
           "PG_HOME": "C:\\PGINSTALL",
           "pgWINversion": "19.0-1",
           "MingwtestonpgWIN": "true"
-          }
+          },
 
           {
           "matid": "100",
