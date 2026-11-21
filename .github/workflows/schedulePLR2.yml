@@ -232,6 +232,24 @@ jobs:
           #               and does not supply for Release candidatates (XY_RC_).
           #               EDB does not [yet] provide a PostgreSQL for Windows ARM.
           #
+          #               EDB PostgreSQL for Windows instalation command line installation parameters MAY CHANGE
+          #               Check here
+          #               https://www.enterprisedb.com/docs/supported-open-source/postgresql/installing/command_line_parameters/
+          #               Check here (manually because only popup windows appear with information)
+          #               E.g.
+          #               postgresql-19.0-1-windows-x64.exe --help
+          #
+          #               Further ...
+          #               I can not uninstall Github Actions image provided PostgreSQL
+          #
+          #               Seen on NOV 21 2026
+          #               ServiceName  postgresql-x64-17
+          #               Version 17.12
+          #               https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-VS2026-Readme.md
+          #               Updated NOV 20 2026 from 17.11 to 17.12 (but the latest on NOV 21 2026 is 17.12-2)
+          #               https://github.com/actions/runner-images/blame/main/images/windows/Windows2025-VS2026-Readme.md#postgresql
+
+
           # Below are the ONLY combinations that have been
           # developed, tested, and implemented.  Explanations follow.
           #
@@ -403,7 +421,7 @@ jobs:
           "buildpgFromSRC": "true",
           "buildpgFromSRCmethod": "meson",
           "PG_HOME": "C:\\PGINSTALL",
-          "pgWINversion": "18.6-5",
+          "pgWINversion": "18.7-2",
           "MingwtestonpgWIN": "true"
           },
 
@@ -442,7 +460,7 @@ jobs:
           "buildpgFromSRC": "true",
           "buildpgFromSRCmethod": "meson",
           "PG_HOME": "C:\\PGINSTALL",
-          "pgWINversion": "16.15-5",
+          "pgWINversion": "16.16-2",
           "MingwtestonpgWIN": "true"
           },
 
@@ -462,7 +480,7 @@ jobs:
           "buildpgFromSRC": "true",
           "buildpgFromSRCmethod": "make",
           "PG_HOME": "C:\\PGINSTALL",
-          "pgWINversion": "15.19-5",
+          "pgWINversion": "15.20-2",
           "MingwtestonpgWIN": "true"
           },
 
@@ -482,7 +500,7 @@ jobs:
           "buildpgFromSRC": "true",
           "buildpgFromSRCmethod": "make",
           "PG_HOME": "C:\\PGINSTALL",
-          "pgWINversion": "14.24-4",
+          "pgWINversion": "14.25-2",
           "MingwtestonpgWIN": "true"
           }
 

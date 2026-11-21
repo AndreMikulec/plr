@@ -773,10 +773,14 @@ jobs:
         shell: cmd
         run: |
           echo on
-          if %pgwinmajor% LSS 19 "${{ env.pgWINversionlong }}.exe" --unattendedmodeui none --mode unattended --enable-components server,commandlinetools --disable-components pgAdmin,stackbuilder --superpassword "root" > nul
-          if %pgwinmajor% GEQ 19 "${{ env.pgWINversionlong }}.exe" --unattendedmodeui none --mode unattended --enable-components server,commandlinetools --disable-components stackbuilder --superpassword "root" > nul
-          rem postgresql-17.11
-          rem "C:\Program Files\PostgreSQL\17" (OCT 2026)
+          rem PostgreSQL command line parameters
+          rem On Windows and MacOS you can optionally include parameters for a PostgreSQL installation on the command line 
+          rem   when invoking the PostgreSQL installer.
+          rem https://www.enterprisedb.com/docs/supported-open-source/postgresql/installing/command_line_parameters/
+          rem
+          if %pgwinmajor% GEQ 14 "${{ env.pgWINversionlong }}.exe" --unattendedmodeui none --mode unattended --enable-components server,commandlinetools --disable-components stackbuilder --superpassword "root" > nul
+          rem postgresql-17.12
+          rem "C:\Program Files\PostgreSQL\17" (NOV 20 2026)
           rem "C:\Program Files\PostgreSQL\17\data"
           rem root
           rem 5432
