@@ -451,11 +451,11 @@ jobs:
 
 
       - name: Checkout Code of This Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Checkout PostgreSQL Code
         if: ${{ env.pgSRCversion != 'notset' }}
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: 'postgres/postgres'
 
@@ -505,7 +505,7 @@ jobs:
           env.rversion != 'devel-aarch64' && env.rversion != 'devel-x86_64' &&
           env.CRAN_R_DOWNLOAD_URL != 'notset'
           }}
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         id: cacheRWindowsInstallerExe
         with:
           path: ${{ env.rversionlong }}.exe
@@ -518,7 +518,7 @@ jobs:
           ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true' &&
           env.PGVER2 != env.GITHUB_ACTIONS_WINDOWS_RUNNER_PG_MAJOR_VERSION && env.Platform == 'x64'
           }}
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         id: cachePGWindowsInstallerExe
         with:
           path: ${{ env.pgWINversionlong }}.exe
@@ -528,7 +528,7 @@ jobs:
 
       - name: Cache WinSSL3 for Test on PostgreSQL for Windows
         if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.WinSSL3 == 'true' ) }}
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         id: cacheWinSSL3Zip
         with:
           path: openssl-3.6.2.zip
@@ -538,7 +538,7 @@ jobs:
 
 #     - name: Cache GNU diffutils for Test on PostgreSQL for Windows
 #       if: ${{ ( env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.MingwtestonpgWIN == 'true' ) }}
-#       uses: actions/cache@v5
+#       uses: actions/cache@v6
 #       id: cacheDiffutilsZip
 #       with:
 #         path: diffutils-2.8.7-1-bin.zip
@@ -548,7 +548,7 @@ jobs:
 
 #     - name: Cache StrawberryPerl
 #       if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'Mingw' && env.compilerEnv == 'MINGW32' }}
-#       uses: actions/cache@v5
+#       uses: actions/cache@v6
 #       id: cacheStrawberryPerlMsi
 #       with:
 #         path: strawberry-perl-5.38.2.2-64bit.msi
@@ -897,7 +897,7 @@ jobs:
 
       - name: Set up Cygwin
         if: ${{ env.os == 'windows-2025-vs2026' && env.compilerClass == 'cygwin' }}
-        uses: cygwin/cygwin-install-action@v6
+        uses: cygwin/cygwin-install-action@v7
         with:
           # x86 or x86_64
           #         GitHub offers ternary operator like behaviour that you can use in expressions
